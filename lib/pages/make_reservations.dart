@@ -48,8 +48,8 @@ class _ReservationPageState extends State<ReservationPage> {
         onStepTapped: (index) {
           if(index == 0){
             setState(() {
-              selectedService = 'Service';
-              selectedEmployee = 'Employee' ;
+              Provider.of<ReservationInfo>(context, listen: false).selectedService = "Service";
+              Provider.of<ReservationInfo>(context, listen: false).selectedEmployee = "Employee";
             });
           }
           setState(() {
