@@ -66,20 +66,21 @@ class _FeedbackPageState extends State<FeedbackPage> {
             height: 10,
           ),
           feedbackListTile(
-              icon: Icons.emoji_events_outlined,
-              title: 'Send Applause',
-              subtitle:
-                  'Let us know what you like about our app, maybe we can make it even better!',
+            icon: Icons.emoji_events_outlined,
+            title: 'Send Applause',
+            subtitle:
+                'Let us know what you like about our app, maybe we can make it even better!',
           ),
         ],
       ),
     );
   }
 
-  ListTile feedbackListTile(
-      {required IconData icon,
-      required String title,
-      required String subtitle,}) {
+  ListTile feedbackListTile({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+  }) {
     return ListTile(
       leading: Icon(icon),
       title: Text(title),
@@ -87,7 +88,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
       trailing: const Icon(Icons.arrow_forward_ios),
       tileColor: Colors.white,
       contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-      onTap: (){
+      onTap: () {
         buildBottomSheet();
       },
       shape: RoundedRectangleBorder(
@@ -119,7 +120,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
     );
   }
 
-  Future buildBottomSheet(){
+  Future buildBottomSheet() {
     return showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -128,8 +129,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
         ),
       ),
       builder: (context) => Padding(
-        padding: const EdgeInsets.symmetric(
-            horizontal: 15.0, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
         child: ListView(
           children: [
             bottomSheetText(text: 'Name'),
@@ -152,7 +152,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
 Widget nameFormField() {
   return TextFormField(
-    keyboardType: TextInputType.emailAddress,
     decoration: const InputDecoration(
       hintText: "Your Name",
       border: OutlineInputBorder(),
@@ -162,7 +161,6 @@ Widget nameFormField() {
 
 Widget descriptionFormField() {
   return TextFormField(
-    keyboardType: TextInputType.emailAddress,
     minLines: 5,
     maxLines: 10,
     decoration: const InputDecoration(
@@ -171,19 +169,14 @@ Widget descriptionFormField() {
     ),
   );
 }
-Widget bottomSheetText({required String text}){
+
+Widget bottomSheetText({required String text}) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 7),
-    child:  Text(
+    child: Text(
       text,
       style: const TextStyle(
-          color: Color(0xff141E27),
-          fontWeight: FontWeight.bold,
-          fontSize: 20),
+          color: Color(0xff141E27), fontWeight: FontWeight.bold, fontSize: 20),
     ),
   );
 }
-
-// Widget bottomSheet (){
-//   return false;
-// }

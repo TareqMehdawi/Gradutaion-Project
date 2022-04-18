@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/pages/login_page.dart';
@@ -7,7 +8,10 @@ import 'package:graduation_project/pages/register_page.dart';
 import 'package:graduation_project/pages/student_page.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 

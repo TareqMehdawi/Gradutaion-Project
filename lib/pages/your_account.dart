@@ -20,40 +20,48 @@ class YourAccount extends StatelessWidget {
             children: [
               Container(
                 color: const Color(0xff141E27),
-                height: 220,
+                height: MediaQuery.of(context).size.height * .27,
               ),
               InkWell(
                 onTap: () {
                   //navigateSecondPage(EditImagePage());
                 },
-                child: CircleAvatar(
-                  radius: 75,
-                  backgroundColor: Colors.white,
-                  child: CircleAvatar(
-                    radius: 70,
-                    backgroundImage: AssetImage(image),
+                child: SizedBox(
+                  height: 180,
+                  child: Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: 75,
+                        backgroundColor: Colors.white,
+                        child: CircleAvatar(
+                          radius: 70,
+                          backgroundImage: AssetImage(image),
+                        ),
+                      ),
+                      const Positioned(
+                        bottom: 36,
+                        right: 10,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 20,
+                          child: Icon(
+                            Icons.edit,
+                            color: Colors.black,
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),
-              Positioned(
-                  right: MediaQuery.of(context).size.height * 0.2,
-                  top: 35,
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    radius: 20,
-                    child: Icon(
-                      Icons.edit,
-                      color: Colors.black,
-                    ),
-                  )),
             ],
           ),
           Padding(
             padding: EdgeInsets.zero,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
+              children: const [
+                 SizedBox(
                   height: 20,
                 ),
 
@@ -77,7 +85,7 @@ class YourAccount extends StatelessWidget {
                 //             bottom: BorderSide(color: Colors.grey, width: 1)))
                 // ),
 
-                const SizedBox(
+                SizedBox(
                   height: 20,
                 ),
                 Text(

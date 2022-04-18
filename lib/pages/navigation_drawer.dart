@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/pages/feedback_page.dart';
 import 'package:graduation_project/pages/make_reservations.dart';
@@ -163,7 +164,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                         icon: Icons.logout,
                         title: 'Logout',
                         function: () {
-                          Navigator.pop(context);
+                          FirebaseAuth.instance.signOut();
                         },
                       ),
                     ],

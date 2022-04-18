@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:graduation_project/pages/navigation_drawer.dart';
 import 'package:graduation_project/pages/forgot_password.dart';
 import 'package:graduation_project/pages/register_page.dart';
+
+import 'navigation_drawer.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -12,48 +14,62 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+
   bool showPassword = false;
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.zero,
-              height: 300,
-              color: const Color(0xff141E27),
-              child: Center(
-                child: Text(
-                  'Login',
-                  style: GoogleFonts.ubuntu(
-                    textStyle: const TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.zero,
+                      height: 300,
+                      color: const Color(0xff141E27),
+                      child: Center(
+                        child: Text(
+                          'Login',
+                          style: GoogleFonts.ubuntu(
+                            textStyle: const TextStyle(
+                              fontSize: 36,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    emailFormField(),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    passwordFormField(),
+                    checkBoxWidget(),
+                    loginButton(),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    registerButton(),
+                    buildForgetPassword(),
+                  ],
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            emailFormField(),
-            const SizedBox(
-              height: 12,
-            ),
-            passwordFormField(),
-            checkBoxWidget(),
-            loginButton(),
-            const SizedBox(
-              height: 12,
-            ),
-            registerButton(),
-            buildForgetPassword(),
-          ],
-        ),
-      ),
     );
   }
 
@@ -61,6 +77,7 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: TextFormField(
+        controller: emailController,
         keyboardType: TextInputType.emailAddress,
         decoration: const InputDecoration(
           labelText: 'Email',
@@ -75,6 +92,7 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: TextFormField(
+        controller: passwordController,
         keyboardType: TextInputType.visiblePassword,
         decoration: const InputDecoration(
           labelText: 'Password',
@@ -122,17 +140,25 @@ class _LoginPageState extends State<LoginPage> {
       child: Text(
         'Login',
         style: GoogleFonts.ubuntu(
-          textStyle: const TextStyle(fontSize: 20,  fontWeight: FontWeight.w500),
+          textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
         ),
       ),
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const NavigationDrawer(),
-          ),
-        );
-      },
+      onPressed: () async{
+        try {
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+              email: emailController.text.trim(),
+              password: passwordController.text.trim());
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const NavigationDrawer(),
+            ),
+          );
+        }
+        on FirebaseAuthException catch(e){
+          print(e);
+        }
+        }
     );
   }
 
@@ -158,7 +184,8 @@ class _LoginPageState extends State<LoginPage> {
       child: Text(
         'Sign Up',
         style: GoogleFonts.ubuntu(
-          textStyle: const TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w500),
+          textStyle: const TextStyle(
+              fontSize: 20, color: Colors.black, fontWeight: FontWeight.w500),
         ),
       ),
     );
