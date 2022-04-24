@@ -2,9 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/pages/forgot_password.dart';
+import 'package:graduation_project/pages/navigation_drawer.dart';
 import 'package:graduation_project/pages/register_page.dart';
+import 'package:graduation_project/widgets/spinKit_widget.dart';
 
-import 'navigation_drawer.dart';
+import '../widgets/utils_show_snackbar.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -14,12 +16,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
-
   bool showPassword = false;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
+  bool isLoading = false ;
 
   @override
   void dispose() {
@@ -31,45 +31,58 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.zero,
-                      height: 300,
-                      color: const Color(0xff141E27),
-                      child: Center(
-                        child: Text(
-                          'Login',
-                          style: GoogleFonts.ubuntu(
-                            textStyle: const TextStyle(
-                              fontSize: 36,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                            ),
+    return isLoading == true ? const SpinKitWidget() : Scaffold(
+      body: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+           if (snapshot.hasError) {
+            return const Center(
+              child: Text('Something went wrong'),
+            );
+          } else if (snapshot.hasData) {
+            return const NavigationDrawer();
+          } else {
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.zero,
+                    height: 300,
+                    color: const Color(0xff141E27),
+                    child: Center(
+                      child: Text(
+                        'Login',
+                        style: GoogleFonts.ubuntu(
+                          textStyle: const TextStyle(
+                            fontSize: 36,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    emailFormField(),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    passwordFormField(),
-                    checkBoxWidget(),
-                    loginButton(),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    registerButton(),
-                    buildForgetPassword(),
-                  ],
-                ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  emailFormField(),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  passwordFormField(),
+                  checkBoxWidget(),
+                  loginButton(),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  registerButton(),
+                  buildForgetPassword(),
+                ],
               ),
+            );
+          }
+        },
+      ),
     );
   }
 
@@ -128,38 +141,44 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget loginButton() {
     return ElevatedButton(
-      style: OutlinedButton.styleFrom(
-        backgroundColor: const Color(0xff141E27),
-        minimumSize: Size(MediaQuery.of(context).size.width * .94,
-            MediaQuery.of(context).size.height * .06),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
+        style: OutlinedButton.styleFrom(
+          backgroundColor: const Color(0xff141E27),
+          minimumSize: Size(MediaQuery.of(context).size.width * .94,
+              MediaQuery.of(context).size.height * .06),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18),
+          ),
         ),
-      ),
-      child: Text(
-        'Login',
-        style: GoogleFonts.ubuntu(
-          textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+        child: Text(
+          'Login',
+          style: GoogleFonts.ubuntu(
+            textStyle:
+                const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+          ),
         ),
-      ),
-      onPressed: () async{
-        try {
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-              email: emailController.text.trim(),
-              password: passwordController.text.trim());
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const NavigationDrawer(),
-            ),
-          );
+        onPressed: () async {
+          setState(() {
+            isLoading = true ;
+          });
+          try {
+            await FirebaseAuth.instance.signInWithEmailAndPassword(
+                email: emailController.text.trim(),
+                password: passwordController.text.trim());
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const NavigationDrawer(),
+              ),
+            );
+          } on FirebaseAuthException catch (error) {
+            Utils.showSnackBar('Wrong Email or Password!');
+          }
+          setState(() {
+            isLoading = false ;
+          });
         }
-        on FirebaseAuthException catch(e){
-          print(e);
-        }
-        }
-    );
+        );
   }
 
   Widget registerButton() {

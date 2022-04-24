@@ -1,9 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:graduation_project/pages/login_page.dart';
-import 'package:graduation_project/pages/navigation_drawer.dart';
 import 'package:provider/provider.dart';
 import 'make_reservations.dart';
+import 'navigation_drawer.dart';
 
 class CardsNumber extends ChangeNotifier{
   int numberOfCards;
@@ -50,11 +48,7 @@ class _StudentPageState extends State<StudentPage> {
           Navigator.push(context, MaterialPageRoute(builder: (context) => const ReservationPage(),),);
         },
       ),
-      body: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView.builder(
+      body: ListView.builder(
               padding: const EdgeInsets.all(12.0),
               itemCount: numberOfCards,
               itemBuilder: (BuildContext context, int index) {
@@ -81,13 +75,7 @@ class _StudentPageState extends State<StudentPage> {
                   ),
                 );
               },
-            );
-          }
-          else{
-            return LoginPage();
-          }
-        }
-      ),
+            ),
     );
   }
 }

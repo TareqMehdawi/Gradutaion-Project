@@ -1,11 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/pages/login_page.dart';
 import 'package:graduation_project/pages/make_reservations.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
-import 'package:graduation_project/pages/register_page.dart';
 import 'package:graduation_project/pages/student_page.dart';
+import 'package:graduation_project/widgets/utils_show_snackbar.dart';
 import 'package:provider/provider.dart';
 
 Future main() async{
@@ -23,21 +22,22 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => NavigationProvider(),),
         ChangeNotifierProvider(create: (context) => ReservationInfo()),
         ChangeNotifierProvider(create: (context) => CardsNumber()),
+        ChangeNotifierProvider(create: (context) => NavigationProvider()),
       ],
       child: MaterialApp(
+        scaffoldMessengerKey: Utils.messengerKey,
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const MyHomePage(),
-      ),
+        home: const LoginPage(),
+    ),
     );
   }
 }
-
+/*
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
@@ -50,59 +50,64 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          children: [
-            ClipPath(
-              clipper: CustomClipPath(),
-              child: Container(
-                height: MediaQuery.of(context).size.height * .70,
-                color: const Color(0xff141E27),
-                child: Center(
-                  child: Text(
-                    'Appointment',
-                    style: GoogleFonts.ubuntu(
-                        textStyle: const TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    )),
+        child: SingleChildScrollView(
+          child: Column(
+                children: [
+                  ClipPath(
+                    clipper: CustomClipPath(),
+                    child: Container(
+                      height: 400,
+                      decoration: BoxDecoration(
+                        color: Color(0xff141E27),
+
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Appointment',
+                          style: GoogleFonts.ubuntu(
+                              textStyle: const TextStyle(
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          )),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  homepageButtons(
+                    context,
+                    title: 'Login',
+                    function: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginPage(),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  homepageButtons(
+                    context,
+                    title: 'Register',
+                    function: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const RegisterPage(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            homepageButtons(
-              context,
-              title: 'Login',
-              function: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LoginPage(),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            homepageButtons(
-              context,
-              title: 'Register',
-              function: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const RegisterPage(),
-                  ),
-                );
-              },
-            ),
-          ],
         ),
-      ),
+        ),
     );
   }
 }
@@ -147,3 +152,4 @@ Widget homepageButtons(BuildContext context,
     child: Text(title),
   );
 }
+*/

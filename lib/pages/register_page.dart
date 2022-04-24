@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/pages/login_page.dart';
-
-import 'navigation_drawer.dart';
+import 'package:graduation_project/pages/navigation_drawer.dart';
+import 'package:graduation_project/widgets/utils_show_snackbar.dart';
+import '../widgets/spinKit_widget.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -13,14 +16,19 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final formKey = GlobalKey<FormState>();
-  TextEditingController password = TextEditingController();
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
   bool showValidate = false;
   bool showPassword = false;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return isLoading == true ? const SpinKitWidget() : Scaffold(
       body: Form(
         key: formKey,
         autovalidateMode: showValidate == true
@@ -38,10 +46,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     'Sign up',
                     style: GoogleFonts.ubuntu(
                       textStyle: const TextStyle(
-                        fontSize: 36,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white
-                      ),
+                          fontSize: 36,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),
                     ),
                   ),
                 ),
@@ -86,6 +93,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: TextFormField(
+        controller: usernameController,
         keyboardType: TextInputType.name,
         decoration: const InputDecoration(
           labelText: 'Username',
@@ -112,6 +120,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: TextFormField(
+        controller: emailController,
         keyboardType: TextInputType.emailAddress,
         decoration: const InputDecoration(
           labelText: 'Email',
@@ -119,7 +128,7 @@ class _RegisterPageState extends State<RegisterPage> {
           suffixIcon: Icon(Icons.email_outlined),
         ),
         validator: (value) {
-          final regEmail = RegExp(r'^\w.+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$');
+          final regEmail = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
           if (value!.isEmpty) {
             return 'Enter an email';
           } else if (!regEmail.hasMatch(value)) {
@@ -136,6 +145,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: TextFormField(
+        controller: phoneNumberController,
         keyboardType: TextInputType.number,
         decoration: const InputDecoration(
           labelText: 'Phone Number',
@@ -159,7 +169,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: TextFormField(
-        controller: password,
+        controller: passwordController,
         keyboardType: TextInputType.visiblePassword,
         decoration: const InputDecoration(
           labelText: 'Password',
@@ -195,7 +205,7 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         obscureText: !showPassword,
         validator: (value) {
-          if (password.value != confirmPassword.value) {
+          if (passwordController.value != confirmPassword.value) {
             return 'Password doesn\'t match';
           } else {
             return null;
@@ -226,6 +236,7 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
+
   Widget registerButton() {
     return ElevatedButton(
       style: OutlinedButton.styleFrom(
@@ -243,7 +254,7 @@ class _RegisterPageState extends State<RegisterPage> {
           textStyle: const TextStyle(fontSize: 20),
         ),
       ),
-      onPressed: () {
+      onPressed: () async {
         final isValid = formKey.currentState!.validate();
         FocusScope.of(context).unfocus();
         setState(() {
@@ -251,17 +262,35 @@ class _RegisterPageState extends State<RegisterPage> {
         });
         if (isValid) {
           formKey.currentState?.save();
+        }
+        final username = usernameController.text;
+        final phoneNumber = phoneNumberController.text;
+
+        createUser(name: username, number: phoneNumber);
+
+        setState(() {
+          isLoading = true;
+        });
+        try {
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+              email: emailController.text.trim(), password: passwordController.text.trim());
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => const NavigationDrawer(),
             ),
           );
+        } on FirebaseAuthException catch (error) {
+          Utils.showSnackBar(error.message);
         }
 
+        setState(() {
+          isLoading = false;
+        });
       },
     );
   }
+
   Widget loginButton() {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
@@ -288,5 +317,16 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ),
     );
+  }
+  Future createUser({required String name,required String number}) async{
+
+    final docUser = FirebaseFirestore.instance.collection('users').doc('my-id');
+
+    final json = {
+      'name': name,
+      'phoneNumber': number,
+    };
+
+    await docUser.set(json);
   }
 }
