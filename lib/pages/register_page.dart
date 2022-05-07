@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/pages/login_page.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
+import 'package:graduation_project/widgets/user_class.dart';
 import 'package:graduation_project/widgets/utils_show_snackbar.dart';
 import '../widgets/spinKit_widget.dart';
 
@@ -28,65 +29,67 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading == true ? const SpinKitWidget() : Scaffold(
-      body: Form(
-        key: formKey,
-        autovalidateMode: showValidate == true
-            ? AutovalidateMode.onUserInteraction
-            : AutovalidateMode.disabled,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.zero,
-                height: 170,
-                color: const Color(0xff141E27),
-                child: Center(
-                  child: Text(
-                    'Sign up',
-                    style: GoogleFonts.ubuntu(
-                      textStyle: const TextStyle(
-                          fontSize: 36,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white),
+    return isLoading == true
+        ? const SpinKitWidget()
+        : Scaffold(
+            body: Form(
+              key: formKey,
+              autovalidateMode: showValidate == true
+                  ? AutovalidateMode.onUserInteraction
+                  : AutovalidateMode.disabled,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.zero,
+                      height: 170,
+                      color: const Color(0xff141E27),
+                      child: Center(
+                        child: Text(
+                          'Sign up',
+                          style: GoogleFonts.ubuntu(
+                            textStyle: const TextStyle(
+                                fontSize: 36,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    usernameFormField(),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    emailFormField(),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    phoneFormField(),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    passwordFormField(),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    confirmPasswordFormField(),
+                    checkBoxWidget(),
+                    registerButton(),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    loginButton(),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              usernameFormField(),
-              const SizedBox(
-                height: 12,
-              ),
-              emailFormField(),
-              const SizedBox(
-                height: 12,
-              ),
-              phoneFormField(),
-              const SizedBox(
-                height: 12,
-              ),
-              passwordFormField(),
-              const SizedBox(
-                height: 12,
-              ),
-              confirmPasswordFormField(),
-              checkBoxWidget(),
-              registerButton(),
-              const SizedBox(
-                height: 12,
-              ),
-              loginButton(),
-              const SizedBox(
-                height: 12,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
   }
 
   Widget usernameFormField() {
@@ -128,7 +131,8 @@ class _RegisterPageState extends State<RegisterPage> {
           suffixIcon: Icon(Icons.email_outlined),
         ),
         validator: (value) {
-          final regEmail = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+          final regEmail = RegExp(
+              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
           if (value!.isEmpty) {
             return 'Enter an email';
           } else if (!regEmail.hasMatch(value)) {
@@ -273,7 +277,8 @@ class _RegisterPageState extends State<RegisterPage> {
         });
         try {
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
-              email: emailController.text.trim(), password: passwordController.text.trim());
+              email: emailController.text.trim(),
+              password: passwordController.text.trim());
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -318,14 +323,19 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
-  Future createUser({required String name,required String number}) async{
 
-    final docUser = FirebaseFirestore.instance.collection('users').doc('my-id');
+  Stream<List<Users>> readUsers() => FirebaseFirestore.instance
+      .collection('users')
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => Users.fromJson(doc.data())).toList());
 
-    final json = {
-      'name': name,
-      'phoneNumber': number,
-    };
+  Future createUser({required String name, required String number}) async {
+    final docUser = FirebaseFirestore.instance.collection('users').doc();
+
+    final user = Users(id: docUser.id, name: name, number: number);
+
+    final json = user.toJson();
 
     await docUser.set(json);
   }

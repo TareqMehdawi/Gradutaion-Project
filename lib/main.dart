@@ -36,8 +36,7 @@ class MyApp extends StatelessWidget {
     ),
     );
   }
-}
-/*
+} /*
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
@@ -56,11 +55,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ClipPath(
                     clipper: CustomClipPath(),
                     child: Container(
-                      height: 400,
-                      decoration: BoxDecoration(
-                        color: Color(0xff141E27),
-
-                      ),
+                      height: MediaQuery.of(context).size.height * .7,
+                      color: Color(0xff141E27),
                       child: Center(
                         child: Text(
                           'Appointment',
@@ -152,4 +148,5 @@ Widget homepageButtons(BuildContext context,
     child: Text(title),
   );
 }
+
 */
