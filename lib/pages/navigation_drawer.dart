@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 
 import 'login_page.dart';
 
-String image = 'assets/images/tareq.jpg';
+String image = 'assets/images/images.png';
 
 class NavigationProvider extends ChangeNotifier {
   double value;
@@ -58,7 +58,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                     child: Column(
                       children: [
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * .25,
+                          height: MediaQuery.of(context).size.height * .28,
                           child: DrawerHeader(
                             decoration: const BoxDecoration(
                               color: Color(0xff141E27),
@@ -126,7 +126,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const YourAccount(),
+                                      builder: (context) => YourAccount(),
                                     ),
                                   );
                                 },
