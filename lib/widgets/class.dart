@@ -13,4 +13,5 @@ class Message{
     required this.date,
     required this.time,
 });
+
 }

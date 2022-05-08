@@ -171,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                 builder: (context) => const NavigationDrawer(),
               ),
             );
-          } on FirebaseAuthException catch (error) {
+          } on FirebaseAuthException {
             Utils.showSnackBar('Wrong Email or Password!');
           }
           setState(() {

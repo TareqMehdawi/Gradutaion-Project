@@ -270,8 +270,6 @@ class _RegisterPageState extends State<RegisterPage> {
         final username = usernameController.text;
         final phoneNumber = phoneNumberController.text;
 
-        createUser(name: username, number: phoneNumber);
-
         setState(() {
           isLoading = true;
         });
@@ -279,6 +277,8 @@ class _RegisterPageState extends State<RegisterPage> {
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
               email: emailController.text.trim(),
               password: passwordController.text.trim());
+          final user = FirebaseAuth.instance.currentUser!;
+          createUser(name: username, number: phoneNumber,id: user.uid);
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -330,8 +330,8 @@ class _RegisterPageState extends State<RegisterPage> {
       .map((snapshot) =>
           snapshot.docs.map((doc) => Users.fromJson(doc.data())).toList());
 
-  Future createUser({required String name, required String number}) async {
-    final docUser = FirebaseFirestore.instance.collection('users').doc();
+  Future createUser({required String name, required String number,required String id}) async {
+    final docUser = FirebaseFirestore.instance.collection('users').doc(id);
 
     final user = Users(id: docUser.id, name: name, number: number);
 
