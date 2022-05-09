@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/pages/forgot_password.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
 import 'package:graduation_project/pages/register_page.dart';
+import 'package:graduation_project/pages/settings_page.dart';
 import 'package:graduation_project/widgets/spinKit_widget.dart';
 
 import '../widgets/utils_show_snackbar.dart';
@@ -21,7 +22,12 @@ class _LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
   bool isLoading = false ;
   bool isStudent = false;
-
+  final regEmailReg = RegExp(
+      r"^Reg\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
+  final regEmailDoc = RegExp(
+      r"^[a-zA-Z]{1}\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
+  final regEmailStu = RegExp(
+      r"^[a-zA-Z]{3}[0-9]{7}@ju\.edu\.jo");
   @override
   void dispose() {
     emailController.dispose();
@@ -166,12 +172,28 @@ class _LoginPageState extends State<LoginPage> {
             await FirebaseAuth.instance.signInWithEmailAndPassword(
                 email: emailController.text.trim(),
                 password: passwordController.text.trim());
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const NavigationDrawer(),
-              ),
-            );
+            if(regEmailReg.hasMatch(emailController.text.trim())){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NavigationDrawer(),
+                ),
+              );
+            }else if(regEmailDoc.hasMatch(emailController.text.trim())){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NavigationDrawer(),
+                ),
+              );
+            }else if(regEmailStu.hasMatch(emailController.text.trim())){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NavigationDrawer(),
+                ),
+              );
+            }
           } on FirebaseAuthException {
             Utils.showSnackBar('Wrong Email or Password!');
           }

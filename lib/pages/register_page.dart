@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:graduation_project/pages/feedback_page.dart';
 import 'package:graduation_project/pages/login_page.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
+import 'package:graduation_project/pages/settings_page.dart';
 import 'package:graduation_project/widgets/user_class.dart';
 import 'package:graduation_project/widgets/utils_show_snackbar.dart';
 import '../widgets/spinKit_widget.dart';
@@ -26,6 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
   bool showValidate = false;
   bool showPassword = false;
   bool isLoading = false;
+  var page;
 
   @override
   Widget build(BuildContext context) {
@@ -133,11 +136,26 @@ class _RegisterPageState extends State<RegisterPage> {
         validator: (value) {
           final regEmail = RegExp(
               r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+          final regEmailReg = RegExp(
+              r"^Reg\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
+          final regEmailDoc = RegExp(
+              r"^[a-zA-Z]{1}\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
+          final regEmailStu = RegExp(
+              r"^[a-zA-Z]{3}[0-9]{7}@ju\.edu\.jo");
           if (value!.isEmpty) {
             return 'Enter an email';
           } else if (!regEmail.hasMatch(value)) {
             return 'Enter a valid email!';
-          } else {
+          } else if(regEmailReg.hasMatch(value)){
+            page=1;
+          }
+          else if(regEmailDoc.hasMatch(value)){
+            page=2;
+          }
+          else if(regEmailStu.hasMatch(value)){
+            page=3;
+          }
+          else {
             return null;
           }
         },
@@ -279,12 +297,29 @@ class _RegisterPageState extends State<RegisterPage> {
               password: passwordController.text.trim());
           final user = FirebaseAuth.instance.currentUser!;
           createUser(name: username, number: phoneNumber,id: user.uid);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const NavigationDrawer(),
-            ),
-          );
+
+          if(page==1){
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const NavigationDrawer(),
+              ),
+            );
+          }else if(page==2){
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const NavigationDrawer(),
+              ),
+            );
+          }else if(page==3){
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const NavigationDrawer(),
+              ),
+            );
+          }
         } on FirebaseAuthException catch (error) {
           Utils.showSnackBar(error.message);
         }
