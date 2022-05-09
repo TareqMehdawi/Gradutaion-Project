@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:graduation_project/pages/employee_page.dart';
 import 'package:graduation_project/pages/feedback_page.dart';
 import 'package:graduation_project/pages/make_reservations.dart';
 import 'package:graduation_project/pages/settings_page.dart';
@@ -28,7 +29,9 @@ class NavigationProvider extends ChangeNotifier {
 }
 
 class NavigationDrawer extends StatefulWidget {
-  const NavigationDrawer({Key? key}) : super(key: key);
+   const NavigationDrawer({Key? key}) : super(key: key);
+
+
 
   @override
   State<NavigationDrawer> createState() => _NavigationDrawerState();
@@ -37,6 +40,8 @@ class NavigationDrawer extends StatefulWidget {
 class _NavigationDrawerState extends State<NavigationDrawer> {
 
   final user = FirebaseAuth.instance.currentUser!;
+  bool isEmployee = true;
+  GetPage get =  GetPage();
 
   @override
   Widget build(BuildContext context) {
@@ -210,7 +215,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                     ..setEntry(3, 2, 0.001)
                     ..setEntry(0, 3, 200 * val)
                     ..rotateY((pi / 7) * val),
-                  child: const StudentPage(),
+                  child: isEmployee == get.checkEmail() ? const EmployeePage() : const StudentPage(),
                 ));
               }),
           GestureDetector(

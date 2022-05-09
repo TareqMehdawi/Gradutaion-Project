@@ -20,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool isLoading = false ;
+  bool isStudent = false;
 
   @override
   void dispose() {
@@ -243,5 +244,11 @@ class _LoginPageState extends State<LoginPage> {
         },
       ),
     );
+  }
+
+}
+class GetPage {
+  checkEmail() {
+    return false;
   }
 }

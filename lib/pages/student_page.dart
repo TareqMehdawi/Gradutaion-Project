@@ -1,16 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../widgets/user_class.dart';
 import 'make_reservations.dart';
 import 'navigation_drawer.dart';
-
-class CardsNumber extends ChangeNotifier{
-  int numberOfCards;
-  CardsNumber({this.numberOfCards = 0});
-  void addCard(){
-    numberOfCards++;
-    notifyListeners();
-}
-}
 
 class StudentPage extends StatefulWidget {
   const StudentPage({Key? key, void function}) : super(key: key);
@@ -23,9 +16,8 @@ class _StudentPageState extends State<StudentPage> {
   @override
   Widget build(BuildContext context) {
 
-    int numberOfCards = Provider.of<CardsNumber>(context).numberOfCards;
-    String selectedService = Provider.of<ReservationInfo>(context).selectedService;
-    String name = selectedService;
+//    String selectedService = Provider.of<ReservationInfo>(context).selectedService;
+    //String name = selectedService;
 
     return Scaffold(
       appBar: AppBar(
@@ -48,74 +40,90 @@ class _StudentPageState extends State<StudentPage> {
           Navigator.push(context, MaterialPageRoute(builder: (context) => const ReservationPage(),),);
         },
       ),
-      body: ListView.builder(
-              padding: const EdgeInsets.all(12.0),
-              itemCount: numberOfCards,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5.0),
-                  child: ListTile(
-                    leading: const Padding(
-                      padding: EdgeInsets.only(top: 10.0),
-                      child: Text('3/16'),
+      body: StreamBuilder<List<StudentsReservation>>(
+        stream: readReservation(),
+        builder: (context, snapshot) {
+          if(snapshot.hasData) {
+            final users = snapshot.data!;
+                  return Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: ListView(
+                      children: users.map(buildListTile).toList(),
                     ),
-                    title: Text(name),
-                    subtitle: const Text(
-                        'People in front of you: 5 \nExpected time: 9:45'),
-                    trailing: const Icon(Icons.arrow_forward_ios),
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 15),
-                    onTap: () {
+                  );
 
-                    },
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    tileColor: Colors.grey.shade300,
-                  ),
-                );
-              },
-            ),
+          // return ListView.builder(
+                //   padding: const EdgeInsets.all(12.0),
+                //   itemCount: 5,
+                //   itemBuilder: (BuildContext context, int index) {
+                //     return Padding(
+                //       padding: const EdgeInsets.symmetric(vertical: 5.0),
+                //       child: ListTile(
+                //         leading: const Padding(
+                //           padding: EdgeInsets.only(top: 10.0),
+                //           child: Text('3/16'),
+                //         ),
+                //         title: Text(name),
+                //         subtitle: const Text(
+                //             'People in front of you: 5 \nExpected time: 9:45'),
+                //         trailing: const Icon(Icons.arrow_forward_ios),
+                //         contentPadding: const EdgeInsets.symmetric(
+                //             vertical: 15, horizontal: 15),
+                //         onTap: () {
+                //
+                //         },
+                //         shape: RoundedRectangleBorder(
+                //           borderRadius: BorderRadius.circular(10.0),
+                //         ),
+                //         tileColor: Colors.grey.shade300,
+                //       ),
+                //     );
+                //   },
+                // );
+          }
+          if(snapshot.hasError){
+            print(snapshot.error);
+            return const Center(
+              child: Text("Fuck Ayasrah"),
+            );
+          }
+          else{
+            return const Center(
+              child: Text("Fuck you"),
+            );
+          }
+        }
+      ),
     );
   }
+
+  Widget buildListTile(StudentsReservation user) => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 5.0),
+    child: ListTile(
+      leading:  Padding(
+        padding: const EdgeInsets.only(top: 10.0),
+        child: Text(user.date),
+      ),
+      title: Text(user.doctor),
+      subtitle:  Text(
+          'people in front of you: ${user.people} \nExpected time: ${user.time}'),
+      trailing: const Icon(Icons.arrow_forward_ios),
+      contentPadding: const EdgeInsets.symmetric(
+          vertical: 15, horizontal: 15),
+      onTap: () {
+
+      },
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      tileColor: Colors.grey.shade300,
+    ),
+  );
+
+  Stream<List<StudentsReservation>> readReservation() =>
+      FirebaseFirestore.instance.collection('student').snapshots().map(
+              (snapshot) => snapshot.docs
+              .map((doc) => StudentsReservation.fromJson(doc.data()))
+              .toList());
+
 }
-/*
-
-children: [
-          ListTile(
-            leading: const Padding(
-              padding: EdgeInsets.only(top: 10.0),
-              child: Text('3/16'),
-            ),
-            title: const Text('Appointment 1'),
-            subtitle: const Text('People in front of you: 5 \nExpected time: 9:45'),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            contentPadding: const EdgeInsets.symmetric(vertical: 15 ,horizontal: 15),
-            onTap: () {
-
-            },
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            tileColor: Colors.grey.shade300,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          ListTile(
-            leading: const Padding(
-              padding: EdgeInsets.only(top: 10.0),
-              child: Text('3/17'),
-            ),
-            title: const Text('Appointment 2'),
-            subtitle: const Text('People in front of you: 7 \nExpected time: 11:30'),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            contentPadding: const EdgeInsets.symmetric(vertical: 15 ,horizontal: 15),
-            onTap: () {},
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            tileColor: Colors.grey.shade300,
-          ),
-        ],
- */

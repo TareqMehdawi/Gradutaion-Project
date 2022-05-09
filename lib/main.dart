@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project/pages/login_page.dart';
 import 'package:graduation_project/pages/make_reservations.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
-import 'package:graduation_project/pages/student_page.dart';
 import 'package:graduation_project/widgets/utils_show_snackbar.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +22,6 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ReservationInfo()),
-        ChangeNotifierProvider(create: (context) => CardsNumber()),
         ChangeNotifierProvider(create: (context) => NavigationProvider()),
       ],
       child: MaterialApp(

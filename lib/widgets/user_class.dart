@@ -18,3 +18,36 @@ class Users {
   static Users fromJson(Map<String, dynamic> json) =>
       Users(id: json['id'], name: json['name'], number: json['number']);
 }
+
+class StudentsReservation {
+  final String doctor;
+  final String service;
+  final int people;
+  final String time;
+  final String date;
+
+  StudentsReservation({
+    required this.doctor,
+    required this.service,
+    required this.people,
+    required this.time,
+    required this.date,
+  });
+
+  Map<String, dynamic> toJson() => {
+        'doctor': doctor,
+        'service': service,
+        'people': people,
+        'time': time,
+        'date': date,
+      };
+
+  static StudentsReservation fromJson(Map<String, dynamic> json) =>
+      StudentsReservation(
+          doctor: json['doctor'],
+          service: json['service'],
+          people: json['people'],
+          time: json['time'],
+          date: json['date'],
+      );
+}

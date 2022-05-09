@@ -1,21 +1,23 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:graduation_project/pages/student_page.dart';
 import 'package:graduation_project/widgets/class.dart';
 import 'package:graduation_project/widgets/search_delegate_services.dart';
+import 'package:graduation_project/widgets/user_class.dart';
 import '../widgets/search_delegate_employee.dart';
 import 'package:provider/provider.dart';
 
-
-class ReservationInfo extends ChangeNotifier{
+class ReservationInfo extends ChangeNotifier {
   String selectedService;
   String selectedEmployee;
-  ReservationInfo({this.selectedService = 'Service', this.selectedEmployee = 'Employee'});
+
+  ReservationInfo(
+      {this.selectedService = 'Service', this.selectedEmployee = 'Employee'});
 }
 
 enum employee { doctor, registration }
 
 int whichEmployee = 0;
-
 
 class ReservationPage extends StatefulWidget {
   const ReservationPage({Key? key}) : super(key: key);
@@ -29,13 +31,16 @@ class _ReservationPageState extends State<ReservationPage> {
   DateTime date = DateTime.now();
   TimeOfDay time = TimeOfDay.now();
   List<Message> messages = [];
+  final currentUser = FirebaseAuth.instance.currentUser!;
 
   @override
   Widget build(BuildContext context) {
     var hours = time.hourOfPeriod.toString().padLeft(2, '0');
     final minutes = time.minute.toString().padLeft(2, '0');
-    String selectedService = Provider.of<ReservationInfo>(context).selectedService;
-    String selectedEmployee = Provider.of<ReservationInfo>(context).selectedEmployee;
+    String selectedService =
+        Provider.of<ReservationInfo>(context).selectedService;
+    String selectedEmployee =
+        Provider.of<ReservationInfo>(context).selectedEmployee;
 
     return Scaffold(
       appBar: AppBar(
@@ -46,10 +51,12 @@ class _ReservationPageState extends State<ReservationPage> {
       body: Stepper(
         currentStep: currentStep,
         onStepTapped: (index) {
-          if(index == 0){
+          if (index == 0) {
             setState(() {
-              Provider.of<ReservationInfo>(context, listen: false).selectedService = "Service";
-              Provider.of<ReservationInfo>(context, listen: false).selectedEmployee = "Employee";
+              Provider.of<ReservationInfo>(context, listen: false)
+                  .selectedService = "Service";
+              Provider.of<ReservationInfo>(context, listen: false)
+                  .selectedEmployee = "Employee";
             });
           }
           setState(() {
@@ -61,11 +68,14 @@ class _ReservationPageState extends State<ReservationPage> {
             setState(() {
               currentStep++;
             });
-          }
-          else{
-            setState(() {
-              Provider.of<CardsNumber>(context, listen: false).addCard();
-            });
+          } else {
+             setReservation(
+                doctor: selectedEmployee,
+                service: selectedService,
+                people: 10,
+                currentTime: "10:15",
+                currentDate: '${date.month}/${date.day}',
+              );
             Navigator.pop(context);
           }
         },
@@ -75,10 +85,10 @@ class _ReservationPageState extends State<ReservationPage> {
               currentStep--;
             });
           }
-          if(currentStep == 0){
+          if (currentStep == 0) {
             setState(() {
               selectedService = 'Service';
-              selectedEmployee = 'Employee' ;
+              selectedEmployee = 'Employee';
             });
           }
         },
@@ -124,7 +134,8 @@ class _ReservationPageState extends State<ReservationPage> {
                         delegate: EmployeeSearchDelegate(),
                       );
                       setState(() {
-                        Provider.of<ReservationInfo>(context, listen: false).selectedEmployee = employeeName;
+                        Provider.of<ReservationInfo>(context, listen: false)
+                            .selectedEmployee = employeeName;
                       });
                     },
                     child: const Icon(
@@ -167,8 +178,9 @@ class _ReservationPageState extends State<ReservationPage> {
                         context: context,
                         delegate: ServicesSearchDelegate(),
                       );
-                        setState(() {
-                          Provider.of<ReservationInfo>(context, listen: false).selectedService = serviceName;
+                      setState(() {
+                        Provider.of<ReservationInfo>(context, listen: false)
+                            .selectedService = serviceName;
                       });
                     },
                     child: const Icon(
@@ -288,18 +300,34 @@ class _ReservationPageState extends State<ReservationPage> {
       child: Text(
         text,
         style: TextStyle(
-          color:
-              (whichEmployee == index) ? Colors.blue.shade700 : Colors.black,
+          color: (whichEmployee == index) ? Colors.blue.shade700 : Colors.black,
         ),
       ),
       style: OutlinedButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         side: BorderSide(
-            color: (whichEmployee == index)
-                ? Colors.blue.shade700
-                : Colors.black),
+            color:
+                (whichEmployee == index) ? Colors.blue.shade700 : Colors.black),
       ),
     );
   }
-}
 
+  Future setReservation(
+      {required String doctor,
+      required String service,
+      required int people,
+      required String currentTime,
+      required String currentDate,}) async {
+    final docUser =
+        FirebaseFirestore.instance.collection('student').doc();
+    final user = StudentsReservation(
+      doctor: doctor,
+      service: service,
+      people: people,
+      time: currentTime,
+      date: currentDate,
+    );
+    final json = user.toJson();
+    await docUser.set(json);
+  }
+}
