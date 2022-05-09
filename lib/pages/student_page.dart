@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../widgets/user_class.dart';
@@ -13,6 +14,7 @@ class StudentPage extends StatefulWidget {
 }
 
 class _StudentPageState extends State<StudentPage> {
+
   @override
   Widget build(BuildContext context) {
 
@@ -51,45 +53,15 @@ class _StudentPageState extends State<StudentPage> {
                       children: users.map(buildListTile).toList(),
                     ),
                   );
-
-          // return ListView.builder(
-                //   padding: const EdgeInsets.all(12.0),
-                //   itemCount: 5,
-                //   itemBuilder: (BuildContext context, int index) {
-                //     return Padding(
-                //       padding: const EdgeInsets.symmetric(vertical: 5.0),
-                //       child: ListTile(
-                //         leading: const Padding(
-                //           padding: EdgeInsets.only(top: 10.0),
-                //           child: Text('3/16'),
-                //         ),
-                //         title: Text(name),
-                //         subtitle: const Text(
-                //             'People in front of you: 5 \nExpected time: 9:45'),
-                //         trailing: const Icon(Icons.arrow_forward_ios),
-                //         contentPadding: const EdgeInsets.symmetric(
-                //             vertical: 15, horizontal: 15),
-                //         onTap: () {
-                //
-                //         },
-                //         shape: RoundedRectangleBorder(
-                //           borderRadius: BorderRadius.circular(10.0),
-                //         ),
-                //         tileColor: Colors.grey.shade300,
-                //       ),
-                //     );
-                //   },
-                // );
           }
           if(snapshot.hasError){
-            print(snapshot.error);
             return const Center(
-              child: Text("Fuck Ayasrah"),
+              child: Text("Loading"),
             );
           }
           else{
             return const Center(
-              child: Text("Fuck you"),
+              child: Text("Loading"),
             );
           }
         }
@@ -120,10 +92,12 @@ class _StudentPageState extends State<StudentPage> {
     ),
   );
 
-  Stream<List<StudentsReservation>> readReservation() =>
-      FirebaseFirestore.instance.collection('student').snapshots().map(
-              (snapshot) => snapshot.docs
-              .map((doc) => StudentsReservation.fromJson(doc.data()))
-              .toList());
-
+  Stream<List<StudentsReservation>> readReservation() {
+    final currentUser = FirebaseAuth.instance.currentUser!;
+    return FirebaseFirestore.instance.collection('student').where("id", isEqualTo: currentUser.uid).snapshots().map(
+            (snapshot) =>
+            snapshot.docs
+                .map((doc) => StudentsReservation.fromJson(doc.data()))
+                .toList());
+  }
 }
