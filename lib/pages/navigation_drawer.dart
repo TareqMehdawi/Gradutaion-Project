@@ -39,9 +39,10 @@ class NavigationDrawer extends StatefulWidget {
 
 class _NavigationDrawerState extends State<NavigationDrawer> {
 
-  final user = FirebaseAuth.instance.currentUser!;
+
   bool isEmployee = true;
   GetPage get =  GetPage();
+  final user = FirebaseAuth.instance.currentUser!;
 
   @override
   Widget build(BuildContext context) {

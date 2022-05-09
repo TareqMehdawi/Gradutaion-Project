@@ -321,6 +321,7 @@ class _ReservationPageState extends State<ReservationPage> {
     final docUser =
         FirebaseFirestore.instance.collection('student').doc();
     final user = StudentsReservation(
+      id: currentUser.uid,
       doctor: doctor,
       service: service,
       people: people,
