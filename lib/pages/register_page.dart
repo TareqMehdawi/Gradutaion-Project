@@ -2,10 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:graduation_project/pages/feedback_page.dart';
 import 'package:graduation_project/pages/login_page.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
-import 'package:graduation_project/pages/settings_page.dart';
 import 'package:graduation_project/widgets/user_class.dart';
 import 'package:graduation_project/widgets/utils_show_snackbar.dart';
 import '../widgets/spinKit_widget.dart';
@@ -28,7 +26,7 @@ class _RegisterPageState extends State<RegisterPage> {
   bool showValidate = false;
   bool showPassword = false;
   bool isLoading = false;
-  var page;
+  int page = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +137,7 @@ class _RegisterPageState extends State<RegisterPage> {
           final regEmailReg = RegExp(
               r"^Reg\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
           final regEmailDoc = RegExp(
-              r"^[a-zA-Z]{1}\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
+              r"^[a-zA-Z]+\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
           final regEmailStu = RegExp(
               r"^[a-zA-Z]{3}[0-9]{7}@ju\.edu\.jo");
           if (value!.isEmpty) {
@@ -158,6 +156,7 @@ class _RegisterPageState extends State<RegisterPage> {
           else {
             return null;
           }
+          return null;
         },
       ),
     );
