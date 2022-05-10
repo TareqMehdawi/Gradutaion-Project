@@ -32,6 +32,25 @@ class _ReservationPageState extends State<ReservationPage> {
   TimeOfDay time = TimeOfDay.now();
   List<Message> messages = [];
   final currentUser = FirebaseAuth.instance.currentUser!;
+  // var newDoc= [];
+  //
+  // final CollectionReference _collectionRef =
+  // FirebaseFirestore.instance.collection('doctors');
+  //
+  // Future<List> getData() async {
+  //   // Get docs from collection reference
+  //   QuerySnapshot querySnapshot = await _collectionRef.get();
+  //
+  //   // Get data from docs and convert map to List
+  //   final allData = querySnapshot.docs.map((doc) => doc['name']).toList();
+  //   allData.sort();
+  //   for (int i = 0; i < allData.length; i++) {
+  //     setState(() {
+  //       newDoc = allData.map((e) => e).toList();
+  //     });
+  //   }
+  //   return newDoc;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +87,8 @@ class _ReservationPageState extends State<ReservationPage> {
             setState(() {
               currentStep++;
             });
-          } else {
+          }
+          else {
              setReservation(
                 doctor: selectedEmployee,
                 service: selectedService,
@@ -331,4 +351,5 @@ class _ReservationPageState extends State<ReservationPage> {
     final json = user.toJson();
     await docUser.set(json);
   }
+
 }

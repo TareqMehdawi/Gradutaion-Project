@@ -27,6 +27,14 @@ class _RegisterPageState extends State<RegisterPage> {
   bool showPassword = false;
   bool isLoading = false;
   int page = 0;
+  final regEmail = RegExp(
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+  final regEmailReg = RegExp(
+      r"^(Reg)\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
+  final regEmailDoc = RegExp(
+      r"^(?!Reg)[a-zA-Z]+\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
+  final regEmailStu = RegExp(
+      r"^[a-zA-Z]{3}[0-9]{7}@ju\.edu\.jo");
 
   @override
   Widget build(BuildContext context) {
@@ -132,14 +140,6 @@ class _RegisterPageState extends State<RegisterPage> {
           suffixIcon: Icon(Icons.email_outlined),
         ),
         validator: (value) {
-          final regEmail = RegExp(
-              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-          final regEmailReg = RegExp(
-              r"^Reg\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
-          final regEmailDoc = RegExp(
-              r"^[a-zA-Z]+\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
-          final regEmailStu = RegExp(
-              r"^[a-zA-Z]{3}[0-9]{7}@ju\.edu\.jo");
           if (value!.isEmpty) {
             return 'Enter an email';
           } else if (!regEmail.hasMatch(value)) {
@@ -365,12 +365,32 @@ class _RegisterPageState extends State<RegisterPage> {
           snapshot.docs.map((doc) => Users.fromJson(doc.data())).toList());
 
   Future createUser({required String name, required String number,required String id}) async {
-    final docUser = FirebaseFirestore.instance.collection('users').doc(id);
+    if(regEmailStu.hasMatch(emailController.text)) {
+      final docUser = FirebaseFirestore.instance.collection('users').doc(id);
 
-    final user = Users(id: docUser.id, name: name, number: number);
+      final user = Users(id: docUser.id, name: name, number: number);
 
-    final json = user.toJson();
+      final json = user.toJson();
 
-    await docUser.set(json);
+      await docUser.set(json);
+    }
+    else if(regEmailDoc.hasMatch(emailController.text)) {
+      final docUser = FirebaseFirestore.instance.collection('doctors').doc(id);
+
+      final user = Users(id: docUser.id, name: name, number: number);
+
+      final json = user.toJson();
+
+      await docUser.set(json);
+    }
+    else if(regEmailReg.hasMatch(emailController.text)){
+      final docUser = FirebaseFirestore.instance.collection('registration').doc(id);
+
+      final user = Users(id: docUser.id, name: name, number: number);
+
+      final json = user.toJson();
+
+      await docUser.set(json);
+    }
   }
 }

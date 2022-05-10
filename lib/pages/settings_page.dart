@@ -160,12 +160,14 @@ class _SettingsPageState extends State<SettingsPage> {
         });
   }
   getData() async {
+    //users???
     var name = FirebaseFirestore.instance.collection("users").doc(user.uid);
     await name.get().then((value) {
       setState(() {
         userName = value.data()!['name'].toString();
       });
     });
+    //users???
     var phone = FirebaseFirestore.instance.collection("users").doc(user.uid);
     await phone.get().then((value) {
       setState(() {
