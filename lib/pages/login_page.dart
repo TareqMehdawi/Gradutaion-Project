@@ -268,8 +268,3 @@ class _LoginPageState extends State<LoginPage> {
   }
 
 }
-class GetPage {
-  checkEmail() {
-    return false;
-  }
-}

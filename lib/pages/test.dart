@@ -2,8 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../widgets/user_class.dart';
-
 String tareq = "tareq";
 
 class Tareq extends StatefulWidget {
@@ -38,7 +36,7 @@ class _TareqState extends State<Tareq> {
   // }
 
   final CollectionReference _collectionRef =
-      FirebaseFirestore.instance.collection('doctors');
+      FirebaseFirestore.instance.collection('employee');
 
   Future<List> getData() async {
     // Get docs from collection reference

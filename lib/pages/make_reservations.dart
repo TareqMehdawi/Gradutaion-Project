@@ -10,9 +10,10 @@ import 'package:provider/provider.dart';
 class ReservationInfo extends ChangeNotifier {
   String selectedService;
   String selectedEmployee;
+  String employeeId;
 
   ReservationInfo(
-      {this.selectedService = 'Service', this.selectedEmployee = 'Employee'});
+      {this.selectedService = 'Service', this.selectedEmployee = 'Employee',this.employeeId = '1T5Ra03laoewLhQ3zAeEZB4GaNz2'});
 }
 
 enum employee { doctor, registration }
@@ -32,6 +33,10 @@ class _ReservationPageState extends State<ReservationPage> {
   TimeOfDay time = TimeOfDay.now();
   List<Message> messages = [];
   final currentUser = FirebaseAuth.instance.currentUser!;
+  String studentName = '';
+
+  @override
+
   // var newDoc= [];
   //
   // final CollectionReference _collectionRef =
@@ -60,6 +65,8 @@ class _ReservationPageState extends State<ReservationPage> {
         Provider.of<ReservationInfo>(context).selectedService;
     String selectedEmployee =
         Provider.of<ReservationInfo>(context).selectedEmployee;
+    String selectedEmployeeID =
+        Provider.of<ReservationInfo>(context).selectedEmployee;
 
     return Scaffold(
       appBar: AppBar(
@@ -70,32 +77,24 @@ class _ReservationPageState extends State<ReservationPage> {
       body: Stepper(
         currentStep: currentStep,
         onStepTapped: (index) {
-          if (index == 0) {
-            setState(() {
-              Provider.of<ReservationInfo>(context, listen: false)
-                  .selectedService = "Service";
-              Provider.of<ReservationInfo>(context, listen: false)
-                  .selectedEmployee = "Employee";
-            });
-          }
           setState(() {
             currentStep = index;
           });
         },
         onStepContinue: () {
-          if (currentStep != 4) {
+          if (currentStep != 3) {
             setState(() {
               currentStep++;
             });
-          }
-          else {
-             setReservation(
-                doctor: selectedEmployee,
-                service: selectedService,
-                people: 10,
-                currentTime: "10:15",
-                currentDate: '${date.month}/${date.day}',
-              );
+          } else {
+            setReservation(
+              doctor: selectedEmployee,
+              service: selectedService,
+              people: 10,
+              currentTime: "10:15",
+              currentDate: '${date.month}/${date.day}',
+              studentName: studentName,
+            );
             Navigator.pop(context);
           }
         },
@@ -105,30 +104,10 @@ class _ReservationPageState extends State<ReservationPage> {
               currentStep--;
             });
           }
-          if (currentStep == 0) {
-            setState(() {
-              selectedService = 'Service';
-              selectedEmployee = 'Employee';
-            });
-          }
         },
         steps: [
           Step(
             isActive: currentStep >= 0,
-            content: Column(
-              children: [
-                customRadioButton('Doctor', 1),
-                customRadioButton('Registration', 2),
-              ],
-            ),
-            title: Text(
-              'Choose one of the following:',
-              style:
-                  currentStep == 0 ? const TextStyle(color: Colors.blue) : null,
-            ),
-          ),
-          Step(
-            isActive: currentStep >= 1,
             content: Row(
               children: [
                 Expanded(
@@ -169,11 +148,11 @@ class _ReservationPageState extends State<ReservationPage> {
             title: Text(
               'Choose who you want to meet:',
               style:
-                  currentStep == 1 ? const TextStyle(color: Colors.blue) : null,
+                  currentStep == 0 ? const TextStyle(color: Colors.blue) : null,
             ),
           ),
           Step(
-            isActive: currentStep >= 2,
+            isActive: currentStep >= 1,
             content: Row(
               children: [
                 Expanded(
@@ -214,11 +193,11 @@ class _ReservationPageState extends State<ReservationPage> {
             title: Text(
               'Choose a service:',
               style:
-                  currentStep == 2 ? const TextStyle(color: Colors.blue) : null,
+                  currentStep == 1 ? const TextStyle(color: Colors.blue) : null,
             ),
           ),
           Step(
-            isActive: currentStep >= 3,
+            isActive: currentStep >= 2,
             content: Row(
               children: [
                 Expanded(
@@ -261,11 +240,11 @@ class _ReservationPageState extends State<ReservationPage> {
             title: Text(
               'Select Date:',
               style:
-                  currentStep == 3 ? const TextStyle(color: Colors.blue) : null,
+                  currentStep == 2 ? const TextStyle(color: Colors.blue) : null,
             ),
           ),
           Step(
-            isActive: currentStep >= 4,
+            isActive: currentStep >= 3,
             content: Row(
               children: [
                 Expanded(
@@ -302,7 +281,7 @@ class _ReservationPageState extends State<ReservationPage> {
             title: Text(
               'Choose Time',
               style:
-                  currentStep == 4 ? const TextStyle(color: Colors.blue) : null,
+                  currentStep == 3 ? const TextStyle(color: Colors.blue) : null,
             ),
           ),
         ],
@@ -310,36 +289,16 @@ class _ReservationPageState extends State<ReservationPage> {
     );
   }
 
-  Widget customRadioButton(String text, int index) {
-    return OutlinedButton(
-      onPressed: () {
-        setState(() {
-          whichEmployee = index;
-        });
-      },
-      child: Text(
-        text,
-        style: TextStyle(
-          color: (whichEmployee == index) ? Colors.blue.shade700 : Colors.black,
-        ),
-      ),
-      style: OutlinedButton.styleFrom(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        side: BorderSide(
-            color:
-                (whichEmployee == index) ? Colors.blue.shade700 : Colors.black),
-      ),
-    );
-  }
+
 
   Future setReservation(
       {required String doctor,
       required String service,
       required int people,
       required String currentTime,
-      required String currentDate,}) async {
-    final docUser =
-        FirebaseFirestore.instance.collection('student').doc();
+      required String currentDate,
+      required String studentName}) async {
+    final docUser = FirebaseFirestore.instance.collection('student').doc();
     final user = StudentsReservation(
       id: currentUser.uid,
       doctor: doctor,
@@ -347,9 +306,9 @@ class _ReservationPageState extends State<ReservationPage> {
       people: people,
       time: currentTime,
       date: currentDate,
+      student: studentName,
     );
     final json = user.toJson();
     await docUser.set(json);
   }
-
 }

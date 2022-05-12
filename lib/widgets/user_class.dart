@@ -26,6 +26,7 @@ class StudentsReservation {
   final int people;
   final String time;
   final String date;
+  final String student;
 
   StudentsReservation({
     this.id = '',
@@ -34,6 +35,7 @@ class StudentsReservation {
     required this.people,
     required this.time,
     required this.date,
+    required this.student,
   });
 
   Map<String, dynamic> toJson() => {
@@ -43,6 +45,7 @@ class StudentsReservation {
         'people': people,
         'time': time,
         'date': date,
+    'student': student,
       };
 
   static StudentsReservation fromJson(Map<String, dynamic> json) =>
@@ -53,5 +56,6 @@ class StudentsReservation {
           people: json['people'],
           time: json['time'],
           date: json['date'],
+          student: json['student'],
       );
 }

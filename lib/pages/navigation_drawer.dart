@@ -7,6 +7,7 @@ import 'package:graduation_project/pages/make_reservations.dart';
 import 'package:graduation_project/pages/settings_page.dart';
 import 'package:graduation_project/pages/student_page.dart';
 import 'package:graduation_project/pages/your_account.dart';
+import 'package:graduation_project/widgets/search_delegate_employee.dart';
 import 'package:provider/provider.dart';
 import 'login_page.dart';
 
@@ -29,8 +30,8 @@ class NavigationProvider extends ChangeNotifier {
 }
 
 class NavigationDrawer extends StatefulWidget {
-   const NavigationDrawer({Key? key}) : super(key: key);
-
+   const NavigationDrawer({Key? key,this.page}) : super(key: key);
+final page;
 
 
   @override
@@ -40,8 +41,8 @@ class NavigationDrawer extends StatefulWidget {
 class _NavigationDrawerState extends State<NavigationDrawer> {
 
 
+
   bool isEmployee = true;
-  GetPage get =  GetPage();
   final user = FirebaseAuth.instance.currentUser!;
 
   @override
@@ -138,7 +139,8 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                       drawerTiles(
                         icon: Icons.people,
                         title: 'People',
-                        function: () {
+                        function: () async{
+                          await showSearch(context: context, delegate: EmployeeSearchDelegate());
                         },
                       ),
                       drawerTiles(
@@ -216,7 +218,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                     ..setEntry(3, 2, 0.001)
                     ..setEntry(0, 3, 200 * val)
                     ..rotateY((pi / 7) * val),
-                  child: isEmployee == get.checkEmail() ? const EmployeePage() : const StudentPage(),
+                  child: widget.page == 1 ? const StudentPage() : const EmployeePage(),
                 ));
               }),
           GestureDetector(
