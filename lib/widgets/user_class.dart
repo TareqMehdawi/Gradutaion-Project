@@ -2,21 +2,27 @@ class Users {
   String id;
   final String name;
   final String number;
+  final String email;
+  final String image;
 
   Users({
     this.id = '',
+    this.image = '',
     required this.name,
     required this.number,
+    required this.email,
   });
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
         'phoneNumber': number,
+        'email': email,
+        'imageUrl': image,
       };
 
   static Users fromJson(Map<String, dynamic> json) =>
-      Users(id: json['id'], name: json['name'], number: json['number']);
+      Users(id: json['id'], name: json['name'], number: json['phoneNumber'],email: json['email'],image:  json['imageUrl']);
 }
 
 class StudentsReservation {

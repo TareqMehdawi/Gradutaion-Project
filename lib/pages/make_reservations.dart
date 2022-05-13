@@ -298,7 +298,7 @@ class _ReservationPageState extends State<ReservationPage> {
       required String currentTime,
       required String currentDate,
       required String studentName}) async {
-    final docUser = FirebaseFirestore.instance.collection('student').doc();
+    final docUser = FirebaseFirestore.instance.collection('reservation').doc();
     final user = StudentsReservation(
       id: currentUser.uid,
       doctor: doctor,
