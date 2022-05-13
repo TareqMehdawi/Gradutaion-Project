@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'make_reservations.dart';
+import 'make_service.dart';
 import 'navigation_drawer.dart';
 
 class EmployeePage extends StatefulWidget {
@@ -14,8 +15,8 @@ class _EmployeePageState extends State<EmployeePage> {
   @override
   Widget build(BuildContext context) {
 
-    String selectedService = Provider.of<ReservationInfo>(context).selectedService;
-    String name = selectedService;
+    //String selectedService = Provider.of<ServicePageInfo>(context).selectedService;
+    //String name = selectedService;
 
     return Scaffold(
       appBar: AppBar(
@@ -35,7 +36,7 @@ class _EmployeePageState extends State<EmployeePage> {
         backgroundColor: const Color(0xff141E27),
         child: const Icon(Icons.add),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const ReservationPage(),),);
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const ServicePage(),),);
         },
       ),
       body: ListView.builder(
@@ -49,7 +50,7 @@ class _EmployeePageState extends State<EmployeePage> {
                 padding: EdgeInsets.only(top: 10.0),
                 child: Text('3/16'),
               ),
-              title: Text(name),
+              title: Text("name"),
               subtitle: const Text(
                   'People in front of you: 5 \nExpected time: 9:45'),
               trailing: const Icon(Icons.arrow_forward_ios),

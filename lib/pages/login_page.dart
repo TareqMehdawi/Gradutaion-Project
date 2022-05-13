@@ -7,6 +7,7 @@ import 'package:graduation_project/pages/register_page.dart';
 import 'package:graduation_project/widgets/spinKit_widget.dart';
 
 import '../widgets/utils_show_snackbar.dart';
+import 'employee_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -175,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const NavigationDrawer(),
+                  builder: (context) => const EmployeePage(),
                 ),
               );
             }else if(regEmailDoc.hasMatch(emailController.text.trim())){
