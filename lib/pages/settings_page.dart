@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/pages/test.dart';
 
+import '../widgets/user_class.dart';
+
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
@@ -14,15 +16,16 @@ class _SettingsPageState extends State<SettingsPage> {
   bool lockApp = true;
   bool fingerPrint = true;
   bool notifications = true;
-  final user = FirebaseAuth.instance.currentUser!;
+  final currentUser = FirebaseAuth.instance.currentUser!;
   String userName = '';
   String userPhone = '';
 
   @override
   void initState() {
-    getData();
+    readUser();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,30 +35,49 @@ class _SettingsPageState extends State<SettingsPage> {
         title: const Text('Settings'),
         centerTitle: true,
       ),
-      body: ListView(
-        children: [
-          settingsTitle(title: 'Common'),
-          settingsTiles(
-              icon: Icons.language, title: 'Language', subtitle: 'English'),
-          settingsTitle(title: 'Account'),
-          settingsTiles(
-              icon: Icons.phone, title: 'Phone number', subtitle: userPhone),
-          settingsTiles(
-              icon: Icons.email,
-              title: 'Username',
-              subtitle: userName),
-          settingsTilesNoSubtitle(icon: Icons.logout, title: 'Sign out'),
-          settingsTitle(title: 'Security'),
-          lockAppTile(
-              icon: Icons.phonelink_lock_rounded,
-              title: 'Lock app in background'),
-          useFingerPrintsTile(
-              icon: Icons.fingerprint, title: 'Use fingerprint'),
-          settingsTilesNoSubtitle(icon: Icons.lock, title: 'Change password'),
-          enableNotificationsTile(
-              icon: Icons.notifications_active, title: 'Enable notifications'),
-        ],
-      ),
+      body: FutureBuilder<Users?>(
+          future: readUser(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Text('Something went wrong');
+            } else if (snapshot.hasData) {
+              final user = snapshot.data;
+              return ListView(
+                children: [
+                  settingsTitle(title: 'Common'),
+                  settingsTiles(
+                      icon: Icons.language,
+                      title: 'Language',
+                      subtitle: 'English'),
+                  settingsTitle(title: 'Account'),
+                  settingsTiles(
+                      icon: Icons.phone,
+                      title: 'Phone number',
+                      subtitle: user!.number),
+                  settingsTiles(
+                      icon: Icons.email, title: 'Username', subtitle: user.name),
+                  settingsTilesNoSubtitle(
+                      icon: Icons.logout, title: 'Sign out'),
+                  settingsTitle(title: 'Security'),
+                  lockAppTile(
+                      icon: Icons.phonelink_lock_rounded,
+                      title: 'Lock app in background'),
+                  useFingerPrintsTile(
+                      icon: Icons.fingerprint, title: 'Use fingerprint'),
+                  settingsTilesNoSubtitle(
+                      icon: Icons.lock, title: 'Change password'),
+                  enableNotificationsTile(
+                      icon: Icons.notifications_active,
+                      title: 'Enable notifications'),
+                ],
+              );
+            } else {
+              /////////////////////////////
+              return const Center(
+                child: Text('Loading....'),
+              );
+            }
+          }),
     );
   }
 
@@ -159,20 +181,14 @@ class _SettingsPageState extends State<SettingsPage> {
           });
         });
   }
-  getData() async {
-    //users???
-    var name = FirebaseFirestore.instance.collection("users").doc(user.uid);
-    await name.get().then((value) {
-      setState(() {
-        userName = value.data()!['name'].toString();
-      });
-    });
-    //users???
-    var phone = FirebaseFirestore.instance.collection("users").doc(user.uid);
-    await phone.get().then((value) {
-      setState(() {
-        userPhone = value.data()!['phoneNumber'].toString();
-      });
-    });
+
+  Future<Users?> readUser() async {
+    final getUser =
+        FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
+    final snapshot = await getUser.get();
+    if (snapshot.exists) {
+      return Users.fromJson(snapshot.data()!);
+    }
+    return null;
   }
 }

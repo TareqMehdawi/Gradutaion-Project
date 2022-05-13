@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/pages/login_page.dart';
@@ -27,14 +28,19 @@ class _RegisterPageState extends State<RegisterPage> {
   bool showPassword = false;
   bool isLoading = false;
   int page = 0;
-  final regEmail = RegExp(
-      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-  final regEmailReg = RegExp(
-      r"^(Reg)\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
-  final regEmailDoc = RegExp(
-      r"^(?!Reg)[a-zA-Z]+\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
-  final regEmailStu = RegExp(
-      r"^[a-zA-Z]{3}[0-9]{7}@ju\.edu\.jo");
+  String imgUrl = '';
+
+  // final regEmail = RegExp(
+  //     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+  final regEmailEmp = RegExp(
+      r"^[a-zA-Z]+\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
+  final regEmailStu = RegExp(r"^[a-zA-Z]{3}[0-9]{7}@ju\.edu\.jo");
+
+  @override
+  void initState() {
+    getImageData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,21 +148,13 @@ class _RegisterPageState extends State<RegisterPage> {
         validator: (value) {
           if (value!.isEmpty) {
             return 'Enter an email';
-          } else if (!regEmail.hasMatch(value)) {
-            return 'Enter a valid email!';
-          } else if(regEmailReg.hasMatch(value)){
-            page=1;
-          }
-          else if(regEmailDoc.hasMatch(value)){
-            page=2;
-          }
-          else if(regEmailStu.hasMatch(value)){
-            page=3;
-          }
-          else {
+          } else if (regEmailStu.hasMatch(value)) {
+            page = 1;
+          } else if (regEmailEmp.hasMatch(value)) {
+            page = 2;
+          } else {
             return null;
           }
-          return null;
         },
       ),
     );
@@ -176,9 +174,13 @@ class _RegisterPageState extends State<RegisterPage> {
         validator: (value) {
           if (value!.isEmpty) {
             return 'Enter a phone number';
+            //////////////////////////////////
+          } else if (value.length > 10) {
+            return 'Enter a valid phone number!';
           } else if (value.length < 10) {
             return 'Enter a valid phone number!';
           } else {
+            ///////////////////////////////////////////
             return null;
           }
         },
@@ -283,49 +285,70 @@ class _RegisterPageState extends State<RegisterPage> {
         });
         if (isValid) {
           formKey.currentState?.save();
-        }
-        final username = usernameController.text;
-        final phoneNumber = phoneNumberController.text;
+          final username = usernameController.text;
+          final phoneNumber = phoneNumberController.text;
 
-        setState(() {
-          isLoading = true;
-        });
-        try {
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-              email: emailController.text.trim(),
-              password: passwordController.text.trim());
-          final user = FirebaseAuth.instance.currentUser!;
-          createUser(name: username, number: phoneNumber,id: user.uid);
+          setState(() {
+            isLoading = true;
+          });
+          try {
+            if (page == 1) {
+              await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                  email: emailController.text.trim(),
+                  password: passwordController.text.trim());
+              final user = FirebaseAuth.instance.currentUser!;
+              createUser(
+                  name: username,
+                  number: phoneNumber,
+                  id: user.uid,
+                  email: emailController.text,
+                  type: 'student');
+              createUsers(
+                  name: username,
+                  number: phoneNumber,
+                  id: user.uid,
+                  email: emailController.text,
+                  type: 'student');
 
-          if(page==1){
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const NavigationDrawer(),
-              ),
-            );
-          }else if(page==2){
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const NavigationDrawer(),
-              ),
-            );
-          }else if(page==3){
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const NavigationDrawer(),
-              ),
-            );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NavigationDrawer(),
+                ),
+              );
+            } else if (page == 2) {
+              await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                  email: emailController.text.trim(),
+                  password: passwordController.text.trim());
+              final user = FirebaseAuth.instance.currentUser!;
+              createUser(
+                  name: username,
+                  number: phoneNumber,
+                  id: user.uid,
+                  email: emailController.text,
+                  type: 'employee');
+              createUsers(
+                  name: username,
+                  number: phoneNumber,
+                  id: user.uid,
+                  email: emailController.text,
+                  type: 'employee');
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NavigationDrawer(),
+                ),
+              );
+            }
+          } on FirebaseAuthException catch (error) {
+            Utils.showSnackBar(error.message);
           }
-        } on FirebaseAuthException catch (error) {
-          Utils.showSnackBar(error.message);
-        }
 
-        setState(() {
-          isLoading = false;
-        });
+          setState(() {
+            isLoading = false;
+          });
+        }
       },
     );
   }
@@ -358,39 +381,86 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Stream<List<Users>> readUsers() => FirebaseFirestore.instance
-      .collection('users')
-      .snapshots()
-      .map((snapshot) =>
-          snapshot.docs.map((doc) => Users.fromJson(doc.data())).toList());
+  Future createUser(
+      {required String name,
+      required String number,
+      required String id,
+      required String email,
+      required String type}) async {
+    if (regEmailStu.hasMatch(emailController.text)) {
+      final docUser = FirebaseFirestore.instance.collection('student').doc(id);
 
-  Future createUser({required String name, required String number,required String id}) async {
-    if(regEmailStu.hasMatch(emailController.text)) {
+      final user = Users(
+          id: docUser.id,
+          name: name,
+          number: number,
+          email: email,
+          image: imgUrl,
+          type: type);
+
+      final json = user.toJson();
+
+      await docUser.set(json);
+    } else if (regEmailEmp.hasMatch(emailController.text)) {
+      final docUser = FirebaseFirestore.instance.collection('employee').doc(id);
+
+      final user = Users(
+          id: docUser.id,
+          name: name,
+          number: number,
+          email: email,
+          image: imgUrl,
+          type: type);
+
+      final json = user.toJson();
+
+      await docUser.set(json);
+    }
+  }
+
+  Future createUsers({
+    required String name,
+    required String number,
+    required String id,
+    required String email,
+    required String type,
+  }) async {
+    if (regEmailStu.hasMatch(emailController.text)) {
       final docUser = FirebaseFirestore.instance.collection('users').doc(id);
 
-      final user = Users(id: docUser.id, name: name, number: number);
+      final user = Users(
+          id: docUser.id,
+          name: name,
+          number: number,
+          email: email,
+          image: imgUrl,
+          type: type);
+
+      final json = user.toJson();
+
+      await docUser.set(json);
+    } else if (regEmailEmp.hasMatch(emailController.text)) {
+      final docUser = FirebaseFirestore.instance.collection('users').doc(id);
+
+      final user = Users(
+          id: docUser.id,
+          name: name,
+          number: number,
+          email: email,
+          image: imgUrl,
+          type: type);
 
       final json = user.toJson();
 
       await docUser.set(json);
     }
-    else if(regEmailDoc.hasMatch(emailController.text)) {
-      final docUser = FirebaseFirestore.instance.collection('doctors').doc(id);
+  }
 
-      final user = Users(id: docUser.id, name: name, number: number);
-
-      final json = user.toJson();
-
-      await docUser.set(json);
-    }
-    else if(regEmailReg.hasMatch(emailController.text)){
-      final docUser = FirebaseFirestore.instance.collection('registration').doc(id);
-
-      final user = Users(id: docUser.id, name: name, number: number);
-
-      final json = user.toJson();
-
-      await docUser.set(json);
-    }
+  getImageData() async {
+    final ref = FirebaseStorage.instance
+        .ref()
+        .child('userImage')
+        .child('default_image.png');
+    imgUrl = await ref.getDownloadURL();
   }
 }

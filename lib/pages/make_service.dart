@@ -32,14 +32,12 @@ class _ServicePageState extends State<ServicePage> {
   TimeOfDay ?endtime;
   String dropdownvalue = 'Item 1';
 
-  String getTime(){
-   if(starttime ==null && endtime ==null)
-     return "Select Time";
-   else
-     return "${starttime.toString().substring(10,15)} - ${endtime.toString().substring(10,15)}";
-
-
-
+  String getTime() {
+    if (starttime == null && endtime == null)
+      return "Select Time";
+    else
+      return "${starttime.toString().substring(10, 15)} - ${endtime.toString()
+          .substring(10, 15)}";
   }
 
   String? selectedValue;
@@ -76,6 +74,7 @@ class _ServicePageState extends State<ServicePage> {
       "Sat",
     ),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,26 +100,26 @@ class _ServicePageState extends State<ServicePage> {
               ),
             ),
             Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-                child: SelectWeekDays(
-                  fontSize:14,
-                  fontWeight: FontWeight.w500,
-                  days: _days,
-                  border: false,
-                  boxDecoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.0),
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      colors: [const Color(0xFFE55CE4), const Color(0xFFBB75FB)],
-                      tileMode:
-                      TileMode.repeated, // repeats the gradient over the canvas
-                    ),
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+              child: SelectWeekDays(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                days: _days,
+                border: false,
+                boxDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30.0),
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    colors: [const Color(0xFFE55CE4), const Color(0xFFBB75FB)],
+                    tileMode:
+                    TileMode.repeated, // repeats the gradient over the canvas
                   ),
-                  onSelect: (values) {// <== Callback to handle the selected days
-                    days=[];
-                    days.addAll(values);
-                  },
                 ),
+                onSelect: (values) { // <== Callback to handle the selected days
+                  days = [];
+                  days.addAll(values);
+                },
+              ),
             ),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -134,7 +133,7 @@ class _ServicePageState extends State<ServicePage> {
                             maximumSize: Size.fromHeight(40),
                             primary: Colors.black),
                         child: FittedBox(
-                          child:  Text(
+                          child: Text(
                             getTime(),
                             style: TextStyle(fontSize: 15, color: Colors.white),
                           ),
@@ -162,23 +161,26 @@ class _ServicePageState extends State<ServicePage> {
                                 "3 pm",
                                 "6 pm",
                                 "9 pm"
-                              ].asMap().entries.map((e) {
+                              ]
+                                  .asMap()
+                                  .entries
+                                  .map((e) {
                                 return ClockLabel.fromIndex(
                                     idx: e.key, length: 8, text: e.value);
                               }).toList(),
                               labelOffset: 35,
                               rotateLabels: false,
                               padding: 60);
-                         setState(() {
-                           starttime= result.startTime;
-                           endtime=result.endTime;
-                         });
+                          setState(() {
+                            starttime = result.startTime;
+                            endtime = result.endTime;
+                          });
                         },
                       ),
                     ))),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              child:  DropdownButtonHideUnderline(
+              child: DropdownButtonHideUnderline(
                 child: DropdownButton2(
                   isExpanded: true,
                   hint: Row(
@@ -205,18 +207,19 @@ class _ServicePageState extends State<ServicePage> {
                     ],
                   ),
                   items: items
-                      .map((item) => DropdownMenuItem<String>(
-                    value: item,
-                    child: Text(
-                      item,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ))
+                      .map((item) =>
+                      DropdownMenuItem<String>(
+                        value: item,
+                        child: Text(
+                          item,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ))
                       .toList(),
                   value: selectedValue,
                   onChanged: (value) {
@@ -269,7 +272,7 @@ class _ServicePageState extends State<ServicePage> {
                       child: ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.black),
+                          MaterialStateProperty.all<Color>(Colors.black),
                         ),
                         onPressed: () {},
                         child: const Text(
@@ -282,23 +285,24 @@ class _ServicePageState extends State<ServicePage> {
         ));
   }
 
-  Future setReservation({
-    required String doctor,
-    required String service,
-    required int people,
-    required String currentTime,
-    required String currentDate,
-  }) async {
-    final docUser = FirebaseFirestore.instance.collection('student').doc();
-    final user = StudentsReservation(
-      id: currentUser.uid,
-      doctor: doctor,
-      service: service,
-      people: people,
-      time: currentTime,
-      date: currentDate,
-    );
-    final json = user.toJson();
-    await docUser.set(json);
-  }
+//   Future setReservation({
+//     required String doctor,
+//     required String service,
+//     required int people,
+//     required String currentTime,
+//     required String currentDate,
+//   }) async {
+//     final docUser = FirebaseFirestore.instance.collection('student').doc();
+//     final user = StudentsReservation(
+//       id: currentUser.uid,
+//       doctor: doctor,
+//       service: service,
+//       people: people,
+//       time: currentTime,
+//       date: currentDate,
+//     );
+//     final json = user.toJson();
+//     await docUser.set(json);
+//   }
+// }
 }
