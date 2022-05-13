@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:graduation_project/pages/student_page.dart';
 import 'package:graduation_project/widgets/class.dart';
 import 'package:graduation_project/widgets/search_delegate_services.dart';
 import 'package:graduation_project/widgets/user_class.dart';
@@ -10,10 +11,10 @@ import 'package:provider/provider.dart';
 class ReservationInfo extends ChangeNotifier {
   String selectedService;
   String selectedEmployee;
-  String employeeId;
+  String selectedEmployeeId;
 
   ReservationInfo(
-      {this.selectedService = 'Service', this.selectedEmployee = 'Employee',this.employeeId = '1T5Ra03laoewLhQ3zAeEZB4GaNz2'});
+      {this.selectedService = 'Service', this.selectedEmployee = 'Employee',this.selectedEmployeeId = '1T5Ra03laoewLhQ3zAeEZB4GaNz2'});
 }
 
 enum employee { doctor, registration }
@@ -35,10 +36,21 @@ class _ReservationPageState extends State<ReservationPage> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   String studentName = '';
 
-  @override
+  getData() async {
+    var userName = FirebaseFirestore.instance.collection("student");
+    await userName.doc(currentUser.uid).get().then((value) {
+      setState(() {
+        studentName = value.data()!['name'].toString();
+      });
+    });
+  }
 
-  // var newDoc= [];
-  //
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+  @override
   // final CollectionReference _collectionRef =
   // FirebaseFirestore.instance.collection('doctors');
   //
@@ -65,8 +77,8 @@ class _ReservationPageState extends State<ReservationPage> {
         Provider.of<ReservationInfo>(context).selectedService;
     String selectedEmployee =
         Provider.of<ReservationInfo>(context).selectedEmployee;
-    String selectedEmployeeID =
-        Provider.of<ReservationInfo>(context).selectedEmployee;
+    String selectedEmpID =
+        Provider.of<ReservationInfo>(context).selectedEmployeeId;
 
     return Scaffold(
       appBar: AppBar(
@@ -88,14 +100,15 @@ class _ReservationPageState extends State<ReservationPage> {
             });
           } else {
             setReservation(
-              doctor: selectedEmployee,
+              empName: selectedEmployee,
+              empId: selectedEmpID,
               service: selectedService,
               people: 10,
               currentTime: "10:15",
               currentDate: '${date.month}/${date.day}',
               studentName: studentName,
             );
-            Navigator.pop(context);
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const StudentPage()));
           }
         },
         onStepCancel: () {
@@ -128,14 +141,10 @@ class _ReservationPageState extends State<ReservationPage> {
                   flex: 1,
                   child: ElevatedButton(
                     onPressed: () async {
-                      final employeeName = await showSearch(
+                       await showSearch(
                         context: context,
                         delegate: EmployeeSearchDelegate(),
                       );
-                      setState(() {
-                        Provider.of<ReservationInfo>(context, listen: false)
-                            .selectedEmployee = employeeName;
-                      });
                     },
                     child: const Icon(
                       Icons.search,
@@ -292,16 +301,19 @@ class _ReservationPageState extends State<ReservationPage> {
 
 
   Future setReservation(
-      {required String doctor,
+      {required String empName,
+       required String empId,
       required String service,
       required int people,
       required String currentTime,
       required String currentDate,
-      required String studentName}) async {
+      required String studentName,
+      }) async {
     final docUser = FirebaseFirestore.instance.collection('reservation').doc();
     final user = StudentsReservation(
       id: currentUser.uid,
-      doctor: doctor,
+      empName: empName,
+      empId: empId,
       service: service,
       people: people,
       time: currentTime,

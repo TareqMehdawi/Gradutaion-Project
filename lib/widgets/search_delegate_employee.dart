@@ -67,10 +67,12 @@ class EmployeeSearchDelegate extends SearchDelegate {
                               .contains(query.toLowerCase()))
                       .map((QueryDocumentSnapshot<Object?> data) {
                     final String name = data.get('name');
+                    final String id = data.get('id');
                     return ListTile(
                       onTap: () {
                         Provider.of<ReservationInfo>(context, listen: false)
                             .selectedEmployee = data.get('name');
+                        Provider.of<ReservationInfo>(context,listen: false).selectedEmployeeId = id ;
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -120,7 +122,8 @@ class EmployeeSearchDelegate extends SearchDelegate {
                       onTap: () {
                         Provider.of<ReservationInfo>(context, listen: false)
                             .selectedEmployee = data.get('name');
-                        Navigator.push(
+                        Provider.of<ReservationInfo>(context,listen: false).selectedEmployeeId = id ;
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (BuildContext context) =>

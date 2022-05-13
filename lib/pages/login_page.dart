@@ -21,12 +21,11 @@ class _LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
   bool isLoading = false ;
   bool isStudent = false;
-  final regEmailReg = RegExp(
-      r"^Reg\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
-  final regEmailDoc = RegExp(
+  final regEmailEmp = RegExp(
       r"^[a-zA-Z]+\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
-  final regEmailStu = RegExp(
-      r"^[a-zA-Z]{3}[0-9]{7}@ju\.edu\.jo");
+  final regEmailStu = RegExp(r"^[a-zA-Z]{3}[0-9]{7}@ju\.edu\.jo");
+
+
   @override
   void dispose() {
     emailController.dispose();
@@ -171,21 +170,14 @@ class _LoginPageState extends State<LoginPage> {
             await FirebaseAuth.instance.signInWithEmailAndPassword(
                 email: emailController.text.trim(),
                 password: passwordController.text.trim());
-            if(regEmailReg.hasMatch(emailController.text.trim())){
+            if(regEmailStu.hasMatch(emailController.text.trim())){
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const NavigationDrawer(),
                 ),
               );
-            }else if(regEmailDoc.hasMatch(emailController.text.trim())){
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const NavigationDrawer(),
-                ),
-              );
-            }else if(regEmailStu.hasMatch(emailController.text.trim())){
+            }else if(regEmailEmp.hasMatch(emailController.text.trim())){
               Navigator.push(
                 context,
                 MaterialPageRoute(

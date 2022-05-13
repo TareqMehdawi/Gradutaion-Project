@@ -39,7 +39,7 @@ class _StudentPageState extends State<StudentPage> {
         backgroundColor: const Color(0xff141E27),
         child: const Icon(Icons.add),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const ReservationPage(),),);
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ReservationPage(),),);
         },
       ),
       body: StreamBuilder<List<StudentsReservation>>(
@@ -54,7 +54,7 @@ class _StudentPageState extends State<StudentPage> {
                     ),
                   );
           }
-          if(snapshot.hasError){
+          else if(snapshot.hasError){
             return const Center(
               child: Text("Loading"),
             );
@@ -76,7 +76,7 @@ class _StudentPageState extends State<StudentPage> {
         padding: const EdgeInsets.only(top: 10.0),
         child: Text(user.date),
       ),
-      title: Text(user.doctor),
+      title: Text(user.service),
       subtitle:  Text(
           'people in front of you: ${user.people} \nExpected time: ${user.time}'),
       trailing: const Icon(Icons.arrow_forward_ios),
@@ -94,7 +94,7 @@ class _StudentPageState extends State<StudentPage> {
 
   Stream<List<StudentsReservation>> readReservation() {
     final currentUser = FirebaseAuth.instance.currentUser!;
-    return FirebaseFirestore.instance.collection('student').where("id", isEqualTo: currentUser.uid).snapshots().map(
+    return FirebaseFirestore.instance.collection('reservation').where("id", isEqualTo: currentUser.uid).snapshots().map(
             (snapshot) =>
             snapshot.docs
                 .map((doc) => StudentsReservation.fromJson(doc.data()))

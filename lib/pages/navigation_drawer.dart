@@ -32,8 +32,7 @@ class NavigationProvider extends ChangeNotifier {
 }
 
 class NavigationDrawer extends StatefulWidget {
-   const NavigationDrawer({Key? key,this.page}) : super(key: key);
-final page;
+   const NavigationDrawer({Key? key,}) : super(key: key);
 
 
   @override
@@ -248,9 +247,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                         transform: Matrix4.identity()
                           ..setEntry(3, 2, 0.001)..setEntry(0, 3, 200 * val)
                           ..rotateY((pi / 7) * val),
-                        child: widget.page == 1
-                            ? const StudentPage()
-                            : const EmployeePage(),
+                        child: user.type == 'student' ? const StudentPage() : const EmployeePage(),
                       ));
                     }),
                 GestureDetector(
@@ -277,8 +274,13 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
         }
           else{
             /////////////////////////////
-            return const Center(
-              child: Text('Loading....'),
+            return GestureDetector(
+              onTap: (){
+                FirebaseAuth.instance.signOut();
+              },
+              child: const Center(
+                child: Text('Loading....'),
+              ),
             );
   }
 }
