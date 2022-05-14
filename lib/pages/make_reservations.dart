@@ -184,7 +184,7 @@ class _ReservationPageState extends State<ReservationPage> {
                     onPressed: () async {
                       final serviceName = await showSearch(
                         context: context,
-                        delegate: ServicesSearchDelegate(),
+                        delegate: ServicesSearchDelegate(selectedEmpID),
                       );
                       setState(() {
                         Provider.of<ReservationInfo>(context, listen: false)

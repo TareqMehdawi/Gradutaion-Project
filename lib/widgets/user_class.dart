@@ -72,3 +72,36 @@ class StudentsReservation {
           student: json['student'],
       );
 }
+
+class setEmpService {
+  String id;
+  final String Duration;
+  final String Service;
+  final String Time;
+  final List<String> days;
+
+  setEmpService({
+    this.id = '',
+    required this.Duration,
+    required this.Service,
+    required this.Time,
+    required this.days,
+  });
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+      'Service': Service,
+      'days': days,
+      'Duration': Duration,
+      'Time': Time,
+  };
+
+  static setEmpService fromJson(Map<String, dynamic> json) =>
+      setEmpService(
+        id: json['id'],
+        Service: json['Service'],
+        days: json['days'],
+        Duration: json['Duration'],
+        Time: json['Time'],
+      );
+}

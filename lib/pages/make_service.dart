@@ -22,22 +22,28 @@ class ServicePage extends StatefulWidget {
 }
 
 class _ServicePageState extends State<ServicePage> {
+  TextEditingController serviceController = TextEditingController();
   int currentStep = 0;
   DateTime ?date;
-  TimeOfDay time = TimeOfDay.now();
-  List<Message> messages = [];
-  List<String> days = [];
-  final currentUser = FirebaseAuth.instance.currentUser!;
   TimeOfDay ?starttime;
   TimeOfDay ?endtime;
-  String dropdownvalue = 'Item 1';
+  String ?duration;
+  TimeOfDay time = TimeOfDay.now();
+  //List<Message> messages = [];
+  List<String> days = [];
+  final currentUser = FirebaseAuth.instance.currentUser!;
 
-  String getTime() {
-    if (starttime == null && endtime == null)
+  //String dropdownvalue = 'Item 1';
+  String ?time2;
+
+  String? getTime() {
+    if (starttime == null && endtime == null) {
       return "Select Time";
-    else
-      return "${starttime.toString().substring(10, 15)} - ${endtime.toString()
+    } else {
+      time2 ="${starttime.toString().substring(10, 15)} - ${endtime.toString()
           .substring(10, 15)}";
+      return time2;
+    }
   }
 
   String? selectedValue;
@@ -83,12 +89,13 @@ class _ServicePageState extends State<ServicePage> {
           title: const Text('Add Service'),
           centerTitle: true,
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        body: ListView(
+          //crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const Padding(
+             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               child: TextField(
+                controller: serviceController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Enter your new service',
@@ -134,7 +141,7 @@ class _ServicePageState extends State<ServicePage> {
                             primary: Colors.black),
                         child: FittedBox(
                           child: Text(
-                            getTime(),
+                            getTime()!,
                             style: TextStyle(fontSize: 15, color: Colors.white),
                           ),
                         ),
@@ -180,84 +187,88 @@ class _ServicePageState extends State<ServicePage> {
                     ))),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton2(
-                  isExpanded: true,
-                  hint: Row(
-                    children: const [
-                      Icon(
-                        Icons.list,
-                        size: 16,
-                        color: Colors.yellow,
-                      ),
-                      SizedBox(
-                        width: 4,
-                      ),
-                      Expanded(
-                        child: Text(
-                          'Select Time',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.yellow,
-                          ),
-                          overflow: TextOverflow.ellipsis,
+              child: Center(
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton2(
+                    isExpanded: true,
+                    hint: Row(
+                      children: const [
+                        Icon(
+                          Icons.list,
+                          size: 16,
+                          color: Colors.yellow,
                         ),
-                      ),
-                    ],
-                  ),
-                  items: items
-                      .map((item) =>
-                      DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(
-                          item,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                          overflow: TextOverflow.ellipsis,
+                        SizedBox(
+                          width: 4,
                         ),
-                      ))
-                      .toList(),
-                  value: selectedValue,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedValue = value as String;
-                    });
-                  },
-                  icon: const Icon(
-                    Icons.arrow_forward_ios_outlined,
-                  ),
-                  iconSize: 14,
-                  iconEnabledColor: Colors.yellow,
-                  iconDisabledColor: Colors.grey,
-                  buttonHeight: 50,
-                  buttonWidth: 160,
-                  buttonPadding: const EdgeInsets.only(left: 14, right: 14),
-                  buttonDecoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(
-                      color: Colors.black26,
+                        Expanded(
+                          child: Text(
+                            'Select Time',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.yellow,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
                     ),
-                    color: Colors.redAccent,
+                    items: items
+                        .map((item) =>
+                        DropdownMenuItem<String>(
+                          value: item,
+                          child: Text(
+                            item,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ))
+                        .toList(),
+                    value: selectedValue,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedValue = value as String;
+                        duration =value;
+                        print(value);
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.arrow_forward_ios_outlined,
+                    ),
+                    iconSize: 14,
+                    iconEnabledColor: Colors.yellow,
+                    iconDisabledColor: Colors.grey,
+                    buttonHeight: 50,
+                    buttonWidth: 160,
+                    buttonPadding: const EdgeInsets.only(left: 14, right: 14),
+                    buttonDecoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: Colors.black26,
+                      ),
+                      color: Colors.redAccent,
+                    ),
+                    buttonElevation: 2,
+                    itemHeight: 40,
+                    itemPadding: const EdgeInsets.only(left: 14, right: 14),
+                    dropdownMaxHeight: 200,
+                    dropdownWidth: 200,
+                    dropdownPadding: null,
+                    dropdownDecoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      color: Colors.redAccent,
+                    ),
+                    dropdownElevation: 8,
+                    scrollbarRadius: const Radius.circular(40),
+                    scrollbarThickness: 6,
+                    scrollbarAlwaysShow: true,
+                    offset: const Offset(-20, 0),
                   ),
-                  buttonElevation: 2,
-                  itemHeight: 40,
-                  itemPadding: const EdgeInsets.only(left: 14, right: 14),
-                  dropdownMaxHeight: 200,
-                  dropdownWidth: 200,
-                  dropdownPadding: null,
-                  dropdownDecoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    color: Colors.redAccent,
-                  ),
-                  dropdownElevation: 8,
-                  scrollbarRadius: const Radius.circular(40),
-                  scrollbarThickness: 6,
-                  scrollbarAlwaysShow: true,
-                  offset: const Offset(-20, 0),
                 ),
               ),
             ),
@@ -274,35 +285,56 @@ class _ServicePageState extends State<ServicePage> {
                           backgroundColor:
                           MaterialStateProperty.all<Color>(Colors.black),
                         ),
-                        onPressed: () {},
+
                         child: const Text(
                           'Add',
                           style: TextStyle(fontSize: 15),
                         ),
+                        onPressed: () {
+                          setService(
+                          Duration: duration!,
+                            Service: serviceController.text,
+                            Time: time2!,
+                            days: days,
+
+                        );},
                       ),
                     )))
           ],
         ));
   }
 
-//   Future setReservation({
-//     required String doctor,
-//     required String service,
-//     required int people,
-//     required String currentTime,
-//     required String currentDate,
-//   }) async {
-//     final docUser = FirebaseFirestore.instance.collection('student').doc();
-//     final user = StudentsReservation(
-//       id: currentUser.uid,
-//       doctor: doctor,
-//       service: service,
-//       people: people,
-//       time: currentTime,
-//       date: currentDate,
-//     );
-//     final json = user.toJson();
-//     await docUser.set(json);
-//   }
-// }
+Future setService(
+      { String ?id,
+        required String Duration,
+        required String Service,
+        required String Time,
+        required List<String> days,
+
+      }
+  // Map<String, dynamic> toJson() => {
+  //   'id': id,
+  //   'Service': Service,
+  //   'days': days,
+  //   'Duration': Duration,
+  //   'Time': Time,
+  //
+  // };
+
+      ) async {
+    final docUser = FirebaseFirestore.instance.collection('Service').doc();
+    final user = setEmpService(
+      id: currentUser.uid,
+      Service: Service,
+      days: days,
+      Duration: Duration,
+      Time: Time,
+
+    );
+
+    final json = user.toJson();
+    await docUser.set(json);
+  }
 }
+
+

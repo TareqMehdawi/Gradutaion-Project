@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:graduation_project/pages/make_service.dart';
 import 'package:provider/provider.dart';
 import '../widgets/user_class.dart';
 import 'make_reservations.dart';
@@ -41,7 +42,7 @@ class _EmployeePageState extends State<EmployeePage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const ReservationPage(),
+              builder: (context) => const ServicePage(),
             ),
           );
         },

@@ -86,7 +86,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                         height: MediaQuery
                             .of(context)
                             .size
-                            .height * .25,
+                            .height * .28,
                         child: DrawerHeader(
                           decoration: const BoxDecoration(
                             color: Color(0xff141E27),
