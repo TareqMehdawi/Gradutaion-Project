@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:graduation_project/pages/student_page.dart';
+import 'package:graduation_project/pages/navigation_drawer.dart';
 import 'package:graduation_project/widgets/class.dart';
 import 'package:graduation_project/widgets/search_delegate_services.dart';
 import 'package:graduation_project/widgets/user_class.dart';
@@ -108,7 +108,7 @@ class _ReservationPageState extends State<ReservationPage> {
               currentDate: '${date.month}/${date.day}',
               studentName: studentName,
             );
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const StudentPage()));
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const NavigationDrawer()));
           }
         },
         onStepCancel: () {

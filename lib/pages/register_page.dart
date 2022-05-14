@@ -202,7 +202,7 @@ class _RegisterPageState extends State<RegisterPage> {
         obscureText: !showPassword,
         validator: (value) {
           final regPassword = RegExp(
-              "^(?=.{8,32}\$)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%^&*(),.?:{}|<>]).*");
+              "^(?=.{8,32}\$)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[_!@#\$%^&*(),.?:{}|<>]).*");
           if (value!.isEmpty) {
             return 'Enter a password';
           } else if (!regPassword.hasMatch(value)) {

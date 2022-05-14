@@ -175,7 +175,7 @@ class _LoginPageState extends State<LoginPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const EmployeePage(),
+                  builder: (context) => const NavigationDrawer(),
                 ),
               );
             }else if(regEmailEmp.hasMatch(emailController.text.trim())){
