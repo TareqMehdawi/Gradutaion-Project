@@ -103,11 +103,11 @@ class _EditImagePageState extends State<EditImagePage> {
                             name: 'Update',
                             style: 1,
                             function: () async {
-                              try {
+                                try {
                                 final ref = FirebaseStorage.instance
                                     .ref()
                                     .child('userImage')
-                                    .child(userName + '.jpg');
+                                    .child(userImage.name + '.jpg');
                                 await ref.putFile(pickedImage);
                                 url = await ref.getDownloadURL();
                                 await FirebaseFirestore.instance
@@ -119,6 +119,25 @@ class _EditImagePageState extends State<EditImagePage> {
                                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const YourAccount()));
                               } catch (e) {
                                 print(e);
+                              }if(userImage.type == 'employee'){
+                                try {
+                                  final ref = FirebaseStorage.instance
+                                      .ref()
+                                      .child('userImage')
+                                      .child(userImage.name + '.jpg');
+                                  await ref.putFile(pickedImage);
+                                  url = await ref.getDownloadURL();
+                                  await FirebaseFirestore.instance
+                                      .collection('employee')
+                                      .doc(currentUser.uid)
+                                      .update({
+                                    'imageUrl': url,
+                                  });
+                                  print(userImage.type);
+                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const YourAccount()));
+                                } catch (e) {
+                                  //print(e);
+                                }
                               }
                             },
                           ),

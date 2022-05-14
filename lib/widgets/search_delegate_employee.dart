@@ -68,6 +68,8 @@ class EmployeeSearchDelegate extends SearchDelegate {
                       .map((QueryDocumentSnapshot<Object?> data) {
                     final String name = data.get('name');
                     final String id = data.get('id');
+                    final String image = data.get('imageUrl');
+                    final String email = data.get('email');
                     return ListTile(
                       onTap: () {
                         Provider.of<ReservationInfo>(context, listen: false)
@@ -79,7 +81,9 @@ class EmployeeSearchDelegate extends SearchDelegate {
                                 builder: (BuildContext context) =>
                                     const ReservationPage()));
           },
-                      leading: Text(name),
+                        leading: CircleAvatar(backgroundImage: NetworkImage(image),),
+                        title: Text(name),
+                        subtitle: Text(email),
                     );
                   })
                 ],
@@ -118,6 +122,8 @@ class EmployeeSearchDelegate extends SearchDelegate {
                       .map((QueryDocumentSnapshot<Object?> data) {
                     final String name = data.get('name');
                     final String id = data.get('id');
+                    final String image = data.get('imageUrl');
+                    final String email = data.get('email');
                     return ListTile(
                       onTap: () {
                         Provider.of<ReservationInfo>(context, listen: false)
@@ -129,8 +135,9 @@ class EmployeeSearchDelegate extends SearchDelegate {
                                 builder: (BuildContext context) =>
                                     const ReservationPage()));
                       },
-                      leading: Text(name),
-                      trailing: Text(id),
+                      leading: CircleAvatar(backgroundImage: NetworkImage(image),),
+                      title: Text(name),
+                      subtitle: Text(email),
                     );
                   })
                 ],

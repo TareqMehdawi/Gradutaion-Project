@@ -1,20 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:day_picker/day_picker.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/widgets/class.dart';
-import 'package:graduation_project/widgets/search_delegate_services.dart';
-import 'package:graduation_project/widgets/user_class.dart';
 import 'package:time_range_picker/time_range_picker.dart';
-import '../widgets/search_delegate_employee.dart';
-import 'package:provider/provider.dart';
 
 class ServicePage extends StatefulWidget {
   const ServicePage({Key? key}) : super(key: key);
-
-
-
 
 
   @override
