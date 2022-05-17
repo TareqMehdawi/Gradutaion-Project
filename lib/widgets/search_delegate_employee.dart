@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/pages/make_reservations.dart';
+import 'package:graduation_project/pages/your_account.dart';
 import 'package:provider/provider.dart';
 
 class EmployeeSearchDelegate extends SearchDelegate {
@@ -10,12 +11,7 @@ class EmployeeSearchDelegate extends SearchDelegate {
   @override
   Widget? buildLeading(BuildContext context) => IconButton(
         onPressed: () {
-          if (query.isNotEmpty) {
-            close(context, query);
-          } else {
-            query = 'Employee';
-            close(context, query);
-          }
+            close(context, null);
         },
         icon: const Icon(Icons.arrow_back),
       );
@@ -24,12 +20,7 @@ class EmployeeSearchDelegate extends SearchDelegate {
   List<Widget>? buildActions(BuildContext context) => [
         IconButton(
           onPressed: () {
-            if (query.isEmpty) {
-              query = 'Employee';
-              close(context, query);
-            } else {
               query = '';
-            }
           },
           icon: const Icon(Icons.clear),
         ),
@@ -74,6 +65,7 @@ class EmployeeSearchDelegate extends SearchDelegate {
                       onTap: () {
                         Provider.of<ReservationInfo>(context, listen: false)
                             .selectedEmployee = data.get('name');
+                        close(context, null);
                         Provider.of<ReservationInfo>(context,listen: false).selectedEmployeeId = id ;
                         Navigator.push(
                             context,
@@ -126,14 +118,18 @@ class EmployeeSearchDelegate extends SearchDelegate {
                     final String email = data.get('email');
                     return ListTile(
                       onTap: () {
-                        Provider.of<ReservationInfo>(context, listen: false)
-                            .selectedEmployee = data.get('name');
-                        Provider.of<ReservationInfo>(context,listen: false).selectedEmployeeId = id ;
-                        Navigator.pushReplacement(
+                        // Provider.of<ReservationInfo>(context, listen: false)
+                        //     .selectedEmployee = data.get('name');
+                        // Provider.of<ReservationInfo>(context,listen: false).selectedEmployeeId = id ;
+                        close(context, null);
+                        Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    const ReservationPage()));
+                                    const YourAccount()));
+                        // Provider.of<ReservationInfo>(context,listen: false).selectedEmployeeId = id ;
+                        // query = name;
+                        // close(context, query);
                       },
                       leading: CircleAvatar(backgroundImage: NetworkImage(image),),
                       title: Text(name),

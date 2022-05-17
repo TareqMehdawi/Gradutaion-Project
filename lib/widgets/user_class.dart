@@ -78,7 +78,7 @@ class setEmpService {
   final String Duration;
   final String Service;
   final String Time;
-  final List<String> days;
+  final List days;
 
   setEmpService({
     this.id = '',
@@ -89,7 +89,7 @@ class setEmpService {
   });
 
   Map<String, dynamic> toJson() => {
-    'id': id,
+      'id': id,
       'Service': Service,
       'days': days,
       'Duration': Duration,
