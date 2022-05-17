@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/pages/make_reservations.dart';
 import 'package:provider/provider.dart';
-
+import '../widgets/user_class.dart';
 class ServicesSearchDelegate extends SearchDelegate {
   final CollectionReference _service =
   FirebaseFirestore.instance.collection('Service');
@@ -145,35 +145,29 @@ class ServicesSearchDelegate extends SearchDelegate {
     // }
 
     return StreamBuilder<QuerySnapshot>(
-        stream: _service.snapshots(),
+        stream: _service.wheregi("id", isEqualTo: id).snapshots(),
         builder: (context, snapshot) {
+
           if (!snapshot.hasData) {
             ///////////////////////////////////////////////////////////////////
             return const Center(
               child: Text('yes'),
             );
           }else {
-            if (snapshot.data!.docs
-                .where((QueryDocumentSnapshot<Object?> element) =>
-                element['id']
-                    .toString()
-                    .contains(query.toLowerCase()))
-                .isEmpty) {
-              return const Center(
-                child: Text('No results found!'),
+            if (snapshot.data!.size==0) {
+              return  Center(
+                child: Text("no result "),
               );
-            } else {
+            } else  {
               return ListView(
                 children: [
                   // ... operator so u can add widgets before it
                   ...snapshot.data!.docs
                       .map((QueryDocumentSnapshot<Object?> data) {
                     final String name = data.get('Service');
-                    print(name);
                     //final String id = data.get('id');
                     return ListTile(
                       onTap: () {
-                        print(id);
                          Provider.of<ReservationInfo>(context, listen: false)
                              .selectedService = data.get('Service');
                         Navigator.pushReplacement(
