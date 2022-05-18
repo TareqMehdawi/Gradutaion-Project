@@ -20,77 +20,44 @@ class _BookingScreenState extends State<BookingScreen> {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
 
-  FocusNode f1 = FocusNode();
-  FocusNode f2 = FocusNode();
-  FocusNode f3 = FocusNode();
   FocusNode f4 = FocusNode();
   FocusNode f5 = FocusNode();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   DateTime selectedDate = DateTime.now();
   TimeOfDay currentTime = TimeOfDay.now();
-  String abc="";
   String timeText = 'Select Time';
-  String ?dateUTC;
   String ?date_Time;
   bool isLoading = false;
   String? selectedValue;
-  //List item2=["dd","asdasd"];
-  List<String> items = [
-    '5 minute',
-    '10 minute',
-    '15 minute',
-    '20 minute',
-    '25 minute',
-    '30 minute',
-  ];
+  String? selectedValue2;
+  String? serviceSelect;
 
-  // List item(String ar , List items2){
-  //   List day=[];
-  //   print(ar);
-  //   for(var i=0;i<items2.length;i++){
-  //
-  //     if(items2[i]["Service"]== ar){
-  //       day.add(items2[i]["days"]);
-  //       print(day[0]);
-  //       abc="";
-  //       return day[0];
-  //     }
-  //
-  //
-  //
-  //   }
-  //   day.add("Select service");
-  //   return day;
-  // }
+  List sendItem(List items2){
+    List itemm =[];
+    for(var i=0;i<items2.length;i++){
+      String a= items2[i]["Service"];
+      itemm.add(a);
+    }
+        return itemm;
+      }
+  List sendItem2(List items2){
+    List itemm =[];
+    for(var i=0;i<items2.length;i++){
+      if(items2[i]["Service"]== serviceSelect) {
+        for(var j=0;j<items2[i]["days"].length;j++) {
+          itemm.add(items2[i]["days"][j]);
+        }
+      }
 
-  // FirebaseAuth _auth = FirebaseAuth.instance;
-  // User ?user;
-  //
-  // Future<void> _getUser() async {
-  //   user = _auth.currentUser;
-  // }
-
-  Future<void> selectDate(BuildContext context) async {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2021),
-      lastDate: DateTime(2025),
-    ).then(
-          (date) {
-        setState(
-              () {
-            selectedDate = date!;
-            String formattedDate =
-            DateFormat('dd-MM-yyyy').format(selectedDate);
-            _dateController.text = formattedDate;
-            dateUTC = DateFormat('yyyy-MM-dd').format(selectedDate);
-          },
-        );
-      },
-    );
+    }
+    print(itemm);
+    return itemm;
   }
+
+
+
+
 
   Future<void> selectTime(BuildContext context) async {
     TimeOfDay? selectedTime = await showTimePicker(
@@ -111,56 +78,7 @@ class _BookingScreenState extends State<BookingScreen> {
     date_Time = selectedTime.toString().substring(10, 15);
   }
 
-  showAlertDialog(BuildContext context) {
-    // set up the button
-    Widget okButton = TextButton(
-      child: Text(
-        "OK",
-        style: GoogleFonts.lato(fontWeight: FontWeight.bold),
-      ),
-      onPressed: () {
-        // Navigator.pushReplacement(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => MyAppointments(),
-        //   ),
-        // );
-      },
-    );
 
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text(
-        "Done!",
-        style: GoogleFonts.lato(
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      content: Text(
-        "Appointment is registered.",
-        style: GoogleFonts.lato(),
-      ),
-      actions: [
-        okButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-  @override
-  // void initState() {
-  //   super.initState();
-  //   _getUser();
-  //   selectTime(context);
-  //   _doctorController.text = widget.doctor;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -183,11 +101,6 @@ class _BookingScreenState extends State<BookingScreen> {
         ),
       ),
       body: SafeArea(
-        // child: NotificationListener<OverscrollIndicatorNotification>(
-        //   onNotification: (OverscrollIndicatorNotification overscroll) {
-        //     overscroll.disallowGlow();
-        //     return;
-        //   },
           child: FutureBuilder(
             future: readUser(),
             builder: (context, snapshot) {
@@ -195,16 +108,6 @@ class _BookingScreenState extends State<BookingScreen> {
              return const Text('Something went wrong');
                  }else if (snapshot.hasData) {
                 final List user = snapshot.data as List ;
-                List<String> itemm =[];
-                for(var i=0;i<user.length;i++){
-                  String a= user[i]["Service"];
-                  itemm.add(a);
-                }
-                //print(itemm);
-                // for(var i=0;i<user.length;i++){
-                //   String a= user[i]["days"];
-                //   itemm.add(a);
-                // }
               return ListView(
                 shrinkWrap: true,
                 children: [
@@ -265,9 +168,9 @@ class _BookingScreenState extends State<BookingScreen> {
                                   ),
                                 ],
                               ),
-                              items: items
+                              items: sendItem(user)
                                   .map((item) =>
-                                  DropdownMenuItem<String>(
+                                  DropdownMenuItem(
                                     value: item,
                                     child: Text(
                                       item,
@@ -281,10 +184,10 @@ class _BookingScreenState extends State<BookingScreen> {
                                   ))
                                   .toList(),
                               value: selectedValue,
-                              onChanged: ( value) {
+                              onChanged: (value) {
                                 setState(() {
                                   selectedValue = value as String;
-                                  // abc =value;
+                                   serviceSelect =value;
                                   // items.clear();
                                   // for(var i=0;i<user.length;i++){
                                   //   if(user[i]["Service"]== abc) {
@@ -361,7 +264,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                   ),
                                 ],
                               ),
-                              items: items
+                              items: sendItem2(user)
                                   .map((item) =>
                                   DropdownMenuItem<String>(
                                     value: item,
@@ -376,10 +279,10 @@ class _BookingScreenState extends State<BookingScreen> {
                                     ),
                                   ))
                                   .toList(),
-                              value: selectedValue,
+                              value: selectedValue2,
                               onChanged: (value) {
                                 setState(() {
-                                  selectedValue = value as String;
+                                  selectedValue2 = value as String;
                                   //print(value);
                                 });
                               },
@@ -414,77 +317,6 @@ class _BookingScreenState extends State<BookingScreen> {
                               scrollbarThickness: 6,
                               scrollbarAlwaysShow: true,
                               offset: const Offset(-15, 0),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            alignment: Alignment.center,
-                            height: 60,
-                            width: MediaQuery.of(context).size.width,
-                            child: Stack(
-                              alignment: Alignment.centerRight,
-                              children: [
-                                TextFormField(
-                                  focusNode: f4,
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.only(
-                                      left: 20,
-                                      top: 10,
-                                      bottom: 10,
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(90.0)),
-                                      borderSide: BorderSide.none,
-                                    ),
-                                    filled: true,
-                                    fillColor: Colors.grey[350],
-                                    hintText: 'Select Date*',
-                                    hintStyle: GoogleFonts.lato(
-                                      color: Colors.black26,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w800,
-                                    ),
-                                  ),
-                                  controller: _dateController,
-                                  validator: (value) {
-                                    if (value!.isEmpty)
-                                      return 'Please Enter the Date';
-                                    return null;
-                                  },
-                                  onFieldSubmitted: (String value) {
-                                    f4.unfocus();
-                                    FocusScope.of(context).requestFocus(f5);
-                                  },
-                                  textInputAction: TextInputAction.next,
-                                  style: GoogleFonts.lato(
-                                      fontSize: 18, fontWeight: FontWeight.bold),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 5.0),
-                                  child: ClipOval(
-                                    child: Material(
-                                      color: Colors.indigo, // button color
-                                      child: InkWell(
-                                        // inkwell color
-                                        child: SizedBox(
-                                          width: 40,
-                                          height: 40,
-                                          child: Icon(
-                                            Icons.date_range_outlined,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        onTap: () {
-                                          selectDate(context);
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
                             ),
                           ),
                           SizedBox(
@@ -573,13 +405,6 @@ class _BookingScreenState extends State<BookingScreen> {
                                 ),
                               ),
                               onPressed: () {
-                                // if (_formKey.currentState.validate()) {
-                                //   print(_nameController.text);
-                                //   print(_dateController.text);
-                                //   print(widget.doctor);
-                                //   showAlertDialog(context);
-                                //   _createAppointment();
-                                // }
                               },
                               child: Text(
                                 "Book Appointment",
@@ -632,36 +457,4 @@ class _BookingScreenState extends State<BookingScreen> {
 
   }
 
-
-
-
-
-//   Future<void> _createAppointment() async {
-//     print(dateUTC + ' ' + date_Time + ':00');
-//     FirebaseFirestore.instance
-//         .collection('appointments')
-//         .doc(user.email)
-//         .collection('pending')
-//         .doc()
-//         .set({
-//       'name': _nameController.text,
-//       'phone': _phoneController.text,
-//       'description': _descriptionController.text,
-//       'doctor': _doctorController.text,
-//       'date': DateTime.parse(dateUTC + ' ' + date_Time + ':00'),
-//     }, SetOptions(merge: true));
-//
-//     FirebaseFirestore.instance
-//         .collection('appointments')
-//         .doc(user.email)
-//         .collection('all')
-//         .doc()
-//         .set({
-//       'name': _nameController.text,
-//       'phone': _phoneController.text,
-//       'description': _descriptionController.text,
-//       'doctor': _doctorController.text,
-//       'date': DateTime.parse(dateUTC + ' ' + date_Time + ':00'),
-//     }, SetOptions(merge: true));
-//   }
  }
