@@ -26,6 +26,7 @@ dependencies:
   time_range_picker: ^2.1.0
   dropdown_button2: ^1.4.0
   firebase_storage: ^10.2.15
+  awesome_dialog: ^2.2.1
 
 
 dev_dependencies:

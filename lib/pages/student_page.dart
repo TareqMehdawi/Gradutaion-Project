@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../widgets/search_delegate_employee.dart';
 import '../widgets/user_class.dart';
 import 'make_reservations.dart';
 import 'navigation_drawer.dart';
@@ -38,8 +39,11 @@ class _StudentPageState extends State<StudentPage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color(0xff141E27),
         child: const Icon(Icons.add),
-        onPressed: () {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ReservationPage(),),);
+        onPressed: () async{
+          await showSearch(
+              context: context,
+              delegate: EmployeeSearchDelegate(),
+          );
         },
       ),
       body: StreamBuilder<List<StudentsReservation>>(
