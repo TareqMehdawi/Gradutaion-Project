@@ -5,8 +5,10 @@ import 'package:graduation_project/pages/your_account2.dart';
 import 'package:provider/provider.dart';
 
 class EmployeeSearchDelegate extends SearchDelegate {
+  EmployeeSearchDelegate({required this.type});
+  final String type;
   final CollectionReference _employees =
-      FirebaseFirestore.instance.collection('employee');
+      FirebaseFirestore.instance.collection('users');
 
   @override
   Widget? buildLeading(BuildContext context) => IconButton(
@@ -88,12 +90,12 @@ class EmployeeSearchDelegate extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        stream: _employees.snapshots().asBroadcastStream(),
+        stream: _employees.where("type", isEqualTo: type).snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             ///////////////////////////////////////////////////////////////////
-            return const Center(
-              child: Text('yes'),
+            return  Center(
+              child: Text(type),
             );
           } else {
             if (snapshot.data!.docs

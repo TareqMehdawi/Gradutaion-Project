@@ -27,13 +27,16 @@ class _RegisterPageState extends State<RegisterPage> {
   bool showValidate = false;
   bool showPassword = false;
   bool isLoading = false;
-  int page = 0;
+  String? type;
+  //int page = 0;
   String imgUrl = '';
 
   // final regEmail = RegExp(
   //     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-  final regEmailEmp = RegExp(
-      r"^[a-zA-Z]+\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
+  final regEmailDoc = RegExp(
+      r"^((?!Reg)|(?!reg))[a-zA-Z]+\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
+  final regEmailReg = RegExp(
+      r"^((Reg)|(reg))\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
   final regEmailStu = RegExp(r"^[a-zA-Z]{3}[0-9]{7}@ju\.edu\.jo");
 
   @override
@@ -149,9 +152,11 @@ class _RegisterPageState extends State<RegisterPage> {
           if (value!.isEmpty) {
             return 'Enter an email';
           } else if (regEmailStu.hasMatch(value)) {
-            page = 1;
-          } else if (regEmailEmp.hasMatch(value)) {
-            page = 2;
+            type = 'student';
+          }else if (regEmailReg.hasMatch(value)) {
+            type = 'registration';
+          } else if (regEmailDoc.hasMatch(value)) {
+            type = 'doctor';
           } else {
             return null;
           }
@@ -292,7 +297,6 @@ class _RegisterPageState extends State<RegisterPage> {
             isLoading = true;
           });
           try {
-            if (page == 1) {
               await FirebaseAuth.instance.createUserWithEmailAndPassword(
                   email: emailController.text.trim(),
                   password: passwordController.text.trim());
@@ -302,13 +306,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   number: phoneNumber,
                   id: user.uid,
                   email: emailController.text,
-                  type: 'student');
-              createUsers(
-                  name: username,
-                  number: phoneNumber,
-                  id: user.uid,
-                  email: emailController.text,
-                  type: 'student');
+                  type: type!);
 
               Navigator.push(
                 context,
@@ -316,38 +314,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   builder: (context) => const NavigationDrawer(),
                 ),
               );
-            } else if (page == 2) {
-              await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                  email: emailController.text.trim(),
-                  password: passwordController.text.trim());
-              final user = FirebaseAuth.instance.currentUser!;
-              createUser(
-                  name: username,
-                  number: phoneNumber,
-                  id: user.uid,
-                  email: emailController.text,
-                  type: 'employee');
-              createUsers(
-                  name: username,
-                  number: phoneNumber,
-                  id: user.uid,
-                  email: emailController.text,
-                  type: 'employee');
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const NavigationDrawer(),
-                ),
-              );
-            }
+              setState(() {
+                isLoading = false;
+              });
           } on FirebaseAuthException catch (error) {
             Utils.showSnackBar(error.message);
           }
-
-          setState(() {
-            isLoading = false;
-          });
         }
       },
     );
@@ -387,45 +359,6 @@ class _RegisterPageState extends State<RegisterPage> {
       required String id,
       required String email,
       required String type}) async {
-    if (regEmailStu.hasMatch(emailController.text)) {
-      final docUser = FirebaseFirestore.instance.collection('student').doc(id);
-
-      final user = Users(
-          id: docUser.id,
-          name: name,
-          number: number,
-          email: email,
-          image: imgUrl,
-          type: type);
-
-      final json = user.toJson();
-
-      await docUser.set(json);
-    } else if (regEmailEmp.hasMatch(emailController.text)) {
-      final docUser = FirebaseFirestore.instance.collection('employee').doc(id);
-
-      final user = Users(
-          id: docUser.id,
-          name: name,
-          number: number,
-          email: email,
-          image: imgUrl,
-          type: type);
-
-      final json = user.toJson();
-
-      await docUser.set(json);
-    }
-  }
-
-  Future createUsers({
-    required String name,
-    required String number,
-    required String id,
-    required String email,
-    required String type,
-  }) async {
-    if (regEmailStu.hasMatch(emailController.text)) {
       final docUser = FirebaseFirestore.instance.collection('users').doc(id);
 
       final user = Users(
@@ -439,21 +372,6 @@ class _RegisterPageState extends State<RegisterPage> {
       final json = user.toJson();
 
       await docUser.set(json);
-    } else if (regEmailEmp.hasMatch(emailController.text)) {
-      final docUser = FirebaseFirestore.instance.collection('users').doc(id);
-
-      final user = Users(
-          id: docUser.id,
-          name: name,
-          number: number,
-          email: email,
-          image: imgUrl,
-          type: type);
-
-      final json = user.toJson();
-
-      await docUser.set(json);
-    }
   }
 
   getImageData() async {

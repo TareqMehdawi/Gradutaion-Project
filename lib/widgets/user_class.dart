@@ -73,14 +73,14 @@ class StudentsReservation {
       );
 }
 
-class setEmpService {
+class SetEmpService {
   String id;
   final String Duration;
   final String Service;
   final String Time;
   final List days;
 
-  setEmpService({
+  SetEmpService({
     this.id = '',
     required this.Duration,
     required this.Service,
@@ -96,8 +96,8 @@ class setEmpService {
       'Time': Time,
   };
 
-  static setEmpService fromJson(Map<String, dynamic> json) =>
-      setEmpService(
+  static SetEmpService fromJson(Map<String, dynamic> json) =>
+      SetEmpService(
         id: json['id'],
         Service: json['Service'],
         days: json['days'],

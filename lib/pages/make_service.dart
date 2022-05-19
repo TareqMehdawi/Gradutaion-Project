@@ -318,7 +318,7 @@ Future setService(
 
       ) async {
     final docUser = FirebaseFirestore.instance.collection('Service').doc();
-    final user = setEmpService(
+    final user = SetEmpService(
       id: currentUser.uid,
       Service: Service,
       days: days,

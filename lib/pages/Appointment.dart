@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-import '../widgets/user_class.dart';
+
 
 class BookingScreen extends StatefulWidget {
   final String uid;
@@ -153,8 +152,8 @@ class _BookingScreenState extends State<BookingScreen> {
       },
     );
   }
-
-  @override
+  //
+  // @override
   // void initState() {
   //   super.initState();
   //   _getUser();
@@ -195,7 +194,7 @@ class _BookingScreenState extends State<BookingScreen> {
              return const Text('Something went wrong');
                  }else if (snapshot.hasData) {
                 final List user = snapshot.data as List ;
-                List<String> itemm =[];
+                List<String> itemm =['jabciua'];
                 for(var i=0;i<user.length;i++){
                   String a= user[i]["Service"];
                   itemm.add(a);
@@ -265,7 +264,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                   ),
                                 ],
                               ),
-                              items: items
+                              items: itemm
                                   .map((item) =>
                                   DropdownMenuItem<String>(
                                     value: item,
@@ -335,87 +334,87 @@ class _BookingScreenState extends State<BookingScreen> {
                           SizedBox(
                             height: 20,
                           ),
-                          DropdownButtonHideUnderline(
-                            child: DropdownButton2(
-                              isExpanded: true,
-                              hint: Row(
-                                children: const [
-                                  Icon(
-                                    Icons.list,
-                                    size: 16,
-                                    color: Colors.yellow,
-                                  ),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      'Select Day',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.yellow,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              items: items
-                                  .map((item) =>
-                                  DropdownMenuItem<String>(
-                                    value: item,
-                                    child: Text(
-                                      item,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ))
-                                  .toList(),
-                              value: selectedValue,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedValue = value as String;
-                                  //print(value);
-                                });
-                              },
-                              icon: const Icon(
-                                Icons.arrow_forward_ios_outlined,
-                              ),
-                              iconSize: 14,
-                              iconEnabledColor: Colors.yellow,
-                              iconDisabledColor: Colors.grey,
-                              buttonHeight: 50,
-                              buttonWidth: 500,
-                              buttonPadding: const EdgeInsets.only(left: 14, right: 14),
-                              buttonDecoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(14),
-                                border: Border.all(
-                                  color: Colors.black26,
-                                ),
-                                color: Colors.redAccent,
-                              ),
-                              buttonElevation: 2,
-                              itemHeight: 40,
-                              itemPadding: const EdgeInsets.only(left: 14, right: 14),
-                              dropdownMaxHeight: 200,
-                              dropdownWidth: 400,
-                              dropdownPadding: null,
-                              dropdownDecoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(14),
-                                color: Colors.redAccent,
-                              ),
-                              dropdownElevation: 8,
-                              scrollbarRadius: const Radius.circular(40),
-                              scrollbarThickness: 6,
-                              scrollbarAlwaysShow: true,
-                              offset: const Offset(-15, 0),
-                            ),
-                          ),
+                          // DropdownButtonHideUnderline(
+                          //   child: DropdownButton2(
+                          //     isExpanded: true,
+                          //     hint: Row(
+                          //       children: const [
+                          //         Icon(
+                          //           Icons.list,
+                          //           size: 16,
+                          //           color: Colors.yellow,
+                          //         ),
+                          //         SizedBox(
+                          //           width: 4,
+                          //         ),
+                          //         Expanded(
+                          //           child: Text(
+                          //             'Select Day',
+                          //             style: TextStyle(
+                          //               fontSize: 14,
+                          //               fontWeight: FontWeight.bold,
+                          //               color: Colors.yellow,
+                          //             ),
+                          //             overflow: TextOverflow.ellipsis,
+                          //           ),
+                          //         ),
+                          //       ],
+                          //     ),
+                          //     items: items
+                          //         .map((item) =>
+                          //         DropdownMenuItem<String>(
+                          //           value: item,
+                          //           child: Text(
+                          //             item,
+                          //             style: const TextStyle(
+                          //               fontSize: 14,
+                          //               fontWeight: FontWeight.bold,
+                          //               color: Colors.white,
+                          //             ),
+                          //             overflow: TextOverflow.ellipsis,
+                          //           ),
+                          //         ))
+                          //         .toList(),
+                          //     value: selectedValue,
+                          //     onChanged: (value) {
+                          //       setState(() {
+                          //         selectedValue = value.toString();
+                          //         //print(value);
+                          //       });
+                          //     },
+                          //     icon: const Icon(
+                          //       Icons.arrow_forward_ios_outlined,
+                          //     ),
+                          //     iconSize: 14,
+                          //     iconEnabledColor: Colors.yellow,
+                          //     iconDisabledColor: Colors.grey,
+                          //     buttonHeight: 50,
+                          //     buttonWidth: 500,
+                          //     buttonPadding: const EdgeInsets.only(left: 14, right: 14),
+                          //     buttonDecoration: BoxDecoration(
+                          //       borderRadius: BorderRadius.circular(14),
+                          //       border: Border.all(
+                          //         color: Colors.black26,
+                          //       ),
+                          //       color: Colors.redAccent,
+                          //     ),
+                          //     buttonElevation: 2,
+                          //     itemHeight: 40,
+                          //     itemPadding: const EdgeInsets.only(left: 14, right: 14),
+                          //     dropdownMaxHeight: 200,
+                          //     dropdownWidth: 400,
+                          //     dropdownPadding: null,
+                          //     dropdownDecoration: BoxDecoration(
+                          //       borderRadius: BorderRadius.circular(14),
+                          //       color: Colors.redAccent,
+                          //     ),
+                          //     dropdownElevation: 8,
+                          //     scrollbarRadius: const Radius.circular(40),
+                          //     scrollbarThickness: 6,
+                          //     scrollbarAlwaysShow: true,
+                          //     offset: const Offset(-15, 0),
+                          //   ),
+                          // ),
                           SizedBox(
                             height: 20,
                           ),

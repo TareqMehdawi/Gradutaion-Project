@@ -166,9 +166,9 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                             drawerTiles(
                               icon: Icons.people,
                               title: 'People',
-                              function: () async {
-                                await showSearch(context: context,
-                                    delegate: EmployeeSearchDelegate());
+                              function: ()  {
+                                // await showSearch(context: context,
+                                //     delegate: EmployeeSearchDelegate());
                               },
                             ),
                             drawerTiles(
