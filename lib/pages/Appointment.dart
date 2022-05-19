@@ -200,7 +200,7 @@ class _BookingScreenState extends State<BookingScreen> {
                   String a= user[i]["Service"];
                   itemm.add(a);
                 }
-                //print(itemm);
+                print(itemm);
                 // for(var i=0;i<user.length;i++){
                 //   String a= user[i]["days"];
                 //   itemm.add(a);
