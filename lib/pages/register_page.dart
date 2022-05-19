@@ -160,6 +160,7 @@ class _RegisterPageState extends State<RegisterPage> {
           } else {
             return null;
           }
+          return null;
         },
       ),
     );

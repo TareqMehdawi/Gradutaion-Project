@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../widgets/search_delegate_employee.dart';
 import '../widgets/user_class.dart';
-import 'make_reservations.dart';
 import 'navigation_drawer.dart';
 
 class StudentPage extends StatefulWidget {
