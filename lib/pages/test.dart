@@ -13,8 +13,10 @@ class Tareq extends StatefulWidget {
 }
 
 class _TareqState extends State<Tareq> {
+  bool s = false;
+  bool m = false;
   final user = FirebaseAuth.instance.currentUser!;
-  var newDoc = [];
+  // var newDoc = [];
 
   // getData() async {
   //   var userName = FirebaseFirestore.instance.collection("users");
@@ -36,23 +38,23 @@ class _TareqState extends State<Tareq> {
   //   return tareq;
   // }
 
-  final CollectionReference _collectionRef =
-      FirebaseFirestore.instance.collection('users');
-
-  Future<List> getData() async {
-    // Get docs from collection reference
-    QuerySnapshot querySnapshot = await _collectionRef.get();
-
-    // Get data from docs and convert map to List
-    final allData = querySnapshot.docs.map((doc) => doc['id']).toList();
-    allData.sort();
-    for (int i = 0; i < allData.length; i++) {
-      setState(() {
-        newDoc = allData.map((e) => e).toList();
-      });
-    }
-    return newDoc;
-  }
+  // final CollectionReference _collectionRef =
+  //     FirebaseFirestore.instance.collection('users');
+  //
+  // Future<List> getData() async {
+  //   // Get docs from collection reference
+  //   QuerySnapshot querySnapshot = await _collectionRef.get();
+  //
+  //   // Get data from docs and convert map to List
+  //   final allData = querySnapshot.docs.map((doc) => doc['id']).toList();
+  //   allData.sort();
+  //   for (int i = 0; i < allData.length; i++) {
+  //     setState(() {
+  //       newDoc = allData.map((e) => e).toList();
+  //     });
+  //   }
+  //   return newDoc;
+  // }
 
   // FirebaseMessaging notification = FirebaseMessaging.instance;
   //
@@ -69,27 +71,36 @@ class _TareqState extends State<Tareq> {
   //   print('User granted permission: ${settings.authorizationStatus}');
   // }
 
-
-  @override
-  void initState() {
-    getData();
-    // getNotifi();
-    // readDoc();
-    super.initState();
-  }
+  //
+  // @override
+  // void initState() {
+  //   getData();
+  //   // getNotifi();
+  //   // readDoc();
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: ListView.builder(
-        itemCount: newDoc.length,
-        itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            leading: Text(newDoc[index].toString()),
-          );
-        },
+      body: ListView(
+        children:[
+          listTile(x: s),
+          listTile(x: m),
+        ]
       ),
+    );
+  }
+  Widget listTile({required bool x}){
+    return ListTile(
+      leading: x == false ? Icon(Icons.add) : Icon(Icons.celebration),
+      title: Text('newDoc[index].toString()'),
+      onTap: (){
+        setState(() {
+          x = !s;
+        });
+      },
     );
   }
 }

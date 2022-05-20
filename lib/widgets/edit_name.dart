@@ -117,21 +117,7 @@ class EditNameFormPageState extends State<EditNameFormPage> {
                           isAlpha(firstNameController.text +
                               secondNameController.text)) {
                         updateUserName(name: "${firstNameController.text} ${secondNameController.text}");
-                        AwesomeDialog(
-                            autoDismiss: false,
-                            context: context,
-                            dialogType: DialogType.SUCCES,
-                            animType: AnimType.BOTTOMSLIDE,
-                            title: 'Success',
-                            desc: 'Name changed successfully',
-                            btnOkText: "Ok",
-                            btnOkOnPress: () {
-                              return Navigator.of(context).popUntil((route) => route.isFirst);
-                            },
-                            onDissmissCallback: (d){
-                              return Navigator.of(context).popUntil((route) => route.isFirst);
-                            }
-                        ).show();
+
                       }
                     },
                     child: const Text(
@@ -155,6 +141,21 @@ class EditNameFormPageState extends State<EditNameFormPage> {
         'name': name,
       };
       await docUser.update(json);
+      AwesomeDialog(
+          autoDismiss: false,
+          context: context,
+          dialogType: DialogType.SUCCES,
+          animType: AnimType.BOTTOMSLIDE,
+          title: 'Success',
+          desc: 'Name changed successfully',
+          btnOkText: "Ok",
+          btnOkOnPress: () {
+            return Navigator.of(context).popUntil((route) => route.isFirst);
+          },
+          onDissmissCallback: (d){
+            return Navigator.of(context).popUntil((route) => route.isFirst);
+          }
+      ).show();
     } on FirebaseAuthException catch(error){
       AwesomeDialog(
           autoDismiss: false,

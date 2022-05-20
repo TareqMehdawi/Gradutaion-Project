@@ -119,7 +119,7 @@ class UserAccount {
   final String image;
   final String type;
   final String office;
-  final String workingHours;
+  final Map officeHours;
 
   UserAccount({
     this.id = '',
@@ -129,7 +129,7 @@ class UserAccount {
     required this.number,
     required this.email,
     this.office = '',
-    this.workingHours = '',
+    required this.officeHours,
   });
 
   Map<String, dynamic> toJson() => {
@@ -140,7 +140,7 @@ class UserAccount {
         'email': email,
         'imageUrl': image,
         'office': office,
-        'workingHours': workingHours,
+        'officeHours': officeHours,
       };
 
   static UserAccount fromJson(Map<String, dynamic> json) => UserAccount(
@@ -151,7 +151,7 @@ class UserAccount {
         image: json['imageUrl'],
         type: json['type'],
         office: json['office'],
-        workingHours: json['workingHours'],
+        officeHours: json['officeHours'],
       );
 }
 class UserWorkingHours {

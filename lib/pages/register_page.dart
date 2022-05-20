@@ -415,16 +415,16 @@ class _RegisterPageState extends State<RegisterPage> {
       required String id,
       required String email,
       required String type,
-      String office = '',
-      String workingHours = '',
+      String office = 'Office no.',
+      String workingHours = 'Nothing to show..',
       }) async {
       final docUser = FirebaseFirestore.instance.collection('users').doc(id);
-      final docHours = FirebaseFirestore.instance.collection('officeHours').doc();
-      final json1 = {
-        'officeHours': 'Nothing to show..',
-        'id': id,
-      };
-      await docHours.set(json1);
+      // final docHours = FirebaseFirestore.instance.collection('officeHours').doc();
+      // final json1 = {
+      //   'officeHours': 'Nothing to show..',
+      //   'id': id,
+      // };
+      // await docHours.set(json1);
 
       final user = UserAccount(
           id: docUser.id,
@@ -434,7 +434,8 @@ class _RegisterPageState extends State<RegisterPage> {
           image: imgUrl,
           type: type,
           office: 'Office No.',
-          workingHours: 'Nothing to show..',);
+          officeHours: {},
+      );
 
 
       final json = user.toJson();

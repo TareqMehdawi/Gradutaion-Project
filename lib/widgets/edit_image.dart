@@ -119,21 +119,19 @@ class _EditImagePageState extends State<EditImagePage> {
                                         'imageUrl': url,
                                       });
                                       AwesomeDialog(
-                                        context: context,
-                                        dialogType: DialogType.SUCCES,
-                                        animType: AnimType.BOTTOMSLIDE,
-                                        title: 'Success',
-                                        desc: 'Image uploaded successfully',
-                                        btnOkText: "Ok",
-                                        btnOkOnPress: () {
-                                          Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const StudentAccount(),
-                                            ),
-                                          );
-                                        },
+                                          autoDismiss: false,
+                                          context: context,
+                                          dialogType: DialogType.SUCCES,
+                                          animType: AnimType.BOTTOMSLIDE,
+                                          title: 'Success',
+                                          desc: 'Image uploaded successfully',
+                                          btnOkText: "Ok",
+                                          btnOkOnPress: () {
+                                            Navigator.of(context).popUntil((route) => route.isFirst);
+                                          },
+                                          onDissmissCallback: (d){
+                                            return Navigator.of(context).popUntil((route) => route.isFirst);
+                                          }
                                       ).show();
                                       //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const StudentAccount()));
                                     } on FirebaseAuthException catch (e) {
