@@ -128,87 +128,87 @@ class _BookingScreenState extends State<BookingScreen> {
                             const SizedBox(
                               height: 30,
                             ),
-                        DropdownButtonHideUnderline(
-                          child: DropdownButton2(
-                            isExpanded: true,
-                            hint: Row(
-                              children: const [
-                                Icon(
-                                  Icons.list,
-                                  size: 16,
-                                  color: Colors.yellow,
-                                ),
-                                SizedBox(
-                                  width: 4,
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    'Select Service',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
+                            DropdownButtonHideUnderline(
+                              child: DropdownButton2(
+                                isExpanded: true,
+                                hint: Row(
+                                  children: const [
+                                    Icon(
+                                      Icons.list,
+                                      size: 16,
                                       color: Colors.yellow,
                                     ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        'Select Service',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.yellow,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            items: sendItem(user)
-                                .map(
-                                  (item) => DropdownMenuItem(
-                                value: item,
-                                child: Text(
-                                  item,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
+                                items: sendItem(user)
+                                    .map(
+                                      (item) => DropdownMenuItem(
+                                    value: item,
+                                    child: Text(
+                                      item,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
-                                  overflow: TextOverflow.ellipsis,
+                                ).toList(),
+                                value: selectedValue,
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedValue = value as String;
+                                    serviceSelect = value;
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.arrow_forward_ios_outlined,
                                 ),
+                                iconSize: 14,
+                                iconEnabledColor: Colors.yellow,
+                                iconDisabledColor: Colors.grey,
+                                buttonHeight: 50,
+                                buttonWidth: 500,
+                                buttonPadding:
+                                const EdgeInsets.only(left: 14, right: 14),
+                                buttonDecoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  border: Border.all(
+                                    color: Colors.black26,
+                                  ),
+                                  color: Colors.redAccent,
+                                ),
+                                buttonElevation: 2,
+                                itemHeight: 40,
+                                itemPadding:
+                                const EdgeInsets.symmetric(horizontal: 14),
+                                dropdownMaxHeight: 200,
+                                dropdownPadding: null,
+                                dropdownDecoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  color: Colors.redAccent,
+                                ),
+                                dropdownElevation: 8,
+                                scrollbarRadius: const Radius.circular(40),
+                                scrollbarThickness: 6,
+                                scrollbarAlwaysShow: true,
                               ),
-                            ).toList(),
-                            value: selectedValue,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedValue = value as String;
-                                serviceSelect = value;
-                              });
-                            },
-                            icon: const Icon(
-                              Icons.arrow_forward_ios_outlined,
                             ),
-                            iconSize: 14,
-                            iconEnabledColor: Colors.yellow,
-                            iconDisabledColor: Colors.grey,
-                            buttonHeight: 50,
-                            buttonWidth: 500,
-                            buttonPadding:
-                            const EdgeInsets.only(left: 14, right: 14),
-                            buttonDecoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(14),
-                              border: Border.all(
-                                color: Colors.black26,
-                              ),
-                              color: Colors.redAccent,
-                            ),
-                            buttonElevation: 2,
-                            itemHeight: 40,
-                            itemPadding:
-                            const EdgeInsets.symmetric(horizontal: 14),
-                            dropdownMaxHeight: 200,
-                            dropdownPadding: null,
-                            dropdownDecoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(14),
-                              color: Colors.redAccent,
-                            ),
-                            dropdownElevation: 8,
-                            scrollbarRadius: const Radius.circular(40),
-                            scrollbarThickness: 6,
-                            scrollbarAlwaysShow: true,
-                          ),
-                        ),
                             const SizedBox(
                               height: 20,
                             ),
@@ -240,17 +240,17 @@ class _BookingScreenState extends State<BookingScreen> {
                                 ),
                                 items: sendItem2(user)
                                     .map((item) => DropdownMenuItem<String>(
-                                          value: item,
-                                          child: Text(
-                                            item,
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ))
+                                  value: item,
+                                  child: Text(
+                                    item,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ))
                                     .toList(),
                                 value: selectedValue2,
                                 onChanged: (value) {
@@ -268,7 +268,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                 buttonHeight: 50,
                                 buttonWidth: 500,
                                 buttonPadding:
-                                    const EdgeInsets.only(left: 14, right: 14),
+                                const EdgeInsets.only(left: 14, right: 14),
                                 buttonDecoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(14),
                                   border: Border.all(
@@ -279,7 +279,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                 buttonElevation: 2,
                                 itemHeight: 40,
                                 itemPadding:
-                                    const EdgeInsets.only(left: 14, right: 14),
+                                const EdgeInsets.only(left: 14, right: 14),
                                 dropdownMaxHeight: 200,
                                 dropdownPadding: null,
                                 dropdownDecoration: BoxDecoration(

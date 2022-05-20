@@ -12,6 +12,7 @@ import 'package:graduation_project/pages/student_page.dart';
 import 'package:graduation_project/pages/your_account.dart';
 import 'package:provider/provider.dart';
 import '../widgets/user_class.dart';
+import 'delete_services.dart';
 import 'login_page.dart';
 
 String image = 'assets/images/images.png';
@@ -182,6 +183,13 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                               icon: Icons.people,
                               title: 'People',
                               function: ()  {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const DeleteService(),
+                                  ),
+                                );
+
                                 // await showSearch(context: context,
                                 //     delegate: EmployeeSearchDelegate());
                               },
