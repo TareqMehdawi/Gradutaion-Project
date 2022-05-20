@@ -82,7 +82,7 @@ class _ReservationPageState extends State<ReservationPage> {
         title: const Text('Reservation'),
         centerTitle: true,
       ),
-      body: Stepper(steps: [],
+      body: Stepper(steps: const [],
       //   currentStep: currentStep,
       //   onStepTapped: (index) {
       //     setState(() {

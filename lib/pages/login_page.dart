@@ -7,7 +7,6 @@ import 'package:graduation_project/pages/register_page.dart';
 import 'package:graduation_project/widgets/spinKit_widget.dart';
 
 import '../widgets/utils_show_snackbar.dart';
-import 'employee_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);

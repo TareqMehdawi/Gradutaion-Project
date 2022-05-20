@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../widgets/user_class.dart';
-import 'Appointment.dart';
+import 'appointment.dart';
 class YourAccount2 extends StatefulWidget {
   final String uid;
   const YourAccount2({  Key? key,  required this.uid}) : super(key: key);
@@ -52,16 +52,16 @@ class _YourAccount2 extends State<YourAccount2> {
                   return ListView(
                       children : [
                         Container(
-                        margin: EdgeInsets.only(top: 5),
+                        margin: const EdgeInsets.only(top: 5),
                         child: Column(
                           children: <Widget>[
                             Container(
                               alignment: Alignment.centerLeft,
                               height: 50,
                               width: MediaQuery.of(context).size.width,
-                              padding: EdgeInsets.only(left: 5),
+                              padding: const EdgeInsets.only(left: 5),
                               child: IconButton(
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.chevron_left_sharp,
                                   color: Colors.indigo,
                                   size: 30,
@@ -76,7 +76,7 @@ class _YourAccount2 extends State<YourAccount2> {
                               //backgroundColor: Colors.lightBlue[100],
                               radius: 80,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                             Text(
@@ -86,10 +86,10 @@ class _YourAccount2 extends State<YourAccount2> {
                                 fontSize: 24,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 16,
                             ),
                             // Row(
@@ -110,28 +110,28 @@ class _YourAccount2 extends State<YourAccount2> {
                             //   //       ),
                             //   // ],
                             // ),
-                            SizedBox(
+                            const SizedBox(
                               height: 14,
                             ),
 
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                             Container(
                               width: MediaQuery.of(context).size.width,
-                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              margin: const EdgeInsets.symmetric(horizontal: 10),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 15,
                                   ),
-                                  Icon(Icons.place_outlined),
-                                  SizedBox(
+                                  const Icon(Icons.place_outlined),
+                                  const SizedBox(
                                     width: 20,
                                   ),
-                                  Container(
+                                  SizedBox(
                                     width: MediaQuery.of(context).size.width / 1.4,
                                     child: Text(
                                       "It college office 204",
@@ -140,7 +140,7 @@ class _YourAccount2 extends State<YourAccount2> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 10,
                                   ),
                                 ],
@@ -148,14 +148,14 @@ class _YourAccount2 extends State<YourAccount2> {
                             ),
                             Container(
                               height: MediaQuery.of(context).size.height / 12,
-                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              margin: const EdgeInsets.symmetric(horizontal: 10),
                               child: Row(
                                 children: [
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 15,
                                   ),
-                                  Icon(Icons.email),
-                                  SizedBox(
+                                  const Icon(Icons.email),
+                                  const SizedBox(
                                     width: 20,
                                   ),
                                   Text(
@@ -163,24 +163,24 @@ class _YourAccount2 extends State<YourAccount2> {
                                     style: GoogleFonts.lato(
                                         fontSize: 16, color: Colors.blue),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 10,
                                   ),
                                 ],
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 0,
                             ),
                             Container(
-                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              margin: const EdgeInsets.symmetric(horizontal: 10),
                               child: Row(
                                 children: [
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 15,
                                   ),
-                                  Icon(Icons.access_time_rounded),
-                                  SizedBox(
+                                  const Icon(Icons.access_time_rounded),
+                                  const SizedBox(
                                     width: 20,
                                   ),
                                   Text(
@@ -192,12 +192,12 @@ class _YourAccount2 extends State<YourAccount2> {
                                 ],
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                             Container(
-                              margin: EdgeInsets.symmetric(horizontal: 10),
-                              padding: EdgeInsets.only(left: 60),
+                              margin: const EdgeInsets.symmetric(horizontal: 10),
+                              padding: const EdgeInsets.only(left: 60),
                               child: Row(
                                 children: [
                                   Text(
@@ -207,7 +207,7 @@ class _YourAccount2 extends State<YourAccount2> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 10,
                                   ),
                                   Text(
@@ -219,11 +219,11 @@ class _YourAccount2 extends State<YourAccount2> {
                                 ],
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 50,
                             ),
                             Container(
-                              padding: EdgeInsets.symmetric(horizontal: 30),
+                              padding: const EdgeInsets.symmetric(horizontal: 30),
                               height: 50,
                               width: MediaQuery.of(context).size.width,
                               child: ElevatedButton(
@@ -259,7 +259,7 @@ class _YourAccount2 extends State<YourAccount2> {
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 40,
                             ),
                           ],
@@ -319,7 +319,7 @@ class _YourAccount2 extends State<YourAccount2> {
       isLoading = true;
     });
     final getUser =
-        FirebaseFirestore.instance.collection('employee').doc(widget.uid);
+        FirebaseFirestore.instance.collection('users').doc(widget.uid);
     final snapshot = await getUser.get();
     if (snapshot.exists) {
       setState(() {

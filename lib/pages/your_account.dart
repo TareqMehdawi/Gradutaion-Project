@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project/widgets/spinKit_widget.dart';
 import '../widgets/edit_image.dart';
 import '../widgets/edit_name.dart';
+import '../widgets/edit_office.dart';
 import '../widgets/edit_phone.dart';
 import '../widgets/edit_email.dart';
 import '../widgets/user_class.dart';
@@ -320,7 +321,7 @@ class _YourAccount2 extends State<YourAccount> {
                                               color: Colors.black),
                                         ),
                                         onPressed: () {
-                                          //navigateSecondPage(editPage);
+                                          navigateSecondPage(EditOfficeFormPage());
                                         },
                                       )),
                                       const Icon(

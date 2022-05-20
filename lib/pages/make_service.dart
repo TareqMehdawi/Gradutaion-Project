@@ -3,7 +3,6 @@ import 'package:day_picker/day_picker.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:graduation_project/widgets/class.dart';
 import 'package:time_range_picker/time_range_picker.dart';
 
 import '../widgets/user_class.dart';
@@ -51,7 +50,7 @@ class _ServicePageState extends State<ServicePage> {
     '30 minute',
   ];
 
-  List<DayInWeek> _days = [
+  final List<DayInWeek> _days = [
     DayInWeek(
       "Sun",
     ),
@@ -88,10 +87,10 @@ class _ServicePageState extends State<ServicePage> {
           //crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
              Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               child: TextField(
                 controller: serviceController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Enter your new service',
                   labelText: 'Service',
@@ -102,7 +101,7 @@ class _ServicePageState extends State<ServicePage> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
               child: SelectWeekDays(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
@@ -110,9 +109,9 @@ class _ServicePageState extends State<ServicePage> {
                 border: false,
                 boxDecoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30.0),
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                     begin: Alignment.topLeft,
-                    colors: [const Color(0xFFE55CE4), const Color(0xFFBB75FB)],
+                    colors: [Color(0xFFE55CE4), Color(0xFFBB75FB)],
                     tileMode:
                     TileMode.repeated, // repeats the gradient over the canvas
                   ),
@@ -124,7 +123,7 @@ class _ServicePageState extends State<ServicePage> {
               ),
             ),
             Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 child: Align(
                     alignment: Alignment.bottomCenter,
                     child: SizedBox(
@@ -132,22 +131,22 @@ class _ServicePageState extends State<ServicePage> {
                       height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            maximumSize: Size.fromHeight(40),
+                            maximumSize: const Size.fromHeight(40),
                             primary: Colors.black),
                         child: FittedBox(
                           child: Text(
                             getTime()!,
-                            style: TextStyle(fontSize: 15, color: Colors.white),
+                            style: const TextStyle(fontSize: 15, color: Colors.white),
                           ),
                         ),
                         onPressed: () async {
                           TimeRange result = await showTimeRangePicker(
                               context: context,
-                              start: TimeOfDay(hour: 9, minute: 0),
-                              end: TimeOfDay(hour: 12, minute: 0),
+                              start: const TimeOfDay(hour: 9, minute: 0),
+                              end: const TimeOfDay(hour: 12, minute: 0),
                               disabledTime: TimeRange(
-                                  startTime: TimeOfDay(hour: 18, minute: 0),
-                                  endTime: TimeOfDay(hour: 6, minute: 0)),
+                                  startTime: const TimeOfDay(hour: 18, minute: 0),
+                                  endTime: const TimeOfDay(hour: 6, minute: 0)),
                               disabledColor: Colors.red.withOpacity(0.5),
                               strokeWidth: 4,
                               ticks: 24,
@@ -181,7 +180,7 @@ class _ServicePageState extends State<ServicePage> {
                       ),
                     ))),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               child: Center(
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton2(
@@ -318,7 +317,7 @@ Future setService(
 
       ) async {
     final docUser = FirebaseFirestore.instance.collection('Service').doc();
-    final user = setEmpService(
+    final user = SetEmpService(
       id: currentUser.uid,
       Service: Service,
       days: days,
