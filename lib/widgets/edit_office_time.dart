@@ -234,13 +234,15 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
       for (int i = 0; i < days.length; i++) {
         map1.addAll({days[i]: time2});
       }
+
+      print(map1);
       return map1;
     }
   }
   Future updateOfficeTimeField({required Map officeHours}) async{
-    final docUser = FirebaseFirestore.instance.collection('officeHours').doc();
+    final docUser = FirebaseFirestore.instance.collection('officeHours').doc(currentUser.uid);
     final json = {
-      'officeHours': officeHours,
+      'officeHours.monday': officeHours,
       'id': currentUser.uid,
     };
     await docUser.update(json);

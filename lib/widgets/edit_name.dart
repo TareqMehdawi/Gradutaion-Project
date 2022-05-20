@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -116,7 +117,21 @@ class EditNameFormPageState extends State<EditNameFormPage> {
                           isAlpha(firstNameController.text +
                               secondNameController.text)) {
                         updateUserName(name: "${firstNameController.text} ${secondNameController.text}");
-                       Navigator.pop(context);
+                        AwesomeDialog(
+                            autoDismiss: false,
+                            context: context,
+                            dialogType: DialogType.SUCCES,
+                            animType: AnimType.BOTTOMSLIDE,
+                            title: 'Success',
+                            desc: 'Name changed successfully',
+                            btnOkText: "Ok",
+                            btnOkOnPress: () {
+                              return Navigator.of(context).popUntil((route) => route.isFirst);
+                            },
+                            onDissmissCallback: (d){
+                              return Navigator.of(context).popUntil((route) => route.isFirst);
+                            }
+                        ).show();
                       }
                     },
                     child: const Text(
@@ -133,11 +148,30 @@ class EditNameFormPageState extends State<EditNameFormPage> {
     );
   }
   Future updateUserName({required String name}) async{
-    final docUser = FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
-    final json = {
-      'name': name,
-    };
-    await docUser.update(json);
+    try {
+      final docUser = FirebaseFirestore.instance.collection('users').doc(
+          currentUser.uid);
+      final json = {
+        'name': name,
+      };
+      await docUser.update(json);
+    } on FirebaseAuthException catch(error){
+      AwesomeDialog(
+          autoDismiss: false,
+          context: context,
+          dialogType: DialogType.ERROR,
+          animType: AnimType.BOTTOMSLIDE,
+          title: 'Error',
+          desc: '${error.message}',
+          btnOkText: "Ok",
+          btnOkOnPress: () {
+            return Navigator.of(context).popUntil((route) => route.isFirst);
+          },
+          onDissmissCallback: (d){
+            return Navigator.of(context).popUntil((route) => route.isFirst);
+          }
+      ).show();
+    }
   }
 }
 

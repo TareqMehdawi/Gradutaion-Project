@@ -64,7 +64,7 @@ class _ChangePasswordState extends State<ChangePassword> {
             const SizedBox(
               height: 15,
             ),
-            passwordFormField(
+            newPasswordFormField(
                 title: 'Enter New Password', controller: newPasswordController),
             const SizedBox(
               height: 15,
@@ -98,8 +98,34 @@ class _ChangePasswordState extends State<ChangePassword> {
             return 'Enter a password';
           } else if (!regPassword.hasMatch(value)) {
             return 'Password must have at least:\nOne upper case,\nOne lower case,\nOne digit,\nOne special character,\nMinimum eight characters,';
-          } else {
-            return null;
+          }
+        },
+      ),
+    );
+  }
+
+  Widget newPasswordFormField(
+      {required String title, required TextEditingController controller}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      child: TextFormField(
+        controller: controller,
+        keyboardType: TextInputType.visiblePassword,
+        obscureText: !showPassword,
+        decoration: InputDecoration(
+          labelText: title,
+          border: const OutlineInputBorder(),
+          suffixIcon: const Icon(Icons.lock_outline),
+        ),
+        validator: (value) {
+          final regPassword = RegExp(
+              "^(?=.{8,32}\$)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[_!@#\$%^&*(),.?:{}|<>]).*");
+          if (value!.isEmpty) {
+            return 'Enter a password';
+          } else if (!regPassword.hasMatch(value)) {
+            return 'Password must have at least:\nOne upper case,\nOne lower case,\nOne digit,\nOne special character,\nMinimum eight characters,';
+          } else if (oldPasswordController.text.trim() == newPasswordController.text.trim()) {
+            return 'New Password cannot be the same as the old password';
           }
         },
       ),
@@ -188,6 +214,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               );
               await result.user?.updatePassword(newPasswordController.text);
               AwesomeDialog(
+                autoDismiss: false,
                 context: context,
                 dialogType: DialogType.SUCCES,
                 animType: AnimType.BOTTOMSLIDE,
@@ -197,6 +224,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                 btnOkOnPress: () {
                   Navigator.of(context).popUntil((route) => route.isFirst);
                 },
+                  onDissmissCallback: (d){
+                    return Navigator.of(context).popUntil((route) => route.isFirst);
+                  }
               ).show();
             } on FirebaseAuthException catch (error) {
               AwesomeDialog(

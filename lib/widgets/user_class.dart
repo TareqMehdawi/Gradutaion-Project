@@ -178,12 +178,14 @@ class SendFeedback {
   final String title;
   final String name;
   final String message;
+  final String email;
 
   SendFeedback({
     required this.id,
     required this.title,
     required this.name,
     required this.message,
+    required this.email,
   });
 
   Map<String, dynamic> toJson() => {
@@ -191,6 +193,7 @@ class SendFeedback {
     'title': title,
     'name': name,
     'message': message,
+    'email': email,
   };
 
   static SendFeedback fromJson(Map<String, dynamic> json) => SendFeedback(
@@ -198,6 +201,7 @@ class SendFeedback {
     title: json['title'],
     name: json['name'],
     message: json['message'],
+    email:  json['email'],
   );
 }
 // class SetEmployeeProfile{

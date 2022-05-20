@@ -3,7 +3,6 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:graduation_project/widgets/spinKit_widget.dart';
 import 'package:graduation_project/widgets/user_class.dart';
 import '../pages/your_account.dart';
 import 'package:flutter/material.dart';

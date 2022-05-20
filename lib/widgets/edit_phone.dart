@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -99,7 +100,21 @@ class EditPhoneFormPageState extends State<EditPhoneFormPage> {
                           if (_formKey.currentState!.validate() &&
                               isNumeric(phoneController.text)) {
                             updateUserPhone(phoneNumber: phoneController.text);
-                            Navigator.pop(context);
+                            AwesomeDialog(
+                                autoDismiss: false,
+                                context: context,
+                                dialogType: DialogType.SUCCES,
+                                animType: AnimType.BOTTOMSLIDE,
+                                title: 'Success',
+                                desc: 'Phone number changed successfully',
+                                btnOkText: "Ok",
+                                btnOkOnPress: () {
+                                  return Navigator.of(context).popUntil((route) => route.isFirst);
+                                },
+                                onDissmissCallback: (d){
+                                  return Navigator.of(context).popUntil((route) => route.isFirst);
+                                }
+                            ).show();
                           }
                         },
                         child: const Text(
@@ -112,11 +127,31 @@ class EditPhoneFormPageState extends State<EditPhoneFormPage> {
         ));
   }
   Future updateUserPhone({required String phoneNumber}) async{
-    final docUser = FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
-    final json = {
-      'phoneNumber': phoneNumber,
-    };
-    await docUser.update(json);
+    try {
+      final docUser = FirebaseFirestore.instance.collection('users').doc(
+          currentUser.uid);
+      final json = {
+        'phoneNumber': phoneNumber,
+      };
+      await docUser.update(json);
+    }
+    on FirebaseAuthException catch(error){
+      AwesomeDialog(
+          autoDismiss: false,
+          context: context,
+          dialogType: DialogType.ERROR,
+          animType: AnimType.BOTTOMSLIDE,
+          title: 'Error',
+          desc: '${error.message}',
+          btnOkText: "Ok",
+          btnOkOnPress: () {
+            return Navigator.of(context).popUntil((route) => route.isFirst);
+          },
+          onDissmissCallback: (d){
+            return Navigator.of(context).popUntil((route) => route.isFirst);
+          }
+      ).show();
+    }
   }
 }
 

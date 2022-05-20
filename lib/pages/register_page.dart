@@ -7,7 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/pages/login_page.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
 import 'package:graduation_project/widgets/user_class.dart';
-import '../widgets/spinKit_widget.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -47,9 +46,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading == true
-        ? const SpinKitWidget()
-        : Scaffold(
+    return Scaffold(
             body: Form(
               key: formKey,
               autovalidateMode: showValidate == true
@@ -317,12 +314,31 @@ class _RegisterPageState extends State<RegisterPage> {
                     email: emailController.text,
                     type: type!);
               }
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const NavigationDrawer(),
-                ),
-              );
+              AwesomeDialog(
+                  autoDismiss: false,
+                  context: context,
+                  dialogType: DialogType.SUCCES,
+                  animType: AnimType.BOTTOMSLIDE,
+                  title: 'Success',
+                  desc: 'Account successfully created',
+                  btnOkText: "Ok",
+                  btnOkOnPress: () {
+                    return Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const NavigationDrawer(),
+                      ),
+                    );
+                  },
+                  onDissmissCallback: (d){
+                    return Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const NavigationDrawer(),
+                      ),
+                    );
+                  }
+              ).show();
           } on FirebaseAuthException catch (error) {
             // Utils.showSnackBar(error.message);
             AwesomeDialog(

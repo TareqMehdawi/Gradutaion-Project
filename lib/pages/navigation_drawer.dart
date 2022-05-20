@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -60,6 +61,20 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
         future: readUser(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
+            AwesomeDialog(
+                autoDismiss: false,
+                context: context,
+                dialogType: DialogType.ERROR,
+                animType: AnimType.BOTTOMSLIDE,
+                title: 'Error',
+                desc: '${snapshot.error}',
+                btnOkText: "Ok",
+                btnOkOnPress: () {
+                  FirebaseAuth.instance.signOut();
+                },
+                onDissmissCallback: (d) {
+                  FirebaseAuth.instance.signOut();
+                }).show();
             return const Text('Something went wrong');
           } else if (snapshot.hasData) {
             final user = snapshot.data;
@@ -273,7 +288,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             );
         }
           else{
-            /////////////////////////////
+
             return GestureDetector(
               onTap: (){
                 FirebaseAuth.instance.signOut();
