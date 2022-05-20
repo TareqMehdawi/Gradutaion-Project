@@ -57,7 +57,7 @@ class _EmployeePageState extends State<EmployeePage> {
             );
           } else if (snapshot.hasError) {
             return const Center(
-              child: Text("Loading"),
+              child: Text("Loading1"),
             );
           } else {
             return const Center(

@@ -19,8 +19,8 @@ class _ServicePageState extends State<ServicePage> {
   TextEditingController serviceController = TextEditingController();
   int currentStep = 0;
   DateTime ?date;
-  TimeOfDay ?starttime;
-  TimeOfDay ?endtime;
+  TimeOfDay ?startTime;
+  TimeOfDay ?endTime;
   String ?duration;
   TimeOfDay time = TimeOfDay.now();
   //List<Message> messages = [];
@@ -31,10 +31,10 @@ class _ServicePageState extends State<ServicePage> {
   String ?time2;
 
   String? getTime() {
-    if (starttime == null && endtime == null) {
+    if (startTime == null && endTime == null) {
       return "Select Time";
     } else {
-      time2 ="${starttime.toString().substring(10, 15)} - ${endtime.toString()
+      time2 ="${startTime.toString().substring(10, 15)} - ${endTime.toString()
           .substring(10, 15)}";
       return time2;
     }
@@ -52,26 +52,25 @@ class _ServicePageState extends State<ServicePage> {
 
   final List<DayInWeek> _days = [
     DayInWeek(
-      "Sun",
+      "Sunday",
     ),
     DayInWeek(
-      "Mon",
+      "Monday",
     ),
     DayInWeek(
-        "Tue",
-        isSelected: true
+      "Tuesday",
     ),
     DayInWeek(
-      "Wed",
+      "Wednesday",
     ),
     DayInWeek(
-      "Thu",
+      "Thursday",
     ),
     DayInWeek(
-      "Fri",
+      "Friday",
     ),
     DayInWeek(
-      "Sat",
+      "Saturday",
     ),
   ];
 
@@ -173,8 +172,8 @@ class _ServicePageState extends State<ServicePage> {
                               rotateLabels: false,
                               padding: 60);
                           setState(() {
-                            starttime = result.startTime;
-                            endtime = result.endTime;
+                            startTime = result.startTime;
+                            endTime = result.endTime;
                           });
                         },
                       ),

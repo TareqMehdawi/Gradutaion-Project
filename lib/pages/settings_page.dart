@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:graduation_project/pages/change_password.dart';
 import 'package:graduation_project/pages/test.dart';
+import 'package:graduation_project/widgets/edit_name.dart';
 
+import '../widgets/edit_phone.dart';
 import '../widgets/user_class.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -46,18 +49,38 @@ class _SettingsPageState extends State<SettingsPage> {
                 children: [
                   settingsTitle(title: 'Common'),
                   settingsTiles(
-                      icon: Icons.language,
-                      title: 'Language',
-                      subtitle: 'English'),
+                    icon: Icons.language,
+                    title: 'Language',
+                    subtitle: 'English',
+                    function: () {},
+                  ),
                   settingsTitle(title: 'Account'),
                   settingsTiles(
-                      icon: Icons.phone,
-                      title: 'Phone number',
-                      subtitle: user!.number),
+                    icon: Icons.phone,
+                    title: 'Phone number',
+                    subtitle: user!.number,
+                    function: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const EditPhoneFormPage()));
+                    },
+                  ),
                   settingsTiles(
-                      icon: Icons.email, title: 'Username', subtitle: user.name),
+                    icon: Icons.email,
+                    title: 'Username',
+                    subtitle: user.name,
+                    function: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const EditNameFormPage()));
+                    },
+                  ),
                   settingsTilesNoSubtitle(
-                      icon: Icons.logout, title: 'Sign out'),
+                      function: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Tareq()),
+                        );
+                      },
+                      icon: Icons.logout,
+                      title: 'Sign out'),
                   settingsTitle(title: 'Security'),
                   lockAppTile(
                       icon: Icons.phonelink_lock_rounded,
@@ -65,7 +88,15 @@ class _SettingsPageState extends State<SettingsPage> {
                   useFingerPrintsTile(
                       icon: Icons.fingerprint, title: 'Use fingerprint'),
                   settingsTilesNoSubtitle(
-                      icon: Icons.lock, title: 'Change password'),
+                    icon: Icons.lock,
+                    title: 'Change password',
+                    function: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ChangePassword()));
+                    },
+                  ),
                   enableNotificationsTile(
                       icon: Icons.notifications_active,
                       title: 'Enable notifications'),
@@ -91,31 +122,33 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget settingsTiles(
-      {required IconData icon,
-      required String title,
-      required String subtitle}) {
+  Widget settingsTiles({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required VoidCallback function,
+  }) {
     return ListTile(
       tileColor: Colors.white,
       leading: Icon(icon),
       title: Text(title),
       subtitle: Text(subtitle),
       trailing: const Icon(Icons.arrow_forward_ios),
-      onTap: () {},
+      onTap: function,
     );
   }
 
   Widget settingsTilesNoSubtitle(
-      {required IconData icon, required String title}) {
+      {required IconData icon,
+      required String title,
+      required VoidCallback function}) {
     return ListTile(
-        tileColor: Colors.white,
-        leading: Icon(icon),
-        title: Text(title),
-        trailing: const Icon(Icons.arrow_forward_ios),
-        onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => const Tareq()));
-        });
+      tileColor: Colors.white,
+      leading: Icon(icon),
+      title: Text(title),
+      trailing: const Icon(Icons.arrow_forward_ios),
+      onTap: function,
+    );
   }
 
   Widget lockAppTile({required IconData icon, required String title}) {

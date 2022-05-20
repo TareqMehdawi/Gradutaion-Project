@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../pages/your_account.dart';
 
@@ -15,6 +17,7 @@ class EditPhoneFormPageState extends State<EditPhoneFormPage> {
   final _formKey = GlobalKey<FormState>();
   final phoneController = TextEditingController();
   var user = UserData.myUser;
+  final currentUser = FirebaseAuth.instance.currentUser!;
 
   @override
   void dispose() {
@@ -95,7 +98,7 @@ class EditPhoneFormPageState extends State<EditPhoneFormPage> {
                         onPressed: () {
                           if (_formKey.currentState!.validate() &&
                               isNumeric(phoneController.text)) {
-                            updateUserValue(phoneController.text);
+                            updateUserPhone(phoneNumber: phoneController.text);
                             Navigator.pop(context);
                           }
                         },
@@ -107,6 +110,13 @@ class EditPhoneFormPageState extends State<EditPhoneFormPage> {
                     )))
           ]),
         ));
+  }
+  Future updateUserPhone({required String phoneNumber}) async{
+    final docUser = FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
+    final json = {
+      'phoneNumber': phoneNumber,
+    };
+    await docUser.update(json);
   }
 }
 

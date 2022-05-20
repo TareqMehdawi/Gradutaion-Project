@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:graduation_project/widgets/user_class.dart';
 
 class FeedbackPage extends StatefulWidget {
   const FeedbackPage({Key? key}) : super(key: key);
@@ -9,6 +12,14 @@ class FeedbackPage extends StatefulWidget {
 }
 
 class _FeedbackPageState extends State<FeedbackPage> {
+
+  final currentUser = FirebaseAuth.instance.currentUser!;
+  String bug = 'Report a Bug';
+  String feature = 'Request a Feature';
+  String applause = 'Send Applause';
+  TextEditingController nameController = TextEditingController();
+  TextEditingController messageController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,26 +61,29 @@ class _FeedbackPageState extends State<FeedbackPage> {
           ),
           feedbackListTile(
             icon: Icons.bug_report_outlined,
-            title: 'Report a Bug',
+            title: bug,
             subtitle: 'Let us know so we can forward this to our bug control.',
+            cTitle: bug,
           ),
           const SizedBox(
             height: 10,
           ),
           feedbackListTile(
             icon: Icons.message_outlined,
-            title: 'Request a Feature',
+            title: feature,
             subtitle:
                 'Do you have any idea that would make this our app better? We would love to know!',
+            cTitle: feature,
           ),
           const SizedBox(
             height: 10,
           ),
           feedbackListTile(
             icon: Icons.emoji_events_outlined,
-            title: 'Send Applause',
+            title: applause,
             subtitle:
                 'Let us know what you like about our app, maybe we can make it even better!',
+            cTitle: applause,
           ),
         ],
       ),
@@ -80,6 +94,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
     required IconData icon,
     required String title,
     required String subtitle,
+    required String cTitle,
   }) {
     return ListTile(
       leading: Icon(icon),
@@ -89,7 +104,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
       tileColor: Colors.white,
       contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
       onTap: () {
-        buildBottomSheet();
+        buildBottomSheet(title: cTitle);
       },
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(50.0),
@@ -97,7 +112,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
     );
   }
 
-  Widget loginButton() {
+  Widget submitButton({required String title}) {
     return ElevatedButton(
       style: OutlinedButton.styleFrom(
         backgroundColor: const Color(0xff141E27),
@@ -115,12 +130,13 @@ class _FeedbackPageState extends State<FeedbackPage> {
         ),
       ),
       onPressed: () {
+        sendFeedback(title: title, name: nameController.text.trim(), message: messageController.text.trim());
         Navigator.pop(context);
       },
     );
   }
 
-  Future buildBottomSheet() {
+  Future buildBottomSheet({required title}) {
     return showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -142,32 +158,48 @@ class _FeedbackPageState extends State<FeedbackPage> {
             const SizedBox(
               height: 25,
             ),
-            loginButton(),
+            submitButton(title: title),
           ],
         ),
       ),
     );
   }
-}
+  Future sendFeedback({required String title,required String name,required String message,}) async{
+    final docUser = FirebaseFirestore.instance.collection('feedback').doc();
 
-Widget nameFormField() {
-  return TextFormField(
-    decoration: const InputDecoration(
-      hintText: "Your Name",
-      border: OutlineInputBorder(),
-    ),
-  );
-}
+    final user = SendFeedback(
+        id: currentUser.uid,
+        name: name,
+        title: title,
+        message: message);
 
-Widget descriptionFormField() {
-  return TextFormField(
-    minLines: 5,
-    maxLines: 10,
-    decoration: const InputDecoration(
-      hintText: 'Write your description here...',
-      border: OutlineInputBorder(),
-    ),
-  );
+    final json = user.toJson();
+
+    await docUser.set(json);
+  }
+
+  Widget nameFormField() {
+    return TextFormField(
+      controller: nameController,
+      decoration: const InputDecoration(
+        hintText: "Your Name",
+        border: OutlineInputBorder(),
+      ),
+    );
+  }
+
+  Widget descriptionFormField() {
+    return TextFormField(
+      controller: messageController,
+      minLines: 5,
+      maxLines: 10,
+      decoration: const InputDecoration(
+        hintText: 'Write your description here...',
+        border: OutlineInputBorder(),
+      ),
+    );
+  }
+
 }
 
 Widget bottomSheetText({required String text}) {

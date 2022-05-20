@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:graduation_project/pages/employee_account.dart';
 import 'package:graduation_project/pages/employee_page.dart';
 import 'package:graduation_project/pages/feedback_page.dart';
 import 'package:graduation_project/pages/make_reservations.dart';
@@ -157,7 +158,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const YourAccount(),
+                                    builder: (context) =>  user.type == 'student' ? const StudentAccount() : const EmployeeAccount(),
                                   ),
                                 );
                               },
