@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../pages/your_account.dart';
 
@@ -15,6 +17,7 @@ class EditOfficeFormPageState extends State<EditOfficeFormPage> {
   final _formKey = GlobalKey<FormState>();
   final officeController = TextEditingController();
   var user = UserData.myUser;
+  final currentUser = FirebaseAuth.instance.currentUser!;
 
   @override
   void dispose() {
@@ -62,7 +65,7 @@ class EditOfficeFormPageState extends State<EditOfficeFormPage> {
                             child: TextFormField(
                               // Handles Form Validation
                               validator: (value) {
-                                if (value == null || value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'Please enter your office location.';
                                 }else if (!isAlpha(value)) {
                                   return 'Enter a valid office location!';
@@ -91,6 +94,7 @@ class EditOfficeFormPageState extends State<EditOfficeFormPage> {
                               if (_formKey.currentState!.validate() &&
                                   isAlpha(officeController.text)) {
                                 updateUserValue(officeController.text);
+                                createOfficeField(office: officeController.text.trim());
                                 Navigator.pop(context);
                               }
                             },
@@ -102,6 +106,13 @@ class EditOfficeFormPageState extends State<EditOfficeFormPage> {
                         )))
               ]),
         ));
+  }
+  Future createOfficeField({required String office}) async{
+    final docUser = FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
+    final json = {
+      'office': office,
+    };
+    await docUser.update(json);
   }
 }
 bool isAlpha(String str) {

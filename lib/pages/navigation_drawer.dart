@@ -1,7 +1,9 @@
 import 'dart:math';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:graduation_project/pages/employee_account.dart';
 import 'package:graduation_project/pages/employee_page.dart';
 import 'package:graduation_project/pages/feedback_page.dart';
 import 'package:graduation_project/pages/make_reservations.dart';
@@ -10,6 +12,7 @@ import 'package:graduation_project/pages/student_page.dart';
 import 'package:graduation_project/pages/your_account.dart';
 import 'package:provider/provider.dart';
 import '../widgets/user_class.dart';
+import 'delete_services.dart';
 import 'login_page.dart';
 
 String image = 'assets/images/images.png';
@@ -59,6 +62,20 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
         future: readUser(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
+            AwesomeDialog(
+                autoDismiss: false,
+                context: context,
+                dialogType: DialogType.ERROR,
+                animType: AnimType.BOTTOMSLIDE,
+                title: 'Error',
+                desc: '${snapshot.error}',
+                btnOkText: "Ok",
+                btnOkOnPress: () {
+                  FirebaseAuth.instance.signOut();
+                },
+                onDissmissCallback: (d) {
+                  FirebaseAuth.instance.signOut();
+                }).show();
             return const Text('Something went wrong');
           } else if (snapshot.hasData) {
             final user = snapshot.data;
@@ -157,7 +174,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const YourAccount(),
+                                    builder: (context) =>  user.type == 'student' ? const StudentAccount() : const EmployeeAccount(),
                                   ),
                                 );
                               },
@@ -166,6 +183,13 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                               icon: Icons.people,
                               title: 'People',
                               function: ()  {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const DeleteService(),
+                                  ),
+                                );
+
                                 // await showSearch(context: context,
                                 //     delegate: EmployeeSearchDelegate());
                               },
@@ -272,7 +296,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             );
         }
           else{
-            /////////////////////////////
+
             return GestureDetector(
               onTap: (){
                 FirebaseAuth.instance.signOut();

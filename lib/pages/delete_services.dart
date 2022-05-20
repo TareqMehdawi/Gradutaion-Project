@@ -1,19 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:graduation_project/pages/make_service.dart';
-import 'package:provider/provider.dart';
+import 'package:graduation_project/pages/Select_service_edit.dart';
 import '../widgets/user_class.dart';
-import 'navigation_drawer.dart';
 
-class EmployeePage extends StatefulWidget {
-  const EmployeePage({Key? key, void function}) : super(key: key);
+
+class DeleteService extends StatefulWidget {
+  const DeleteService({Key? key, void function}) : super(key: key);
 
   @override
-  State<EmployeePage> createState() => _EmployeePageState();
+  State<DeleteService> createState() => _DeleteService();
 }
 
-class _EmployeePageState extends State<EmployeePage> {
+class _DeleteService extends State<DeleteService> {
   @override
   Widget build(BuildContext context) {
     // String selectedService =
@@ -22,32 +21,11 @@ class _EmployeePageState extends State<EmployeePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xff141E27),
-        title: const Text('Employee'),
-        leading: IconButton(
-          onPressed: () {
-            setState(() {
-              Provider.of<NavigationProvider>(context, listen: false)
-                  .changeValue();
-            });
-          },
-          icon: const Icon(Icons.menu),
-        ),
+        title: const Text('My Services'),
         centerTitle: true,
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color(0xff141E27),
-        child: const Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const ServicePage(),
-            ),
-          );
-        },
-      ),
-      body: StreamBuilder<List<StudentsReservation>>(
-        stream: readReservation(),
+      body: StreamBuilder<List<SetEmpService>>(
+        stream: deleteService(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final users = snapshot.data!;
@@ -69,30 +47,42 @@ class _EmployeePageState extends State<EmployeePage> {
     );
   }
 
-  Stream<List<StudentsReservation>> readReservation() {
+  Stream<List<SetEmpService>> deleteService() {
     final currentUser = FirebaseAuth.instance.currentUser!;
     return FirebaseFirestore.instance
-        .collection('reservation')
-        .where("empId", isEqualTo: currentUser.uid)
+        .collection('Service')
+        .where("id", isEqualTo: currentUser.uid)
         .snapshots()
         .map((snapshot) => snapshot.docs
-        .map((doc) => StudentsReservation.fromJson(doc.data()))
+        .map((doc) => SetEmpService.fromJson(doc.data()))
         .toList());
   }
-  Widget buildListTile(StudentsReservation user) => Padding(
+  Widget buildListTile(SetEmpService user) => Padding(
     padding: const EdgeInsets.symmetric(vertical: 5.0),
     child: ListTile(
       leading:  Padding(
         padding: const EdgeInsets.only(top: 10.0),
-        child: Text(user.date),
+        child: Text("${user.Duration.substring(0,2)} min"),
       ),
-      title: Text(user.student),
+      title: Text(user.Service),
       subtitle:  Text(
-          'Service: ${user.service} \nExpected time: ${user.time}'),
+          'days : ${user.days}\nOffice hour: ${user.Time}'),
       trailing: const Icon(Icons.arrow_forward_ios),
       contentPadding: const EdgeInsets.symmetric(
           vertical: 15, horizontal: 15),
-      onTap: () {},
+      onTap: () {
+
+        print(FirebaseFirestore.instance
+            .collection('Service')
+            .doc('user.uid').get().then((value) => print(value)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+            builder: (context) =>  DeleteSelectService(serviceName: user.Service,days: user.days,time: user.Time ,duration: user.Duration ,uid: user.id,),
+        ),
+        );
+
+      },
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
@@ -100,3 +90,4 @@ class _EmployeePageState extends State<EmployeePage> {
     ),
   );
 }
+

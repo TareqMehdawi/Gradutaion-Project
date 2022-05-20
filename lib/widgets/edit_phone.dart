@@ -1,3 +1,6 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../pages/your_account.dart';
 
@@ -15,6 +18,7 @@ class EditPhoneFormPageState extends State<EditPhoneFormPage> {
   final _formKey = GlobalKey<FormState>();
   final phoneController = TextEditingController();
   var user = UserData.myUser;
+  final currentUser = FirebaseAuth.instance.currentUser!;
 
   @override
   void dispose() {
@@ -95,8 +99,22 @@ class EditPhoneFormPageState extends State<EditPhoneFormPage> {
                         onPressed: () {
                           if (_formKey.currentState!.validate() &&
                               isNumeric(phoneController.text)) {
-                            updateUserValue(phoneController.text);
-                            Navigator.pop(context);
+                            updateUserPhone(phoneNumber: phoneController.text);
+                            AwesomeDialog(
+                                autoDismiss: false,
+                                context: context,
+                                dialogType: DialogType.SUCCES,
+                                animType: AnimType.BOTTOMSLIDE,
+                                title: 'Success',
+                                desc: 'Phone number changed successfully',
+                                btnOkText: "Ok",
+                                btnOkOnPress: () {
+                                  return Navigator.of(context).popUntil((route) => route.isFirst);
+                                },
+                                onDissmissCallback: (d){
+                                  return Navigator.of(context).popUntil((route) => route.isFirst);
+                                }
+                            ).show();
                           }
                         },
                         child: const Text(
@@ -107,6 +125,33 @@ class EditPhoneFormPageState extends State<EditPhoneFormPage> {
                     )))
           ]),
         ));
+  }
+  Future updateUserPhone({required String phoneNumber}) async{
+    try {
+      final docUser = FirebaseFirestore.instance.collection('users').doc(
+          currentUser.uid);
+      final json = {
+        'phoneNumber': phoneNumber,
+      };
+      await docUser.update(json);
+    }
+    on FirebaseAuthException catch(error){
+      AwesomeDialog(
+          autoDismiss: false,
+          context: context,
+          dialogType: DialogType.ERROR,
+          animType: AnimType.BOTTOMSLIDE,
+          title: 'Error',
+          desc: '${error.message}',
+          btnOkText: "Ok",
+          btnOkOnPress: () {
+            return Navigator.of(context).popUntil((route) => route.isFirst);
+          },
+          onDissmissCallback: (d){
+            return Navigator.of(context).popUntil((route) => route.isFirst);
+          }
+      ).show();
+    }
   }
 }
 

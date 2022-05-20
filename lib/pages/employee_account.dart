@@ -2,14 +2,18 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:graduation_project/widgets/edit_office.dart';
+import 'package:graduation_project/widgets/edit_office_time.dart';
 import 'package:graduation_project/widgets/spinKit_widget.dart';
 import '../widgets/edit_image.dart';
 import '../widgets/edit_name.dart';
 import '../widgets/edit_phone.dart';
+import '../widgets/edit_email.dart';
 import '../widgets/user_class.dart';
 
-class StudentAccount extends StatefulWidget {
-  const StudentAccount({
+class EmployeeAccount extends StatefulWidget {
+  const EmployeeAccount( {
     Key? key,
   }) : super(key: key);
 
@@ -18,7 +22,7 @@ class StudentAccount extends StatefulWidget {
 //const YourAccount({Key? key}) : super(key: key);
 }
 
-class _YourAccount2 extends State<StudentAccount> {
+class _YourAccount2 extends State<EmployeeAccount> {
   String? image;
   final currentUser = FirebaseAuth.instance.currentUser!;
   String userName = '';
@@ -52,7 +56,7 @@ class _YourAccount2 extends State<StudentAccount> {
         elevation: 0,
         backgroundColor: const Color(0xff141E27),
       ),
-      body: FutureBuilder<Users?>(
+      body: FutureBuilder<UserAccount?>(
           future: readUser(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
@@ -230,60 +234,122 @@ class _YourAccount2 extends State<StudentAccount> {
                         const SizedBox(
                           height: 10,
                         ),
-                        // Column(
-                        //   crossAxisAlignment: CrossAxisAlignment.start,
-                        //   children: [
-                        //     const Text(
-                        //       //title,
-                        //       "Email",
-                        //       style: TextStyle(
-                        //         fontSize: 15,
-                        //         fontWeight: FontWeight.w500,
-                        //         color: Colors.grey,
-                        //       ),
-                        //     ),
-                        //     const SizedBox(
-                        //       height: 1,
-                        //     ),
-                        //     Container(
-                        //       width: 350,
-                        //       height: 40,
-                        //       decoration: const BoxDecoration(
-                        //           border: Border(
-                        //               bottom: BorderSide(
-                        //         color: Colors.grey,
-                        //         width: 1,
-                        //       ))),
-                        //       child: Row(
-                        //         crossAxisAlignment:
-                        //             CrossAxisAlignment.start,
-                        //         children: [
-                        //           Expanded(
-                        //               child: TextButton(
-                        //             child: Text(
-                        //               //getValue,
-                        //               user.email,
-                        //               textAlign: TextAlign.start,
-                        //               style: const TextStyle(
-                        //                   fontSize: 16,
-                        //                   height: 1.4,
-                        //                   color: Colors.black),
-                        //             ),
-                        //             onPressed: () {
-                        //               navigateSecondPage(
-                        //                   const EditEmailFormPage());
-                        //             },
-                        //           )),
-                        //           const Icon(
-                        //             Icons.keyboard_arrow_right,
-                        //             color: Colors.grey,
-                        //             size: 40.0,
-                        //           )
-                        //         ],
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              //title,
+                              "Email",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 1,
+                            ),
+                            Container(
+                                width: 350,
+                                height: 40,
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                        bottom: BorderSide(
+                                          color: Colors.grey,
+                                          width: 1,
+                                        ))),
+                                child: Row(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                          child: TextButton(
+                                            child: Text(
+                                              //getValue,
+                                              user.email,
+                                              textAlign: TextAlign.start,
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  height: 1.4,
+                                                  color: Colors.black),
+                                            ),
+                                            onPressed: () {
+                                              navigateSecondPage(
+                                                  const EditEmailFormPage());
+                                            },
+                                          )),
+                                      const Icon(
+                                        Icons.keyboard_arrow_right,
+                                        color: Colors.grey,
+                                        size: 40.0,
+                                      )
+                                    ]))
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              //title,
+                              "Office",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 1,
+                            ),
+                            Container(
+                                width: 350,
+                                height: 40,
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Colors.grey,
+                                      width: 1,
+                                    ),
+                                  ),
+                                ),
+                                child: Row(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                          child: TextButton(
+                                            child: Text(
+                                              //getValue,
+                                              user.office,
+                                              textAlign: TextAlign.start,
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  height: 1.4,
+                                                  color: Colors.black),
+                                            ),
+                                            onPressed: () {
+                                              navigateSecondPage(
+                                                  const EditOfficeFormPage());
+                                            },
+                                          )),
+                                      const Icon(
+                                        Icons.keyboard_arrow_right,
+                                        color: Colors.grey,
+                                        size: 40.0,
+                                      )
+                                    ]))
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        workingHoursButton(),
+                        const SizedBox(
+                          height: 10,
+                        ),
                       ],
                     ),
                   ),
@@ -297,6 +363,36 @@ class _YourAccount2 extends State<StudentAccount> {
               );
             }
           }),
+    );
+  }
+
+  Widget workingHoursButton() {
+    return OutlinedButton(
+      style: OutlinedButton.styleFrom(
+        backgroundColor: const Color(0xff141E27),
+        minimumSize: Size(MediaQuery.of(context).size.width * .85,
+            MediaQuery.of(context).size.height * .07),
+        side: const BorderSide(width: 1, color: Colors.black),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+        ),
+      ),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const EditOfficeHoursFormPage(),
+          ),
+        );
+      },
+      child: Text(
+        'Choose Working Hours',
+        style: GoogleFonts.ubuntu(
+          textStyle: const TextStyle(
+              fontSize: 20, color: Colors.white, fontWeight: FontWeight.w500),
+        ),
+      ),
     );
   }
 
@@ -332,7 +428,7 @@ class _YourAccount2 extends State<StudentAccount> {
     );
   }
 
-  Future<Users?> readUser() async {
+  Future<UserAccount?> readUser() async {
     setState(() {
       isLoading = true;
     });
@@ -343,7 +439,7 @@ class _YourAccount2 extends State<StudentAccount> {
       setState(() {
         isLoading = false;
       });
-      return Users.fromJson(snapshot.data()!);
+      return UserAccount.fromJson(snapshot.data()!);
     }
     return null;
   }

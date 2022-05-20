@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,7 +7,6 @@ import 'package:graduation_project/pages/navigation_drawer.dart';
 import 'package:graduation_project/pages/register_page.dart';
 import 'package:graduation_project/widgets/spinKit_widget.dart';
 
-import '../widgets/utils_show_snackbar.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -185,8 +185,19 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               );
             }
-          } on FirebaseAuthException {
-            Utils.showSnackBar('Wrong Email or Password!');
+          } on FirebaseAuthException catch (e){
+            // Utils.showSnackBar('Wrong Email or Password!');
+            AwesomeDialog(
+              context: context,
+              dialogType: DialogType.ERROR,
+              animType: AnimType.BOTTOMSLIDE,
+              title: 'Warning',
+              desc: '${e.message}',
+              btnCancelText: "Cancel",
+              btnOkText: "Ok",
+              btnOkOnPress: () {},
+              btnCancelOnPress: () {},
+            ).show();
           }
           setState(() {
             isLoading = false ;
@@ -258,5 +269,6 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
 
 }

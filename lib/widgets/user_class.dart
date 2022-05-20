@@ -24,8 +24,14 @@ class Users {
         'imageUrl': image,
       };
 
-  static Users fromJson(Map<String, dynamic> json) =>
-      Users(id: json['id'], name: json['name'], number: json['phoneNumber'],email: json['email'],image:  json['imageUrl'],type: json['type'],);
+  static Users fromJson(Map<String, dynamic> json) => Users(
+        id: json['id'],
+        name: json['name'],
+        number: json['phoneNumber'],
+        email: json['email'],
+        image: json['imageUrl'],
+        type: json['type'],
+      );
 }
 
 class StudentsReservation {
@@ -57,19 +63,19 @@ class StudentsReservation {
         'people': people,
         'time': time,
         'date': date,
-    'student': student,
+        'student': student,
       };
 
   static StudentsReservation fromJson(Map<String, dynamic> json) =>
       StudentsReservation(
-          id: json['id'],
-          empName: json['empName'],
-          empId: json['empId'],
-          service: json['service'],
-          people: json['people'],
-          time: json['time'],
-          date: json['date'],
-          student: json['student'],
+        id: json['id'],
+        empName: json['empName'],
+        empId: json['empId'],
+        service: json['service'],
+        people: json['people'],
+        time: json['time'],
+        date: json['date'],
+        student: json['student'],
       );
 }
 
@@ -89,15 +95,14 @@ class SetEmpService {
   });
 
   Map<String, dynamic> toJson() => {
-      'id': id,
-      'Service': Service,
-      'days': days,
-      'Duration': Duration,
-      'Time': Time,
-  };
+        'id': id,
+        'Service': Service,
+        'days': days,
+        'Duration': Duration,
+        'Time': Time,
+      };
 
-  static SetEmpService fromJson(Map<String, dynamic> json) =>
-      SetEmpService(
+  static SetEmpService fromJson(Map<String, dynamic> json) => SetEmpService(
         id: json['id'],
         Service: json['Service'],
         days: json['days'],
@@ -105,3 +110,117 @@ class SetEmpService {
         Time: json['Time'],
       );
 }
+
+class UserAccount {
+  String id;
+  final String name;
+  final String number;
+  final String email;
+  final String image;
+  final String type;
+  final String office;
+  final String workingHours;
+
+  UserAccount({
+    this.id = '',
+    this.image = '',
+    this.type = '',
+    required this.name,
+    required this.number,
+    required this.email,
+    this.office = '',
+    this.workingHours = '',
+  });
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'type': type,
+        'name': name,
+        'phoneNumber': number,
+        'email': email,
+        'imageUrl': image,
+        'office': office,
+        'workingHours': workingHours,
+      };
+
+  static UserAccount fromJson(Map<String, dynamic> json) => UserAccount(
+        id: json['id'],
+        name: json['name'],
+        number: json['phoneNumber'],
+        email: json['email'],
+        image: json['imageUrl'],
+        type: json['type'],
+        office: json['office'],
+        workingHours: json['workingHours'],
+      );
+}
+class UserWorkingHours {
+  String id;
+  final String workingHours;
+
+  UserWorkingHours({
+    this.id = '',
+    this.workingHours = '',
+  });
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'workingHours': workingHours,
+  };
+
+  static UserWorkingHours fromJson(Map<String, dynamic> json) => UserWorkingHours(
+    id: json['id'],
+    workingHours: json['officeHours'],
+  );
+}
+class SendFeedback {
+  final String id;
+  final String title;
+  final String name;
+  final String message;
+  final String email;
+
+  SendFeedback({
+    required this.id,
+    required this.title,
+    required this.name,
+    required this.message,
+    required this.email,
+  });
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'title': title,
+    'name': name,
+    'message': message,
+    'email': email,
+  };
+
+  static SendFeedback fromJson(Map<String, dynamic> json) => SendFeedback(
+    id: json['id'],
+    title: json['title'],
+    name: json['name'],
+    message: json['message'],
+    email:  json['email'],
+  );
+}
+// class SetEmployeeProfile{
+//   String office;
+//   String workingHours;
+//
+//   SetEmployeeProfile({
+//     required this.office,
+//     required this.workingHours,
+//   });
+//
+//   Map<String, dynamic> toJson() => {
+//       'office': office,
+//       'workingHours': workingHours,
+//   };
+//
+//   static SetEmployeeProfile fromJson(Map<String, dynamic> json) =>
+//       SetEmployeeProfile(
+//         office: json['office'],
+//         workingHours: json['workingHours'],
+//       );
+// }

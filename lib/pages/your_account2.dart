@@ -295,6 +295,8 @@ class _YourAccount2 extends State<YourAccount2> {
             ),
           ),
           Positioned(
+            right: 4,
+            top: 10,
             child: ClipOval(
               child: Container(
                 padding: const EdgeInsets.all(8),
@@ -306,8 +308,6 @@ class _YourAccount2 extends State<YourAccount2> {
                 ),
               ),
             ),
-            right: 4,
-            top: 10,
           ),
         ],
       ),
@@ -329,6 +329,7 @@ class _YourAccount2 extends State<YourAccount2> {
     }
     return null;
   }
+
 
   FutureOr onGoBack(dynamic value) {
     setState(() {});

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -36,14 +37,14 @@ class _TareqState extends State<Tareq> {
   // }
 
   final CollectionReference _collectionRef =
-      FirebaseFirestore.instance.collection('employee');
+      FirebaseFirestore.instance.collection('users');
 
   Future<List> getData() async {
     // Get docs from collection reference
     QuerySnapshot querySnapshot = await _collectionRef.get();
 
     // Get data from docs and convert map to List
-    final allData = querySnapshot.docs.map((doc) => doc['name']).toList();
+    final allData = querySnapshot.docs.map((doc) => doc['id']).toList();
     allData.sort();
     for (int i = 0; i < allData.length; i++) {
       setState(() {
@@ -53,9 +54,26 @@ class _TareqState extends State<Tareq> {
     return newDoc;
   }
 
+  // FirebaseMessaging notification = FirebaseMessaging.instance;
+  //
+  // getNotifi() async{
+  //   NotificationSettings settings = await notification.requestPermission(
+  //     alert: true,
+  //     announcement: false,
+  //     badge: true,
+  //     carPlay: false,
+  //     criticalAlert: false,
+  //     provisional: false,
+  //     sound: true,
+  //   );
+  //   print('User granted permission: ${settings.authorizationStatus}');
+  // }
+
+
   @override
   void initState() {
     getData();
+    // getNotifi();
     // readDoc();
     super.initState();
   }

@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -6,8 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/pages/login_page.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
 import 'package:graduation_project/widgets/user_class.dart';
-import 'package:graduation_project/widgets/utils_show_snackbar.dart';
-import '../widgets/spinKit_widget.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -47,9 +46,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading == true
-        ? const SpinKitWidget()
-        : Scaffold(
+    return Scaffold(
             body: Form(
               key: formKey,
               autovalidateMode: showValidate == true
@@ -158,7 +155,7 @@ class _RegisterPageState extends State<RegisterPage> {
           } else if (regEmailDoc.hasMatch(value)) {
             type = 'doctor';
           } else {
-            return null;
+            return 'Please enter a valid email!';
           }
           return null;
         },
@@ -234,7 +231,7 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         obscureText: !showPassword,
         validator: (value) {
-          if (passwordController.value != confirmPassword.value) {
+          if (passwordController.text.trim() != confirmPassword.text.trim()) {
             return 'Password doesn\'t match';
           } else {
             return null;
@@ -302,25 +299,63 @@ class _RegisterPageState extends State<RegisterPage> {
                   email: emailController.text.trim(),
                   password: passwordController.text.trim());
               final user = FirebaseAuth.instance.currentUser!;
-              createUser(
-                  name: username,
-                  number: phoneNumber,
-                  id: user.uid,
-                  email: emailController.text,
-                  type: type!);
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const NavigationDrawer(),
-                ),
-              );
-              setState(() {
-                isLoading = false;
-              });
+              if(type == 'student') {
+                createUser(
+                    name: username,
+                    number: phoneNumber,
+                    id: user.uid,
+                    email: emailController.text,
+                    type: type!);
+              }else{
+                createEmployee(
+                    name: username,
+                    number: phoneNumber,
+                    id: user.uid,
+                    email: emailController.text,
+                    type: type!);
+              }
+              AwesomeDialog(
+                  autoDismiss: false,
+                  context: context,
+                  dialogType: DialogType.SUCCES,
+                  animType: AnimType.BOTTOMSLIDE,
+                  title: 'Success',
+                  desc: 'Account successfully created',
+                  btnOkText: "Ok",
+                  btnOkOnPress: () {
+                    return Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const NavigationDrawer(),
+                      ),
+                    );
+                  },
+                  onDissmissCallback: (d){
+                    return Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const NavigationDrawer(),
+                      ),
+                    );
+                  }
+              ).show();
           } on FirebaseAuthException catch (error) {
-            Utils.showSnackBar(error.message);
+            // Utils.showSnackBar(error.message);
+            AwesomeDialog(
+              context: context,
+              dialogType: DialogType.ERROR,
+              animType: AnimType.BOTTOMSLIDE,
+              title: 'Warning',
+              desc: '${error.message}',
+              btnCancelText: "Cancel",
+              btnOkText: "Ok",
+              btnOkOnPress: () {},
+              btnCancelOnPress: () {},
+            ).show();
           }
+          setState(() {
+            isLoading = false;
+          });
         }
       },
     );
@@ -369,6 +404,38 @@ class _RegisterPageState extends State<RegisterPage> {
           email: email,
           image: imgUrl,
           type: type);
+
+      final json = user.toJson();
+
+      await docUser.set(json);
+  }
+ Future createEmployee(
+      {required String name,
+      required String number,
+      required String id,
+      required String email,
+      required String type,
+      String office = '',
+      String workingHours = '',
+      }) async {
+      final docUser = FirebaseFirestore.instance.collection('users').doc(id);
+      final docHours = FirebaseFirestore.instance.collection('officeHours').doc();
+      final json1 = {
+        'officeHours': 'Nothing to show..',
+        'id': id,
+      };
+      await docHours.set(json1);
+
+      final user = UserAccount(
+          id: docUser.id,
+          name: name,
+          number: number,
+          email: email,
+          image: imgUrl,
+          type: type,
+          office: 'Office No.',
+          workingHours: 'Nothing to show..',);
+
 
       final json = user.toJson();
 

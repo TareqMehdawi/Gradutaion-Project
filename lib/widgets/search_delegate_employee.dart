@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 class EmployeeSearchDelegate extends SearchDelegate {
   EmployeeSearchDelegate({required this.type});
+
   final String type;
   final CollectionReference _employees =
       FirebaseFirestore.instance.collection('users');
@@ -13,7 +14,7 @@ class EmployeeSearchDelegate extends SearchDelegate {
   @override
   Widget? buildLeading(BuildContext context) => IconButton(
         onPressed: () {
-            close(context, null);
+          close(context, null);
         },
         icon: const Icon(Icons.arrow_back),
       );
@@ -22,7 +23,7 @@ class EmployeeSearchDelegate extends SearchDelegate {
   List<Widget>? buildActions(BuildContext context) => [
         IconButton(
           onPressed: () {
-              query = '';
+            query = '';
           },
           icon: const Icon(Icons.clear),
         ),
@@ -68,16 +69,19 @@ class EmployeeSearchDelegate extends SearchDelegate {
                         Provider.of<ReservationInfo>(context, listen: false)
                             .selectedEmployee = data.get('name');
                         close(context, null);
-                        Provider.of<ReservationInfo>(context,listen: false).selectedEmployeeId = id ;
+                        Provider.of<ReservationInfo>(context, listen: false)
+                            .selectedEmployeeId = id;
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (BuildContext context) =>
                                     const ReservationPage()));
-          },
-                        leading: CircleAvatar(backgroundImage: NetworkImage(image),),
-                        title: Text(name),
-                        subtitle: Text(email),
+                      },
+                      leading: CircleAvatar(
+                        backgroundImage: NetworkImage(image),
+                      ),
+                      title: Text(name),
+                      subtitle: Text(email),
                     );
                   })
                 ],
@@ -94,7 +98,7 @@ class EmployeeSearchDelegate extends SearchDelegate {
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             ///////////////////////////////////////////////////////////////////
-            return  Center(
+            return Center(
               child: Text(type),
             );
           } else {
@@ -125,17 +129,20 @@ class EmployeeSearchDelegate extends SearchDelegate {
                         // Provider.of<ReservationInfo>(context,listen: false).selectedEmployeeId = id ;
                         close(context, null);
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                     YourAccount2(
-                                      uid:data.get('id'),
-                                    )));
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => YourAccount2(
+                              uid: data.get('id'),
+                            ),
+                          ),
+                        );
                         // Provider.of<ReservationInfo>(context,listen: false).selectedEmployeeId = id ;
                         // query = name;
                         // close(context, query);
                       },
-                      leading: CircleAvatar(backgroundImage: NetworkImage(image),),
+                      leading: CircleAvatar(
+                        backgroundImage: NetworkImage(image),
+                      ),
                       title: Text(name),
                       subtitle: Text(email),
                     );
