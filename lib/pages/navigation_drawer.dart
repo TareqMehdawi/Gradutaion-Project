@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import '../widgets/user_class.dart';
 import 'delete_services.dart';
 import 'login_page.dart';
+import 'make_service.dart';
 
 String image = 'assets/images/images.png';
 
@@ -179,7 +180,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                 );
                               },
                             ),
-                            drawerTiles(
+                            user.type == 'student' ? drawerTiles(
                               icon: Icons.people,
                               title: 'People',
                               function: ()  {
@@ -189,12 +190,24 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                     builder: (context) => const DeleteService(),
                                   ),
                                 );
-
+                                // await showSearch(context: context,
+                                //     delegate: EmployeeSearchDelegate());
+                              },
+                            ) : drawerTiles(
+                              icon: Icons.book,
+                              title: 'My Services',
+                              function: ()  {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const DeleteService(),
+                                  ),
+                                );
                                 // await showSearch(context: context,
                                 //     delegate: EmployeeSearchDelegate());
                               },
                             ),
-                            drawerTiles(
+                            user.type == 'student' ? drawerTiles(
                               icon: Icons.connect_without_contact,
                               title: 'Make Reservations',
                               function: () {
@@ -203,6 +216,18 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                   MaterialPageRoute(
                                     builder: (context) =>
                                     const ReservationPage(),
+                                  ),
+                                );
+                              },
+                            ) : drawerTiles(
+                              icon: Icons.add_circle,
+                              title: 'Add Services',
+                              function: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                    const ServicePage(),
                                   ),
                                 );
                               },

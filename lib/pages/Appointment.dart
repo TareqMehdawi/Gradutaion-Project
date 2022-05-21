@@ -172,6 +172,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                 value: selectedValue,
                                 onChanged: (value) {
                                   setState(() {
+                                    selectedValue2 = null;
                                     selectedValue = value as String;
                                     serviceSelect = value;
                                   });

@@ -4,8 +4,9 @@ import 'package:day_picker/day_picker.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:graduation_project/pages/delete_services.dart';
 import 'package:time_range_picker/time_range_picker.dart';
-import '../widgets/user_class.dart';
+
 
 class DeleteSelectService extends StatefulWidget {
   String time;
@@ -29,16 +30,16 @@ class DeleteSelectService extends StatefulWidget {
 }
 
 class _DeleteSelectService extends State<DeleteSelectService> {
+  final formKey = GlobalKey<FormState>();
   TextEditingController serviceController = TextEditingController();
   int currentStep = 0;
   DateTime? date;
   TimeOfDay? startTime;
   TimeOfDay? endTime;
   String? duration;
-  TimeOfDay time = TimeOfDay.now();
 
   //List<Message> messages = [];
-  List<String> Newdays = [];
+  List<String> newDays = [];
   final currentUser = FirebaseAuth.instance.currentUser!;
 
   String? selectedValue;
@@ -52,7 +53,7 @@ class _DeleteSelectService extends State<DeleteSelectService> {
   ];
 
   List<DayInWeek> daysSelected() {
-    final List<DayInWeek> _days = [
+    final List<DayInWeek> days = [
       DayInWeek(
         "Sunday",
       ),
@@ -75,16 +76,16 @@ class _DeleteSelectService extends State<DeleteSelectService> {
         "Saturday",
       ),
     ];
-    for (int i = 0; i < _days.length; i++) {
+    for (int i = 0; i < days.length; i++) {
       for (int j = 0; j < widget.days.length; j++) {
-        if (_days[i].dayName == widget.days[j]) {
-          _days[i].isSelected = true;
+        if (days[i].dayName == widget.days[j]) {
+          days[i].isSelected = true;
           break;
         }
       }
     }
 
-    return _days;
+    return days;
   }
 
   String? time2;
@@ -107,7 +108,7 @@ class _DeleteSelectService extends State<DeleteSelectService> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xff141E27),
-        title: Text(widget.serviceName),
+        title: const Text('Edit Service'),
         centerTitle: true,
       ),
       body: ListView(
@@ -115,15 +116,24 @@ class _DeleteSelectService extends State<DeleteSelectService> {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-            child: TextField(
-              controller: serviceController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Change service name',
-                labelText: 'Service',
-                suffixIcon: Icon(
-                  Icons.design_services_rounded,
+            child: Form(
+              key: formKey,
+              child: TextFormField(
+                controller: serviceController,
+                decoration:  InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: 'Change service name',
+                  hintText: widget.serviceName,
+                  suffixIcon: const Icon(
+                    Icons.design_services_rounded,
+                  ),
                 ),
+                validator: (value){
+                  if(value.toString().isEmpty){
+                    return 'Please enter a new service name';
+                  }
+                  return null;
+                },
               ),
             ),
           ),
@@ -138,15 +148,15 @@ class _DeleteSelectService extends State<DeleteSelectService> {
                 borderRadius: BorderRadius.circular(30.0),
                 gradient: const LinearGradient(
                   begin: Alignment.topLeft,
-                  colors: [Color(0xFFE55CE4), Color(0xFFBB75FB)],
+                  colors: [Color(0xff141E27), Color(0xff141E27)],
                   tileMode:
                       TileMode.repeated, // repeats the gradient over the canvas
                 ),
               ),
               onSelect: (values) {
                 // <== Callback to handle the selected days
-                Newdays = [];
-                Newdays.addAll(values);
+                newDays = [];
+                newDays.addAll(values);
               },
             ),
           ),
@@ -213,18 +223,18 @@ class _DeleteSelectService extends State<DeleteSelectService> {
                   isExpanded: true,
                   hint: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.list,
                         size: 16,
                         color: Colors.yellow,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 4,
                       ),
                       Expanded(
                         child: Text(
                           widget.duration,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                             color: Colors.yellow,
@@ -253,7 +263,6 @@ class _DeleteSelectService extends State<DeleteSelectService> {
                     setState(() {
                       selectedValue = value as String;
                       duration = value;
-                      print(value);
                     });
                   },
                   icon: const Icon(
@@ -294,30 +303,91 @@ class _DeleteSelectService extends State<DeleteSelectService> {
           Row(
             children: [
               Padding(
-                  padding: const EdgeInsets.only(top: 150, left: 50),
-                  child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: SizedBox(
-                        width: 150,
-                        height: 50,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.black),
-                          ),
-                          child: const Text(
-                            'Update',
-                            style: TextStyle(fontSize: 15),
-                          ),
-                          onPressed: () {
-                             updateServiceName(servicename: serviceController.text);
-                             updateTime(time: time2!);
-                             updateDuration(durationn: duration!);
-                            updateDays(day: Newdays);
-                          },
-                        ),
-                      ))),
-              SizedBox(
+                padding: const EdgeInsets.only(top: 150, left: 50),
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: SizedBox(
+                    width: 150,
+                    height: 50,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.black),
+                      ),
+                      child: const Text(
+                        'Update',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      onPressed: () {
+                        final isValid = formKey.currentState!.validate();
+                        if(isValid) {
+                          try {
+                          updateServiceName(
+                              servicename: serviceController.text);
+                          updateTime(time: time2!);
+                          updateDuration(duration: duration!);
+                          updateDays(day: newDays);
+                          AwesomeDialog(
+                            autoDismiss: false,
+                            context: context,
+                            dialogType: DialogType.SUCCES,
+                            animType: AnimType.BOTTOMSLIDE,
+                            title: 'Success',
+                            desc: 'Service updated successfully',
+                            btnOkText: "Go back",
+                            btnCancelColor: Colors.black87,
+                            btnOkOnPress: () {
+                              Navigator.pop(context);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const DeleteService()));
+                            },
+                            onDissmissCallback: (d) {
+                              Navigator.pop(context);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const DeleteService()));
+                            },
+                          ).show();
+                        } on FirebaseAuthException catch (error) {
+                          AwesomeDialog(
+                            autoDismiss: false,
+                            context: context,
+                            dialogType: DialogType.ERROR,
+                            animType: AnimType.BOTTOMSLIDE,
+                            title: 'Error',
+                            desc: '${error.message}',
+                            btnCancelText: 'Go back',
+                            btnCancelColor: Colors.black87,
+                            onDissmissCallback: (d) {
+                              Navigator.pop(context);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const DeleteService()));
+                            },
+                            btnCancelOnPress: () {
+                              Navigator.pop(context);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const DeleteService()));
+                            },
+                          ).show();
+                        }
+                        }
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
                 width: 4,
               ),
               Padding(
@@ -337,10 +407,103 @@ class _DeleteSelectService extends State<DeleteSelectService> {
                             style: TextStyle(fontSize: 15),
                           ),
                           onPressed: () async {
-                            deleteService();
-                          },
+                              AwesomeDialog(
+                                context: context,
+                                dialogType: DialogType.WARNING,
+                                animType: AnimType.BOTTOMSLIDE,
+                                title: 'Warning',
+                                desc: 'Are you sure you want to delete this service',
+                                btnOkText: "Delete",
+                                btnCancelText: 'Cancel',
+                                btnCancelOnPress: (){},
+                                btnOkOnPress: () {
+                                  try {
+                                    deleteService();
+                                    AwesomeDialog(
+                                      autoDismiss: false,
+                                      context: context,
+                                      dialogType: DialogType.SUCCES,
+                                      animType: AnimType.BOTTOMSLIDE,
+                                      title: 'Success',
+                                      desc: 'Service deleted successfully',
+                                      btnOkText: 'Go back',
+                                      btnCancelColor: Colors.black87,
+                                      onDissmissCallback: (d) {
+                                        Navigator.pop(context);
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                const DeleteService()));
+                                      },
+                                      btnOkOnPress: () {
+                                        Navigator.pop(context);
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                const DeleteService()));
+                                      },
+                                    ).show();
+                                  } on FirebaseAuthException catch(error){
+                                    AwesomeDialog(
+                                      autoDismiss: false,
+                                      context: context,
+                                      dialogType: DialogType.ERROR,
+                                      animType: AnimType.BOTTOMSLIDE,
+                                      title: 'Error',
+                                      desc: '${error.message}',
+                                      btnCancelText: 'Go back',
+                                      btnCancelColor: Colors.black87,
+                                      onDissmissCallback: (d) {
+                                        Navigator.pop(context);
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                const DeleteService()));
+                                      },
+                                      btnCancelOnPress: () {
+                                        Navigator.pop(context);
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                const DeleteService()));
+                                      },
+                                    ).show();
+                                  }
+                                },
+                              ).show();
+                              // AwesomeDialog(
+                              //   autoDismiss: false,
+                              //   context: context,
+                              //   dialogType: DialogType.SUCCES,
+                              //   animType: AnimType.BOTTOMSLIDE,
+                              //   title: 'Success',
+                              //   desc: 'Service deleted successfully',
+                              //   btnOkText: "Go back",
+                              //   btnCancelColor: Colors.black87,
+                              //   btnOkOnPress: () {
+                              //     Navigator.pop(context);
+                              //     Navigator.pushReplacement(
+                              //         context,
+                              //         MaterialPageRoute(
+                              //             builder: (context) =>
+                              //             const DeleteService()));
+                              //   },
+                              //   onDissmissCallback: (d) {
+                              //     Navigator.pop(context);
+                              //     Navigator.pushReplacement(
+                              //         context,
+                              //         MaterialPageRoute(
+                              //             builder: (context) =>
+                              //             const DeleteService()));
+                              //   },
+                              // ).show();
+                            },
                         ),
-                      )))
+                      ),),),
             ],
           )
         ],
@@ -349,69 +512,72 @@ class _DeleteSelectService extends State<DeleteSelectService> {
   }
 
   Future updateDays({required List<String> day}) async {
-
-
-    final  docUser2 = await FirebaseFirestore
-        .instance
+    final docUser2 = await FirebaseFirestore.instance
         .collection('Service')
         .where('Service', isEqualTo: widget.serviceName)
-        .where('id', isEqualTo: widget.uid).get();
-        for(var doc in docUser2.docs) {
-          await FirebaseFirestore.instance
-              .collection('Service').doc(doc.id).update({'days':day});
-
-        }
+        .where('id', isEqualTo: widget.uid)
+        .get();
+    for (var doc in docUser2.docs) {
+      await FirebaseFirestore.instance
+          .collection('Service')
+          .doc(doc.id)
+          .update({'days': day});
+    }
   }
 
   Future updateServiceName({required String servicename}) async {
-    final  docUser2 = await FirebaseFirestore
-        .instance
+    final docUser2 = await FirebaseFirestore.instance
         .collection('Service')
         .where('Service', isEqualTo: widget.serviceName)
-        .where('id', isEqualTo: widget.uid).get();
-    for(var doc in docUser2.docs) {
+        .where('id', isEqualTo: widget.uid)
+        .get();
+    for (var doc in docUser2.docs) {
       await FirebaseFirestore.instance
-          .collection('Service').doc(doc.id).update({'Service':servicename});
-
+          .collection('Service')
+          .doc(doc.id)
+          .update({'Service': servicename});
     }
   }
 
   Future updateTime({required String time}) async {
-    final  docUser2 = await FirebaseFirestore
-        .instance
+    final docUser2 = await FirebaseFirestore.instance
         .collection('Service')
         .where('Service', isEqualTo: widget.serviceName)
-        .where('id', isEqualTo: widget.uid).get();
-    for(var doc in docUser2.docs) {
+        .where('id', isEqualTo: widget.uid)
+        .get();
+    for (var doc in docUser2.docs) {
       await FirebaseFirestore.instance
-          .collection('Service').doc(doc.id).update({'Time':time});
-
+          .collection('Service')
+          .doc(doc.id)
+          .update({'Time': time});
     }
   }
 
-  Future updateDuration({required String durationn}) async {
-    final  docUser2 = await FirebaseFirestore
-        .instance
+  Future updateDuration({required String duration}) async {
+    final docUser2 = await FirebaseFirestore.instance
         .collection('Service')
         .where('Service', isEqualTo: widget.serviceName)
-        .where('id', isEqualTo: widget.uid).get();
-    for(var doc in docUser2.docs) {
+        .where('id', isEqualTo: widget.uid)
+        .get();
+    for (var doc in docUser2.docs) {
       await FirebaseFirestore.instance
-          .collection('Service').doc(doc.id).update({'Duration':durationn});
-
+          .collection('Service')
+          .doc(doc.id)
+          .update({'Duration': duration});
     }
   }
+
   Future deleteService() async {
-    final  docUser2 = await FirebaseFirestore
-        .instance
+    final docUser2 = await FirebaseFirestore.instance
         .collection('Service')
         .where('Service', isEqualTo: widget.serviceName)
-        .where('id', isEqualTo: widget.uid).get();
-    for(var doc in docUser2.docs) {
+        .where('id', isEqualTo: widget.uid)
+        .get();
+    for (var doc in docUser2.docs) {
       await FirebaseFirestore.instance
-          .collection('Service').doc(doc.id).delete();
-
+          .collection('Service')
+          .doc(doc.id)
+          .delete();
     }
   }
-
 }

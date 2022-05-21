@@ -129,12 +129,14 @@ class _StudentPageState extends State<StudentPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   loginButton(title: 'Doctor',function: () async{
+                    Navigator.pop(context);
                     await showSearch(
                       context: context,
                       delegate: EmployeeSearchDelegate(type: 'doctor'),
                     );
                   },),
                   loginButton(title: 'Registration',function: () async{
+                    Navigator.pop(context);
                     await showSearch(
                       context: context,
                       delegate: EmployeeSearchDelegate(type: 'registration'),

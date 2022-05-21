@@ -15,6 +15,8 @@ class Tareq extends StatefulWidget {
 class _TareqState extends State<Tareq> {
   bool s = false;
   bool m = false;
+  String hour =  TimeOfDay.now().hourOfPeriod.toString().padLeft(2,'0');
+  String minutes = TimeOfDay.now().minute.toString().padLeft(2,'0');
   final user = FirebaseAuth.instance.currentUser!;
   // var newDoc = [];
 
@@ -86,21 +88,26 @@ class _TareqState extends State<Tareq> {
       appBar: AppBar(),
       body: ListView(
         children:[
-          listTile(x: s),
-          listTile(x: m),
+          listTile(),
+          listTile(),
         ]
       ),
     );
   }
-  Widget listTile({required bool x}){
+  Widget listTile(){
     return ListTile(
-      leading: x == false ? Icon(Icons.add) : Icon(Icons.celebration),
-      title: Text('newDoc[index].toString()'),
+      leading: Icon(Icons.add) ,
+      title: Text("$hour : $minutes"),
       onTap: (){
         setState(() {
-          x = !s;
         });
       },
     );
+  }
+  addTime({required String t}){
+    String t = hour;
+    switch(t){
+      case '11:11':
+    }
   }
 }

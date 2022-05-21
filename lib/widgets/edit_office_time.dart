@@ -356,6 +356,7 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
           desc: 'Office Hours Updated successfully',
           btnOkText: "Ok",
           btnOkOnPress: () {
+            Navigator.pop(context);
             Navigator.pushReplacement(context, MaterialPageRoute(
                 builder: (context) => const EditOfficeHoursFormPage()));
           },

@@ -1,15 +1,15 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:day_picker/day_picker.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:graduation_project/pages/navigation_drawer.dart';
 import 'package:time_range_picker/time_range_picker.dart';
-
 import '../widgets/user_class.dart';
 
 class ServicePage extends StatefulWidget {
   const ServicePage({Key? key}) : super(key: key);
-
 
   @override
   State<ServicePage> createState() => _ServicePageState();
@@ -17,25 +17,27 @@ class ServicePage extends StatefulWidget {
 
 class _ServicePageState extends State<ServicePage> {
   TextEditingController serviceController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
   int currentStep = 0;
-  DateTime ?date;
-  TimeOfDay ?startTime;
-  TimeOfDay ?endTime;
-  String ?duration;
+  DateTime? date;
+  TimeOfDay? startTime;
+  TimeOfDay? endTime;
+  String? duration;
   TimeOfDay time = TimeOfDay.now();
+
   //List<Message> messages = [];
   List<String> days = [];
   final currentUser = FirebaseAuth.instance.currentUser!;
 
   //String dropdownvalue = 'Item 1';
-  String ?time2;
+  String? time2;
 
   String? getTime() {
     if (startTime == null && endTime == null) {
       return "Select Time";
     } else {
-      time2 ="${startTime.toString().substring(10, 15)} - ${endTime.toString()
-          .substring(10, 15)}";
+      time2 =
+          "${startTime.toString().substring(10, 15)} - ${endTime.toString().substring(10, 15)}";
       return time2;
     }
   }
@@ -75,27 +77,45 @@ class _ServicePageState extends State<ServicePage> {
   ];
 
   @override
+  void dispose() {
+    serviceController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: const Color(0xff141E27),
           title: const Text('Add Service'),
+          leading: const BackButton(),
           centerTitle: true,
         ),
         body: ListView(
           //crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-             Padding(
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-              child: TextField(
-                controller: serviceController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Enter your new service',
-                  labelText: 'Service',
-                  suffixIcon: Icon(
-                    Icons.design_services_rounded,
+              child: Form(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                key: formKey,
+                child: TextFormField(
+                  controller: serviceController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Enter your new service',
+                    labelText: 'Service',
+                    suffixIcon: Icon(
+                      Icons.design_services_rounded,
+                    ),
                   ),
+                  validator: (value){
+                    if(serviceController.text.isEmpty){
+                      return 'Please enter a service name.';
+                    }else{
+                      return null;
+                    }
+                  },
                 ),
               ),
             ),
@@ -111,18 +131,20 @@ class _ServicePageState extends State<ServicePage> {
                   gradient: const LinearGradient(
                     begin: Alignment.topLeft,
                     colors: [Color(0xFFE55CE4), Color(0xFFBB75FB)],
-                    tileMode:
-                    TileMode.repeated, // repeats the gradient over the canvas
+                    tileMode: TileMode
+                        .repeated, // repeats the gradient over the canvas
                   ),
                 ),
-                onSelect: (values) { // <== Callback to handle the selected days
+                onSelect: (values) {
+                  // <== Callback to handle the selected days
                   days = [];
                   days.addAll(values);
                 },
               ),
             ),
             Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 child: Align(
                     alignment: Alignment.bottomCenter,
                     child: SizedBox(
@@ -135,7 +157,8 @@ class _ServicePageState extends State<ServicePage> {
                         child: FittedBox(
                           child: Text(
                             getTime()!,
-                            style: const TextStyle(fontSize: 15, color: Colors.white),
+                            style: const TextStyle(
+                                fontSize: 15, color: Colors.white),
                           ),
                         ),
                         onPressed: () async {
@@ -144,7 +167,8 @@ class _ServicePageState extends State<ServicePage> {
                               start: const TimeOfDay(hour: 9, minute: 0),
                               end: const TimeOfDay(hour: 12, minute: 0),
                               disabledTime: TimeRange(
-                                  startTime: const TimeOfDay(hour: 18, minute: 0),
+                                  startTime:
+                                      const TimeOfDay(hour: 18, minute: 0),
                                   endTime: const TimeOfDay(hour: 6, minute: 0)),
                               disabledColor: Colors.red.withOpacity(0.5),
                               strokeWidth: 4,
@@ -161,10 +185,7 @@ class _ServicePageState extends State<ServicePage> {
                                 "3 pm",
                                 "6 pm",
                                 "9 pm"
-                              ]
-                                  .asMap()
-                                  .entries
-                                  .map((e) {
+                              ].asMap().entries.map((e) {
                                 return ClockLabel.fromIndex(
                                     idx: e.key, length: 8, text: e.value);
                               }).toList(),
@@ -208,26 +229,24 @@ class _ServicePageState extends State<ServicePage> {
                       ],
                     ),
                     items: items
-                        .map((item) =>
-                        DropdownMenuItem<String>(
-                          value: item,
-                          child: Text(
-                            item,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ))
+                        .map((item) => DropdownMenuItem<String>(
+                              value: item,
+                              child: Text(
+                                item,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ))
                         .toList(),
                     value: selectedValue,
                     onChanged: (value) {
                       setState(() {
                         selectedValue = value as String;
-                        duration =value;
-                        print(value);
+                        duration = value;
                       });
                     },
                     icon: const Icon(
@@ -265,7 +284,6 @@ class _ServicePageState extends State<ServicePage> {
                 ),
               ),
             ),
-
             Padding(
                 padding: const EdgeInsets.only(top: 150),
                 child: Align(
@@ -276,58 +294,102 @@ class _ServicePageState extends State<ServicePage> {
                       child: ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.black),
+                              MaterialStateProperty.all<Color>(Colors.black),
                         ),
-
                         child: const Text(
                           'Add',
                           style: TextStyle(fontSize: 15),
                         ),
                         onPressed: () {
-                          setService(
-                          Duration: duration!,
+                          final isValid = formKey.currentState!.validate();
+                          if(isValid) {
+                            setService(
+                            Duration: duration!,
                             Service: serviceController.text,
                             Time: time2!,
                             days: days,
-
-                        );},
+                          );
+                          }
+                        },
                       ),
                     )))
           ],
         ));
   }
 
-Future setService(
-      { String ?id,
-        required String Duration,
-        required String Service,
-        required String Time,
-        required List<String> days,
-
-      }
-  // Map<String, dynamic> toJson() => {
-  //   'id': id,
-  //   'Service': Service,
-  //   'days': days,
-  //   'Duration': Duration,
-  //   'Time': Time,
-  //
-  // };
-
+  Future setService({
+    String? id,
+    required String Duration,
+    required String Service,
+    required String Time,
+    required List<String> days,
+  }
+      // Map<String, dynamic> toJson() => {
+      //   'id': id,
+      //   'Service': Service,
+      //   'days': days,
+      //   'Duration': Duration,
+      //   'Time': Time,
+      //
+      // };
       ) async {
-    final docUser = FirebaseFirestore.instance.collection('Service').doc();
-    final user = SetEmpService(
-      id: currentUser.uid,
-      Service: Service,
-      days: days,
-      Duration: Duration,
-      Time: Time,
-
-    );
-
-    final json = user.toJson();
-    await docUser.set(json);
+    try {
+      final docUser = FirebaseFirestore.instance.collection('Service').doc();
+      final user = SetEmpService(
+        id: currentUser.uid,
+        Service: Service,
+        days: days,
+        Duration: Duration,
+        Time: Time,
+      );
+      final json = user.toJson();
+      await docUser.set(json);
+      AwesomeDialog(
+        autoDismiss: false,
+        context: context,
+        dialogType: DialogType.SUCCES,
+        animType: AnimType.BOTTOMSLIDE,
+        title: 'Success',
+        desc: 'Service added successfully',
+        btnOkText: "Add more services",
+        btnCancelText: 'Go back',
+        btnCancelColor: Colors.black87,
+        btnOkOnPress: () {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const ServicePage()));
+        },
+        onDissmissCallback: (d) {
+          Navigator.pop(context);
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const ServicePage()));
+        },
+        btnCancelOnPress: () {
+          Navigator.pop(context);
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const NavigationDrawer()));
+        },
+      ).show();
+    } on FirebaseAuthException catch (error) {
+      AwesomeDialog(
+        autoDismiss: false,
+        context: context,
+        dialogType: DialogType.ERROR,
+        animType: AnimType.BOTTOMSLIDE,
+        title: 'Error',
+        desc: '${error.message}',
+        btnCancelText: 'Go back',
+        btnCancelColor: Colors.black87,
+        onDissmissCallback: (d) {
+          Navigator.pop(context);
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const NavigationDrawer()));
+        },
+        btnCancelOnPress: () {
+          Navigator.pop(context);
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const NavigationDrawer()));
+        },
+      ).show();
+    }
   }
 }
-
-
