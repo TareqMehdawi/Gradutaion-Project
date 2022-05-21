@@ -30,6 +30,8 @@ class _BookingScreenState extends State<BookingScreen> {
   String? selectedValue;
   String? selectedValue2;
   String? serviceSelect;
+  String? daySelect;
+  int? serviceIndex;
 
   List sendItem(List items2) {
     List items = [];
@@ -44,6 +46,7 @@ class _BookingScreenState extends State<BookingScreen> {
     List items = [];
     for (var i = 0; i < items2.length; i++) {
       if (items2[i]["Service"] == serviceSelect) {
+        serviceIndex=i;
         for (var j = 0; j < items2[i]["days"].length; j++) {
           items.add(items2[i]["days"][j]);
         }
@@ -52,6 +55,47 @@ class _BookingScreenState extends State<BookingScreen> {
     return items;
   }
 
+  //09:00 - 10:00
+  //30
+  List sendItem3(List items2) {
+    List items = [];
+    int duration =int.parse(items2[serviceIndex!]["Duration"].toString().substring(0,2));
+    int endmin =int.parse(items2[serviceIndex!]["Time"].toString().substring(11,13));
+    int endhour =int.parse(items2[serviceIndex!]["Time"].toString().substring(8,10));
+    print(duration);
+    print(endmin);
+    print(items2[serviceIndex!]["days"][0]);
+
+            print(endhour);
+            int min=int.parse(items2[serviceIndex!]["Time"].toString().substring(3,5));
+            int hour=int.parse(items2[serviceIndex!]["Time"].toString().substring(0,2));
+            int min2;
+            while(hour<=endhour){
+              int minute=min;
+              int ho= hour;
+              min=min+duration;
+              if(min<60){
+                if(!(min>endmin && hour==endhour)){
+                  if(hour<=endhour) {
+
+                items.add('${ho.toString().padLeft(2,"0")} : ${minute.toString().padLeft(2,"0")} - ${hour.toString().padLeft(2,"0")} : ${min.toString().padLeft(2,"0")} ');
+                  }}
+              }else if(min>=60){
+                min2=min-60;
+                hour++;
+                if(!(min2>endmin && hour==endhour)){
+                if(hour<=endhour) {
+                  items.add('${ho.toString().padLeft(2,"0")} : ${minute.toString().padLeft(2,"0")} - ${hour.toString().padLeft(2,"0")} : ${min2.toString().padLeft(2,"0")} ');
+                }
+                min=min2;
+
+              }}
+
+            }
+            print(items);
+
+    return items;
+  }
   Future<void> selectTime(BuildContext context) async {
     TimeOfDay? selectedTime = await showTimePicker(
       context: context,
@@ -172,7 +216,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                 value: selectedValue,
                                 onChanged: (value) {
                                   setState(() {
-                                    selectedValue2 = null;
+                                    selectedValue2=null;
                                     selectedValue = value as String;
                                     serviceSelect = value;
                                   });
@@ -257,6 +301,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                 onChanged: (value) {
                                   setState(() {
                                     selectedValue2 = value as String;
+                                    daySelect= value;
                                     //print(value);
                                   });
                                 },
@@ -380,7 +425,10 @@ class _BookingScreenState extends State<BookingScreen> {
                                     borderRadius: BorderRadius.circular(32.0),
                                   ),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  sendItem3(user);
+
+                                },
                                 child: Text(
                                   "Book Appointment",
                                   style: GoogleFonts.lato(

@@ -31,6 +31,27 @@ class _YourAccount2 extends State<YourAccount2> {
     }
   }
 
+  String officeDays( Map<dynamic, dynamic> map){
+   String office ="";
+
+    for(var m in map.keys){
+   office =office + '$m : \n';
+    }
+
+    return office;
+  }
+
+  String officeHours( Map<dynamic, dynamic> map){
+    String office ="";
+
+    for(var m in map.keys){
+      office =office + '${map[m]}  \n';
+    }
+
+    return office;
+  }
+
+
   @override
   void initState() {
     readUser();
@@ -42,13 +63,13 @@ class _YourAccount2 extends State<YourAccount2> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-              child: FutureBuilder (
+              child: FutureBuilder<UserAccount?> (
                   future: readUser(),
                 builder: (context, snapshot){
                   if (snapshot.hasError) {
                     return const Text('Something went wrong');
                   }else if (snapshot.hasData) {
-                  final user = snapshot.data as Users;
+                  final user = snapshot.data! ;
                   return ListView(
                       children : [
                         Container(
@@ -134,7 +155,7 @@ class _YourAccount2 extends State<YourAccount2> {
                                   SizedBox(
                                     width: MediaQuery.of(context).size.width / 1.4,
                                     child: Text(
-                                      "It college office 204",
+                                      user.office.isEmpty?"no location":user.office,
                                       style: GoogleFonts.lato(
                                         fontSize: 16,
                                       ),
@@ -180,42 +201,31 @@ class _YourAccount2 extends State<YourAccount2> {
                                     width: 15,
                                   ),
                                   const Icon(Icons.access_time_rounded),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text(
-                                    'Office Hours',
-                                    style: GoogleFonts.lato(
-                                      fontSize: 16,
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                                    padding: const EdgeInsets.only(left: 8),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          user.officeHours.isEmpty?"no office hours":officeDays(user.officeHours),
+                                          style: GoogleFonts.lato(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          user.officeHours.isEmpty?"no office hours":officeHours(user.officeHours),
+                                          style: GoogleFonts.lato(
+                                            fontSize: 17,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 10),
-                              padding: const EdgeInsets.only(left: 60),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'Sunday: ',
-                                    style: GoogleFonts.lato(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    "10:00-11:00",
-                                    style: GoogleFonts.lato(
-                                      fontSize: 17,
-                                    ),
-                                  ),
+
                                 ],
                               ),
                             ),
@@ -314,7 +324,7 @@ class _YourAccount2 extends State<YourAccount2> {
     );
   }
 
-  Future readUser() async {
+  Future<UserAccount?> readUser() async {
     setState(() {
       isLoading = true;
     });
@@ -325,9 +335,9 @@ class _YourAccount2 extends State<YourAccount2> {
       setState(() {
         isLoading = false;
       });
-      return Users.fromJson(snapshot.data()!);
+      return UserAccount.fromJson(snapshot.data()!);
     }
-    return null;
+
   }
 
 
