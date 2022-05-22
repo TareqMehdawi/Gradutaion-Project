@@ -27,12 +27,7 @@ class EditPhoneFormPageState extends State<EditPhoneFormPage> {
   }
 
   void updateUserValue(String phone) {
-    String formattedPhoneNumber = "(" +
-        phone.substring(0, 3) +
-        ") " +
-        phone.substring(3, 6) +
-        "-" +
-        phone.substring(6, phone.length);
+    String formattedPhoneNumber = "(${phone.substring(0, 3)}) ${phone.substring(3, 6)}-${phone.substring(6, phone.length)}";
     user.phone = formattedPhoneNumber;
   }
 
@@ -156,11 +151,11 @@ class EditPhoneFormPageState extends State<EditPhoneFormPage> {
 }
 
 bool isAlpha(String str) {
-  RegExp _alpha = RegExp(r'^[a-zA-Z]+$');
-  return _alpha.hasMatch(str);
+  RegExp alpha = RegExp(r'^[a-zA-Z]+$');
+  return alpha.hasMatch(str);
 }
 
 bool isNumeric(String str) {
-  RegExp _numeric = RegExp(r'^-?[0-9]+$');
-  return _numeric.hasMatch(str);
+  RegExp numeric = RegExp(r'^-?[0-9]+$');
+  return numeric.hasMatch(str);
 }

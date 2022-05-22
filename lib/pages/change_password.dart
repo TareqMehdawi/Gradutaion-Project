@@ -99,6 +99,7 @@ class _ChangePasswordState extends State<ChangePassword> {
           } else if (!regPassword.hasMatch(value)) {
             return 'Password must have at least:\nOne upper case,\nOne lower case,\nOne digit,\nOne special character,\nMinimum eight characters,';
           }
+          return null;
         },
       ),
     );
@@ -127,6 +128,7 @@ class _ChangePasswordState extends State<ChangePassword> {
           } else if (oldPasswordController.text.trim() == newPasswordController.text.trim()) {
             return 'New Password cannot be the same as the old password';
           }
+          return null;
         },
       ),
     );

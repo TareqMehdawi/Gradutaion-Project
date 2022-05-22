@@ -116,6 +116,6 @@ class EditOfficeFormPageState extends State<EditOfficeFormPage> {
   }
 }
 bool isAlpha(String str) {
-  RegExp _alpha = RegExp(r"^[a-zA-Z0-9]+");
-  return _alpha.hasMatch(str);
+  RegExp alpha = RegExp(r"^[a-zA-Z0-9]+");
+  return alpha.hasMatch(str);
 }

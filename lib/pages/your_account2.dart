@@ -35,7 +35,7 @@ class _YourAccount2 extends State<YourAccount2> {
    String office ="";
 
     for(var m in map.keys){
-   office =office + '$m : \n';
+   office ='$office$m : \n';
     }
 
     return office;
@@ -45,7 +45,7 @@ class _YourAccount2 extends State<YourAccount2> {
     String office ="";
 
     for(var m in map.keys){
-      office =office + '${map[m]}  \n';
+      office ='$office${map[m]}  \n';
     }
 
     return office;
@@ -337,6 +337,7 @@ class _YourAccount2 extends State<YourAccount2> {
       });
       return UserAccount.fromJson(snapshot.data()!);
     }
+    return null;
 
   }
 

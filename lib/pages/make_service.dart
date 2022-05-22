@@ -85,236 +85,237 @@ class _ServicePageState extends State<ServicePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color(0xff141E27),
-          title: const Text('Add Service'),
-          leading: const BackButton(),
-          centerTitle: true,
-        ),
-        body: ListView(
-          //crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-              child: Form(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                key: formKey,
-                child: TextFormField(
-                  controller: serviceController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter your new service',
-                    labelText: 'Service',
-                    suffixIcon: Icon(
-                      Icons.design_services_rounded,
-                    ),
+      appBar: AppBar(
+        backgroundColor: const Color(0xff141E27),
+        title: const Text('Add Service'),
+        leading: const BackButton(),
+        centerTitle: true,
+      ),
+      body: ListView(
+        //crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+            child: Form(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              key: formKey,
+              child: TextFormField(
+                controller: serviceController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter your new service',
+                  labelText: 'Service',
+                  suffixIcon: Icon(
+                    Icons.design_services_rounded,
                   ),
-                  validator: (value){
-                    if(serviceController.text.isEmpty){
-                      return 'Please enter a service name.';
-                    }else{
-                      return null;
+                ),
+                validator: (value) {
+                  if (serviceController.text.isEmpty) {
+                    return 'Please enter a service name.';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+            child: SelectWeekDays(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              days: _days,
+              border: false,
+              boxDecoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30.0),
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  colors: [Color(0xFFE55CE4), Color(0xFFBB75FB)],
+                  tileMode:
+                      TileMode.repeated, // repeats the gradient over the canvas
+                ),
+              ),
+              onSelect: (values) {
+                // <== Callback to handle the selected days
+                days = [];
+                days.addAll(values);
+              },
+            ),
+          ),
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: SizedBox(
+                    width: 320,
+                    height: 50,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          maximumSize: const Size.fromHeight(40),
+                          primary: Colors.black),
+                      child: FittedBox(
+                        child: Text(
+                          getTime()!,
+                          style: const TextStyle(
+                              fontSize: 15, color: Colors.white),
+                        ),
+                      ),
+                      onPressed: () async {
+                        TimeRange result = await showTimeRangePicker(
+                            context: context,
+                            start: const TimeOfDay(hour: 9, minute: 0),
+                            end: const TimeOfDay(hour: 12, minute: 0),
+                            disabledTime: TimeRange(
+                                startTime: const TimeOfDay(hour: 18, minute: 0),
+                                endTime: const TimeOfDay(hour: 6, minute: 0)),
+                            disabledColor: Colors.red.withOpacity(0.5),
+                            strokeWidth: 4,
+                            ticks: 24,
+                            ticksOffset: -7,
+                            ticksLength: 15,
+                            ticksColor: Colors.grey,
+                            labels: [
+                              "12 am",
+                              "3 am",
+                              "6 am",
+                              "9 am",
+                              "12 pm",
+                              "3 pm",
+                              "6 pm",
+                              "9 pm"
+                            ].asMap().entries.map((e) {
+                              return ClockLabel.fromIndex(
+                                  idx: e.key, length: 8, text: e.value);
+                            }).toList(),
+                            labelOffset: 35,
+                            rotateLabels: false,
+                            padding: 60);
+                        setState(() {
+                          startTime = result.startTime;
+                          endTime = result.endTime;
+                        });
+                      },
+                    ),
+                  ))),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            child: Center(
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton2(
+                  isExpanded: true,
+                  hint: Row(
+                    children: const [
+                      Icon(
+                        Icons.list,
+                        size: 16,
+                        color: Colors.yellow,
+                      ),
+                      SizedBox(
+                        width: 4,
+                      ),
+                      Expanded(
+                        child: Text(
+                          'Select Time',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.yellow,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                  items: items
+                      .map((item) => DropdownMenuItem<String>(
+                            value: item,
+                            child: Text(
+                              item,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ))
+                      .toList(),
+                  value: selectedValue,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedValue = value as String;
+                      duration = value;
+                    });
+                  },
+                  icon: const Icon(
+                    Icons.arrow_forward_ios_outlined,
+                  ),
+                  iconSize: 14,
+                  iconEnabledColor: Colors.yellow,
+                  iconDisabledColor: Colors.grey,
+                  buttonHeight: 50,
+                  buttonWidth: 160,
+                  buttonPadding: const EdgeInsets.only(left: 14, right: 14),
+                  buttonDecoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                      color: Colors.black26,
+                    ),
+                    color: Colors.redAccent,
+                  ),
+                  buttonElevation: 2,
+                  itemHeight: 40,
+                  itemPadding: const EdgeInsets.only(left: 14, right: 14),
+                  dropdownMaxHeight: 200,
+                  dropdownWidth: 200,
+                  dropdownPadding: null,
+                  dropdownDecoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(14),
+                    color: Colors.redAccent,
+                  ),
+                  dropdownElevation: 8,
+                  scrollbarRadius: const Radius.circular(40),
+                  scrollbarThickness: 6,
+                  scrollbarAlwaysShow: true,
+                  offset: const Offset(-20, 0),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 150),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
+                width: 320,
+                height: 50,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.black),
+                  ),
+                  child: const Text(
+                    'Add',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                  onPressed: () {
+                    final isValid = formKey.currentState!.validate();
+                    if (isValid) {
+                      setService(
+                        Duration: duration!,
+                        Service: serviceController.text,
+                        Time: time2!,
+                        days: days,
+                      );
                     }
                   },
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-              child: SelectWeekDays(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                days: _days,
-                border: false,
-                boxDecoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30.0),
-                  gradient: const LinearGradient(
-                    begin: Alignment.topLeft,
-                    colors: [Color(0xFFE55CE4), Color(0xFFBB75FB)],
-                    tileMode: TileMode
-                        .repeated, // repeats the gradient over the canvas
-                  ),
-                ),
-                onSelect: (values) {
-                  // <== Callback to handle the selected days
-                  days = [];
-                  days.addAll(values);
-                },
-              ),
-            ),
-            Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: SizedBox(
-                      width: 320,
-                      height: 50,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            maximumSize: const Size.fromHeight(40),
-                            primary: Colors.black),
-                        child: FittedBox(
-                          child: Text(
-                            getTime()!,
-                            style: const TextStyle(
-                                fontSize: 15, color: Colors.white),
-                          ),
-                        ),
-                        onPressed: () async {
-                          TimeRange result = await showTimeRangePicker(
-                              context: context,
-                              start: const TimeOfDay(hour: 9, minute: 0),
-                              end: const TimeOfDay(hour: 12, minute: 0),
-                              disabledTime: TimeRange(
-                                  startTime:
-                                      const TimeOfDay(hour: 18, minute: 0),
-                                  endTime: const TimeOfDay(hour: 6, minute: 0)),
-                              disabledColor: Colors.red.withOpacity(0.5),
-                              strokeWidth: 4,
-                              ticks: 24,
-                              ticksOffset: -7,
-                              ticksLength: 15,
-                              ticksColor: Colors.grey,
-                              labels: [
-                                "12 am",
-                                "3 am",
-                                "6 am",
-                                "9 am",
-                                "12 pm",
-                                "3 pm",
-                                "6 pm",
-                                "9 pm"
-                              ].asMap().entries.map((e) {
-                                return ClockLabel.fromIndex(
-                                    idx: e.key, length: 8, text: e.value);
-                              }).toList(),
-                              labelOffset: 35,
-                              rotateLabels: false,
-                              padding: 60);
-                          setState(() {
-                            startTime = result.startTime;
-                            endTime = result.endTime;
-                          });
-                        },
-                      ),
-                    ))),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              child: Center(
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton2(
-                    isExpanded: true,
-                    hint: Row(
-                      children: const [
-                        Icon(
-                          Icons.list,
-                          size: 16,
-                          color: Colors.yellow,
-                        ),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Expanded(
-                          child: Text(
-                            'Select Time',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.yellow,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                    items: items
-                        .map((item) => DropdownMenuItem<String>(
-                              value: item,
-                              child: Text(
-                                item,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ))
-                        .toList(),
-                    value: selectedValue,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedValue = value as String;
-                        duration = value;
-                      });
-                    },
-                    icon: const Icon(
-                      Icons.arrow_forward_ios_outlined,
-                    ),
-                    iconSize: 14,
-                    iconEnabledColor: Colors.yellow,
-                    iconDisabledColor: Colors.grey,
-                    buttonHeight: 50,
-                    buttonWidth: 160,
-                    buttonPadding: const EdgeInsets.only(left: 14, right: 14),
-                    buttonDecoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(
-                        color: Colors.black26,
-                      ),
-                      color: Colors.redAccent,
-                    ),
-                    buttonElevation: 2,
-                    itemHeight: 40,
-                    itemPadding: const EdgeInsets.only(left: 14, right: 14),
-                    dropdownMaxHeight: 200,
-                    dropdownWidth: 200,
-                    dropdownPadding: null,
-                    dropdownDecoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(14),
-                      color: Colors.redAccent,
-                    ),
-                    dropdownElevation: 8,
-                    scrollbarRadius: const Radius.circular(40),
-                    scrollbarThickness: 6,
-                    scrollbarAlwaysShow: true,
-                    offset: const Offset(-20, 0),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-                padding: const EdgeInsets.only(top: 150),
-                child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: SizedBox(
-                      width: 320,
-                      height: 50,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.black),
-                        ),
-                        child: const Text(
-                          'Add',
-                          style: TextStyle(fontSize: 15),
-                        ),
-                        onPressed: () {
-                          final isValid = formKey.currentState!.validate();
-                          if(isValid) {
-                            setService(
-                            Duration: duration!,
-                            Service: serviceController.text,
-                            Time: time2!,
-                            days: days,
-                          );
-                          }
-                        },
-                      ),
-                    )))
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 
   Future setService({
@@ -365,8 +366,10 @@ class _ServicePageState extends State<ServicePage> {
         },
         btnCancelOnPress: () {
           Navigator.pop(context);
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const NavigationDrawer()));
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const NavigationDrawer()));
         },
       ).show();
     } on FirebaseAuthException catch (error) {
@@ -381,13 +384,17 @@ class _ServicePageState extends State<ServicePage> {
         btnCancelColor: Colors.black87,
         onDissmissCallback: (d) {
           Navigator.pop(context);
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const NavigationDrawer()));
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const NavigationDrawer()));
         },
         btnCancelOnPress: () {
           Navigator.pop(context);
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const NavigationDrawer()));
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const NavigationDrawer()));
         },
       ).show();
     }

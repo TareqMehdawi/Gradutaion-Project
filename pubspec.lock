@@ -105,7 +105,7 @@ packages:
       name: dropdown_button2
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.5.1"
+    version: "1.5.2"
   email_validator:
     dependency: "direct main"
     description:
@@ -267,7 +267,7 @@ packages:
       name: google_fonts
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.3"
+    version: "3.0.0"
   http:
     dependency: transitive
     description:
@@ -449,7 +449,7 @@ packages:
       name: provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.2"
+    version: "6.0.3"
   simple_animations:
     dependency: transitive
     description:

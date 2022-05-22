@@ -13,8 +13,8 @@ import 'package:graduation_project/pages/your_account.dart';
 import 'package:provider/provider.dart';
 import '../widgets/user_class.dart';
 import 'delete_services.dart';
-import 'login_page.dart';
 import 'make_service.dart';
+import 'package:intl/intl.dart';
 
 String image = 'assets/images/images.png';
 
@@ -33,6 +33,10 @@ class NavigationProvider extends ChangeNotifier {
     }
   }
 }
+
+DateTime date = DateTime.now();
+String dateFormat = DateFormat('EEEE').format(date);
+
 
 class NavigationDrawer extends StatefulWidget {
    const NavigationDrawer({Key? key,}) : super(key: key);
@@ -55,6 +59,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
   }
   @override
   Widget build(BuildContext context) {
+    print(dateFormat);
     double value = Provider
         .of<NavigationProvider>(context)
         .value;
@@ -265,19 +270,12 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                               icon: Icons.logout,
                               title: 'Logout',
                               function: () {
+                                FirebaseAuth.instance.signOut();
                                 setState(() {
                                   Provider
                                       .of<NavigationProvider>(context, listen: false)
                                       .value = 0;
                                 });
-                                FirebaseAuth.instance.signOut();
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                    const LoginPage(),
-                                  ),
-                                );
                               },
                             ),
                           ],
