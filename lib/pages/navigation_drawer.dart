@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project/pages/employee_account.dart';
 import 'package:graduation_project/pages/employee_page.dart';
 import 'package:graduation_project/pages/feedback_page.dart';
-import 'package:graduation_project/pages/make_reservations.dart';
 import 'package:graduation_project/pages/settings_page.dart';
 import 'package:graduation_project/pages/student_page.dart';
 import 'package:graduation_project/pages/your_account.dart';
@@ -14,9 +13,7 @@ import 'package:provider/provider.dart';
 import '../widgets/user_class.dart';
 import 'delete_services.dart';
 import 'make_service.dart';
-import 'package:intl/intl.dart';
 
-String image = 'assets/images/images.png';
 
 class NavigationProvider extends ChangeNotifier {
   double value;
@@ -34,8 +31,8 @@ class NavigationProvider extends ChangeNotifier {
   }
 }
 
-DateTime date = DateTime.now();
-String dateFormat = DateFormat('EEEE').format(date);
+// DateTime date = DateTime.now();
+// String dateFormat = DateFormat('EEEE').format(date);
 
 
 class NavigationDrawer extends StatefulWidget {
@@ -59,7 +56,6 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
   }
   @override
   Widget build(BuildContext context) {
-    print(dateFormat);
     double value = Provider
         .of<NavigationProvider>(context)
         .value;
@@ -164,7 +160,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                      const StudentPage(),
+                                       StudentPage(stdName: user.name),
                                     ),
                                   );
                                 }
@@ -215,15 +211,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                             user.type == 'student' ? drawerTiles(
                               icon: Icons.connect_without_contact,
                               title: 'Make Reservations',
-                              function: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                    const ReservationPage(),
-                                  ),
-                                );
-                              },
+                              function: () {},
                             ) : drawerTiles(
                               icon: Icons.add_circle,
                               title: 'Add Services',
@@ -293,7 +281,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                         transform: Matrix4.identity()
                           ..setEntry(3, 2, 0.001)..setEntry(0, 3, 200 * val)
                           ..rotateY((pi / 7) * val),
-                        child: user.type == 'student' ? const StudentPage() : const EmployeePage(),
+                        child: user.type == 'student' ?  StudentPage(stdName: user.name) : const EmployeePage(),
                       ));
                     }),
                 GestureDetector(

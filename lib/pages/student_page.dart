@@ -8,7 +8,8 @@ import '../widgets/user_class.dart';
 import 'navigation_drawer.dart';
 
 class StudentPage extends StatefulWidget {
-  const StudentPage({Key? key, void function}) : super(key: key);
+  final String stdName;
+   const StudentPage({Key? key, void function,required this.stdName}) : super(key: key);
 
   @override
   State<StudentPage> createState() => _StudentPageState();
@@ -19,7 +20,6 @@ class _StudentPageState extends State<StudentPage> {
   Widget build(BuildContext context) {
 //    String selectedService = Provider.of<ReservationInfo>(context).selectedService;
     //String name = selectedService;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xff141E27),
@@ -75,7 +75,7 @@ class _StudentPageState extends State<StudentPage> {
         child: ListTile(
           leading: Padding(
             padding: const EdgeInsets.only(top: 10.0),
-            child: Text(user.date),
+            child: Text(user.date.substring(0,3)),
           ),
           title: Text(user.service),
           subtitle: Text(
@@ -83,7 +83,9 @@ class _StudentPageState extends State<StudentPage> {
           trailing: const Icon(Icons.arrow_forward_ios),
           contentPadding:
               const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-          onTap: () {},
+          onLongPress: () {
+            deleteService(user);
+          },
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
@@ -132,14 +134,14 @@ class _StudentPageState extends State<StudentPage> {
                     Navigator.pop(context);
                     await showSearch(
                       context: context,
-                      delegate: EmployeeSearchDelegate(type: 'doctor'),
+                      delegate: EmployeeSearchDelegate(type: 'doctor',stdName: widget.stdName),
                     );
                   },),
                   loginButton(title: 'Registration',function: () async{
                     Navigator.pop(context);
                     await showSearch(
                       context: context,
-                      delegate: EmployeeSearchDelegate(type: 'registration'),
+                      delegate: EmployeeSearchDelegate(type: 'registration',stdName: widget.stdName),
                     );
                   },),
                 ],
@@ -170,5 +172,24 @@ class _StudentPageState extends State<StudentPage> {
       ),
     );
   }
+  Future deleteService(StudentsReservation user)  async {
+    final docUser2 = await FirebaseFirestore.instance
+        .collection('reservation')
+        .where('empId', isEqualTo: user.empId)
+        .where('id', isEqualTo: user.id).where('service', isEqualTo: user.service).where('time', isEqualTo: user.time)
+        .get();
+    for (var doc in docUser2.docs) {
+      await FirebaseFirestore.instance
+          .collection('reservation')
+          .doc(doc.id)
+          .delete();
+    }
+  }
+    // for (var doc in docUser2.docs) {
+    //   await FirebaseFirestore.instance
+    //       .collection('reservation')
+    //       .doc(doc.id)
+    //       .delete();
+    // }
+  }
 
-}

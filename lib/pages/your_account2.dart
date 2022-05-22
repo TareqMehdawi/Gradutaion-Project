@@ -7,7 +7,8 @@ import '../widgets/user_class.dart';
 import 'appointment.dart';
 class YourAccount2 extends StatefulWidget {
   final String uid;
-  const YourAccount2({  Key? key,  required this.uid}) : super(key: key);
+  final String stdName;
+  const YourAccount2({  Key? key,  required this.uid,  required this.stdName}) : super(key: key);
 
   @override
   _YourAccount2 createState() => _YourAccount2();
@@ -250,7 +251,9 @@ class _YourAccount2 extends State<YourAccount2> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => BookingScreen(
-                                          uid:widget.uid
+                                          uid:widget.uid,
+                                          empName: user.name,
+                                          stdName: widget.stdName,
                                       ),
 
                                       // builder: (context) => BookingScreen(

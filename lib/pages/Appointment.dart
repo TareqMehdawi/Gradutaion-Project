@@ -1,12 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../widgets/user_class.dart';
+
 class BookingScreen extends StatefulWidget {
   final String uid;
+  final String empName;
+  final String stdName;
 
-  const BookingScreen({Key? key, required this.uid}) : super(key: key);
+  const BookingScreen({Key? key, required this.uid, required this.empName, required this.stdName})
+      : super(key: key);
 
   @override
   _BookingScreenState createState() => _BookingScreenState();
@@ -33,7 +39,12 @@ class _BookingScreenState extends State<BookingScreen> {
   String? daySelect;
   int? serviceIndex;
   bool isSelected = false;
+  final currentUser = FirebaseAuth.instance.currentUser!;
+  String? selectedTime;
+
   int? onTimeSelect;
+  int isAvailable = 10;
+  int isBooked = 2;
 
   // static const orange = Color(0xFFFE9A75);
   // static const dark = Color(0xFF333A47);
@@ -210,7 +221,8 @@ class _BookingScreenState extends State<BookingScreen> {
                               height: 30,
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
                               child: DropdownButtonHideUnderline(
                                 child: DropdownButton2(
                                   isExpanded: true,
@@ -269,8 +281,8 @@ class _BookingScreenState extends State<BookingScreen> {
                                   iconDisabledColor: Colors.grey,
                                   buttonHeight: 50,
                                   buttonWidth: 500,
-                                  buttonPadding:
-                                      const EdgeInsets.only(left: 14, right: 14),
+                                  buttonPadding: const EdgeInsets.only(
+                                      left: 14, right: 14),
                                   buttonDecoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(14),
                                     border: Border.all(
@@ -280,8 +292,8 @@ class _BookingScreenState extends State<BookingScreen> {
                                   ),
                                   buttonElevation: 2,
                                   itemHeight: 40,
-                                  itemPadding:
-                                      const EdgeInsets.symmetric(horizontal: 14),
+                                  itemPadding: const EdgeInsets.symmetric(
+                                      horizontal: 14),
                                   dropdownMaxHeight: 200,
                                   dropdownPadding: null,
                                   dropdownDecoration: BoxDecoration(
@@ -299,7 +311,8 @@ class _BookingScreenState extends State<BookingScreen> {
                               height: 20,
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
                               child: DropdownButtonHideUnderline(
                                 child: DropdownButton2(
                                   isExpanded: true,
@@ -357,8 +370,8 @@ class _BookingScreenState extends State<BookingScreen> {
                                   iconDisabledColor: Colors.grey,
                                   buttonHeight: 50,
                                   buttonWidth: 500,
-                                  buttonPadding:
-                                      const EdgeInsets.only(left: 14, right: 14),
+                                  buttonPadding: const EdgeInsets.only(
+                                      left: 14, right: 14),
                                   buttonDecoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(14),
                                     border: Border.all(
@@ -368,8 +381,8 @@ class _BookingScreenState extends State<BookingScreen> {
                                   ),
                                   buttonElevation: 2,
                                   itemHeight: 40,
-                                  itemPadding:
-                                      const EdgeInsets.only(left: 14, right: 14),
+                                  itemPadding: const EdgeInsets.only(
+                                      left: 14, right: 14),
                                   dropdownMaxHeight: 200,
                                   dropdownPadding: null,
                                   dropdownDecoration: BoxDecoration(
@@ -386,44 +399,74 @@ class _BookingScreenState extends State<BookingScreen> {
                             const SizedBox(
                               height: 20,
                             ),
-                            if(isSelected == true)
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 0,vertical: 30),
-                                child: ListView.builder(
-                                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: sendItem3(user).length,
-                                  itemBuilder:  (BuildContext context, int index) =>
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: InkWell(
-                                          onTap: (){
-                                            setState(() {
-                                              onTimeSelect = index;
-                                              //onTimeSelect = !onTimeSelect;
-                                            });
-                                          },
-                                          borderRadius: BorderRadius.circular(32.0),
-                                          splashColor: Colors.indigo,
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              border: Border.all(),
-                                              borderRadius: BorderRadius.circular(32.0),
-                                              color: onTimeSelect == index ? Colors.indigo : Colors.white12,
-                                            ),
-                                            height: 30,
-                                            child: Center(child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Text(sendItem3(user)[index] ,style: const TextStyle(fontSize: 14,color: Colors.black,fontWeight: FontWeight.bold),),
-                                            )),
+                            if (isSelected == true)
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 0, vertical: 30),
+                                  child: ListView.builder(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10.0),
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: sendItem3(user).length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) =>
+                                            Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: InkWell(
+                                        onTap: index != isAvailable
+                                            ? () {
+                                                setState(() {
+                                                  onTimeSelect = index;
+                                                  selectedTime =
+                                                      sendItem3(user)[index];
+                                                  //onTimeSelect = !onTimeSelect;
+                                                });
+                                              }
+                                            : null,
+                                        borderRadius:
+                                            BorderRadius.circular(32.0),
+                                        splashColor: Colors.indigo,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(),
+                                            borderRadius:
+                                                BorderRadius.circular(32.0),
+                                            color:
+                                              onTimeSelect == index
+                                                  ? Colors.indigo
+                                                  : Colors.white12,
+
+                                            // if(onTimeSelect == index){
+                                            //   Colors.indigo;
+                                            // } else if(isAvailable == 2){
+                                            //   Colors.green;
+                                            // } else if(isBooked == 3){
+                                            //   Colors.red;
+                                            // } else{
+                                            //   Colors.white12;
+                                            // }
+                                            // }())
                                           ),
+                                          height: 30,
+                                          child: Center(
+                                              child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              sendItem3(user)[index],
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          )),
                                         ),
                                       ),
-                            ),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
                             // TimeRange(
                             //   fromTitle: const Text(
                             //     'FROM',
@@ -567,7 +610,8 @@ class _BookingScreenState extends State<BookingScreen> {
                               height: 50,
                               width: MediaQuery.of(context).size.width,
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 18.0),
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     elevation: 2,
@@ -578,7 +622,15 @@ class _BookingScreenState extends State<BookingScreen> {
                                     ),
                                   ),
                                   onPressed: () {
-                                    sendItem3(user);
+                                    getTime(user);
+                                    // await setReservation(
+                                    //     empName: widget.empName,
+                                    //     empId: widget.uid,
+                                    //     service: serviceSelect!,
+                                    //     people: 10,
+                                    //     currentTime: selectedTime!,
+                                    //     currentDate: daySelect!,
+                                    //     studentName: widget.stdName);
                                   },
                                   child: Text(
                                     "Book Appointment",
@@ -631,89 +683,52 @@ class _BookingScreenState extends State<BookingScreen> {
       return data;
     }
   }
-}
 
-// Widget dropDownButton({required List user,required String title, required String? selectedValue10,required List Function(List) sendItem}){
-//   return DropdownButtonHideUnderline(
-//     child: DropdownButton2(
-//       isExpanded: true,
-//       hint: Row(
-//         children: [
-//           const Icon(
-//             Icons.list,
-//             size: 16,
-//             color: Colors.yellow,
-//           ),
-//           const SizedBox(
-//             width: 4,
-//           ),
-//           Expanded(
-//             child: Text(
-//               title,
-//               style: const TextStyle(
-//                 fontSize: 14,
-//                 fontWeight: FontWeight.bold,
-//                 color: Colors.yellow,
-//               ),
-//               overflow: TextOverflow.ellipsis,
-//             ),
-//           ),
-//         ],
-//       ),
-//       items: sendItem(user)
-//           .map(
-//             (item) => DropdownMenuItem(
-//           value: item,
-//           child: Text(
-//             item,
-//             style: const TextStyle(
-//               fontSize: 14,
-//               fontWeight: FontWeight.bold,
-//               color: Colors.white,
-//             ),
-//             overflow: TextOverflow.ellipsis,
-//           ),
-//         ),
-//       ).toList(),
-//       value: selectedValue10,
-//       onChanged: (value) {
-//         setState(() {
-//           selectedValue10 = value as String;
-//           print(selectedValue10);
-//           serviceSelect = value;
-//         });
-//       },
-//       icon: const Icon(
-//         Icons.arrow_forward_ios_outlined,
-//       ),
-//       iconSize: 14,
-//       iconEnabledColor: Colors.yellow,
-//       iconDisabledColor: Colors.grey,
-//       buttonHeight: 50,
-//       buttonWidth: 500,
-//       buttonPadding:
-//       const EdgeInsets.only(left: 14, right: 14),
-//       buttonDecoration: BoxDecoration(
-//         borderRadius: BorderRadius.circular(14),
-//         border: Border.all(
-//           color: Colors.black26,
-//         ),
-//         color: Colors.redAccent,
-//       ),
-//       buttonElevation: 2,
-//       itemHeight: 40,
-//       itemPadding:
-//       const EdgeInsets.symmetric(horizontal: 14),
-//       dropdownMaxHeight: 200,
-//       dropdownPadding: null,
-//       dropdownDecoration: BoxDecoration(
-//         borderRadius: BorderRadius.circular(14),
-//         color: Colors.redAccent,
-//       ),
-//       dropdownElevation: 8,
-//       scrollbarRadius: const Radius.circular(40),
-//       scrollbarThickness: 6,
-//       scrollbarAlwaysShow: true,
-//     ),
-//   );
-// }
+  Future setReservation({
+    required String empName,
+    required String empId,
+    required String service,
+    required int people,
+    required String currentTime,
+    required String currentDate,
+    required String studentName,
+  }) async {
+    final docUser = FirebaseFirestore.instance.collection('reservation').doc();
+    final user = StudentsReservation(
+      id: currentUser.uid,
+      empName: empName,
+      empId: empId,
+      service: service,
+      people: people,
+      time: currentTime,
+      date: currentDate,
+      student: studentName,
+    );
+    final json = user.toJson();
+    await docUser.set(json);
+  }
+  Future getTime(List user1)  async {
+    List data = [];
+    List times = sendItem3(user1);
+    List bookedTimes = [];
+
+    final docUser2 = await FirebaseFirestore.instance
+        .collection('reservation')
+        .where('empId', isEqualTo: widget.uid)
+        .where('date', isEqualTo: daySelect)
+        .get();
+    for (var ele in docUser2.docs) {
+      data.add(ele.data()['time']);
+    }
+    for(int i = 0; i < data.length ; i++){
+      for(int j = 0 ; j < times.length ;j++ ){
+        if(data[i] == times[j]){
+          bookedTimes.add(times[j]);
+        }
+      }
+    }
+    print(bookedTimes);
+    return bookedTimes;
+  }
+
+}

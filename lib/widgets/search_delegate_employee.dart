@@ -5,7 +5,8 @@ import 'package:graduation_project/pages/your_account2.dart';
 import 'package:provider/provider.dart';
 
 class EmployeeSearchDelegate extends SearchDelegate {
-  EmployeeSearchDelegate({required this.type});
+  String stdName;
+  EmployeeSearchDelegate({required this.type,required this.stdName});
 
   final String type;
   final CollectionReference _employees =
@@ -132,7 +133,8 @@ class EmployeeSearchDelegate extends SearchDelegate {
                           context,
                           MaterialPageRoute(
                             builder: (BuildContext context) => YourAccount2(
-                              uid: data.get('id'),
+                              uid: id,
+                              stdName: stdName,
                             ),
                           ),
                         );
