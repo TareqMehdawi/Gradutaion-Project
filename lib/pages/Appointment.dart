@@ -18,6 +18,9 @@ class BookingScreen extends StatefulWidget {
   _BookingScreenState createState() => _BookingScreenState();
 }
 
+
+
+
 class _BookingScreenState extends State<BookingScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -41,14 +44,58 @@ class _BookingScreenState extends State<BookingScreen> {
   bool isSelected = false;
   final currentUser = FirebaseAuth.instance.currentUser!;
   String? selectedTime;
+  List? selectDay;
 
-  int? onTimeSelect;
+  int? onTimeSelect=-1;
   int isAvailable = 10;
   int isBooked = 2;
 
+  //10:30 - 10:40  11:00-11:30
+
+  //               11:00-11:10
+  Color getColor(List bookedDay,List Time,int Ind, int onTime){
+String? t;
+//print(Time[Ind]);
+//print(a);
+bool a= false;
+if(a==false){
+
+    for (int i = 0; i < bookedDay.length; i++) {
+      if (Time[Ind] == bookedDay[i]) {
+        //bookedDay[i]="1";
+        //bookedDay.removeAt(i);
+        //print(bookedDay);
+        return Colors.red;
+
+
+      }else if(Time[Ind].toString().substring(0,7)==bookedDay[i].toString().substring(0,7) &&Time[Ind].toString().substring(9,17)!=bookedDay[i].toString().substring(9,17) ){
+        a=true;
+        t=bookedDay[i].toString().substring(9,17);
+         print(t);
+      }
+    }}
+      if(a == true){
+       if(Time[Ind].toString().substring(9,17)==t){
+         print("Sss");
+         return Colors.red;
+       }else
+       return Colors.red;
+
+}
+    if(Ind == onTime) {
+
+      return Colors.indigo ;
+    }
+
+
+    return Colors.white12 ;
+  }
   // static const orange = Color(0xFFFE9A75);
   // static const dark = Color(0xFF333A47);
   // static const double leftPadding = 0;
+  void sendItem4(List items2) {
+    selectDay =items2;
+  }
 
   List sendItem(List items2) {
     List items = [];
@@ -77,20 +124,20 @@ class _BookingScreenState extends State<BookingScreen> {
   List sendItem3(List items2) {
     List items = [];
     int duration =
-        int.parse(items2[serviceIndex!]["Duration"].toString().substring(0, 2));
+    int.parse(items2[serviceIndex!]["Duration"].toString().substring(0, 2));
     int endMin =
-        int.parse(items2[serviceIndex!]["Time"].toString().substring(11, 13));
+    int.parse(items2[serviceIndex!]["Time"].toString().substring(11, 13));
     int endHour =
-        int.parse(items2[serviceIndex!]["Time"].toString().substring(8, 10));
+    int.parse(items2[serviceIndex!]["Time"].toString().substring(8, 10));
     // print(duration);
     // print(endMin);
     // print(items2[serviceIndex!]["days"][0]);
     //
     // print(endHour);
     int min =
-        int.parse(items2[serviceIndex!]["Time"].toString().substring(3, 5));
+    int.parse(items2[serviceIndex!]["Time"].toString().substring(3, 5));
     int hour =
-        int.parse(items2[serviceIndex!]["Time"].toString().substring(0, 2));
+    int.parse(items2[serviceIndex!]["Time"].toString().substring(0, 2));
     int min2;
     while (hour <= endHour) {
       int minute = min;
@@ -222,7 +269,7 @@ class _BookingScreenState extends State<BookingScreen> {
                             ),
                             Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
+                              const EdgeInsets.symmetric(horizontal: 15.0),
                               child: DropdownButtonHideUnderline(
                                 child: DropdownButton2(
                                   isExpanded: true,
@@ -252,18 +299,18 @@ class _BookingScreenState extends State<BookingScreen> {
                                   items: sendItem(user)
                                       .map(
                                         (item) => DropdownMenuItem(
-                                          value: item,
-                                          child: Text(
-                                            item,
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
+                                      value: item,
+                                      child: Text(
+                                        item,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
                                         ),
-                                      )
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  )
                                       .toList(),
                                   value: selectedValue,
                                   onChanged: (value) {
@@ -312,7 +359,7 @@ class _BookingScreenState extends State<BookingScreen> {
                             ),
                             Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
+                              const EdgeInsets.symmetric(horizontal: 15.0),
                               child: DropdownButtonHideUnderline(
                                 child: DropdownButton2(
                                   isExpanded: true,
@@ -341,17 +388,17 @@ class _BookingScreenState extends State<BookingScreen> {
                                   ),
                                   items: sendItem2(user)
                                       .map((item) => DropdownMenuItem<String>(
-                                            value: item,
-                                            child: Text(
-                                              item,
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                              ),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ))
+                                    value: item,
+                                    child: Text(
+                                      item,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ))
                                       .toList(),
                                   value: selectedValue2,
                                   onChanged: (value) {
@@ -400,72 +447,143 @@ class _BookingScreenState extends State<BookingScreen> {
                               height: 20,
                             ),
                             if (isSelected == true)
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 0, vertical: 30),
-                                  child: ListView.builder(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10.0),
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: sendItem3(user).length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) =>
+                              FutureBuilder(
+                                future: getTime(user),
+                                builder: (context, snapshot) {
+              if (snapshot.hasError) {
+              return const Text('Something went wrong');
+              } else if (snapshot.hasData) {
+              final List user2 = snapshot.data as List;
+                                  return Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 0, vertical: 0),
+                                      child: ListView.builder(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10.0),
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: sendItem3(user).length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) =>
                                             Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: InkWell(
-                                        onTap: index != isAvailable
-                                            ? () {
-                                                setState(() {
-                                                  onTimeSelect = index;
-                                                  selectedTime =
-                                                      sendItem3(user)[index];
-                                                  //onTimeSelect = !onTimeSelect;
-                                                });
-                                              }
-                                            : null,
-                                        borderRadius:
-                                            BorderRadius.circular(32.0),
-                                        splashColor: Colors.indigo,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(),
-                                            borderRadius:
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: InkWell(
+                                                onTap: index != isAvailable
+                                                    ? () {
+                                                  setState(() {
+                                                    onTimeSelect = index;
+                                                    selectedTime =
+                                                    sendItem3(user)[index];
+                                                    //onTimeSelect = !onTimeSelect;
+                                                  });
+                                                }
+                                                    : null,
+                                                borderRadius:
                                                 BorderRadius.circular(32.0),
-                                            color:
-                                              onTimeSelect == index
-                                                  ? Colors.indigo
-                                                  : Colors.white12,
+                                                splashColor: Colors.indigo,
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(),
+                                                    borderRadius:
+                                                    BorderRadius.circular(32.0),
+                                                    color:getColor(user2,sendItem3(user),index,onTimeSelect!),
 
-                                            // if(onTimeSelect == index){
-                                            //   Colors.indigo;
-                                            // } else if(isAvailable == 2){
-                                            //   Colors.green;
-                                            // } else if(isBooked == 3){
-                                            //   Colors.red;
-                                            // } else{
-                                            //   Colors.white12;
-                                            // }
-                                            // }())
-                                          ),
-                                          height: 30,
-                                          child: Center(
-                                              child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                              sendItem3(user)[index],
-                                              style: const TextStyle(
-                                                  fontSize: 14,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold),
+                                                    // if(onTimeSelect == index){
+                                                    //   Colors.indigo;
+                                                    // } else if(isAvailable == 2){
+                                                    //   Colors.green;
+                                                    // } else if(isBooked == 3){
+                                                    //   Colors.red;
+                                                    // } else{
+                                                    //   Colors.white12;
+                                                    // }
+                                                    // }())
+                                                  ),
+                                                  height: 30,
+                                                  child: Center(
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.all(8.0),
+                                                        child: Text(
+                                                          sendItem3(user)[index],
+                                                          style: const TextStyle(
+                                                              fontSize: 14,
+                                                              color: Colors.black,
+                                                              fontWeight: FontWeight.bold),
+                                                        ),
+                                                      )),
+                                                ),
+                                              ),
                                             ),
-                                          )),
-                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
+                                  );}else {
+                return Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 0, vertical: 0),
+                                        child: ListView.builder(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10.0),
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: sendItem3(user).length,
+                                          itemBuilder:
+                                              (BuildContext context, int index) =>
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: InkWell(
+                                                  onTap: index != isAvailable
+                                                      ? () {
+                                                    setState(() {
+                                                      onTimeSelect = index;
+                                                      selectedTime =
+                                                      sendItem3(user)[index];
+                                                      //onTimeSelect = !onTimeSelect;
+                                                    });
+                                                  }
+                                                      : null,
+                                                  borderRadius:
+                                                  BorderRadius.circular(32.0),
+                                                  splashColor: Colors.indigo,
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(),
+                                                      borderRadius:
+                                                      BorderRadius.circular(32.0),
+                                                      color:onTimeSelect == index ? Colors.indigo:Colors.white12,
+
+                                                      // if(onTimeSelect == index){
+                                                      //   Colors.indigo;
+                                                      // } else if(isAvailable == 2){
+                                                      //   Colors.green;
+                                                      // } else if(isBooked == 3){
+                                                      //   Colors.red;
+                                                      // } else{
+                                                      //   Colors.white12;
+                                                      // }
+                                                      // }())
+                                                    ),
+                                                    height: 30,
+                                                    child: Center(
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.all(8.0),
+                                                          child: Text(
+                                                            sendItem3(user)[index],
+                                                            style: const TextStyle(
+                                                                fontSize: 14,
+                                                                color: Colors.black,
+                                                                fontWeight: FontWeight.bold),
+                                                          ),
+                                                        )),
+                                                  ),
+                                                ),
+                                              ),
+                                        ),
+                                      ),
+                                    );
+              }
+                                }
                               ),
                             // TimeRange(
                             //   fromTitle: const Text(
@@ -604,7 +722,7 @@ class _BookingScreenState extends State<BookingScreen> {
                             //   ),
                             // ),
                             const SizedBox(
-                              height: 40,
+                              height: 10,
                             ),
                             SizedBox(
                               height: 50,
@@ -621,16 +739,16 @@ class _BookingScreenState extends State<BookingScreen> {
                                       borderRadius: BorderRadius.circular(32.0),
                                     ),
                                   ),
-                                  onPressed: () {
-                                    getTime(user);
-                                    // await setReservation(
-                                    //     empName: widget.empName,
-                                    //     empId: widget.uid,
-                                    //     service: serviceSelect!,
-                                    //     people: 10,
-                                    //     currentTime: selectedTime!,
-                                    //     currentDate: daySelect!,
-                                    //     studentName: widget.stdName);
+                                  onPressed: () async {
+                                    //getTime(user);
+                                    await setReservation(
+                                        empName: widget.empName,
+                                        empId: widget.uid,
+                                        service: serviceSelect!,
+                                        people: 10,
+                                        currentTime: selectedTime!,
+                                        currentDate: daySelect!,
+                                        studentName: widget.stdName);
                                   },
                                   child: Text(
                                     "Book Appointment",
@@ -720,15 +838,11 @@ class _BookingScreenState extends State<BookingScreen> {
     for (var ele in docUser2.docs) {
       data.add(ele.data()['time']);
     }
-    for(int i = 0; i < data.length ; i++){
-      for(int j = 0 ; j < times.length ;j++ ){
-        if(data[i] == times[j]){
-          bookedTimes.add(times[j]);
-        }
-      }
-    }
-    print(bookedTimes);
-    return bookedTimes;
+
+
+
+    //print(data);
+    return data;
   }
 
 }

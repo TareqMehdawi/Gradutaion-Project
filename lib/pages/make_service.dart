@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:day_picker/day_picker.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
 import 'package:time_range_picker/time_range_picker.dart';
@@ -20,8 +21,8 @@ class _ServicePageState extends State<ServicePage> {
   final formKey = GlobalKey<FormState>();
   int currentStep = 0;
   DateTime? date;
-  TimeOfDay? startTime;
-  TimeOfDay? endTime;
+  String? startTime;
+  String? endTime;
   String? duration;
   TimeOfDay time = TimeOfDay.now();
 
@@ -32,15 +33,13 @@ class _ServicePageState extends State<ServicePage> {
   //String dropdownvalue = 'Item 1';
   String? time2;
 
-  String? getTime() {
-    if (startTime == null && endTime == null) {
-      return "Select Time";
-    } else {
-      time2 =
-          "${startTime.toString().substring(10, 15)} - ${endTime.toString().substring(10, 15)}";
-      return time2;
-    }
-  }
+  // String? getStartTime() {
+  //   if (startTime == null) {
+  //     return "Select Time";
+  //   } else {
+  //     return startTime.toString().substring(10, 15);
+  //   }
+  // }
 
   String? selectedValue;
   List<String> items = [
@@ -149,52 +148,78 @@ class _ServicePageState extends State<ServicePage> {
                   child: SizedBox(
                     width: 320,
                     height: 50,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          maximumSize: const Size.fromHeight(40),
-                          primary: Colors.black),
-                      child: FittedBox(
-                        child: Text(
-                          getTime()!,
-                          style: const TextStyle(
-                              fontSize: 15, color: Colors.white),
+                    child: Row(
+                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              maximumSize: const Size.fromHeight(40),
+                              primary: Colors.black),
+                          child: FittedBox(
+                            child: Text(
+                              startTime == null? "Select Start Time" : "$startTime",
+                              style: const TextStyle(
+                                  fontSize: 15, color: Colors.white),
+                            ),
+                          ),
+                          onPressed: () async {
+                             showCupertinoModalPopup(
+                                context: context,
+                                builder: (BuildContext builder) {
+                                  return Container(
+                                    height: MediaQuery.of(context).copyWith().size.height*0.25,
+                                    color: Colors.white,
+                                    child: CupertinoDatePicker(
+                                      mode: CupertinoDatePickerMode.time,
+                                      onDateTimeChanged: (value) {
+                                        setState(() {
+                                          if (value != null && value != startTime){
+                                          startTime = value.hour.toString().padLeft(2,"0") +':'+value.minute.toString().padLeft(2,"0");
+                                          }
+                                        });
+                                      },
+                                      initialDateTime: DateTime.now(),
+                                    ),
+                                  );
+                                }
+                            );
+                          },
                         ),
-                      ),
-                      onPressed: () async {
-                        TimeRange result = await showTimeRangePicker(
-                            context: context,
-                            start: const TimeOfDay(hour: 9, minute: 0),
-                            end: const TimeOfDay(hour: 12, minute: 0),
-                            disabledTime: TimeRange(
-                                startTime: const TimeOfDay(hour: 18, minute: 0),
-                                endTime: const TimeOfDay(hour: 6, minute: 0)),
-                            disabledColor: Colors.red.withOpacity(0.5),
-                            strokeWidth: 4,
-                            ticks: 24,
-                            ticksOffset: -7,
-                            ticksLength: 15,
-                            ticksColor: Colors.grey,
-                            labels: [
-                              "12 am",
-                              "3 am",
-                              "6 am",
-                              "9 am",
-                              "12 pm",
-                              "3 pm",
-                              "6 pm",
-                              "9 pm"
-                            ].asMap().entries.map((e) {
-                              return ClockLabel.fromIndex(
-                                  idx: e.key, length: 8, text: e.value);
-                            }).toList(),
-                            labelOffset: 35,
-                            rotateLabels: false,
-                            padding: 60);
-                        setState(() {
-                          startTime = result.startTime;
-                          endTime = result.endTime;
-                        });
-                      },
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              maximumSize: const Size.fromHeight(40),
+                              primary: Colors.black),
+                          child: FittedBox(
+                            child: Text(
+                              endTime == null? "Select End Time" : "$endTime",
+                              style: const TextStyle(
+                                  fontSize: 15, color: Colors.white),
+                            ),
+                          ),
+                          onPressed: () async {
+                            showCupertinoModalPopup(
+                                context: context,
+                                builder: (BuildContext builder) {
+                                  return Container(
+                                    height: MediaQuery.of(context).copyWith().size.height*0.25,
+                                    color: Colors.white,
+                                    child: CupertinoDatePicker(
+                                      mode: CupertinoDatePickerMode.time,
+                                      onDateTimeChanged: (value) {
+                                        setState(() {
+                                          if (value != null && value != endTime){
+                                            endTime = value.hour.toString().padLeft(2,"0") +':'+value.minute.toString().padLeft(2,"0");
+                                          }
+                                        });
+                                      },
+                                      initialDateTime: DateTime.now(),
+                                    ),
+                                  );
+                                }
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ))),
           Padding(
@@ -304,7 +329,7 @@ class _ServicePageState extends State<ServicePage> {
                       setService(
                         Duration: duration!,
                         Service: serviceController.text,
-                        Time: time2!,
+                        Time: "$startTime - $endTime",
                         days: days,
                       );
                     }
