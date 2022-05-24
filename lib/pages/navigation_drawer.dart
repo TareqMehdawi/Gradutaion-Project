@@ -11,7 +11,7 @@ import 'package:graduation_project/pages/student_page.dart';
 import 'package:graduation_project/pages/your_account.dart';
 import 'package:provider/provider.dart';
 import '../widgets/user_class.dart';
-import 'delete_services.dart';
+import 'employee_services.dart';
 import 'make_service.dart';
 
 
@@ -93,7 +93,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                       .size
                       .height * .1,
                   decoration: const BoxDecoration(
-                    color: Color(0xff141E27),
+                    color: Color(0xff205375),
                   ),
                 ),
                 SizedBox(
@@ -107,7 +107,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                             .height * .28,
                         child: DrawerHeader(
                           decoration: const BoxDecoration(
-                            color: Color(0xff141E27),
+                            color: Color(0xff205375),
                             // border: Border(
                             //   bottom: Divider.createBorderSide(
                             //     context,
@@ -188,7 +188,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const DeleteService(),
+                                    builder: (context) => const MyServices(),
                                   ),
                                 );
                                 // await showSearch(context: context,
@@ -201,7 +201,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const DeleteService(),
+                                    builder: (context) => const MyServices(),
                                   ),
                                 );
                                 // await showSearch(context: context,
@@ -338,15 +338,15 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
     required VoidCallback function,
   }) {
     return ListTile(
-      selectedTileColor: const Color(0xff141E27),
+      selectedTileColor: const Color(0xff92B4EC),
       onTap: function,
       leading: Icon(
         icon,
-        color: const Color(0xff141E27),
+        color: const Color(0xff205375),
       ),
       title: Text(
         title,
-        style: const TextStyle(color: Color(0xff141E27)),
+        style: const TextStyle(color: Colors.black),
       ),
     );
   }

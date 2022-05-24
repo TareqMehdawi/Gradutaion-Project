@@ -50,11 +50,12 @@ class _YourAccount2 extends State<EmployeeAccount> {
     return isLoading == true
         ? const SpinKitWidget()
         : Scaffold(
+      backgroundColor: Color(0xff205375),
       appBar: AppBar(
         title: const Text('Your Account'),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: const Color(0xff141E27),
+        backgroundColor: const Color(0xff205375),
       ),
       body: FutureBuilder<UserAccount?>(
           future: readUser(),
@@ -63,13 +64,13 @@ class _YourAccount2 extends State<EmployeeAccount> {
               return Text('Something ${snapshot.error}');
             } else if (snapshot.hasData) {
               final user = snapshot.data;
-              return Column(
+              return ListView(
                 children: [
                   Stack(
                     alignment: Alignment.center,
                     children: [
                       Container(
-                        color: const Color(0xff141E27),
+                        color: const Color(0xff205375),
                         height: MediaQuery.of(context).size.height * .27,
                       ),
                       InkWell(
@@ -86,7 +87,7 @@ class _YourAccount2 extends State<EmployeeAccount> {
                               CircleAvatar(
                                 radius: 75,
                                 backgroundColor:
-                                const Color.fromRGBO(64, 105, 225, 1),
+                                const Color(0xffD8D2CB),
                                 child: CircleAvatar(
                                   backgroundImage: NetworkImage(
                                     user!.image,
@@ -124,224 +125,106 @@ class _YourAccount2 extends State<EmployeeAccount> {
                         const SizedBox(
                           height: 20,
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              //title,
-                              "Name",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.grey,
+                        GestureDetector(
+                          onTap: (){
+                            navigateSecondPage(
+                                const EditNameFormPage());
+                          },
+                          child: Card(
+                            color: Color(0xffEFEFEF),
+                            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                            child: ListTile(
+                              leading: Icon(
+                                Icons.person,
+                                color: Color(0xff205375),
+                              ),
+                              title: Text(
+                                user.name,
+                                style: TextStyle(
+                                    color: Color(0xff205375),
+                                    fontSize: 20,
+                                    fontFamily: "Source Sans Pro"),
                               ),
                             ),
-                            const SizedBox(
-                              height: 1,
-                            ),
-                            Container(
-                                width: 350,
-                                height: 40,
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                        bottom: BorderSide(
-                                          color: Colors.grey,
-                                          width: 1,
-                                        ))),
-                                child: Row(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                          child: TextButton(
-                                            child: Text(
-                                              //getValue,
-                                              user.name,
-                                              textAlign: TextAlign.start,
-                                              style: const TextStyle(
-                                                  fontSize: 16,
-                                                  height: 1.4,
-                                                  color: Colors.black),
-                                            ),
-                                            onPressed: () {
-                                              navigateSecondPage(
-                                                  const EditNameFormPage());
-                                            },
-                                          )),
-                                      const Icon(
-                                        Icons.keyboard_arrow_right,
-                                        color: Colors.grey,
-                                        size: 40.0,
-                                      )
-                                    ]))
-                          ],
+                          ),
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              //title,
-                              "Phone",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.grey,
+                        GestureDetector(
+                          onTap: (){
+                            navigateSecondPage(
+                                const EditPhoneFormPage());
+                          },
+                          child: Card(
+                            color: Colors.white,
+                            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                            child: ListTile(
+                              leading: Icon(
+                                Icons.phone,
+                                color: Color(0xff205375),
+                              ),
+                              title: Text(
+                                user.number,
+                                style: TextStyle(
+                                    color: Color(0xff205375),
+                                    fontSize: 20,
+                                    fontFamily: "Source Sans Pro"),
                               ),
                             ),
-                            const SizedBox(
-                              height: 1,
-                            ),
-                            Container(
-                                width: 350,
-                                height: 40,
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                        bottom: BorderSide(
-                                          color: Colors.grey,
-                                          width: 1,
-                                        ))),
-                                child: Row(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                          child: TextButton(
-                                            child: Text(
-                                              //getValue,
-                                              user.number,
-                                              textAlign: TextAlign.start,
-                                              style: const TextStyle(
-                                                  fontSize: 16,
-                                                  height: 1.4,
-                                                  color: Colors.black),
-                                            ),
-                                            onPressed: () {
-                                              navigateSecondPage(
-                                                  const EditPhoneFormPage());
-                                            },
-                                          )),
-                                      const Icon(
-                                        Icons.keyboard_arrow_right,
-                                        color: Colors.grey,
-                                        size: 40.0,
-                                      )
-                                    ]))
-                          ],
+                          ),
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              //title,
-                              "Email",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.grey,
+                        GestureDetector(
+                          onTap: (){
+                            navigateSecondPage(
+                                const EditEmailFormPage());
+                          },
+                          child: Card(
+                            color: Colors.white,
+                            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                            child: ListTile(
+                              leading: Icon(
+                                Icons.email,
+                                color: Color(0xff205375),
+                              ),
+                              title: Text(
+                                user.email,
+                                style: TextStyle(
+                                    color: Color(0xff205375),
+                                    fontSize: 20,
+                                    fontFamily: "Source Sans Pro"),
                               ),
                             ),
-                            const SizedBox(
-                              height: 1,
-                            ),
-                            Container(
-                                width: 350,
-                                height: 40,
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                        bottom: BorderSide(
-                                          color: Colors.grey,
-                                          width: 1,
-                                        ))),
-                                child: Row(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                          child: TextButton(
-                                            child: Text(
-                                              //getValue,
-                                              user.email,
-                                              textAlign: TextAlign.start,
-                                              style: const TextStyle(
-                                                  fontSize: 16,
-                                                  height: 1.4,
-                                                  color: Colors.black),
-                                            ),
-                                            onPressed: () {
-                                              navigateSecondPage(
-                                                  const EditEmailFormPage());
-                                            },
-                                          )),
-                                      const Icon(
-                                        Icons.keyboard_arrow_right,
-                                        color: Colors.grey,
-                                        size: 40.0,
-                                      )
-                                    ]))
-                          ],
+                          ),
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              //title,
-                              "Office",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.grey,
+                        GestureDetector(
+                          onTap: (){
+                            navigateSecondPage(
+                                const EditOfficeFormPage());
+                          },
+                          child: Card(
+                            color: Colors.white,
+                            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                            child: ListTile(
+                              leading: Icon(
+                                Icons.location_on,
+                                color: Color(0xff205375),
+                              ),
+                              title: Text(
+                                user.office,
+                                style: TextStyle(
+                                    color: Color(0xff205375),
+                                    fontSize: 20,
+                                    fontFamily: "Source Sans Pro"),
                               ),
                             ),
-                            const SizedBox(
-                              height: 1,
-                            ),
-                            Container(
-                                width: 350,
-                                height: 40,
-                                decoration: const BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: Colors.grey,
-                                      width: 1,
-                                    ),
-                                  ),
-                                ),
-                                child: Row(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                          child: TextButton(
-                                            child: Text(
-                                              //getValue,
-                                              user.office,
-                                              textAlign: TextAlign.start,
-                                              style: const TextStyle(
-                                                  fontSize: 16,
-                                                  height: 1.4,
-                                                  color: Colors.black),
-                                            ),
-                                            onPressed: () {
-                                              navigateSecondPage(
-                                                  const EditOfficeFormPage());
-                                            },
-                                          )),
-                                      const Icon(
-                                        Icons.keyboard_arrow_right,
-                                        color: Colors.grey,
-                                        size: 40.0,
-                                      )
-                                    ]))
-                          ],
+                          ),
                         ),
                         const SizedBox(
                           height: 20,
@@ -367,30 +250,32 @@ class _YourAccount2 extends State<EmployeeAccount> {
   }
 
   Widget workingHoursButton() {
-    return OutlinedButton(
-      style: OutlinedButton.styleFrom(
-        backgroundColor: const Color(0xff141E27),
-        minimumSize: Size(MediaQuery.of(context).size.width * .85,
-            MediaQuery.of(context).size.height * .07),
-        side: const BorderSide(width: 1, color: Colors.black),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-        ),
-      ),
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const EditOfficeHoursFormPage(),
+    return Center(
+      child: OutlinedButton(
+        style: OutlinedButton.styleFrom(
+          backgroundColor: const Color(0xffF0F2F8),//F0F2F8
+          minimumSize: Size(MediaQuery.of(context).size.width * .85,
+              MediaQuery.of(context).size.height * .07),
+          side: const BorderSide(width: 1, color: Colors.black),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18),
           ),
-        );
-      },
-      child: Text(
-        'Choose Working Hours',
-        style: GoogleFonts.ubuntu(
-          textStyle: const TextStyle(
-              fontSize: 20, color: Colors.white, fontWeight: FontWeight.w500),
+        ),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const EditOfficeHoursFormPage(),
+            ),
+          );
+        },
+        child: Text(
+          'Choose Working Hours',
+          style: GoogleFonts.ubuntu(
+            textStyle: const TextStyle(
+                fontSize: 20, color: Color(0xff205375), fontWeight: FontWeight.w500),
+          ),
         ),
       ),
     );
@@ -489,3 +374,36 @@ class UserData {
     phone: '(208) 206-5039',
   );
 }
+// class InfoCard extends StatelessWidget {
+//   // the values we need
+//   final String text;
+//   final IconData icon;
+//   Function onPressed;
+//
+//   InfoCard(
+//       {@required this.text, @required this.icon, @required this.onPressed});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return GestureDetector(
+//       onTap: onPressed,
+//       child: Card(
+//         color: Colors.white,
+//         margin: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+//         child: ListTile(
+//           leading: Icon(
+//             icon,
+//             color: Colors.teal,
+//           ),
+//           title: Text(
+//             text,
+//             style: TextStyle(
+//                 color: Colors.teal,
+//                 fontSize: 20,
+//                 fontFamily: "Source Sans Pro"),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
