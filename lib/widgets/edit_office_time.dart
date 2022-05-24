@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project/widgets/user_class.dart';
 import 'package:time_range_picker/time_range_picker.dart';
 
+import '../styles/colors.dart';
+
 class EditOfficeHoursFormPage extends StatefulWidget {
   const EditOfficeHoursFormPage({Key? key}) : super(key: key);
 
@@ -114,8 +116,8 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                                   gradient: const LinearGradient(
                                     begin: Alignment.topLeft,
                                     colors: [
-                                      Color(0xFFE55CE4),
-                                      Color(0xFFBB75FB)
+                                      Color(0xFF252120),
+                                      Color(0xFF131212)
                                     ],
                                     tileMode: TileMode
                                         .repeated, // repeats the gradient over the canvas
@@ -149,104 +151,52 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                                     ),
                                     onPressed: () async {
                                       TimeRange result =
-                                      await showTimeRangePicker(
-                                          context: context,
-                                          start: const TimeOfDay(
-                                              hour: 9, minute: 0),
-                                          end: const TimeOfDay(
-                                              hour: 12, minute: 0),
-                                          disabledTime: TimeRange(
-                                              startTime: const TimeOfDay(
-                                                  hour: 18, minute: 0),
-                                              endTime: const TimeOfDay(
-                                                  hour: 6, minute: 0)),
-                                          disabledColor:
-                                          Colors.red.withOpacity(0.5),
-                                          strokeWidth: 4,
-                                          ticks: 24,
-                                          ticksOffset: -7,
-                                          ticksLength: 15,
-                                          ticksColor: Colors.grey,
-                                          labels: [
-                                            "12 am",
-                                            "3 am",
-                                            "6 am",
-                                            "9 am",
-                                            "12 pm",
-                                            "3 pm",
-                                            "6 pm",
-                                            "9 pm"
-                                          ]
-                                              .asMap()
-                                              .entries
-                                              .map((e) {
-                                            return ClockLabel.fromIndex(
-                                                idx: e.key,
-                                                length: 8,
-                                                text: e.value);
-                                          }).toList(),
-                                          labelOffset: 35,
-                                          rotateLabels: false,
-                                          padding: 60);
+                                          await showTimeRangePicker(
+                                              context: context,
+                                              start: const TimeOfDay(
+                                                  hour: 9, minute: 0),
+                                              end: const TimeOfDay(
+                                                  hour: 12, minute: 0),
+                                              disabledTime: TimeRange(
+                                                  startTime: const TimeOfDay(
+                                                      hour: 18, minute: 0),
+                                                  endTime: const TimeOfDay(
+                                                      hour: 6, minute: 0)),
+                                              disabledColor:
+                                                  Colors.red.withOpacity(0.5),
+                                              strokeWidth: 4,
+                                              ticks: 24,
+                                              ticksOffset: -7,
+                                              ticksLength: 15,
+                                              ticksColor: Colors.grey,
+                                              labels: [
+                                                "12 am",
+                                                "3 am",
+                                                "6 am",
+                                                "9 am",
+                                                "12 pm",
+                                                "3 pm",
+                                                "6 pm",
+                                                "9 pm"
+                                              ].asMap().entries.map((e) {
+                                                return ClockLabel.fromIndex(
+                                                    idx: e.key,
+                                                    length: 8,
+                                                    text: e.value);
+                                              }).toList(),
+                                              labelOffset: 35,
+                                              rotateLabels: false,
+                                              padding: 60);
                                       setState(() {
                                         startTime = result.startTime;
                                         endTime = result.endTime;
-                                        officeHours = '${startTime
-                                            .toString()
-                                            .substring(10, 15)} - ${endTime
-                                            .toString().substring(10, 15)}';
+                                        officeHours =
+                                            '${startTime.toString().substring(10, 15)} - ${endTime.toString().substring(10, 15)}';
                                       });
                                     },
                                   ),
                                 ),
                               ),
-                            ),
-                            Column(
-                              children: [
-                                for(var a in user.officeHours.keys.toList())
-                                  if(a.toString() == 'Sunday')
-                                    buildDays(day: 'Sunday',
-                                        value: user.officeHours['Sunday']),
-                                for(var a in user.officeHours.keys.toList())
-                                  if(a.toString() == 'Monday')
-                                    buildDays(day: 'Monday',
-                                        value: user.officeHours['Monday']),
-                                for(var a in user.officeHours.keys.toList())
-                                  if(a.toString() == 'Tuesday')
-                                    buildDays(day: 'Tuesday',
-                                        value: user.officeHours['Tuesday']),
-                                for(var a in user.officeHours.keys.toList())
-                                  if(a.toString() == 'Wednesday')
-                                    buildDays(day: 'Wednesday',
-                                        value: user.officeHours['Wednesday']),
-                                for(var a in user.officeHours.keys.toList())
-                                  if(a.toString() == 'Thursday')
-                                    buildDays(day: 'Thursday',
-                                        value: user.officeHours['Thursday']),
-                                for(var a in user.officeHours.keys.toList())
-                                  if(a.toString() == 'Friday')
-                                    buildDays(day: 'Friday',
-                                        value: user.officeHours['Friday']),
-                                for(var a in user.officeHours.keys.toList())
-                                  if(a.toString() == 'Saturday')
-                                    buildDays(day: 'Saturday',
-                                        value: user.officeHours['Saturday']),
-                                // day.add(user.officeHours.keys.toList());
-                                // hour.add(user.officeHours.values.toList());
-                                //   Padding(
-                                //     padding: const EdgeInsets.symmetric(horizontal: 50.0),
-                                //     child: Row(
-                                //       crossAxisAlignment: CrossAxisAlignment.center,
-                                //       children: [
-                                //         const Text('Sunday: ', style: TextStyle(fontSize: 18),),
-                                //         const SizedBox(
-                                //           width: 20,
-                                //         ),
-                                //         Text(user.officeHours['Thursday'], style: TextStyle(fontSize: 18),),
-                                //       ],
-                                //     ),
-                                //   ),
-                              ],
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 40),
@@ -275,6 +225,63 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                                 ),
                               ),
                             ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Column(
+                              children: [
+                                for (var a in user.officeHours.keys.toList())
+                                  if (a.toString() == 'Sunday')
+                                    buildDays(
+                                        day: 'Sunday',
+                                        value: user.officeHours['Sunday']),
+                                for (var a in user.officeHours.keys.toList())
+                                  if (a.toString() == 'Monday')
+                                    buildDays(
+                                        day: 'Monday',
+                                        value: user.officeHours['Monday']),
+                                for (var a in user.officeHours.keys.toList())
+                                  if (a.toString() == 'Tuesday')
+                                    buildDays(
+                                        day: 'Tuesday',
+                                        value: user.officeHours['Tuesday']),
+                                for (var a in user.officeHours.keys.toList())
+                                  if (a.toString() == 'Wednesday')
+                                    buildDays(
+                                        day: 'Wednesday',
+                                        value: user.officeHours['Wednesday']),
+                                for (var a in user.officeHours.keys.toList())
+                                  if (a.toString() == 'Thursday')
+                                    buildDays(
+                                        day: 'Thursday',
+                                        value: user.officeHours['Thursday']),
+                                for (var a in user.officeHours.keys.toList())
+                                  if (a.toString() == 'Friday')
+                                    buildDays(
+                                        day: 'Friday',
+                                        value: user.officeHours['Friday']),
+                                for (var a in user.officeHours.keys.toList())
+                                  if (a.toString() == 'Saturday')
+                                    buildDays(
+                                        day: 'Saturday',
+                                        value: user.officeHours['Saturday']),
+                                // day.add(user.officeHours.keys.toList());
+                                // hour.add(user.officeHours.values.toList());
+                                //   Padding(
+                                //     padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                                //     child: Row(
+                                //       crossAxisAlignment: CrossAxisAlignment.center,
+                                //       children: [
+                                //         const Text('Sunday: ', style: TextStyle(fontSize: 18),),
+                                //         const SizedBox(
+                                //           width: 20,
+                                //         ),
+                                //         Text(user.officeHours['Thursday'], style: TextStyle(fontSize: 18),),
+                                //       ],
+                                //     ),
+                                //   ),
+                              ],
+                            ),
                           ],
                         ),
                       ],
@@ -284,9 +291,7 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                   child: Text('hi'),
                 );
               }
-            }
-        )
-    );
+            }));
     // FutureBuilder<UserWorkingHours?>(
     //     future: readUser(),
     //     builder: (context, snapshot) {
@@ -308,7 +313,6 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
     //       }
     //     }
     // ),
-
   }
 
   String? getTime() {
@@ -316,8 +320,7 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
       return "Select Time";
     } else {
       time2 =
-      "${startTime.toString().substring(10, 15)} - ${endTime.toString()
-          .substring(10, 15)}";
+          "${startTime.toString().substring(10, 15)} - ${endTime.toString().substring(10, 15)}";
       return time2;
     }
   }
@@ -336,12 +339,13 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
     }
   }
 
-  Future updateOfficeTimeField({required Map officeHours,
-    required List<String> day,
-    required String time}) async {
+  Future updateOfficeTimeField(
+      {required Map officeHours,
+      required List<String> day,
+      required String time}) async {
     try {
       final docUser =
-      FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
+          FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
 
       for (int i = 0; i < day.length; i++) {
         String a = day[i];
@@ -357,14 +361,17 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
           btnOkText: "Ok",
           btnOkOnPress: () {
             Navigator.pop(context);
-            Navigator.pushReplacement(context, MaterialPageRoute(
-                builder: (context) => const EditOfficeHoursFormPage()));
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const EditOfficeHoursFormPage()));
           },
           onDissmissCallback: (d) {
-            Navigator.pushReplacement(context, MaterialPageRoute(
-                builder: (context) => const EditOfficeHoursFormPage()));
-          }
-      ).show();
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const EditOfficeHoursFormPage()));
+          }).show();
     } on FirebaseAuthException catch (error) {
       AwesomeDialog(
           autoDismiss: false,
@@ -379,14 +386,13 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
           },
           onDissmissCallback: (d) {
             return Navigator.of(context).popUntil((route) => route.isFirst);
-          }
-      ).show();
+          }).show();
     }
   }
 
   Future<UserAccount?> readUser() async {
     final getUser =
-    FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
+        FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
     final snapshot = await getUser.get();
     if (snapshot.exists) {
       return UserAccount.fromJson(snapshot.data()!);
@@ -397,41 +403,182 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
   Widget buildDays({required String day, required String value}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40.0),
-      child: ListTile(
-        title: Text(day, style: const TextStyle(fontSize: 18),),
-        trailing: Text(value, style: const TextStyle(fontSize: 18),),
-        onLongPress: () {
-          AwesomeDialog(
-              autoDismiss: false,
-              context: context,
-              dialogType: DialogType.WARNING,
-              animType: AnimType.BOTTOMSLIDE,
-              title: 'Warning',
-              desc: 'Are you sure you want to delete this item!',
-              btnOkText: "Delete",
-              btnCancelText: 'Cancel',
-              btnOkOnPress: () async {
-                final docUser =
-                FirebaseFirestore.instance.collection('users').doc(
-                    currentUser.uid);
-                await docUser.update({'officeHours.$day': FieldValue.delete()});
-                Navigator.pushReplacement(context, MaterialPageRoute(
-                    builder: (context) => const EditOfficeHoursFormPage()));
-              },
-              btnCancelOnPress: () {
-                Navigator.pop(context);
-              },
-              onDissmissCallback: (d) {
-                Navigator.pop(context);
-                //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const EditOfficeHoursFormPage()));
-              }
-          ).show();
-          // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditOfficeHoursFormPage()));
-          // setState(() {
-          //   isSelected = !isSelected;
-          // });
-        },
+      child: Card(
+        child: Padding(
+          padding: EdgeInsets.all(15),
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Color(MyColors.grey01),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                width: double.infinity,
+                padding: EdgeInsets.all(20),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.calendar_today,
+                          color: Color(MyColors.header01),
+                          size: 15,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          day,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color(MyColors.header01),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.access_alarm,
+                          color: Color(MyColors.header01),
+                          size: 17,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          value,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color(MyColors.header01),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      child: Text('Delete',style: TextStyle(color: Color(MyColors.header01)),),
+                      onPressed: () async {
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.WARNING,
+                          animType: AnimType.BOTTOMSLIDE,
+                          title: 'Warning',
+                          desc: 'Are you sure you want to delete this service',
+                          btnOkText: "Delete",
+                          btnCancelText: 'Cancel',
+                          btnCancelOnPress: () {},
+                          btnOkOnPress: () {
+                            try {
+                              deleteOfficeHours(day) ;
+                              AwesomeDialog(
+                                autoDismiss: false,
+                                context: context,
+                                dialogType: DialogType.SUCCES,
+                                animType: AnimType.BOTTOMSLIDE,
+                                title: 'Success',
+                                desc: 'Service deleted successfully',
+                                btnOkText: 'Go back',
+                                btnCancelColor: Colors.black87,
+                                onDissmissCallback: (d) {
+                                  Navigator.pop(context);
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const EditOfficeHoursFormPage()));
+                                },
+                                btnOkOnPress: () {
+                                  Navigator.pop(context);
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const EditOfficeHoursFormPage()));
+                                },
+                              ).show();
+                            } on FirebaseAuthException catch (error) {
+                              AwesomeDialog(
+                                autoDismiss: false,
+                                context: context,
+                                dialogType: DialogType.ERROR,
+                                animType: AnimType.BOTTOMSLIDE,
+                                title: 'Error',
+                                desc: '${error.message}',
+                                btnCancelText: 'Go back',
+                                btnCancelColor: Colors.black87,
+                                onDissmissCallback: (d) {
+                                  Navigator.pop(context);
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const EditOfficeHoursFormPage()));
+                                },
+                                btnCancelOnPress: () {
+                                  Navigator.pop(context);
+                                },
+                              ).show();
+                            }
+                          },
+                        ).show();
+                      },
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
       ),
+      // child: ListTile(
+      //   title: Text(day, style: const TextStyle(fontSize: 18),),
+      //   trailing: Text(value, style: const TextStyle(fontSize: 18),),
+      //   onLongPress: () {
+      //     AwesomeDialog(
+      //         autoDismiss: false,
+      //         context: context,
+      //         dialogType: DialogType.WARNING,
+      //         animType: AnimType.BOTTOMSLIDE,
+      //         title: 'Warning',
+      //         desc: 'Are you sure you want to delete this item!',
+      //         btnOkText: "Delete",
+      //         btnCancelText: 'Cancel',
+      //         btnOkOnPress: () async {
+      //           final docUser =
+      //           FirebaseFirestore.instance.collection('users').doc(
+      //               currentUser.uid);
+      //           await docUser.update({'officeHours.$day': FieldValue.delete()});
+      //           Navigator.pushReplacement(context, MaterialPageRoute(
+      //               builder: (context) => const EditOfficeHoursFormPage()));
+      //         },
+      //         btnCancelOnPress: () {
+      //           Navigator.pop(context);
+      //         },
+      //         onDissmissCallback: (d) {
+      //           Navigator.pop(context);
+      //           //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const EditOfficeHoursFormPage()));
+      //         }
+      //     ).show();
+      //     // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditOfficeHoursFormPage()));
+      //     // setState(() {
+      //     //   isSelected = !isSelected;
+      //     // });
+      //   },
+      // ),
     );
   }
 
@@ -459,4 +606,13 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
   //   // });
   // }
 
+  Future deleteOfficeHours(String day) async {
+    final docUser =
+        FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
+    await docUser.update({'officeHours.$day': FieldValue.delete()});
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => const EditOfficeHoursFormPage()));
+  }
 }

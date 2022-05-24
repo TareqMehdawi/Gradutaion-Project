@@ -4,7 +4,7 @@ import 'package:day_picker/day_picker.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:graduation_project/pages/delete_services.dart';
+import 'package:graduation_project/pages/employee_services.dart';
 import 'package:time_range_picker/time_range_picker.dart';
 
 
@@ -300,211 +300,93 @@ class _DeleteSelectService extends State<DeleteSelectService> {
               ),
             ),
           ),
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 150, left: 50),
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SizedBox(
-                    width: 150,
-                    height: 50,
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.black),
-                      ),
-                      child: const Text(
-                        'Update',
-                        style: TextStyle(fontSize: 15),
-                      ),
-                      onPressed: () {
-                        final isValid = formKey.currentState!.validate();
-                        if(isValid) {
-                          try {
-                          updateServiceName(
-                              servicename: serviceController.text);
-                          updateTime(time: time2!);
-                          updateDuration(duration: duration!);
-                          updateDays(day: newDays);
-                          AwesomeDialog(
-                            autoDismiss: false,
-                            context: context,
-                            dialogType: DialogType.SUCCES,
-                            animType: AnimType.BOTTOMSLIDE,
-                            title: 'Success',
-                            desc: 'Service updated successfully',
-                            btnOkText: "Go back",
-                            btnCancelColor: Colors.black87,
-                            btnOkOnPress: () {
-                              Navigator.pop(context);
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const DeleteService()));
-                            },
-                            onDissmissCallback: (d) {
-                              Navigator.pop(context);
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const DeleteService()));
-                            },
-                          ).show();
-                        } on FirebaseAuthException catch (error) {
-                          AwesomeDialog(
-                            autoDismiss: false,
-                            context: context,
-                            dialogType: DialogType.ERROR,
-                            animType: AnimType.BOTTOMSLIDE,
-                            title: 'Error',
-                            desc: '${error.message}',
-                            btnCancelText: 'Go back',
-                            btnCancelColor: Colors.black87,
-                            onDissmissCallback: (d) {
-                              Navigator.pop(context);
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const DeleteService()));
-                            },
-                            btnCancelOnPress: () {
-                              Navigator.pop(context);
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const DeleteService()));
-                            },
-                          ).show();
-                        }
-                        }
-                      },
-                    ),
+          Padding(
+            padding: const EdgeInsets.only(top: 150, left: 25),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
+                width: 250,
+                height: 50,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.black),
                   ),
+                  child: const Text(
+                    'Update',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                  onPressed: () {
+                    final isValid = formKey.currentState!.validate();
+                    if(isValid) {
+                      try {
+                      updateServiceName(
+                          servicename: serviceController.text);
+                      updateTime(time: time2!);
+                      updateDuration(duration: duration!);
+                      updateDays(day: newDays);
+                      AwesomeDialog(
+                        autoDismiss: false,
+                        context: context,
+                        dialogType: DialogType.SUCCES,
+                        animType: AnimType.BOTTOMSLIDE,
+                        title: 'Success',
+                        desc: 'Service updated successfully',
+                        btnOkText: "Go back",
+                        btnCancelColor: Colors.black87,
+                        btnOkOnPress: () {
+                          Navigator.pop(context);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const MyServices()));
+                        },
+                        onDissmissCallback: (d) {
+                          Navigator.pop(context);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const MyServices()));
+                        },
+                      ).show();
+                    } on FirebaseAuthException catch (error) {
+                      AwesomeDialog(
+                        autoDismiss: false,
+                        context: context,
+                        dialogType: DialogType.ERROR,
+                        animType: AnimType.BOTTOMSLIDE,
+                        title: 'Error',
+                        desc: '${error.message}',
+                        btnCancelText: 'Go back',
+                        btnCancelColor: Colors.black87,
+                        onDissmissCallback: (d) {
+                          Navigator.pop(context);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const MyServices()));
+                        },
+                        btnCancelOnPress: () {
+                          Navigator.pop(context);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const MyServices()));
+                        },
+                      ).show();
+                    }
+                    }
+                  },
                 ),
               ),
-              const SizedBox(
-                width: 4,
-              ),
-              Padding(
-                  padding: const EdgeInsets.only(top: 150),
-                  child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: SizedBox(
-                        width: 150,
-                        height: 50,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.black),
-                          ),
-                          child: const Text(
-                            'Delete',
-                            style: TextStyle(fontSize: 15),
-                          ),
-                          onPressed: () async {
-                              AwesomeDialog(
-                                context: context,
-                                dialogType: DialogType.WARNING,
-                                animType: AnimType.BOTTOMSLIDE,
-                                title: 'Warning',
-                                desc: 'Are you sure you want to delete this service',
-                                btnOkText: "Delete",
-                                btnCancelText: 'Cancel',
-                                btnCancelOnPress: (){},
-                                btnOkOnPress: () {
-                                  try {
-                                    deleteService();
-                                    AwesomeDialog(
-                                      autoDismiss: false,
-                                      context: context,
-                                      dialogType: DialogType.SUCCES,
-                                      animType: AnimType.BOTTOMSLIDE,
-                                      title: 'Success',
-                                      desc: 'Service deleted successfully',
-                                      btnOkText: 'Go back',
-                                      btnCancelColor: Colors.black87,
-                                      onDissmissCallback: (d) {
-                                        Navigator.pop(context);
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                const DeleteService()));
-                                      },
-                                      btnOkOnPress: () {
-                                        Navigator.pop(context);
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                const DeleteService()));
-                                      },
-                                    ).show();
-                                  } on FirebaseAuthException catch(error){
-                                    AwesomeDialog(
-                                      autoDismiss: false,
-                                      context: context,
-                                      dialogType: DialogType.ERROR,
-                                      animType: AnimType.BOTTOMSLIDE,
-                                      title: 'Error',
-                                      desc: '${error.message}',
-                                      btnCancelText: 'Go back',
-                                      btnCancelColor: Colors.black87,
-                                      onDissmissCallback: (d) {
-                                        Navigator.pop(context);
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                const DeleteService()));
-                                      },
-                                      btnCancelOnPress: () {
-                                        Navigator.pop(context);
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                const DeleteService()));
-                                      },
-                                    ).show();
-                                  }
-                                },
-                              ).show();
-                              // AwesomeDialog(
-                              //   autoDismiss: false,
-                              //   context: context,
-                              //   dialogType: DialogType.SUCCES,
-                              //   animType: AnimType.BOTTOMSLIDE,
-                              //   title: 'Success',
-                              //   desc: 'Service deleted successfully',
-                              //   btnOkText: "Go back",
-                              //   btnCancelColor: Colors.black87,
-                              //   btnOkOnPress: () {
-                              //     Navigator.pop(context);
-                              //     Navigator.pushReplacement(
-                              //         context,
-                              //         MaterialPageRoute(
-                              //             builder: (context) =>
-                              //             const DeleteService()));
-                              //   },
-                              //   onDissmissCallback: (d) {
-                              //     Navigator.pop(context);
-                              //     Navigator.pushReplacement(
-                              //         context,
-                              //         MaterialPageRoute(
-                              //             builder: (context) =>
-                              //             const DeleteService()));
-                              //   },
-                              // ).show();
-                            },
-                        ),
-                      ),),),
-            ],
+            ),
+          ),
+          const SizedBox(
+            width: 4,
           )
         ],
       ),
