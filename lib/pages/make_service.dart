@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
-import 'package:time_range_picker/time_range_picker.dart';
 import '../widgets/user_class.dart';
 
 class ServicePage extends StatefulWidget {
@@ -173,8 +172,8 @@ class _ServicePageState extends State<ServicePage> {
                                       mode: CupertinoDatePickerMode.time,
                                       onDateTimeChanged: (value) {
                                         setState(() {
-                                          if (value != null && value != startTime){
-                                          startTime = value.hour.toString().padLeft(2,"0") +':'+value.minute.toString().padLeft(2,"0");
+                                          if (value != startTime){
+                                          startTime = '${value.hour.toString().padLeft(2,"0")}:${value.minute.toString().padLeft(2,"0")}';
                                           }
                                         });
                                       },
@@ -207,8 +206,8 @@ class _ServicePageState extends State<ServicePage> {
                                       mode: CupertinoDatePickerMode.time,
                                       onDateTimeChanged: (value) {
                                         setState(() {
-                                          if (value != null && value != endTime){
-                                            endTime = value.hour.toString().padLeft(2,"0") +':'+value.minute.toString().padLeft(2,"0");
+                                          if (value != endTime){
+                                            endTime = '${value.hour.toString().padLeft(2,"0")}:${value.minute.toString().padLeft(2,"0")}';
                                           }
                                         });
                                       },

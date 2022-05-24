@@ -10,16 +10,19 @@ class BookingScreen extends StatefulWidget {
   final String uid;
   final String empName;
   final String stdName;
+  final Map officeHours;
 
-  const BookingScreen({Key? key, required this.uid, required this.empName, required this.stdName})
-      : super(key: key);
+  const BookingScreen({
+    Key? key,
+    required this.uid,
+    required this.empName,
+    required this.stdName,
+    required this.officeHours,
+  }) : super(key: key);
 
   @override
   _BookingScreenState createState() => _BookingScreenState();
 }
-
-
-
 
 class _BookingScreenState extends State<BookingScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -46,55 +49,57 @@ class _BookingScreenState extends State<BookingScreen> {
   String? selectedTime;
   List? selectDay;
 
-  int? onTimeSelect=-1;
+  int? onTimeSelect = -1;
   int isAvailable = 10;
   int isBooked = 2;
+  bool a = false;
 
   //10:30 - 10:40  11:00-11:30
 
   //               11:00-11:10
-  Color getColor(List bookedDay,List Time,int Ind, int onTime){
-String? t;
-//print(Time[Ind]);
-//print(a);
-bool a= false;
-if(a==false){
+  // Color getColor(List bookedDay, List Time, int Ind, int onTime) {
+  //   String? t;
+  //
+  //   if (a == false) {
+  //     for (int i = 0; i < bookedDay.length; i++) {
+  //       if (Time[Ind] == bookedDay[i]) {
+  //         //bookedDay[i]="1";
+  //         //bookedDay.removeAt(i);
+  //         //print(bookedDay);
+  //         return Colors.red;
+  //       } else if (Time[Ind].toString().substring(0, 7) ==
+  //               bookedDay[i].toString().substring(0, 7) &&
+  //           Time[Ind].toString().substring(9, 17) !=
+  //               bookedDay[i].toString().substring(9, 17)) {
+  //         a = true;
+  //         //print(a);
+  //         t = bookedDay[i].toString().substring(9, 17);
+  //         print(t);
+  //       }
+  //     }
+  //   }
+  //   // print(Time[Ind].toString().substring(9, 17));
+  //   // print(t);
+  //   if (Time[Ind].toString().substring(9, 17) == t) {
+  //     if (a == true) {
+  //       a = false;
+  //       //print(a);
+  //       return Colors.red;
+  //     } else
+  //       return Colors.white;
+  //   }
+  //   if (Ind == onTime) {
+  //     return Colors.indigo;
+  //   }
+  //
+  //   return Colors.white12;
+  // }
 
-    for (int i = 0; i < bookedDay.length; i++) {
-      if (Time[Ind] == bookedDay[i]) {
-        //bookedDay[i]="1";
-        //bookedDay.removeAt(i);
-        //print(bookedDay);
-        return Colors.red;
-
-
-      }else if(Time[Ind].toString().substring(0,7)==bookedDay[i].toString().substring(0,7) &&Time[Ind].toString().substring(9,17)!=bookedDay[i].toString().substring(9,17) ){
-        a=true;
-        t=bookedDay[i].toString().substring(9,17);
-         print(t);
-      }
-    }}
-      if(a == true){
-       if(Time[Ind].toString().substring(9,17)==t){
-         print("Sss");
-         return Colors.red;
-       }else
-       return Colors.red;
-
-}
-    if(Ind == onTime) {
-
-      return Colors.indigo ;
-    }
-
-
-    return Colors.white12 ;
-  }
   // static const orange = Color(0xFFFE9A75);
   // static const dark = Color(0xFF333A47);
   // static const double leftPadding = 0;
   void sendItem4(List items2) {
-    selectDay =items2;
+    selectDay = items2;
   }
 
   List sendItem(List items2) {
@@ -124,20 +129,20 @@ if(a==false){
   List sendItem3(List items2) {
     List items = [];
     int duration =
-    int.parse(items2[serviceIndex!]["Duration"].toString().substring(0, 2));
+        int.parse(items2[serviceIndex!]["Duration"].toString().substring(0, 2));
     int endMin =
-    int.parse(items2[serviceIndex!]["Time"].toString().substring(11, 13));
+        int.parse(items2[serviceIndex!]["Time"].toString().substring(11, 13));
     int endHour =
-    int.parse(items2[serviceIndex!]["Time"].toString().substring(8, 10));
+        int.parse(items2[serviceIndex!]["Time"].toString().substring(8, 10));
     // print(duration);
     // print(endMin);
     // print(items2[serviceIndex!]["days"][0]);
     //
     // print(endHour);
     int min =
-    int.parse(items2[serviceIndex!]["Time"].toString().substring(3, 5));
+        int.parse(items2[serviceIndex!]["Time"].toString().substring(3, 5));
     int hour =
-    int.parse(items2[serviceIndex!]["Time"].toString().substring(0, 2));
+        int.parse(items2[serviceIndex!]["Time"].toString().substring(0, 2));
     int min2;
     while (hour <= endHour) {
       int minute = min;
@@ -269,7 +274,7 @@ if(a==false){
                             ),
                             Padding(
                               padding:
-                              const EdgeInsets.symmetric(horizontal: 15.0),
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
                               child: DropdownButtonHideUnderline(
                                 child: DropdownButton2(
                                   isExpanded: true,
@@ -299,18 +304,18 @@ if(a==false){
                                   items: sendItem(user)
                                       .map(
                                         (item) => DropdownMenuItem(
-                                      value: item,
-                                      child: Text(
-                                        item,
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
+                                          value: item,
+                                          child: Text(
+                                            item,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
                                         ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  )
+                                      )
                                       .toList(),
                                   value: selectedValue,
                                   onChanged: (value) {
@@ -359,7 +364,7 @@ if(a==false){
                             ),
                             Padding(
                               padding:
-                              const EdgeInsets.symmetric(horizontal: 15.0),
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
                               child: DropdownButtonHideUnderline(
                                 child: DropdownButton2(
                                   isExpanded: true,
@@ -388,17 +393,17 @@ if(a==false){
                                   ),
                                   items: sendItem2(user)
                                       .map((item) => DropdownMenuItem<String>(
-                                    value: item,
-                                    child: Text(
-                                      item,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ))
+                                            value: item,
+                                            child: Text(
+                                              item,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ))
                                       .toList(),
                                   value: selectedValue2,
                                   onChanged: (value) {
@@ -448,46 +453,56 @@ if(a==false){
                             ),
                             if (isSelected == true)
                               FutureBuilder(
-                                future: getTime(user),
-                                builder: (context, snapshot) {
-              if (snapshot.hasError) {
-              return const Text('Something went wrong');
-              } else if (snapshot.hasData) {
-              final List user2 = snapshot.data as List;
-                                  return Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 0, vertical: 0),
-                                      child: ListView.builder(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10.0),
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: sendItem3(user).length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) =>
-                                            Padding(
-                                              padding: const EdgeInsets.all(8.0),
+                                  future: getTime(user),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasError) {
+                                      return const Text('Something went wrong');
+                                    } else if (snapshot.hasData) {
+                                      final List user2 = snapshot.data as List;
+                                      return Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 0, vertical: 0),
+                                          child: ListView.builder(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10.0),
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: sendItem3(user).length,
+                                            itemBuilder: (BuildContext context,
+                                                    int index) =>
+                                                Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: InkWell(
                                                 onTap: index != isAvailable
                                                     ? () {
-                                                  setState(() {
-                                                    onTimeSelect = index;
-                                                    selectedTime =
-                                                    sendItem3(user)[index];
-                                                    //onTimeSelect = !onTimeSelect;
-                                                  });
-                                                }
+                                                        setState(() {
+                                                          onTimeSelect = index;
+                                                          selectedTime =
+                                                              sendItem3(
+                                                                  user)[index];
+                                                          getColor(user, user2);
+                                                          //onTimeSelect = !onTimeSelect;
+                                                        });
+                                                      }
                                                     : null,
                                                 borderRadius:
-                                                BorderRadius.circular(32.0),
+                                                    BorderRadius.circular(32.0),
                                                 splashColor: Colors.indigo,
                                                 child: Container(
                                                   decoration: BoxDecoration(
                                                     border: Border.all(),
                                                     borderRadius:
-                                                    BorderRadius.circular(32.0),
-                                                    color:getColor(user2,sendItem3(user),index,onTimeSelect!),
+                                                        BorderRadius.circular(
+                                                            32.0),
+                                                    color:
+                                                        getColor(user, user2),
+                                                    // getColor(
+                                                    //     user2,
+                                                    //     sendItem3(user),
+                                                    //     index,
+                                                    //     onTimeSelect!),
 
                                                     // if(onTimeSelect == index){
                                                     //   Colors.indigo;
@@ -503,88 +518,104 @@ if(a==false){
                                                   height: 30,
                                                   child: Center(
                                                       child: Padding(
-                                                        padding: const EdgeInsets.all(8.0),
-                                                        child: Text(
-                                                          sendItem3(user)[index],
-                                                          style: const TextStyle(
-                                                              fontSize: 14,
-                                                              color: Colors.black,
-                                                              fontWeight: FontWeight.bold),
-                                                        ),
-                                                      )),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Text(
+                                                      sendItem3(user)[index],
+                                                      style: const TextStyle(
+                                                          fontSize: 14,
+                                                          color: Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  )),
                                                 ),
                                               ),
                                             ),
-                                      ),
-                                    ),
-                                  );}else {
-                return Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 0, vertical: 0),
-                                        child: ListView.builder(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10.0),
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: sendItem3(user).length,
-                                          itemBuilder:
-                                              (BuildContext context, int index) =>
-                                              Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: InkWell(
-                                                  onTap: index != isAvailable
-                                                      ? () {
-                                                    setState(() {
-                                                      onTimeSelect = index;
-                                                      selectedTime =
-                                                      sendItem3(user)[index];
-                                                      //onTimeSelect = !onTimeSelect;
-                                                    });
-                                                  }
-                                                      : null,
-                                                  borderRadius:
-                                                  BorderRadius.circular(32.0),
-                                                  splashColor: Colors.indigo,
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      border: Border.all(),
-                                                      borderRadius:
-                                                      BorderRadius.circular(32.0),
-                                                      color:onTimeSelect == index ? Colors.indigo:Colors.white12,
-
-                                                      // if(onTimeSelect == index){
-                                                      //   Colors.indigo;
-                                                      // } else if(isAvailable == 2){
-                                                      //   Colors.green;
-                                                      // } else if(isBooked == 3){
-                                                      //   Colors.red;
-                                                      // } else{
-                                                      //   Colors.white12;
-                                                      // }
-                                                      // }())
-                                                    ),
-                                                    height: 30,
-                                                    child: Center(
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.all(8.0),
-                                                          child: Text(
-                                                            sendItem3(user)[index],
-                                                            style: const TextStyle(
-                                                                fontSize: 14,
-                                                                color: Colors.black,
-                                                                fontWeight: FontWeight.bold),
-                                                          ),
-                                                        )),
-                                                  ),
-                                                ),
-                                              ),
+                                          ),
                                         ),
-                                      ),
-                                    );
-              }
-                                }
-                              ),
+                                      );
+                                    } else {
+                                      return const Text('nothing');
+                                    }
+                                    //  else {
+                                    //   return Expanded(
+                                    //     child: Padding(
+                                    //       padding: const EdgeInsets.symmetric(
+                                    //           horizontal: 0, vertical: 0),
+                                    //       child: ListView.builder(
+                                    //         padding: const EdgeInsets.symmetric(
+                                    //             horizontal: 10.0),
+                                    //         shrinkWrap: true,
+                                    //         scrollDirection: Axis.horizontal,
+                                    //         itemCount: sendItem3(user).length,
+                                    //         itemBuilder: (BuildContext context,
+                                    //                 int index) =>
+                                    //             Padding(
+                                    //           padding:
+                                    //               const EdgeInsets.all(8.0),
+                                    //           child: InkWell(
+                                    //             onTap: index != isAvailable
+                                    //                 ? () {
+                                    //                     setState(() {
+                                    //                       onTimeSelect = index;
+                                    //                       selectedTime =
+                                    //                           sendItem3(
+                                    //                               user)[index];
+                                    //                       //onTimeSelect = !onTimeSelect;
+                                    //                     });
+                                    //                   }
+                                    //                 : null,
+                                    //             borderRadius:
+                                    //                 BorderRadius.circular(32.0),
+                                    //             splashColor: Colors.indigo,
+                                    //             child: Container(
+                                    //               decoration: BoxDecoration(
+                                    //                 border: Border.all(),
+                                    //                 borderRadius:
+                                    //                     BorderRadius.circular(
+                                    //                         32.0),
+                                    //                 color:
+                                    //                   getColor(user, user2),
+                                    //                 // onTimeSelect == index
+                                    //                 //     ? Colors.indigo
+                                    //                 //     : Colors.white12,
+                                    //
+                                    //                 // if(onTimeSelect == index){
+                                    //                 //   Colors.indigo;
+                                    //                 // } else if(isAvailable == 2){
+                                    //                 //   Colors.green;
+                                    //                 // } else if(isBooked == 3){
+                                    //                 //   Colors.red;
+                                    //                 // } else{
+                                    //                 //   Colors.white12;
+                                    //                 // }
+                                    //                 // }())
+                                    //               ),
+                                    //               height: 30,
+                                    //               child: Center(
+                                    //                   child: Padding(
+                                    //                 padding:
+                                    //                     const EdgeInsets.all(
+                                    //                         8.0),
+                                    //                 child: Text(
+                                    //                   sendItem3(user)[index],
+                                    //                   style: const TextStyle(
+                                    //                       fontSize: 14,
+                                    //                       color: Colors.black,
+                                    //                       fontWeight:
+                                    //                           FontWeight.bold),
+                                    //                 ),
+                                    //               )),
+                                    //             ),
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    //     ),
+                                    //   );
+                                    // }
+                                  }),
                             // TimeRange(
                             //   fromTitle: const Text(
                             //     'FROM',
@@ -825,10 +856,10 @@ if(a==false){
     final json = user.toJson();
     await docUser.set(json);
   }
-  Future getTime(List user1)  async {
+
+  Future getTime(List user1) async {
     List data = [];
-    List times = sendItem3(user1);
-    List bookedTimes = [];
+    //List times = sendItem3(user1);
 
     final docUser2 = await FirebaseFirestore.instance
         .collection('reservation')
@@ -839,10 +870,15 @@ if(a==false){
       data.add(ele.data()['time']);
     }
 
-
-
-    //print(data);
     return data;
   }
 
+  getColor(user, user2) {
+    for (var booked in user2) {
+      for (var available in sendItem3(user)) {
+        if (booked == available) print(booked);
+        return Colors.red;
+      }
+    }
+  }
 }

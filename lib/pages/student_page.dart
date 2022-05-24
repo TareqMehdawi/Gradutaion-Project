@@ -3,13 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+
 import '../widgets/search_delegate_employee.dart';
 import '../widgets/user_class.dart';
 import 'navigation_drawer.dart';
 
 class StudentPage extends StatefulWidget {
   final String stdName;
-   const StudentPage({Key? key, void function,required this.stdName}) : super(key: key);
+  const StudentPage({Key? key, void function, required this.stdName})
+      : super(key: key);
 
   @override
   State<StudentPage> createState() => _StudentPageState();
@@ -75,7 +77,7 @@ class _StudentPageState extends State<StudentPage> {
         child: ListTile(
           leading: Padding(
             padding: const EdgeInsets.only(top: 10.0),
-            child: Text(user.date.substring(0,3)),
+            child: Text(user.date.substring(0, 3)),
           ),
           title: Text(user.service),
           subtitle: Text(
@@ -130,20 +132,28 @@ class _StudentPageState extends State<StudentPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  loginButton(title: 'Doctor',function: () async{
-                    Navigator.pop(context);
-                    await showSearch(
-                      context: context,
-                      delegate: EmployeeSearchDelegate(type: 'doctor',stdName: widget.stdName),
-                    );
-                  },),
-                  loginButton(title: 'Registration',function: () async{
-                    Navigator.pop(context);
-                    await showSearch(
-                      context: context,
-                      delegate: EmployeeSearchDelegate(type: 'registration',stdName: widget.stdName),
-                    );
-                  },),
+                  loginButton(
+                    title: 'Doctor',
+                    function: () async {
+                      Navigator.pop(context);
+                      await showSearch(
+                        context: context,
+                        delegate: EmployeeSearchDelegate(
+                            type: 'doctor', stdName: widget.stdName),
+                      );
+                    },
+                  ),
+                  loginButton(
+                    title: 'Registration',
+                    function: () async {
+                      Navigator.pop(context);
+                      await showSearch(
+                        context: context,
+                        delegate: EmployeeSearchDelegate(
+                            type: 'registration', stdName: widget.stdName),
+                      );
+                    },
+                  ),
                 ],
               ),
             ],
@@ -152,7 +162,8 @@ class _StudentPageState extends State<StudentPage> {
       ),
     );
   }
-  Widget loginButton({required String title,required VoidCallback function}) {
+
+  Widget loginButton({required String title, required VoidCallback function}) {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
         minimumSize: Size(MediaQuery.of(context).size.width * .35,
@@ -172,11 +183,14 @@ class _StudentPageState extends State<StudentPage> {
       ),
     );
   }
-  Future deleteService(StudentsReservation user)  async {
+
+  Future deleteService(StudentsReservation user) async {
     final docUser2 = await FirebaseFirestore.instance
         .collection('reservation')
         .where('empId', isEqualTo: user.empId)
-        .where('id', isEqualTo: user.id).where('service', isEqualTo: user.service).where('time', isEqualTo: user.time)
+        .where('id', isEqualTo: user.id)
+        .where('service', isEqualTo: user.service)
+        .where('time', isEqualTo: user.time)
         .get();
     for (var doc in docUser2.docs) {
       await FirebaseFirestore.instance
@@ -185,11 +199,10 @@ class _StudentPageState extends State<StudentPage> {
           .delete();
     }
   }
-    // for (var doc in docUser2.docs) {
-    //   await FirebaseFirestore.instance
-    //       .collection('reservation')
-    //       .doc(doc.id)
-    //       .delete();
-    // }
-  }
-
+  // for (var doc in docUser2.docs) {
+  //   await FirebaseFirestore.instance
+  //       .collection('reservation')
+  //       .doc(doc.id)
+  //       .delete();
+  // }
+}
