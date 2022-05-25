@@ -134,7 +134,7 @@ class _TareqState extends State<Tareq> {
     //   return schedule['status'] == status;
     // }).toList();
 
-    return Scaffold(
+    return const Scaffold(
         // appBar: AppBar(),
         // body: ListView(children: [
         //   listTile(),
@@ -412,56 +412,56 @@ class _TareqState extends State<Tareq> {
   //   return intMin;
   // }
   //
-  // // int countHours() {
-  // //   int startHour = int.parse(doctorOfficeHours.substring(0, 2));
-  // //   int endHour = int.parse(doctorOfficeHours.substring(8, 10));
-  // //   int startMin = int.parse(doctorOfficeHours.substring(3, 5));
-  // //   int endMin = int.parse(doctorOfficeHours.substring(11, 13));
-  // //   int hourCounter = 0;
-  // //   int minCounter = 0;
-  // //   // print(startHour);
-  // //   // print(startMin);
-  // //   //print(endHour);
-  // //   //print(endMin);
-  // //   //print(counter);
-  // //
-  // //   while (startHour != endHour || startMin != endMin) {
-  // //     if (minCounter == 60) {
-  // //       minCounter = 0;
-  // //       hourCounter++;
-  // //       startHour++;
-  // //     }
-  // //
-  // //     if (endMin == 0) {
-  // //       minCounter--;
-  // //       endMin++;
-  // //     }
-  // //     if (startMin == 60 && startHour == 12) {
-  // //       startMin = 1;
-  // //       minCounter++;
-  // //       startHour = 1;
-  // //       hourCounter++;
-  // //     }
-  // //     if (startMin > endMin && startMin < 60) {
-  // //       startMin++;
-  // //       minCounter++;
-  // //     } else if (startMin > endMin && startMin == 60) {
-  // //       startMin = 1;
-  // //       minCounter++;
-  // //     } else {
-  // //       startMin++;
-  // //       minCounter++;
-  // //     }
-  // //   }
-  // //   if (minCounter % 60 == 0) {
-  // //     minCounter = 0;
-  // //   }
-  // //   // print('hour: $hourCounter');
-  // //   // print('min: $minCounter');
-  // //   int totalMinutes = hourCounter * 60 + minCounter;
-  // //   //print('$totalMinutes');
-  // //   return totalMinutes;
-  // // }
+  // int countHours() {
+  //   int startHour = int.parse(doctorOfficeHours.substring(0, 2));
+  //   int endHour = int.parse(doctorOfficeHours.substring(8, 10));
+  //   int startMin = int.parse(doctorOfficeHours.substring(3, 5));
+  //   int endMin = int.parse(doctorOfficeHours.substring(11, 13));
+  //   int hourCounter = 0;
+  //   int minCounter = 0;
+  //   // print(startHour);
+  //   // print(startMin);
+  //   //print(endHour);
+  //   //print(endMin);
+  //   //print(counter);
+  //
+  //   while (startHour != endHour || startMin != endMin) {
+  //     if (minCounter == 60) {
+  //       minCounter = 0;
+  //       hourCounter++;
+  //       startHour++;
+  //     }
+  //
+  //     if (endMin == 0) {
+  //       minCounter--;
+  //       endMin++;
+  //     }
+  //     if (startMin == 60 && startHour == 12) {
+  //       startMin = 1;
+  //       minCounter++;
+  //       startHour = 1;
+  //       hourCounter++;
+  //     }
+  //     if (startMin > endMin && startMin < 60) {
+  //       startMin++;
+  //       minCounter++;
+  //     } else if (startMin > endMin && startMin == 60) {
+  //       startMin = 1;
+  //       minCounter++;
+  //     } else {
+  //       startMin++;
+  //       minCounter++;
+  //     }
+  //   }
+  //   if (minCounter % 60 == 0) {
+  //     minCounter = 0;
+  //   }
+  //   // print('hour: $hourCounter');
+  //   // print('min: $minCounter');
+  //   int totalMinutes = hourCounter * 60 + minCounter;
+  //   //print('$totalMinutes');
+  //   return totalMinutes;
+  // }
   //
   // int makeHour(int hour) {
   //   if (hour < 12) {

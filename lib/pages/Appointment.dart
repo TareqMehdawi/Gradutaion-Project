@@ -3,6 +3,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 import '../widgets/user_class.dart';
 
@@ -15,7 +16,7 @@ class BookingScreen extends StatefulWidget {
       {Key? key,
       required this.uid,
       required this.empName,
-      required this.stdName})
+      required this.stdName, required Map officeHours})
       : super(key: key);
 
   @override
@@ -25,11 +26,7 @@ class BookingScreen extends StatefulWidget {
 class _BookingScreenState extends State<BookingScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-//  final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
-
-  FocusNode f4 = FocusNode();
-  FocusNode f5 = FocusNode();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   DateTime selectedDate = DateTime.now();
@@ -54,54 +51,6 @@ class _BookingScreenState extends State<BookingScreen> {
   String? t2;
   bool a = false;
 
-  //10:30 - 10:40  11:00-11:30
-
-  //               11:00-11:10
-  Color getColor(List bookedDay, List Time, int Ind, int onTime) {
-//print(Time[Ind]);
-//print(a);
-//print(a);
-
-    if (a == false) {
-      for (int i = 0; i < bookedDay.length; i++) {
-        if (Time[Ind] == bookedDay[i]) {
-          return Colors.red;
-        } else if (Time[Ind].toString().substring(0, 7) ==
-                bookedDay[i].toString().substring(0, 7) &&
-            Time[Ind].toString().substring(9, 17) !=
-                bookedDay[i].toString().substring(9, 17)) {
-          a = true;
-          t = bookedDay[i].toString().substring(9, 17);
-          //t2 = Time[Ind+1].toString().substring(0, 7);
-          //  print(t2);
-        }
-        //  if(Time[Ind].toString().substring(0, 3)==bookedDay[i].toString().substring(0, 3) &&)
-      }
-    }
-    if (a == true) {
-      //print(Time[Ind].toString().substring(9, 17));
-      if (Time[Ind].toString().substring(9, 17).trim() == t?.trim()) {
-        //print(Time[Ind].toString().substring(9, 17).trim());
-        a = false;
-        t = "";
-        return Colors.red;
-      } else
-        return Colors.red;
-    }
-    if (Ind == onTime) {
-      return Colors.indigo;
-    }
-
-    return Colors.white12;
-  }
-
-  // static const orange = Color(0xFFFE9A75);
-  // static const dark = Color(0xFF333A47);
-  // static const double leftPadding = 0;
-  void sendItem4(List items2) {
-    selectDay = items2;
-  }
-
   List sendItem(List items2) {
     List items = [];
     for (var i = 0; i < items2.length; i++) {
@@ -124,52 +73,270 @@ class _BookingScreenState extends State<BookingScreen> {
     return items;
   }
 
-  //09:00 - 10:00
-  //30
-  List sendItem3(List items2) {
-    List items = [];
-    int duration =
-        int.parse(items2[serviceIndex!]["Duration"].toString().substring(0, 2));
-    int endMin =
-        int.parse(items2[serviceIndex!]["Time"].toString().substring(11, 13));
-    int endHour =
-        int.parse(items2[serviceIndex!]["Time"].toString().substring(8, 10));
-    // print(duration);
-    // print(endMin);
-    // print(items2[serviceIndex!]["days"][0]);
-    //
-    // print(endHour);
-    int min =
-        int.parse(items2[serviceIndex!]["Time"].toString().substring(3, 5));
-    int hour =
-        int.parse(items2[serviceIndex!]["Time"].toString().substring(0, 2));
-    int min2;
-    while (hour <= endHour) {
-      int minute = min;
-      int ho = hour;
-      min = min + duration;
-      if (min < 60) {
-        if (!(min > endMin && hour == endHour)) {
-          if (hour <= endHour) {
-            items.add(
-                '${ho.toString().padLeft(2, "0")} : ${minute.toString().padLeft(2, "0")} - ${hour.toString().padLeft(2, "0")} : ${min.toString().padLeft(2, "0")} ');
+  List send(List bookedDay, String time, String duration) {
+    List offichour = add(time);
+    List availableTime = count(bookedDay, offichour);
+    List endList = [];
+    int t = int.parse(duration.substring(0, 2));
+    int fo = availableTime.length - 1;
+
+    switch (t) {
+      case 5:
+        endList = availableTime;
+        break;
+      case 10:
+        for (int i = 0; i < fo; i++) {
+          String endHourCurrently =
+              availableTime[i].toString().substring(8, 13);
+          String startHourFromNext = '';
+
+          startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
+
+          if (startHourFromNext == endHourCurrently) {
+            endList.add(
+                "${availableTime[i].toString().substring(0, 5)} - ${availableTime[i + 1].toString().substring(8, 13)}");
           }
         }
-      } else if (min >= 60) {
-        min2 = min - 60;
-        hour++;
-        if (!(min2 > endMin && hour == endHour)) {
-          if (hour <= endHour) {
-            items.add(
-                '${ho.toString().padLeft(2, "0")} : ${minute.toString().padLeft(2, "0")} - ${hour.toString().padLeft(2, "0")} : ${min2.toString().padLeft(2, "0")} ');
+        break;
+      case 15:
+        int count = 0;
+        int b = 0;
+        String start = "";
+        for (int i = 0; i < fo; i++) {
+          String endHourCurrently =
+              availableTime[i].toString().substring(8, 13);
+          String startHourFromNext = '';
+
+          startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
+
+          if (startHourFromNext == endHourCurrently && count == 0) {
+            count++;
+
+            if (count == 1) {
+              start = availableTime[i].toString().substring(0, 5);
+              b = i;
+            }
+          } else if (count > 0 &&
+              b + 1 == i &&
+              startHourFromNext == endHourCurrently) {
+            count++;
+          } else {
+            count = 0;
           }
-          min = min2;
+          if (count == 2) {
+            endList.add(
+                "$start - ${availableTime[i + 1].toString().substring(8, 13)}");
+            start = "";
+            count = 0;
+            i = b;
+          }
+        }
+        break;
+      case 20:
+        int count = 0;
+        int b = 0;
+        String start = "";
+        for (int i = 0; i < fo; i++) {
+          String endHourCurrently =
+              availableTime[i].toString().substring(8, 13);
+          String startHourFromNext = '';
+
+          startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
+
+          if (startHourFromNext == endHourCurrently && count == 0) {
+            count++;
+
+            if (count == 1) {
+              start = availableTime[i].toString().substring(0, 5);
+              b = i;
+            }
+          } else if (count > 0 &&
+              (b + 1 == i || b + 2 == i) &&
+              startHourFromNext == endHourCurrently) {
+            count++;
+          } else {
+            count = 0;
+          }
+          if (count == 3) {
+            endList.add(
+                "$start - ${availableTime[i + 1].toString().substring(8, 13)}");
+            start = "";
+            count = 0;
+            i = b;
+          }
+        }
+        break;
+      case 25:
+        int count = 0;
+        int b = 0;
+        String start = "";
+        for (int i = 0; i < fo; i++) {
+          String endHourCurrently =
+              availableTime[i].toString().substring(8, 13);
+          String startHourFromNext = '';
+
+          startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
+
+          if (startHourFromNext == endHourCurrently && count == 0) {
+            count++;
+
+            if (count == 1) {
+              start = availableTime[i].toString().substring(0, 5);
+              b = i;
+            }
+          } else if (count > 0 &&
+              (b + 1 == i || b + 2 == i || b + 3 == i) &&
+              startHourFromNext == endHourCurrently) {
+            count++;
+          } else {
+            count = 0;
+          }
+          if (count == 4) {
+            endList.add(
+                "$start - ${availableTime[i + 1].toString().substring(8, 13)}");
+            start = "";
+            count = 0;
+            i = b;
+          }
+        }
+        break;
+      case 30:
+        int count = 0;
+        int b = 0;
+        String start = "";
+        for (int i = 0; i < fo; i++) {
+          String endHourCurrently =
+              availableTime[i].toString().substring(8, 13);
+          String startHourFromNext = '';
+
+          startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
+
+          if (startHourFromNext == endHourCurrently && count == 0) {
+            count++;
+
+            if (count == 1) {
+              start = availableTime[i].toString().substring(0, 5);
+              b = i;
+            }
+          } else if (count > 0 &&
+              (b + 1 == i || b + 2 == i || b + 3 == i || b + 4 == i) &&
+              startHourFromNext == endHourCurrently) {
+            count++;
+          } else {
+            count = 0;
+          }
+          if (count == 5) {
+            endList.add(
+                "$start - ${availableTime[i + 1].toString().substring(8, 13)}");
+            start = "";
+            count = 0;
+            i = b;
+          }
+        }
+        break;
+    }
+
+    return endList;
+  }
+
+  add(String doctorOfficeHours) {
+    int? hours;
+    int? minutes;
+    String? hour;
+    String? minute;
+    String? oldHour;
+    String? newHour;
+    List notAvailable = [];
+    int fo = countHours(5, doctorOfficeHours);
+    for (int i = 0; i < fo; i++) {
+      String startHour1 = doctorOfficeHours.toString().substring(0, 2);
+      String startMin1 = doctorOfficeHours.toString().substring(3, 5);
+      hour = doctorOfficeHours.toString().substring(0, 2);
+      minute = doctorOfficeHours.toString().substring(3, 5);
+      hours = int.parse(doctorOfficeHours.toString().substring(0, 2));
+      minutes = int.parse(doctorOfficeHours.toString().substring(3, 5));
+      oldHour = "$startHour1:$startMin1 - ";
+      if (minutes >= 0 && minutes < 55) {
+        minutes = (minutes + 5);
+        minute = minutes.toString().padLeft(2, '0');
+        hour = hours.toString().padLeft(2, '0');
+        newHour = "$hour:$minute";
+        doctorOfficeHours = newHour;
+        notAvailable.add(oldHour + newHour);
+      } else {
+        minute = '00';
+        hours = makeHour(hours);
+        hour = hours.toString().padLeft(2, '0');
+        newHour = "$hour:$minute";
+        doctorOfficeHours = newHour;
+        notAvailable.add(oldHour + newHour);
+      }
+    }
+    return notAvailable;
+  }
+
+  countHours(int t, String doctorOfficeHours) {
+    var format = DateFormat("HH:mm");
+    int startHour = int.parse(doctorOfficeHours.substring(0, 2));
+    int endHour = int.parse(doctorOfficeHours.substring(8, 10));
+    int endMin = int.parse(doctorOfficeHours.substring(11, 13));
+    var oneTime = doctorOfficeHours.substring(0, 5);
+    var secTime = doctorOfficeHours.substring(8, 13);
+    if (startHour > endHour) {
+      endHour = endHour + 12;
+      secTime = "$endHour:$endMin";
+    }
+    var one = format.parse(oneTime);
+    var two = format.parse(secTime);
+    var min = two.difference(one).inMinutes / t;
+    var intMin = min.floor();
+
+    return intMin;
+  }
+
+  int makeHour(int hour) {
+    if (hour < 12) {
+      hour = hour + 1;
+      return hour;
+    } else {
+      hour = 1;
+      return hour;
+    }
+  }
+
+  count(List b, List notAvailable) {
+    List c = [];
+    int count = 0;
+    int count2 = 0;
+    bool as = false;
+
+    for (int i = 0; i < b.length; i++) {
+      for (int j = 0; j < notAvailable.length; j++) {
+        if (b[i].toString().substring(0, 5) ==
+            notAvailable[j].toString().substring(0, 5)) {
+          count++;
+          as = true;
+        }
+        if (as == true) {
+          c.add(notAvailable[j]);
+        }
+
+        if (b[i].toString().substring(8, 13) ==
+            notAvailable[j].toString().substring(8, 13)) {
+          count2++;
+          as = false;
+          break;
+        }
+      }
+      for (int i = 0; i < c.length; i++) {
+        for (int j = 0; j < notAvailable.length; j++) {
+          if (c[i] == notAvailable[j]) {
+            notAvailable.removeAt(j);
+          }
         }
       }
     }
-    // print(items);
-
-    return items;
+    return notAvailable;
   }
 
   Future<void> selectTime(BuildContext context) async {
@@ -188,12 +355,6 @@ class _BookingScreenState extends State<BookingScreen> {
     });
     dateTime = selectedTime.toString().substring(10, 15);
   }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _timeRange = _defaultTimeRange;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -223,25 +384,6 @@ class _BookingScreenState extends State<BookingScreen> {
                 return const Text('Something went wrong');
               } else if (snapshot.hasData) {
                 final List user = snapshot.data as List;
-                // int startHour =
-                // int.parse(user[5]['Time'].toString().substring(0, 2));
-                // int startMinute =
-                // int.parse(user[5]['Time'].toString().substring(3, 5));
-                // int finishHour =
-                // int.parse(user[5]['Time'].toString().substring(8, 10));
-                // int finishMinute =
-                // int.parse(user[5]['Time'].toString().substring(11, 13));
-                // final defaultTimeRange = TimeRangeResult(
-                //   TimeOfDay(
-                //       hour:
-                //           startHour,
-                //       minute: startMinute),
-                //   TimeOfDay(
-                //       hour: startHour,
-                //       minute: finishMinute = 10),
-                // );
-                // TimeRangeResult? timeRange;
-                //
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -468,7 +610,12 @@ class _BookingScreenState extends State<BookingScreen> {
                                                 horizontal: 10.0),
                                             shrinkWrap: true,
                                             scrollDirection: Axis.horizontal,
-                                            itemCount: sendItem3(user).length,
+                                            itemCount: send(
+                                                    user2,
+                                                    user[serviceIndex!]["Time"],
+                                                    user[serviceIndex!]
+                                                        ["Duration"])
+                                                .length,
                                             itemBuilder: (BuildContext context,
                                                     int index) =>
                                                 Padding(
@@ -478,8 +625,12 @@ class _BookingScreenState extends State<BookingScreen> {
                                                 onTap: () {
                                                   setState(() {
                                                     onTimeSelect = index;
-                                                    selectedTime =
-                                                        sendItem3(user)[index];
+                                                    selectedTime = send(
+                                                        user2,
+                                                        user[serviceIndex!]
+                                                            ["Time"],
+                                                        user[serviceIndex!][
+                                                            "Duration"])[index];
                                                     //onTimeSelect = !onTimeSelect;
                                                   });
                                                 },
@@ -488,27 +639,14 @@ class _BookingScreenState extends State<BookingScreen> {
                                                 splashColor: Colors.indigo,
                                                 child: Container(
                                                   decoration: BoxDecoration(
-                                                    border: Border.all(),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            32.0),
-                                                    color: getColor(
-                                                        user2,
-                                                        sendItem3(user),
-                                                        index,
-                                                        onTimeSelect!),
-
-                                                    // if(onTimeSelect == index){
-                                                    //   Colors.indigo;
-                                                    // } else if(isAvailable == 2){
-                                                    //   Colors.green;
-                                                    // } else if(isBooked == 3){
-                                                    //   Colors.red;
-                                                    // } else{
-                                                    //   Colors.white12;
-                                                    // }
-                                                    // }())
-                                                  ),
+                                                      border: Border.all(),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              32.0),
+                                                      color:
+                                                          index == onTimeSelect
+                                                              ? Colors.blue
+                                                              : Colors.white),
                                                   height: 30,
                                                   child: Center(
                                                       child: Padding(
@@ -516,7 +654,12 @@ class _BookingScreenState extends State<BookingScreen> {
                                                         const EdgeInsets.all(
                                                             8.0),
                                                     child: Text(
-                                                      sendItem3(user)[index],
+                                                      send(
+                                                          user2,
+                                                          user[serviceIndex!]
+                                                              ["Time"],
+                                                          user[serviceIndex!][
+                                                              "Duration"])[index],
                                                       style: const TextStyle(
                                                           fontSize: 14,
                                                           color: Colors.black,
@@ -536,142 +679,6 @@ class _BookingScreenState extends State<BookingScreen> {
                                       );
                                     }
                                   }),
-                            // TimeRange(
-                            //   fromTitle: const Text(
-                            //     'FROM',
-                            //     style: TextStyle(
-                            //       fontSize: 14,
-                            //       color: dark,
-                            //       fontWeight: FontWeight.w600,
-                            //     ),
-                            //   ),
-                            //   toTitle: const Text(
-                            //     'TO',
-                            //     style: TextStyle(
-                            //       fontSize: 14,
-                            //       color: dark,
-                            //       fontWeight: FontWeight.w600,
-                            //     ),
-                            //   ),
-                            //   titlePadding: leftPadding,
-                            //   textStyle: const TextStyle(
-                            //     fontWeight: FontWeight.normal,
-                            //     color: dark,
-                            //   ),
-                            //   activeTextStyle: const TextStyle(
-                            //     fontWeight: FontWeight.bold,
-                            //     color: orange,
-                            //   ),
-                            //   borderColor: dark,
-                            //   activeBorderColor: dark,
-                            //   backgroundColor: Colors.transparent,
-                            //   activeBackgroundColor: dark,
-                            //   firstTime: TimeOfDay(
-                            //       hour: startHour,
-                            //       minute: startMinute),
-                            //   lastTime: TimeOfDay(
-                            //       hour: finishHour,
-                            //       minute: finishMinute),
-                            //   initialRange: defaultTimeRange,
-                            //   timeStep: 10,
-                            //   timeBlock: 10,
-                            //   onRangeCompleted: (range) => setState(() {
-                            //     timeRange = range;
-                            //     print(timeRange!.start);
-                            //   }),
-                            // ),
-                            // SizedBox(height: 30),
-                            // if (timeRange != null)
-                            //   Padding(
-                            //     padding: const EdgeInsets.only(
-                            //         top: 8.0, left: leftPadding),
-                            //     child: Column(
-                            //       crossAxisAlignment: CrossAxisAlignment.start,
-                            //       children: <Widget>[
-                            //         Text(
-                            //           'Selected Range: ${timeRange!.start.format(context)} - ${timeRange!.end.format(context)}',
-                            //           style:
-                            //               TextStyle(fontSize: 20, color: dark),
-                            //         ),
-                            //         SizedBox(height: 20),
-                            //         MaterialButton(
-                            //           child: Text('Default'),
-                            //           onPressed: () => setState(
-                            //               () => timeRange = defaultTimeRange),
-                            //           color: orange,
-                            //         )
-                            //       ],
-                            //     ),
-                            //   ),
-                            // Container(
-                            //   alignment: Alignment.center,
-                            //   height: 60,
-                            //   width: MediaQuery.of(context).size.width,
-                            //   child: Stack(
-                            //     alignment: Alignment.centerRight,
-                            //     children: [
-                            //       TextFormField(
-                            //         focusNode: f5,
-                            //         decoration: InputDecoration(
-                            //           contentPadding: const EdgeInsets.only(
-                            //             left: 20,
-                            //             top: 10,
-                            //             bottom: 10,
-                            //           ),
-                            //           border: const OutlineInputBorder(
-                            //             borderRadius: BorderRadius.all(
-                            //                 Radius.circular(90.0)),
-                            //             borderSide: BorderSide.none,
-                            //           ),
-                            //           filled: true,
-                            //           fillColor: Colors.grey[350],
-                            //           hintText: 'Select Time*',
-                            //           hintStyle: GoogleFonts.lato(
-                            //             color: Colors.black26,
-                            //             fontSize: 18,
-                            //             fontWeight: FontWeight.w800,
-                            //           ),
-                            //         ),
-                            //         controller: _timeController,
-                            //         validator: (value) {
-                            //           if (value!.isEmpty) {
-                            //             return 'Please Enter the Time';
-                            //           }
-                            //           return null;
-                            //         },
-                            //         onFieldSubmitted: (String value) {
-                            //           f5.unfocus();
-                            //         },
-                            //         textInputAction: TextInputAction.next,
-                            //         style: GoogleFonts.lato(
-                            //             fontSize: 18,
-                            //             fontWeight: FontWeight.bold),
-                            //       ),
-                            //       Padding(
-                            //         padding: const EdgeInsets.only(right: 5.0),
-                            //         child: ClipOval(
-                            //           child: Material(
-                            //             color: Colors.indigo, // button color
-                            //             child: InkWell(
-                            //               // inkwell color
-                            //               child: const SizedBox(
-                            //                 width: 40,
-                            //                 height: 40,
-                            //                 child: Icon(
-                            //                   Icons.timer_outlined,
-                            //                   color: Colors.white,
-                            //                 ),
-                            //               ),
-                            //               onTap: () {
-                            //                 selectTime(context);
-                            //               },
-                            //             ),
-                            //           ),
-                            //         ),
-                            //       )
-                            //     ],
-                            //   ),
-                            // ),
                             const SizedBox(
                               height: 10,
                             ),
@@ -691,7 +698,6 @@ class _BookingScreenState extends State<BookingScreen> {
                                     ),
                                   ),
                                   onPressed: () async {
-                                    //getTime(user);
                                     await setReservation(
                                         empName: widget.empName,
                                         empId: widget.uid,
@@ -779,9 +785,6 @@ class _BookingScreenState extends State<BookingScreen> {
 
   Future getTime(List user1) async {
     List data = [];
-    List times = sendItem3(user1);
-    List bookedTimes = [];
-    bool ab = false;
     final docUser2 = await FirebaseFirestore.instance
         .collection('reservation')
         .where('empId', isEqualTo: widget.uid)
@@ -790,37 +793,92 @@ class _BookingScreenState extends State<BookingScreen> {
     for (var ele in docUser2.docs) {
       data.add(ele.data()['time']);
     }
-
-    for (int i = 0; i < data.length; i++) {
-      for (int j = 0; j < times.length; j++) {
-        if (data[i] == times[j]) {
-          times.removeAt(j);
-          break;
-        } else if (times[j].toString().substring(0, 7) ==
-                data[i].toString().substring(0, 7) &&
-            times[j].toString().substring(9, 17) !=
-                data[i].toString().substring(9, 17)) {
-          ab = true;
-        }
-        print(times[j].toString().substring(14, 17).trim());
-        if (ab == true) {
-          if (data[i].toString().substring(9, 17) ==
-              times[j].toString().substring(9, 17)) {
-            ab = false;
-            times.removeAt(j);
-            break;
-          } else if (int.parse(times[j].toString().substring(14, 17).trim()) <
-              int.parse(data[i].toString().substring(14, 17).trim())) {
-            times.removeAt(j);
-          } else if (data[i].toString().substring(14, 17).trim() == "00") {
-            times.removeAt(j);
-          } else {
-            times.removeAt(j);
-          }
-        }
-      }
-    }
-    print(times);
     return data;
   }
 }
+
+// Color getColor(List bookedDay, List Time, int Ind, int onTime) {
+//
+//
+//   if (a == false) {
+//     for (int i = 0; i < bookedDay.length; i++) {
+//       if (Time[Ind] == bookedDay[i]) {
+//         return Colors.red;
+//       } else if (Time[Ind].toString().substring(0, 7) ==
+//           bookedDay[i].toString().substring(0, 7) &&
+//           Time[Ind].toString().substring(9, 17) !=
+//               bookedDay[i].toString().substring(9, 17)) {
+//         a = true;
+//         t = bookedDay[i].toString().substring(9, 17);
+//         //t2 = Time[Ind+1].toString().substring(0, 7);
+//         //  print(t2);
+//       }
+//       //  if(Time[Ind].toString().substring(0, 3)==bookedDay[i].toString().substring(0, 3) &&)
+//     }
+//   }
+//   if (a == true) {
+//     //print(Time[Ind].toString().substring(9, 17));
+//     if (Time[Ind].toString().substring(9, 17).trim() == t?.trim() ) {
+//       //print(Time[Ind].toString().substring(9, 17).trim());
+//       a = false;
+//       t = "";
+//       return Colors.red;
+//     } else
+//       return Colors.red;
+//   }
+//   if (Ind == onTime) {
+//     return Colors.indigo;
+//   }
+//
+//   return Colors.white12;
+// }
+
+// void sendItem4(List items2) {
+//   selectDay = items2;
+// }
+
+// List sendItem3(List items2) {
+//   List items = [];
+//   int duration =
+//   int.parse(items2[serviceIndex!]["Duration"].toString().substring(0, 2));
+//   int endMin =
+//   int.parse(items2[serviceIndex!]["Time"].toString().substring(11, 13));
+//   int endHour =
+//   int.parse(items2[serviceIndex!]["Time"].toString().substring(8, 10));
+//   // print(duration);
+//   // print(endMin);
+//   // print(items2[serviceIndex!]["days"][0]);
+//   //
+//   // print(endHour);
+//   int min =
+//   int.parse(items2[serviceIndex!]["Time"].toString().substring(3, 5));
+//   int hour =
+//   int.parse(items2[serviceIndex!]["Time"].toString().substring(0, 2));
+//   int min2;
+//   while (hour <= endHour) {
+//     int minute = min;
+//     int ho = hour;
+//     min = min + duration;
+//     if (min < 60) {
+//       if (!(min > endMin && hour == endHour)) {
+//         if (hour <= endHour) {
+//           items.add(
+//               '${ho.toString().padLeft(2, "0")} : ${minute.toString().padLeft(2, "0")} - ${hour.toString().padLeft(2, "0")} : ${min.toString().padLeft(2, "0")} ');
+//         }
+//       }
+//     } else if (min >= 60) {
+//       min2 = min - 60;
+//       hour++;
+//       if (!(min2 > endMin && hour == endHour)) {
+//         if (hour <= endHour) {
+//           items.add(
+//               '${ho.toString().padLeft(2, "0")} : ${minute.toString().padLeft(2, "0")} - ${hour.toString().padLeft(2, "0")} : ${min2.toString().padLeft(2, "0")} ');
+//         }
+//         min = min2;
+//       }
+//     }
+//   }
+//   // print(items);
+//
+//   return items;
+// }

@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
+
 import '../widgets/user_class.dart';
 
 class ServicePage extends StatefulWidget {
@@ -148,7 +149,7 @@ class _ServicePageState extends State<ServicePage> {
                     width: 320,
                     height: 50,
                     child: Row(
-                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -156,41 +157,9 @@ class _ServicePageState extends State<ServicePage> {
                               primary: Colors.black),
                           child: FittedBox(
                             child: Text(
-                              startTime == null? "Select Start Time" : "$startTime",
-                              style: const TextStyle(
-                                  fontSize: 15, color: Colors.white),
-                            ),
-                          ),
-                          onPressed: () async {
-                             showCupertinoModalPopup(
-                                context: context,
-                                builder: (BuildContext builder) {
-                                  return Container(
-                                    height: MediaQuery.of(context).copyWith().size.height*0.25,
-                                    color: Colors.white,
-                                    child: CupertinoDatePicker(
-                                      mode: CupertinoDatePickerMode.time,
-                                      onDateTimeChanged: (value) {
-                                        setState(() {
-                                          if (value != startTime){
-                                          startTime = '${value.hour.toString().padLeft(2,"0")}:${value.minute.toString().padLeft(2,"0")}';
-                                          }
-                                        });
-                                      },
-                                      initialDateTime: DateTime.now(),
-                                    ),
-                                  );
-                                }
-                            );
-                          },
-                        ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              maximumSize: const Size.fromHeight(40),
-                              primary: Colors.black),
-                          child: FittedBox(
-                            child: Text(
-                              endTime == null? "Select End Time" : "$endTime",
+                              startTime == null
+                                  ? "Select Start Time"
+                                  : "$startTime",
                               style: const TextStyle(
                                   fontSize: 15, color: Colors.white),
                             ),
@@ -200,22 +169,76 @@ class _ServicePageState extends State<ServicePage> {
                                 context: context,
                                 builder: (BuildContext builder) {
                                   return Container(
-                                    height: MediaQuery.of(context).copyWith().size.height*0.25,
+                                    height: MediaQuery.of(context)
+                                            .copyWith()
+                                            .size
+                                            .height *
+                                        0.25,
                                     color: Colors.white,
                                     child: CupertinoDatePicker(
                                       mode: CupertinoDatePickerMode.time,
                                       onDateTimeChanged: (value) {
                                         setState(() {
-                                          if (value != endTime){
-                                            endTime = '${value.hour.toString().padLeft(2,"0")}:${value.minute.toString().padLeft(2,"0")}';
+                                          if (value != startTime) {
+                                            startTime =
+                                                '${value.hour.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
+                                          }
+                                          int t = value.hour;
+                                          if (t > 12) {
+                                            t = t - 12;
+                                            startTime =
+                                                '${t.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
                                           }
                                         });
                                       },
                                       initialDateTime: DateTime.now(),
                                     ),
                                   );
-                                }
-                            );
+                                });
+                          },
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              maximumSize: const Size.fromHeight(40),
+                              primary: Colors.black),
+                          child: FittedBox(
+                            child: Text(
+                              endTime == null ? "Select End Time" : "$endTime",
+                              style: const TextStyle(
+                                  fontSize: 15, color: Colors.white),
+                            ),
+                          ),
+                          onPressed: () async {
+                            showCupertinoModalPopup(
+                                context: context,
+                                builder: (BuildContext builder) {
+                                  return Container(
+                                    height: MediaQuery.of(context)
+                                            .copyWith()
+                                            .size
+                                            .height *
+                                        0.25,
+                                    color: Colors.white,
+                                    child: CupertinoDatePicker(
+                                      mode: CupertinoDatePickerMode.time,
+                                      onDateTimeChanged: (value) {
+                                        setState(() {
+                                          if (value != endTime) {
+                                            endTime =
+                                                '${value.hour.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
+                                          }
+                                          int t = value.hour;
+                                          if (t > 12) {
+                                            t = t - 12;
+                                            endTime =
+                                                '${t.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
+                                          }
+                                        });
+                                      },
+                                      initialDateTime: DateTime.now(),
+                                    ),
+                                  );
+                                });
                           },
                         ),
                       ],
@@ -348,16 +371,7 @@ class _ServicePageState extends State<ServicePage> {
     required String Service,
     required String Time,
     required List<String> days,
-  }
-      // Map<String, dynamic> toJson() => {
-      //   'id': id,
-      //   'Service': Service,
-      //   'days': days,
-      //   'Duration': Duration,
-      //   'Time': Time,
-      //
-      // };
-      ) async {
+  }) async {
     try {
       final docUser = FirebaseFirestore.instance.collection('Service').doc();
       final user = SetEmpService(
