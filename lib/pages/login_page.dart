@@ -7,7 +7,6 @@ import 'package:graduation_project/pages/navigation_drawer.dart';
 import 'package:graduation_project/pages/register_page.dart';
 import 'package:graduation_project/widgets/spinKit_widget.dart';
 
-
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -23,12 +22,11 @@ class _LoginPageState extends State<LoginPage> {
   bool showPassword = false;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  bool isLoading = false ;
+  bool isLoading = false;
   bool isStudent = false;
   final regEmailEmp = RegExp(
       r"^[a-zA-Z]+\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
   final regEmailStu = RegExp(r"^[a-zA-Z]{3}[0-9]{7}@ju\.edu\.jo");
-
 
   @override
   void dispose() {
@@ -40,86 +38,95 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading == true ? const SpinKitWidget() : Scaffold(
-      body: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-           if (snapshot.hasError) {
-            return const Center(
-              child: Text('Something went wrong'),
-            );
-          } else if (snapshot.hasData) {
-            return const NavigationDrawer();
-          } else {
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+    return isLoading == true
+        ? const SpinKitWidget()
+        : Scaffold(
+            body: StreamBuilder<User?>(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: Text('Something went wrong'),
+                  );
+                } else if (snapshot.hasData) {
+                  return const NavigationDrawer();
+                } else {
+                  return Stack(
                     children: [
-                      Image.asset("assets/images/t.png",
-                        width: MediaQuery.of(context).size.width *.3,),
-                    ],
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: Container(
-                      child: Image.asset(
-                        'assets/images/login_page.png',
-                        scale: 2.5,
-                        width: 250,
-                        height: 250,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Image.asset(
+                            "assets/images/t.png",
+                            width: MediaQuery.of(context).size.width * .3,
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 25),
-                    child: Text(
-                      'Login',
-                      style: GoogleFonts.lato(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: Image.asset(
+                              "assets/images/bottom_right.png",
+                              width: MediaQuery.of(context).size.width * .3,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
-                  emailFormField(),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  passwordFormField(),
-                  checkBoxWidget(),
-                  loginButton(),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  registerButton(),
-                 
-                  buildForgetPassword(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Image.asset("assets/images/bottom_right.png",
-                      width: MediaQuery.of(context).size.width *.3,),
+                      SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 60,
+                            ),
+                            SizedBox(
+                              width: double.infinity,
+                              child: Container(
+                                child: Image.asset(
+                                  'assets/images/login_page.png',
+                                  scale: 2.5,
+                                  width: 250,
+                                  height: 250,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(bottom: 25),
+                              child: Text(
+                                'Login',
+                                style: GoogleFonts.lato(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            emailFormField(),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            passwordFormField(),
+                            checkBoxWidget(),
+                            loginButton(),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            registerButton(),
+                            buildForgetPassword(),
+                          ],
+                        ),
+                      ),
                     ],
-                  )
-                
-                
-                
-                
-                
-                
-                ],
-              ),
-            );
-          }
-        },
-      ),
-    );
+                  );
+                }
+              },
+            ),
+          );
   }
 
   Widget emailFormField() {
     return Padding(
-      padding:  EdgeInsets.only(left: 20, top: 0, bottom: 0,right: 20),
+      padding: EdgeInsets.only(left: 20, top: 0, bottom: 0, right: 20),
       child: TextFormField(
         focusNode: f1,
         style: GoogleFonts.lato(
@@ -142,7 +149,7 @@ class _LoginPageState extends State<LoginPage> {
             fontSize: 18,
             fontWeight: FontWeight.w800,
           ),
-          suffixIcon: Icon(Icons.email_outlined ,color: Color(0xff205375)),
+          suffixIcon: Icon(Icons.email_outlined, color: Color(0xff205375)),
         ),
         textInputAction: TextInputAction.next,
         onFieldSubmitted: (value) {
@@ -167,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget passwordFormField() {
     return Padding(
-      padding: EdgeInsets.only(left: 20, top: 0, bottom: 0,right: 20),
+      padding: EdgeInsets.only(left: 20, top: 0, bottom: 0, right: 20),
       child: TextFormField(
         focusNode: f2,
         style: GoogleFonts.lato(
@@ -190,7 +197,10 @@ class _LoginPageState extends State<LoginPage> {
             fontSize: 18,
             fontWeight: FontWeight.w800,
           ),
-          suffixIcon: Icon(Icons.lock_outline, color: Color(0xff205375),),
+          suffixIcon: Icon(
+            Icons.lock_outline,
+            color: Color(0xff205375),
+          ),
         ),
         onFieldSubmitted: (value) {
           f2.unfocus();
@@ -218,7 +228,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget checkBoxWidget() {
     return Padding(
-      padding: EdgeInsets.only(left: 20, top: 0, bottom: 0,right: 20),
+      padding: EdgeInsets.only(left: 20, top: 0, bottom: 0, right: 20),
       child: CheckboxListTile(
         value: showPassword,
         title: const Text(
@@ -240,7 +250,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget loginButton() {
     return Container(
-      padding:EdgeInsets.only(left: 20, top: 0, bottom: 0,right: 20),
+      padding: EdgeInsets.only(left: 20, top: 0, bottom: 0, right: 20),
       child: SizedBox(
         width: double.infinity,
         height: 50,
@@ -255,45 +265,45 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           onPressed: () async {
-    setState(() {
-            isLoading = true ;
-          });
-          try {
-            await FirebaseAuth.instance.signInWithEmailAndPassword(
-                email: emailController.text.trim(),
-                password: passwordController.text.trim());
-            if(regEmailStu.hasMatch(emailController.text.trim())){
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const NavigationDrawer(),
-                ),
-              );
-            }else if(regEmailEmp.hasMatch(emailController.text.trim())){
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const NavigationDrawer(),
-                ),
-              );
+            setState(() {
+              isLoading = true;
+            });
+            try {
+              await FirebaseAuth.instance.signInWithEmailAndPassword(
+                  email: emailController.text.trim(),
+                  password: passwordController.text.trim());
+              if (regEmailStu.hasMatch(emailController.text.trim())) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const NavigationDrawer(),
+                  ),
+                );
+              } else if (regEmailEmp.hasMatch(emailController.text.trim())) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const NavigationDrawer(),
+                  ),
+                );
+              }
+            } on FirebaseAuthException catch (e) {
+              // Utils.showSnackBar('Wrong Email or Password!');
+              AwesomeDialog(
+                context: context,
+                dialogType: DialogType.ERROR,
+                animType: AnimType.BOTTOMSLIDE,
+                title: 'Warning',
+                desc: '${e.message}',
+                btnCancelText: "Cancel",
+                btnOkText: "Ok",
+                btnOkOnPress: () {},
+                btnCancelOnPress: () {},
+              ).show();
             }
-          } on FirebaseAuthException catch (e){
-            // Utils.showSnackBar('Wrong Email or Password!');
-            AwesomeDialog(
-              context: context,
-              dialogType: DialogType.ERROR,
-              animType: AnimType.BOTTOMSLIDE,
-              title: 'Warning',
-              desc: '${e.message}',
-              btnCancelText: "Cancel",
-              btnOkText: "Ok",
-              btnOkOnPress: () {},
-              btnCancelOnPress: () {},
-            ).show();
-          }
-          setState(() {
-            isLoading = false ;
-          });
+            setState(() {
+              isLoading = false;
+            });
           },
           style: ElevatedButton.styleFrom(
             elevation: 2,
@@ -369,7 +379,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget registerButton() {
     return Container(
-      padding:EdgeInsets.only(left: 20, top: 0, bottom: 0,right: 20),
+      padding: EdgeInsets.only(left: 20, top: 0, bottom: 0, right: 20),
       child: SizedBox(
         width: double.infinity,
         height: 50,
@@ -384,12 +394,11 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           onPressed: () async {
-    Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const RegisterPage(),
-          ));
-
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const RegisterPage(),
+                ));
           },
           style: ElevatedButton.styleFrom(
             elevation: 2,
@@ -402,7 +411,6 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-
 
     // return OutlinedButton(
     //   style: OutlinedButton.styleFrom(
@@ -466,6 +474,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-
 }

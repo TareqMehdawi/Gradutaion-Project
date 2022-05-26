@@ -56,28 +56,29 @@ class _EmployeePageState extends State<EmployeePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Builder(
-                          builder: (context) => IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    Provider.of<NavigationProvider>(context,
-                                            listen: false)
-                                        .changeValue();
-                                  });
-                                },
-                                icon: const Icon(
-                                  Icons.menu,
-                                  color: Colors.white,
-                                ),
-                              )),
+                        builder: (context) => IconButton(
+                          onPressed: () {
+                            setState(() {
+                              Provider.of<NavigationProvider>(context,
+                                      listen: false)
+                                  .changeValue();
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.menu,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                       Center(
                         child: Padding(
-                            padding: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width * .22),
-                            child: const Text(
-                              "Employee page",
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
-                            )),
+                          padding: EdgeInsets.only(
+                              left: MediaQuery.of(context).size.width * .22),
+                          child: const Text(
+                            "Employee page",
+                            style: TextStyle(fontSize: 20, color: Colors.white),
+                          ),
+                        ),
                       ),
                       Padding(
                         padding: EdgeInsets.only(
@@ -115,7 +116,14 @@ class _EmployeePageState extends State<EmployeePage> {
       body: StreamBuilder<List<StudentsReservation>>(
         stream: readReservation(),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          List? t = snapshot.data;
+          List s = [];
+          s.add(t);
+          if (s.isEmpty) {
+            return Center(
+              child: Image.asset('assets/images/Schedule-bro.png'),
+            );
+          } else if (snapshot.hasData) {
             final users = snapshot.data!;
             return ListView(
               padding: const EdgeInsets.all(12.0),
@@ -251,7 +259,7 @@ class _EmployeePageState extends State<EmployeePage> {
               .map((doc) => StudentsReservation.fromJson(doc.data()))
               .toList());
     } else {
-      return FirebaseFirestore.instance
+      var ref = FirebaseFirestore.instance
           .collection('reservation')
           .where("empId", isEqualTo: currentUser.uid)
           .where("date", isEqualTo: day)
@@ -259,6 +267,7 @@ class _EmployeePageState extends State<EmployeePage> {
           .map((snapshot) => snapshot.docs
               .map((doc) => StudentsReservation.fromJson(doc.data()))
               .toList());
+      return ref;
     }
   }
 
@@ -284,6 +293,7 @@ class _EmployeePageState extends State<EmployeePage> {
                           children: [
                             CircleAvatar(
                               radius: 30.0,
+                              backgroundColor: Colors.white,
                               backgroundImage: NetworkImage(user.image),
                             ),
                             const SizedBox(

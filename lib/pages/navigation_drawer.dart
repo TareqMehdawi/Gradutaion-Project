@@ -110,6 +110,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                               children: [
                                 CircleAvatar(
                                   radius: 50,
+                                  backgroundColor: Colors.white,
                                   backgroundImage: NetworkImage(user!.image),
                                 ),
                                 const SizedBox(
@@ -263,9 +264,9 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                 icon: Icons.logout,
                                 title: 'Logout',
                                 function: () {
-                                    Provider.of<NavigationProvider>(context,
-                                            listen: false)
-                                        .value = 0;
+                                  Provider.of<NavigationProvider>(context,
+                                          listen: false)
+                                      .value = 0;
                                   FirebaseAuth.instance.signOut();
                                   Navigator.pushReplacement(
                                       context,
