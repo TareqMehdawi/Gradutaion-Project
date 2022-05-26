@@ -21,6 +21,7 @@ class EmployeePage extends StatefulWidget {
 
 class _EmployeePageState extends State<EmployeePage> {
   String day = 'Every Day';
+  bool picture = false;
 
   @override
   Widget build(BuildContext context) {
@@ -116,10 +117,7 @@ class _EmployeePageState extends State<EmployeePage> {
       body: StreamBuilder<List<StudentsReservation>>(
         stream: readReservation(),
         builder: (context, snapshot) {
-          List? t = snapshot.data;
-          List s = [];
-          s.add(t);
-          if (s.isEmpty) {
+          if (picture) {
             return Center(
               child: Image.asset('assets/images/Schedule-bro.png'),
             );
@@ -251,6 +249,9 @@ class _EmployeePageState extends State<EmployeePage> {
   Stream<List<StudentsReservation>> readReservation() {
     final currentUser = FirebaseAuth.instance.currentUser!;
     if (day == 'Every Day') {
+      setState(() {
+        picture = false;
+      });
       return FirebaseFirestore.instance
           .collection('reservation')
           .where("empId", isEqualTo: currentUser.uid)
@@ -259,6 +260,9 @@ class _EmployeePageState extends State<EmployeePage> {
               .map((doc) => StudentsReservation.fromJson(doc.data()))
               .toList());
     } else {
+      setState(() {
+        picture = true;
+      });
       var ref = FirebaseFirestore.instance
           .collection('reservation')
           .where("empId", isEqualTo: currentUser.uid)
