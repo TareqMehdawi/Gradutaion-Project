@@ -21,7 +21,7 @@ class _MyServices extends State<MyServices> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xff141E27),
+        backgroundColor: const Color(0xff205375),
         title: const Text('My Services'),
         centerTitle: true,
       ),
@@ -90,7 +90,7 @@ class _MyServices extends State<MyServices> {
                         Text(
                           user.Service,
                           style: TextStyle(
-                            color: Color(0xff4A71F2),
+                            color: Colors.black,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -119,7 +119,7 @@ class _MyServices extends State<MyServices> {
                         children: [
                           Icon(
                             Icons.calendar_today,
-                            color: Color(0xff4A71F2),
+                            color: Colors.black,
                             size: 15,
                           ),
                           SizedBox(
@@ -129,7 +129,7 @@ class _MyServices extends State<MyServices> {
                             user.days.toString(),
                             style: TextStyle(
                               fontSize: 12,
-                              color: Color(0xff4A71F2),
+                              color: Colors.black,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -139,7 +139,7 @@ class _MyServices extends State<MyServices> {
                         children: [
                           Icon(
                             Icons.access_alarm,
-                            color: Color(0xff4A71F2),
+                            color: Colors.black,
                             size: 17,
                           ),
                           SizedBox(
@@ -148,7 +148,7 @@ class _MyServices extends State<MyServices> {
                           Text(
                             user.Duration,
                             style: TextStyle(
-                              color: Color(0xff4A71F2),
+                              color: Colors.black,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

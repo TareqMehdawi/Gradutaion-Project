@@ -16,6 +16,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  FocusNode f1 = new FocusNode();
+  FocusNode f2 = new FocusNode();
+  FocusNode f3 = new FocusNode();
+
   bool showPassword = false;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -50,25 +54,33 @@ class _LoginPageState extends State<LoginPage> {
             return SingleChildScrollView(
               child: Column(
                 children: [
-                  Container(
-                    padding: EdgeInsets.zero,
-                    height: 300,
-                    color: const Color(0xff141E27),
-                    child: Center(
-                      child: Text(
-                        'Login',
-                        style: GoogleFonts.ubuntu(
-                          textStyle: const TextStyle(
-                            fontSize: 36,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                          ),
-                        ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Image.asset("assets/images/t.png",
+                        width: MediaQuery.of(context).size.width *.3,),
+                    ],
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: Container(
+                      child: Image.asset(
+                        'assets/images/login_page.png',
+                        scale: 2.5,
+                        width: 250,
+                        height: 250,
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
+                  Container(
+                    padding: EdgeInsets.only(bottom: 25),
+                    child: Text(
+                      'Login',
+                      style: GoogleFonts.lato(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                   emailFormField(),
                   const SizedBox(
@@ -81,7 +93,21 @@ class _LoginPageState extends State<LoginPage> {
                     height: 12,
                   ),
                   registerButton(),
+                 
                   buildForgetPassword(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Image.asset("assets/images/bottom_right.png",
+                      width: MediaQuery.of(context).size.width *.3,),
+                    ],
+                  )
+                
+                
+                
+                
+                
+                
                 ],
               ),
             );
@@ -93,38 +119,106 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget emailFormField() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      padding:  EdgeInsets.only(left: 20, top: 0, bottom: 0,right: 20),
       child: TextFormField(
-        controller: emailController,
-        keyboardType: TextInputType.emailAddress,
-        decoration: const InputDecoration(
-          labelText: 'Email',
-          border: OutlineInputBorder(),
-          suffixIcon: Icon(Icons.email_outlined),
+        focusNode: f1,
+        style: GoogleFonts.lato(
+          fontSize: 18,
+          fontWeight: FontWeight.w800,
         ),
+        keyboardType: TextInputType.emailAddress,
+        controller: emailController,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.only(left: 20, top: 20, bottom: 20),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(90.0)),
+            borderSide: BorderSide.none,
+          ),
+          filled: true,
+          fillColor: Colors.grey[350],
+          hintText: 'Email',
+          hintStyle: GoogleFonts.lato(
+            color: Colors.black26,
+            fontSize: 18,
+            fontWeight: FontWeight.w800,
+          ),
+          suffixIcon: Icon(Icons.email_outlined ,color: Color(0xff205375)),
+        ),
+        textInputAction: TextInputAction.next,
+        onFieldSubmitted: (value) {
+          f1.unfocus();
+          FocusScope.of(context).requestFocus(f2);
+        },
       ),
     );
+    // return Padding(
+    //   padding: const EdgeInsets.symmetric(horizontal: 15.0),
+    //   child: TextFormField(
+    //     controller: emailController,
+    //     keyboardType: TextInputType.emailAddress,
+    //     decoration: const InputDecoration(
+    //       labelText: 'Email',
+    //       border: OutlineInputBorder(),
+    //       suffixIcon: Icon(Icons.email_outlined),
+    //     ),
+    //   ),
+    // );
   }
 
   Widget passwordFormField() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      padding: EdgeInsets.only(left: 20, top: 0, bottom: 0,right: 20),
       child: TextFormField(
-        controller: passwordController,
-        keyboardType: TextInputType.visiblePassword,
-        decoration: const InputDecoration(
-          labelText: 'Password',
-          border: OutlineInputBorder(),
-          suffixIcon: Icon(Icons.lock_outline),
+        focusNode: f2,
+        style: GoogleFonts.lato(
+          fontSize: 18,
+          fontWeight: FontWeight.w800,
         ),
+        //keyboardType: TextInputType.visiblePassword,
+        controller: passwordController,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.only(left: 20, top: 20, bottom: 20),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(90.0)),
+            borderSide: BorderSide.none,
+          ),
+          filled: true,
+          fillColor: Colors.grey[350],
+          hintText: 'Password',
+          hintStyle: GoogleFonts.lato(
+            color: Colors.black26,
+            fontSize: 18,
+            fontWeight: FontWeight.w800,
+          ),
+          suffixIcon: Icon(Icons.lock_outline, color: Color(0xff205375),),
+        ),
+        onFieldSubmitted: (value) {
+          f2.unfocus();
+          FocusScope.of(context).requestFocus(f3);
+        },
         obscureText: !showPassword,
+        textInputAction: TextInputAction.done,
       ),
     );
+
+    // return Padding(
+    //   padding: const EdgeInsets.symmetric(horizontal: 15.0),
+    //   child: TextFormField(
+    //     controller: passwordController,
+    //     keyboardType: TextInputType.visiblePassword,
+    //     decoration: const InputDecoration(
+    //       labelText: 'Password',
+    //       border: OutlineInputBorder(),
+    //       suffixIcon: Icon(Icons.lock_outline),
+    //     ),
+    //     obscureText: !showPassword,
+    //   ),
+    // );
   }
 
   Widget checkBoxWidget() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      padding: EdgeInsets.only(left: 20, top: 0, bottom: 0,right: 20),
       child: CheckboxListTile(
         value: showPassword,
         title: const Text(
@@ -145,25 +239,23 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget loginButton() {
-    return ElevatedButton(
-        style: OutlinedButton.styleFrom(
-          backgroundColor: const Color(0xff141E27),
-          minimumSize: Size(MediaQuery.of(context).size.width * .94,
-              MediaQuery.of(context).size.height * .06),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
+    return Container(
+      padding:EdgeInsets.only(left: 20, top: 0, bottom: 0,right: 20),
+      child: SizedBox(
+        width: double.infinity,
+        height: 50,
+        child: ElevatedButton(
+          focusNode: f3,
+          child: Text(
+            "Login",
+            style: GoogleFonts.lato(
+              color: Colors.white,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        child: Text(
-          'Login',
-          style: GoogleFonts.ubuntu(
-            textStyle:
-                const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-          ),
-        ),
-        onPressed: () async {
-          setState(() {
+          onPressed: () async {
+    setState(() {
             isLoading = true ;
           });
           try {
@@ -202,37 +294,142 @@ class _LoginPageState extends State<LoginPage> {
           setState(() {
             isLoading = false ;
           });
-        }
-        );
-  }
-
-  Widget registerButton() {
-    return OutlinedButton(
-      style: OutlinedButton.styleFrom(
-        minimumSize: Size(MediaQuery.of(context).size.width * .94,
-            MediaQuery.of(context).size.height * .06),
-        side: const BorderSide(width: 1, color: Colors.black),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-        ),
-      ),
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const RegisterPage(),
+          },
+          style: ElevatedButton.styleFrom(
+            elevation: 2,
+            primary: Color(0xff205375),
+            onPrimary: Color(0xff205375),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(32.0),
+            ),
           ),
-        );
-      },
-      child: Text(
-        'Sign Up',
-        style: GoogleFonts.ubuntu(
-          textStyle: const TextStyle(
-              fontSize: 20, color: Colors.black, fontWeight: FontWeight.w500),
         ),
       ),
     );
+    // return ElevatedButton(
+    //     style: OutlinedButton.styleFrom(
+    //       backgroundColor: const Color(0xff141E27),
+    //       minimumSize: Size(MediaQuery.of(context).size.width * .94,
+    //           MediaQuery.of(context).size.height * .06),
+    //       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+    //       shape: RoundedRectangleBorder(
+    //         borderRadius: BorderRadius.circular(18),
+    //       ),
+    //     ),
+    //     child: Text(
+    //       'Login',
+    //       style: GoogleFonts.ubuntu(
+    //         textStyle:
+    //             const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+    //       ),
+    //     ),
+    //     onPressed: () async {
+    //       setState(() {
+    //         isLoading = true ;
+    //       });
+    //       try {
+    //         await FirebaseAuth.instance.signInWithEmailAndPassword(
+    //             email: emailController.text.trim(),
+    //             password: passwordController.text.trim());
+    //         if(regEmailStu.hasMatch(emailController.text.trim())){
+    //           Navigator.push(
+    //             context,
+    //             MaterialPageRoute(
+    //               builder: (context) => const NavigationDrawer(),
+    //             ),
+    //           );
+    //         }else if(regEmailEmp.hasMatch(emailController.text.trim())){
+    //           Navigator.push(
+    //             context,
+    //             MaterialPageRoute(
+    //               builder: (context) => const NavigationDrawer(),
+    //             ),
+    //           );
+    //         }
+    //       } on FirebaseAuthException catch (e){
+    //         // Utils.showSnackBar('Wrong Email or Password!');
+    //         AwesomeDialog(
+    //           context: context,
+    //           dialogType: DialogType.ERROR,
+    //           animType: AnimType.BOTTOMSLIDE,
+    //           title: 'Warning',
+    //           desc: '${e.message}',
+    //           btnCancelText: "Cancel",
+    //           btnOkText: "Ok",
+    //           btnOkOnPress: () {},
+    //           btnCancelOnPress: () {},
+    //         ).show();
+    //       }
+    //       setState(() {
+    //         isLoading = false ;
+    //       });
+    //     }
+    //     );
+  }
+
+  Widget registerButton() {
+    return Container(
+      padding:EdgeInsets.only(left: 20, top: 0, bottom: 0,right: 20),
+      child: SizedBox(
+        width: double.infinity,
+        height: 50,
+        child: ElevatedButton(
+          focusNode: f3,
+          child: Text(
+            "Sign Up",
+            style: GoogleFonts.lato(
+              color: Color(0xff205375),
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          onPressed: () async {
+    Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const RegisterPage(),
+          ));
+
+          },
+          style: ElevatedButton.styleFrom(
+            elevation: 2,
+            primary: Colors.grey.shade400,
+            onPrimary: Color(0xff205375),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(32.0),
+            ),
+          ),
+        ),
+      ),
+    );
+
+
+    // return OutlinedButton(
+    //   style: OutlinedButton.styleFrom(
+    //     minimumSize: Size(MediaQuery.of(context).size.width * .94,
+    //         MediaQuery.of(context).size.height * .06),
+    //     side: const BorderSide(width: 1, color: Colors.black),
+    //     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+    //     shape: RoundedRectangleBorder(
+    //       borderRadius: BorderRadius.circular(18),
+    //     ),
+    //   ),
+    //   onPressed: () {
+    //     Navigator.push(
+    //       context,
+    //       MaterialPageRoute(
+    //         builder: (context) => const RegisterPage(),
+    //       ),
+    //     );
+    //   },
+    //   child: Text(
+    //     'Sign Up',
+    //     style: GoogleFonts.ubuntu(
+    //       textStyle: const TextStyle(
+    //           fontSize: 20, color: Colors.black, fontWeight: FontWeight.w500),
+    //     ),
+    //   ),
+    // );
   }
 
   Widget buildForgetPassword() {

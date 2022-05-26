@@ -85,7 +85,7 @@ class _ServicePageState extends State<ServicePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xff141E27),
+        backgroundColor: const Color(0xff205375),
         title: const Text('Add Service'),
         leading: const BackButton(),
         centerTitle: true,

@@ -32,7 +32,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
     return Scaffold(
         backgroundColor: Colors.grey.shade100,
         appBar: AppBar(
-          backgroundColor: const Color(0xff141E27),
+          backgroundColor: const Color(0xff205375),
           title: const Text('Feedback'),
           centerTitle: true,
         ),
@@ -143,7 +143,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
   Widget submitButton({required String title, required String email}) {
     return ElevatedButton(
       style: OutlinedButton.styleFrom(
-        backgroundColor: const Color(0xff141E27),
+        backgroundColor: const Color(0xff205375),
         minimumSize: Size(MediaQuery.of(context).size.width * .94,
             MediaQuery.of(context).size.height * .06),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),

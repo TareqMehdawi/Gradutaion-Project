@@ -34,7 +34,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       backgroundColor: Colors.grey.shade300,
       appBar: AppBar(
-        backgroundColor: const Color(0xff141E27),
+        backgroundColor: const Color(0xff205375),
         title: const Text('Settings'),
         centerTitle: true,
       ),
@@ -130,7 +130,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }) {
     return ListTile(
       tileColor: Colors.white,
-      leading: Icon(icon),
+      leading: Icon(icon  ,color: Color(0xff205375)),
       title: Text(title),
       subtitle: Text(subtitle),
       trailing: const Icon(Icons.arrow_forward_ios),
@@ -144,7 +144,7 @@ class _SettingsPageState extends State<SettingsPage> {
       required VoidCallback function}) {
     return ListTile(
       tileColor: Colors.white,
-      leading: Icon(icon),
+      leading: Icon(icon,color: Color(0xff205375),),
       title: Text(title),
       trailing: const Icon(Icons.arrow_forward_ios),
       onTap: function,
@@ -154,7 +154,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget lockAppTile({required IconData icon, required String title}) {
     return ListTile(
         tileColor: Colors.white,
-        leading: Icon(icon),
+        leading: Icon(icon,color: Color(0xff205375)),
         title: Text(title),
         trailing: Switch(
           value: lockApp,
@@ -175,7 +175,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget useFingerPrintsTile({required IconData icon, required String title}) {
     return ListTile(
         tileColor: Colors.white,
-        leading: Icon(icon),
+        leading: Icon(icon,color: Color(0xff205375)),
         title: Text(title),
         trailing: Switch(
           value: fingerPrint,
@@ -197,7 +197,7 @@ class _SettingsPageState extends State<SettingsPage> {
       {required IconData icon, required String title}) {
     return ListTile(
         tileColor: Colors.white,
-        leading: Icon(icon),
+        leading: Icon(icon,color: Color(0xff205375)),
         title: Text(title),
         trailing: Switch(
           value: notifications,
