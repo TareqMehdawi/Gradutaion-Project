@@ -10,7 +10,9 @@ import 'navigation_drawer.dart';
 
 class StudentPage extends StatefulWidget {
   final String stdName;
-  const StudentPage({Key? key, void function, required this.stdName})
+  final String stdImage;
+  const StudentPage(
+      {Key? key, void function, required this.stdName, required this.stdImage})
       : super(key: key);
 
   @override
@@ -139,7 +141,9 @@ class _StudentPageState extends State<StudentPage> {
                       await showSearch(
                         context: context,
                         delegate: EmployeeSearchDelegate(
-                            type: 'doctor', stdName: widget.stdName),
+                            type: 'doctor',
+                            stdName: widget.stdName,
+                            stdImage: widget.stdImage),
                       );
                     },
                   ),
@@ -150,7 +154,9 @@ class _StudentPageState extends State<StudentPage> {
                       await showSearch(
                         context: context,
                         delegate: EmployeeSearchDelegate(
-                            type: 'registration', stdName: widget.stdName),
+                            type: 'registration',
+                            stdName: widget.stdName,
+                            stdImage: widget.stdImage),
                       );
                     },
                   ),

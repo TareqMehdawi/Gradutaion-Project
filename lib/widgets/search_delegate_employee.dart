@@ -6,7 +6,9 @@ import 'package:provider/provider.dart';
 
 class EmployeeSearchDelegate extends SearchDelegate {
   String stdName;
-  EmployeeSearchDelegate({required this.type,required this.stdName});
+  String stdImage;
+  EmployeeSearchDelegate(
+      {required this.type, required this.stdName, required this.stdImage});
 
   final String type;
   final CollectionReference _employees =
@@ -135,6 +137,7 @@ class EmployeeSearchDelegate extends SearchDelegate {
                             builder: (BuildContext context) => YourAccount2(
                               uid: id,
                               stdName: stdName,
+                              stdImage: stdImage,
                             ),
                           ),
                         );

@@ -43,6 +43,7 @@ class StudentsReservation {
   final String time;
   final String date;
   final String student;
+  final String image;
 
   StudentsReservation({
     this.id = '',
@@ -53,6 +54,7 @@ class StudentsReservation {
     required this.date,
     required this.student,
     required this.empId,
+    required this.image,
   });
 
   Map<String, dynamic> toJson() => {
@@ -64,6 +66,7 @@ class StudentsReservation {
         'time': time,
         'date': date,
         'student': student,
+        'image': image,
       };
 
   static StudentsReservation fromJson(Map<String, dynamic> json) =>
@@ -76,6 +79,7 @@ class StudentsReservation {
         time: json['time'],
         date: json['date'],
         student: json['student'],
+        image: json['image'],
       );
 }
 
@@ -154,6 +158,7 @@ class UserAccount {
         officeHours: json['officeHours'],
       );
 }
+
 class UserWorkingHours {
   String id;
   final String workingHours;
@@ -164,15 +169,17 @@ class UserWorkingHours {
   });
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'workingHours': workingHours,
-  };
+        'id': id,
+        'workingHours': workingHours,
+      };
 
-  static UserWorkingHours fromJson(Map<String, dynamic> json) => UserWorkingHours(
-    id: json['id'],
-    workingHours: json['officeHours'],
-  );
+  static UserWorkingHours fromJson(Map<String, dynamic> json) =>
+      UserWorkingHours(
+        id: json['id'],
+        workingHours: json['officeHours'],
+      );
 }
+
 class SendFeedback {
   final String id;
   final String title;
@@ -189,20 +196,20 @@ class SendFeedback {
   });
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'title': title,
-    'name': name,
-    'message': message,
-    'email': email,
-  };
+        'id': id,
+        'title': title,
+        'name': name,
+        'message': message,
+        'email': email,
+      };
 
   static SendFeedback fromJson(Map<String, dynamic> json) => SendFeedback(
-    id: json['id'],
-    title: json['title'],
-    name: json['name'],
-    message: json['message'],
-    email:  json['email'],
-  );
+        id: json['id'],
+        title: json['title'],
+        name: json['name'],
+        message: json['message'],
+        email: json['email'],
+      );
 }
 // class SetEmployeeProfile{
 //   String office;

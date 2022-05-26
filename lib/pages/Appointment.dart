@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,12 +12,15 @@ class BookingScreen extends StatefulWidget {
   final String uid;
   final String empName;
   final String stdName;
+  final String stdImage;
 
   const BookingScreen(
       {Key? key,
       required this.uid,
       required this.empName,
-      required this.stdName, required Map officeHours})
+      required this.stdName,
+      required Map officeHours,
+      required this.stdImage})
       : super(key: key);
 
   @override
@@ -698,14 +702,55 @@ class _BookingScreenState extends State<BookingScreen> {
                                     ),
                                   ),
                                   onPressed: () async {
-                                    await setReservation(
-                                        empName: widget.empName,
-                                        empId: widget.uid,
-                                        service: serviceSelect!,
-                                        people: 10,
-                                        currentTime: selectedTime!,
-                                        currentDate: daySelect!,
-                                        studentName: widget.stdName);
+                                    try {
+                                      await checkUser();
+                                      await setReservation(
+                                          empName: widget.empName,
+                                          empId: widget.uid,
+                                          service: serviceSelect!,
+                                          people: 10,
+                                          currentTime: selectedTime!,
+                                          currentDate: daySelect!,
+                                          studentName: widget.stdName);
+                                      AwesomeDialog(
+                                          autoDismiss: false,
+                                          context: context,
+                                          dialogType: DialogType.SUCCES,
+                                          animType: AnimType.BOTTOMSLIDE,
+                                          title: 'Success',
+                                          desc:
+                                              'Appointment Scheduled Successfully',
+                                          btnOkText: "Ok",
+                                          btnOkOnPress: () {
+                                            Navigator.of(context).popUntil(
+                                                (route) => route.isFirst);
+                                          },
+                                          onDissmissCallback: (d) {
+                                            return Navigator.of(context)
+                                                .popUntil(
+                                                    (route) => route.isFirst);
+                                          }).show();
+                                    } catch (e) {
+                                      AwesomeDialog(
+                                          autoDismiss: false,
+                                          context: context,
+                                          dialogType: DialogType.ERROR,
+                                          animType: AnimType.BOTTOMSLIDE,
+                                          title: 'ERROR',
+                                          desc:
+                                              'You already have an appointment with ${widget.empName}',
+                                          btnOkText: "Go Back",
+                                          btnOkColor: Colors.red,
+                                          btnOkOnPress: () {
+                                            Navigator.of(context).popUntil(
+                                                (route) => route.isFirst);
+                                          },
+                                          onDissmissCallback: (d) {
+                                            return Navigator.of(context)
+                                                .popUntil(
+                                                    (route) => route.isFirst);
+                                          }).show();
+                                    }
                                   },
                                   child: Text(
                                     "Book Appointment",
@@ -759,6 +804,25 @@ class _BookingScreenState extends State<BookingScreen> {
     }
   }
 
+  Future checkUser() async {
+    List data = [];
+    final getUser = FirebaseFirestore.instance
+        .collection('reservation')
+        .where('id', isEqualTo: currentUser.uid)
+        .where('empId', isEqualTo: widget.uid);
+    final snapshot = await getUser.get();
+    for (var ele in snapshot.docs) {
+      data.add(ele.data());
+    }
+    if (data.isEmpty) {
+      print(true);
+      return true;
+    } else {
+      print(false);
+      throw Exception();
+    }
+  }
+
   Future setReservation({
     required String empName,
     required String empId,
@@ -778,6 +842,7 @@ class _BookingScreenState extends State<BookingScreen> {
       time: currentTime,
       date: currentDate,
       student: studentName,
+      image: widget.stdImage,
     );
     final json = user.toJson();
     await docUser.set(json);

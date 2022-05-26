@@ -11,7 +11,12 @@ import 'appointment.dart';
 class YourAccount2 extends StatefulWidget {
   final String uid;
   final String stdName;
-  const YourAccount2({Key? key, required this.uid, required this.stdName})
+  final String stdImage;
+  const YourAccount2(
+      {Key? key,
+      required this.uid,
+      required this.stdName,
+      required this.stdImage})
       : super(key: key);
 
   @override
@@ -265,6 +270,7 @@ class _YourAccount2 extends State<YourAccount2> {
                                     empName: user.name,
                                     stdName: widget.stdName,
                                     officeHours: user.officeHours,
+                                    stdImage: widget.stdImage,
                                   ),
 
                                   // builder: (context) => BookingScreen(
