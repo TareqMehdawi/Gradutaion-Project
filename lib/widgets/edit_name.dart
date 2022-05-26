@@ -2,6 +2,8 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import '../pages/your_account.dart';
 
 class EditNameFormPage extends StatefulWidget {
@@ -19,6 +21,7 @@ class EditNameFormPageState extends State<EditNameFormPage> {
   final secondNameController = TextEditingController();
   var user = UserData.myUser;
   final currentUser = FirebaseAuth.instance.currentUser!;
+  bool isLoading = false;
 
   @override
   void dispose() {
@@ -33,7 +36,6 @@ class EditNameFormPageState extends State<EditNameFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
         leading: const BackButton(),
@@ -47,16 +49,18 @@ class EditNameFormPageState extends State<EditNameFormPage> {
           //mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             const SizedBox(
-                width: 330,
-                child: Center(
-                  child: Text(
-                    "What's Your Name?",
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
+              width: 330,
+              child: Center(
+                child: Text(
+                  "What's Your Name?",
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff205375),
                   ),
-                )),
+                ),
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -104,27 +108,9 @@ class EditNameFormPageState extends State<EditNameFormPage> {
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: SizedBox(
-                  width: 330,
+                  width: 440,
                   height: 50,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.black),
-                    ),
-                    onPressed: () {
-                      // Validate returns true if the form is valid, or false otherwise.
-                      if (_formKey.currentState!.validate() &&
-                          isAlpha(firstNameController.text +
-                              secondNameController.text)) {
-                        updateUserName(name: "${firstNameController.text} ${secondNameController.text}");
-
-                      }
-                    },
-                    child: const Text(
-                      'Update',
-                      style: TextStyle(fontSize: 15),
-                    ),
-                  ),
+                  child: editNameButton(),
                 ),
               ),
             ),
@@ -133,10 +119,11 @@ class EditNameFormPageState extends State<EditNameFormPage> {
       ),
     );
   }
-  Future updateUserName({required String name}) async{
+
+  Future updateUserName({required String name}) async {
     try {
-      final docUser = FirebaseFirestore.instance.collection('users').doc(
-          currentUser.uid);
+      final docUser =
+          FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
       final json = {
         'name': name,
       };
@@ -152,11 +139,10 @@ class EditNameFormPageState extends State<EditNameFormPage> {
           btnOkOnPress: () {
             return Navigator.of(context).popUntil((route) => route.isFirst);
           },
-          onDissmissCallback: (d){
+          onDissmissCallback: (d) {
             return Navigator.of(context).popUntil((route) => route.isFirst);
-          }
-      ).show();
-    } on FirebaseAuthException catch(error){
+          }).show();
+    } on FirebaseAuthException catch (error) {
       AwesomeDialog(
           autoDismiss: false,
           context: context,
@@ -168,11 +154,49 @@ class EditNameFormPageState extends State<EditNameFormPage> {
           btnOkOnPress: () {
             return Navigator.of(context).popUntil((route) => route.isFirst);
           },
-          onDissmissCallback: (d){
+          onDissmissCallback: (d) {
             return Navigator.of(context).popUntil((route) => route.isFirst);
-          }
-      ).show();
+          }).show();
     }
+  }
+
+  Widget editNameButton() {
+    return Container(
+      padding: EdgeInsets.only(left: 20, top: 0, bottom: 0, right: 20),
+      child: SizedBox(
+        width: double.infinity,
+        height: 50,
+        child: ElevatedButton(
+          //focusNode: f3,
+          child: Text(
+            "Login",
+            style: GoogleFonts.lato(
+              color: Colors.white,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          onPressed: () {
+            // Validate returns true if the form is valid, or false otherwise.
+            if (_formKey.currentState!.validate() &&
+                isAlpha(firstNameController.text.trim() +
+                    secondNameController.text.trim())) {
+              updateUserName(
+                  name:
+                      "${firstNameController.text.trim()} ${secondNameController.text.trim()}");
+            }
+          },
+          style: ElevatedButton.styleFrom(
+            elevation: 2,
+            primary: Color(0xff205375),
+            onPrimary: Color(0xff205375),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(32.0),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 

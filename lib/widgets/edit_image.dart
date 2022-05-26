@@ -59,11 +59,14 @@ class EditImagePageState extends State<EditImagePage> {
                     children: [
                       const SizedBox(
                           width: 330,
-                          child: Text(
-                            "Upload a photo of yourself:",
-                            style: TextStyle(
-                              fontSize: 23,
-                              fontWeight: FontWeight.bold,
+                          child: Center(
+                            child: Text(
+                              "Upload a photo of yourself:",
+                              style: TextStyle(
+                                fontSize: 23,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xff205375),
+                              ),
                             ),
                           )),
                       Padding(
@@ -83,16 +86,21 @@ class EditImagePageState extends State<EditImagePage> {
                         padding: const EdgeInsets.only(top: 30),
                         child: Column(
                           children: [
-                            editButton(
+                            editImageButton(
                               name: 'Choose a Photo',
-                              style: 2,
                               function: () async {
                                 buildBottomSheet();
                               },
+                              textColor: Colors.white,
+                              buttonColor: Color(0xff205375),
                             ),
-                            editButton(
+                            SizedBox(
+                              height: 10,
+                            ),
+                            editImageButton(
                               name: 'Update',
-                              style: 1,
+                              textColor: Color(0xff205375),
+                              buttonColor: Colors.grey.shade400,
                               function: () async {
                                 setState(() {
                                   isLoading = true;
@@ -203,6 +211,41 @@ class EditImagePageState extends State<EditImagePage> {
             style: style == 1
                 ? const TextStyle(fontSize: 15)
                 : const TextStyle(fontSize: 15, color: Colors.black),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget editImageButton({
+    required VoidCallback function,
+    required String name,
+    required Color buttonColor,
+    required Color textColor,
+  }) {
+    return Container(
+      padding: EdgeInsets.only(left: 20, top: 0, bottom: 0, right: 20),
+      child: SizedBox(
+        width: double.infinity,
+        height: 50,
+        child: ElevatedButton(
+          //focusNode: f3,
+          child: Text(
+            name,
+            style: GoogleFonts.lato(
+              color: textColor,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          onPressed: function,
+          style: ElevatedButton.styleFrom(
+            elevation: 2,
+            primary: buttonColor,
+            onPrimary: Color(0xff205375),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(32.0),
+            ),
           ),
         ),
       ),
