@@ -859,7 +859,6 @@ class _BookingScreenState extends State<BookingScreen> {
       data.add(ele.data()['time']);
     }
     return data;
-
   }
 }
 

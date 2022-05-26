@@ -38,20 +38,24 @@ class _ChangePasswordState extends State<ChangePassword> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
+            SizedBox(
+              width: double.infinity,
+              child: Container(
+                child: Image.asset(
+                  'assets/images/change password.png',
+                  scale: 2.5,
+                  width: 250,
+                  height: 250,
+                ),
+              ),
+            ),
             Container(
-              padding: EdgeInsets.zero,
-              height: 400,
-              color: const Color(0xff141E27),
-              child: Center(
-                child: Text(
-                  'Change Password',
-                  style: GoogleFonts.ubuntu(
-                    textStyle: const TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                    ),
-                  ),
+              padding: EdgeInsets.only(bottom: 25),
+              child: Text(
+                'Change Password',
+                style: GoogleFonts.lato(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
