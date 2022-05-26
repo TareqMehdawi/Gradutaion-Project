@@ -1,9 +1,10 @@
-import 'package:intl/intl.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 import '../widgets/user_class.dart';
 
@@ -11,12 +12,15 @@ class BookingScreen extends StatefulWidget {
   final String uid;
   final String empName;
   final String stdName;
+  final String stdImage;
 
   const BookingScreen(
       {Key? key,
         required this.uid,
         required this.empName,
-        required this.stdName})
+        required this.stdName,
+        required Map officeHours,
+        required this.stdImage})
       : super(key: key);
 
   @override
@@ -27,7 +31,6 @@ class _BookingScreenState extends State<BookingScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _timeController = TextEditingController();
-
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   DateTime selectedDate = DateTime.now();
@@ -52,7 +55,6 @@ class _BookingScreenState extends State<BookingScreen> {
   String? t2;
   bool a = false;
 
-
   List sendItem(List items2) {
     List items = [];
     for (var i = 0; i < items2.length; i++) {
@@ -74,172 +76,173 @@ class _BookingScreenState extends State<BookingScreen> {
     }
     return items;
   }
-List send(List bookedDay,String time,String duration){
-  List offichour =add(time);
-  List availableTime =count(bookedDay, offichour);
-  List endList = [];
-  int t = int.parse(duration.substring(0, 2));
-  int fo = availableTime.length - 1;
 
-  switch (t) {
-    case 5:
-      endList=availableTime;
-      break;
-    case 10:
-      for (int i = 0; i < fo; i++) {
-        String endHourCurrently = availableTime[i].toString().substring(8, 13);
-        String startHourFromNext = '';
+  List send(List bookedDay, String time, String duration) {
+    List offichour = add(time);
+    List availableTime = count(bookedDay, offichour);
+    List endList = [];
+    int t = int.parse(duration.substring(0, 2));
+    int fo = availableTime.length - 1;
 
-        startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
+    switch (t) {
+      case 5:
+        endList = availableTime;
+        break;
+      case 10:
+        for (int i = 0; i < fo; i++) {
+          String endHourCurrently =
+          availableTime[i].toString().substring(8, 13);
+          String startHourFromNext = '';
 
-        if (startHourFromNext == endHourCurrently) {
-          endList.add(
-              "${availableTime[i].toString().substring(0, 5)} - ${availableTime[i + 1].toString().substring(8, 13)}");
-        }
-      }
-      print(endList);
-      break;
-    case 15:
-      int count = 0;
-      int b = 0;
-      String start = "";
-      for (int i = 0; i < fo; i++) {
-        String endHourCurrently = availableTime[i].toString().substring(8, 13);
-        String startHourFromNext = '';
+          startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
 
-        startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
-
-        if (startHourFromNext == endHourCurrently && count == 0) {
-          count++;
-
-          if (count == 1) {
-            start = availableTime[i].toString().substring(0, 5);
-            b = i;
+          if (startHourFromNext == endHourCurrently) {
+            endList.add(
+                "${availableTime[i].toString().substring(0, 5)} - ${availableTime[i + 1].toString().substring(8, 13)}");
           }
-        } else if (count > 0 &&
-            b + 1 == i &&
-            startHourFromNext == endHourCurrently) {
-          count++;
-        } else {
-          count = 0;
         }
-        if (count == 2) {
-          endList.add(
-              "$start - ${availableTime[i + 1].toString().substring(8, 13)}");
-          start = "";
-          count = 0;
-          i = b;
-        }
-      }
-      print(endList);
-      break;
-    case 20:
-      int count = 0;
-      int b = 0;
-      String start = "";
-      for (int i = 0; i < fo; i++) {
-        String endHourCurrently = availableTime[i].toString().substring(8, 13);
-        String startHourFromNext = '';
+        break;
+      case 15:
+        int count = 0;
+        int b = 0;
+        String start = "";
+        for (int i = 0; i < fo; i++) {
+          String endHourCurrently =
+          availableTime[i].toString().substring(8, 13);
+          String startHourFromNext = '';
 
-        startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
+          startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
 
-        if (startHourFromNext == endHourCurrently && count == 0) {
-          count++;
+          if (startHourFromNext == endHourCurrently && count == 0) {
+            count++;
 
-          if (count == 1) {
-            start = availableTime[i].toString().substring(0, 5);
-            b = i;
+            if (count == 1) {
+              start = availableTime[i].toString().substring(0, 5);
+              b = i;
+            }
+          } else if (count > 0 &&
+              b + 1 == i &&
+              startHourFromNext == endHourCurrently) {
+            count++;
+          } else {
+            count = 0;
           }
-        } else if (count > 0 &&
-            (b + 1 == i || b + 2 == i) &&
-            startHourFromNext == endHourCurrently) {
-          count++;
-        } else {
-          count = 0;
-        }
-        if (count == 3) {
-          endList.add(
-              "$start - ${availableTime[i + 1].toString().substring(8, 13)}");
-          start = "";
-          count = 0;
-          i = b;
-        }
-      }
-      break;
-    case 25:
-      int count = 0;
-      int b = 0;
-      String start = "";
-      for (int i = 0; i < fo; i++) {
-        String endHourCurrently = availableTime[i].toString().substring(8, 13);
-        String startHourFromNext = '';
-
-        startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
-
-        if (startHourFromNext == endHourCurrently && count == 0) {
-          count++;
-
-          if (count == 1) {
-            start = availableTime[i].toString().substring(0, 5);
-            b = i;
+          if (count == 2) {
+            endList.add(
+                "$start - ${availableTime[i + 1].toString().substring(8, 13)}");
+            start = "";
+            count = 0;
+            i = b;
           }
-        } else if (count > 0 &&
-            (b + 1 == i || b + 2 == i || b + 3 == i) &&
-            startHourFromNext == endHourCurrently) {
-          count++;
-        } else {
-          count = 0;
         }
-        if (count == 4) {
-          endList.add(
-              "$start - ${availableTime[i + 1].toString().substring(8, 13)}");
-          start = "";
-          count = 0;
-          i = b;
-        }
-      }
-      print(endList);
-      break;
-    case 30:
-      int count = 0;
-      int b = 0;
-      String start = "";
-      for (int i = 0; i < fo; i++) {
-        String endHourCurrently = availableTime[i].toString().substring(8, 13);
-        String startHourFromNext = '';
+        break;
+      case 20:
+        int count = 0;
+        int b = 0;
+        String start = "";
+        for (int i = 0; i < fo; i++) {
+          String endHourCurrently =
+          availableTime[i].toString().substring(8, 13);
+          String startHourFromNext = '';
 
-        startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
+          startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
 
-        if (startHourFromNext == endHourCurrently && count == 0) {
-          count++;
+          if (startHourFromNext == endHourCurrently && count == 0) {
+            count++;
 
-          if (count == 1) {
-            start = availableTime[i].toString().substring(0, 5);
-            b = i;
+            if (count == 1) {
+              start = availableTime[i].toString().substring(0, 5);
+              b = i;
+            }
+          } else if (count > 0 &&
+              (b + 1 == i || b + 2 == i) &&
+              startHourFromNext == endHourCurrently) {
+            count++;
+          } else {
+            count = 0;
           }
-        } else if (count > 0 &&
-            (b + 1 == i || b + 2 == i || b + 3 == i || b + 4 == i) &&
-            startHourFromNext == endHourCurrently) {
-          count++;
-        } else {
-          count = 0;
+          if (count == 3) {
+            endList.add(
+                "$start - ${availableTime[i + 1].toString().substring(8, 13)}");
+            start = "";
+            count = 0;
+            i = b;
+          }
         }
-        if (count == 5) {
-          endList.add(
-              "$start - ${availableTime[i + 1].toString().substring(8, 13)}");
-          start = "";
-          count = 0;
-          i = b;
+        break;
+      case 25:
+        int count = 0;
+        int b = 0;
+        String start = "";
+        for (int i = 0; i < fo; i++) {
+          String endHourCurrently =
+          availableTime[i].toString().substring(8, 13);
+          String startHourFromNext = '';
+
+          startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
+
+          if (startHourFromNext == endHourCurrently && count == 0) {
+            count++;
+
+            if (count == 1) {
+              start = availableTime[i].toString().substring(0, 5);
+              b = i;
+            }
+          } else if (count > 0 &&
+              (b + 1 == i || b + 2 == i || b + 3 == i) &&
+              startHourFromNext == endHourCurrently) {
+            count++;
+          } else {
+            count = 0;
+          }
+          if (count == 4) {
+            endList.add(
+                "$start - ${availableTime[i + 1].toString().substring(8, 13)}");
+            start = "";
+            count = 0;
+            i = b;
+          }
         }
-      }
-      print(endList);
-      break;
-  }
+        break;
+      case 30:
+        int count = 0;
+        int b = 0;
+        String start = "";
+        for (int i = 0; i < fo; i++) {
+          String endHourCurrently =
+          availableTime[i].toString().substring(8, 13);
+          String startHourFromNext = '';
 
+          startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
 
+          if (startHourFromNext == endHourCurrently && count == 0) {
+            count++;
+
+            if (count == 1) {
+              start = availableTime[i].toString().substring(0, 5);
+              b = i;
+            }
+          } else if (count > 0 &&
+              (b + 1 == i || b + 2 == i || b + 3 == i || b + 4 == i) &&
+              startHourFromNext == endHourCurrently) {
+            count++;
+          } else {
+            count = 0;
+          }
+          if (count == 5) {
+            endList.add(
+                "$start - ${availableTime[i + 1].toString().substring(8, 13)}");
+            start = "";
+            count = 0;
+            i = b;
+          }
+        }
+        break;
+    }
 
     return endList;
-}
+  }
+
   add(String doctorOfficeHours) {
     int? hours;
     int? minutes;
@@ -248,7 +251,7 @@ List send(List bookedDay,String time,String duration){
     String? oldHour;
     String? newHour;
     List notAvailable = [];
-    int fo = countHours(5,doctorOfficeHours);
+    int fo = countHours(5, doctorOfficeHours);
     for (int i = 0; i < fo; i++) {
       String startHour1 = doctorOfficeHours.toString().substring(0, 2);
       String startMin1 = doctorOfficeHours.toString().substring(3, 5);
@@ -275,7 +278,8 @@ List send(List bookedDay,String time,String duration){
     }
     return notAvailable;
   }
-  countHours(int t,String doctorOfficeHours) {
+
+  countHours(int t, String doctorOfficeHours) {
     var format = DateFormat("HH:mm");
     int startHour = int.parse(doctorOfficeHours.substring(0, 2));
     int endHour = int.parse(doctorOfficeHours.substring(8, 10));
@@ -293,6 +297,7 @@ List send(List bookedDay,String time,String duration){
 
     return intMin;
   }
+
   int makeHour(int hour) {
     if (hour < 12) {
       hour = hour + 1;
@@ -302,8 +307,8 @@ List send(List bookedDay,String time,String duration){
       return hour;
     }
   }
-  count(List b , List notAvailable) {
 
+  count(List b, List notAvailable) {
     List c = [];
     int count = 0;
     int count2 = 0;
@@ -337,8 +342,6 @@ List send(List bookedDay,String time,String duration){
     }
     return notAvailable;
   }
-
-
 
   Future<void> selectTime(BuildContext context) async {
     TimeOfDay? selectedTime = await showTimePicker(
@@ -611,7 +614,12 @@ List send(List bookedDay,String time,String duration){
                                                 horizontal: 10.0),
                                             shrinkWrap: true,
                                             scrollDirection: Axis.horizontal,
-                                            itemCount: send(user2,user[serviceIndex!]["Time"],user[serviceIndex!]["Duration"]).length,
+                                            itemCount: send(
+                                                user2,
+                                                user[serviceIndex!]["Time"],
+                                                user[serviceIndex!]
+                                                ["Duration"])
+                                                .length,
                                             itemBuilder: (BuildContext context,
                                                 int index) =>
                                                 Padding(
@@ -621,8 +629,12 @@ List send(List bookedDay,String time,String duration){
                                                     onTap: () {
                                                       setState(() {
                                                         onTimeSelect = index;
-                                                        selectedTime =
-                                                        send(user2,user[serviceIndex!]["Time"],user[serviceIndex!]["Duration"])[index];
+                                                        selectedTime = send(
+                                                            user2,
+                                                            user[serviceIndex!]
+                                                            ["Time"],
+                                                            user[serviceIndex!][
+                                                            "Duration"])[index];
                                                         //onTimeSelect = !onTimeSelect;
                                                       });
                                                     },
@@ -631,28 +643,32 @@ List send(List bookedDay,String time,String duration){
                                                     splashColor: Colors.indigo,
                                                     child: Container(
                                                       decoration: BoxDecoration(
-                                                        border: Border.all(),
-                                                        borderRadius:
-                                                        BorderRadius.circular(
-                                                            32.0),
-                                                        color: index==onTimeSelect?Colors.blue:Colors.white
-                                                      ),
+                                                          border: Border.all(),
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              32.0),
+                                                          color:
+                                                          index == onTimeSelect
+                                                              ? Colors.blue
+                                                              : Colors.white),
                                                       height: 30,
                                                       child: Center(
                                                           child: Padding(
                                                             padding:
-                                                            const EdgeInsets
-                                                                .all(
+                                                            const EdgeInsets.all(
                                                                 8.0),
                                                             child: Text(
-                                                              send(user2,user[serviceIndex!]["Time"],user[serviceIndex!]["Duration"])[index],
+                                                              send(
+                                                                  user2,
+                                                                  user[serviceIndex!]
+                                                                  ["Time"],
+                                                                  user[serviceIndex!][
+                                                                  "Duration"])[index],
                                                               style: const TextStyle(
                                                                   fontSize: 14,
-                                                                  color: Colors
-                                                                      .black,
+                                                                  color: Colors.black,
                                                                   fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
+                                                                  FontWeight.bold),
                                                             ),
                                                           )),
                                                     ),
@@ -662,7 +678,9 @@ List send(List bookedDay,String time,String duration){
                                         ),
                                       );
                                     } else {
-                                      return Center(child: Text('hi'),);
+                                      return const Center(
+                                        child: Text('hi'),
+                                      );
                                     }
                                   }),
                             const SizedBox(
@@ -684,15 +702,55 @@ List send(List bookedDay,String time,String duration){
                                     ),
                                   ),
                                   onPressed: () async {
-                                    //getTime(user);
-                                    await setReservation(
-                                        empName: widget.empName,
-                                        empId: widget.uid,
-                                        service: serviceSelect!,
-                                        people: 10,
-                                        currentTime: selectedTime!,
-                                        currentDate: daySelect!,
-                                        studentName: widget.stdName);
+                                    try {
+                                      await checkUser();
+                                      await setReservation(
+                                          empName: widget.empName,
+                                          empId: widget.uid,
+                                          service: serviceSelect!,
+                                          people: 10,
+                                          currentTime: selectedTime!,
+                                          currentDate: daySelect!,
+                                          studentName: widget.stdName);
+                                      AwesomeDialog(
+                                          autoDismiss: false,
+                                          context: context,
+                                          dialogType: DialogType.SUCCES,
+                                          animType: AnimType.BOTTOMSLIDE,
+                                          title: 'Success',
+                                          desc:
+                                          'Appointment Scheduled Successfully',
+                                          btnOkText: "Ok",
+                                          btnOkOnPress: () {
+                                            Navigator.of(context).popUntil(
+                                                    (route) => route.isFirst);
+                                          },
+                                          onDissmissCallback: (d) {
+                                            return Navigator.of(context)
+                                                .popUntil(
+                                                    (route) => route.isFirst);
+                                          }).show();
+                                    } catch (e) {
+                                      AwesomeDialog(
+                                          autoDismiss: false,
+                                          context: context,
+                                          dialogType: DialogType.ERROR,
+                                          animType: AnimType.BOTTOMSLIDE,
+                                          title: 'ERROR',
+                                          desc:
+                                          'You already have an appointment with ${widget.empName}',
+                                          btnOkText: "Go Back",
+                                          btnOkColor: Colors.red,
+                                          btnOkOnPress: () {
+                                            Navigator.of(context).popUntil(
+                                                    (route) => route.isFirst);
+                                          },
+                                          onDissmissCallback: (d) {
+                                            return Navigator.of(context)
+                                                .popUntil(
+                                                    (route) => route.isFirst);
+                                          }).show();
+                                    }
                                   },
                                   child: Text(
                                     "Book Appointment",
@@ -746,6 +804,25 @@ List send(List bookedDay,String time,String duration){
     }
   }
 
+  Future checkUser() async {
+    List data = [];
+    final getUser = FirebaseFirestore.instance
+        .collection('reservation')
+        .where('id', isEqualTo: currentUser.uid)
+        .where('empId', isEqualTo: widget.uid);
+    final snapshot = await getUser.get();
+    for (var ele in snapshot.docs) {
+      data.add(ele.data());
+    }
+    if (data.isEmpty) {
+      print(true);
+      return true;
+    } else {
+      print(false);
+      throw Exception();
+    }
+  }
+
   Future setReservation({
     required String empName,
     required String empId,
@@ -765,6 +842,7 @@ List send(List bookedDay,String time,String duration){
       time: currentTime,
       date: currentDate,
       student: studentName,
+      image: widget.stdImage,
     );
     final json = user.toJson();
     await docUser.set(json);
@@ -781,10 +859,9 @@ List send(List bookedDay,String time,String duration){
       data.add(ele.data()['time']);
     }
     return data;
+
   }
 }
-
-
 
 // Color getColor(List bookedDay, List Time, int Ind, int onTime) {
 //

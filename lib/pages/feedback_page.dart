@@ -43,66 +43,74 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 return const Text('Something went wrong');
               } else if (snapshot.hasData) {
                 final user = snapshot.data!;
-                return ListView(children: [
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: const [
-                            Text(
-                              'Hi there ',
-                              style: TextStyle(
-                                fontSize: 40,
-                                fontWeight: FontWeight.bold,
+                return ListView(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: const [
+                              Text(
+                                'Hi there ',
+                                style: TextStyle(
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            Icon(
-                              Icons.emoji_emotions_outlined,
-                              size: 40,
-                            ),
-                          ],
-                        ),
-                        const Text(
-                          'We can\'t wait to get your thoughts on your app. what would you like to do',
-                        ),
-                      ],
+                              Icon(
+                                Icons.emoji_emotions_outlined,
+                                size: 40,
+                              ),
+                            ],
+                          ),
+                          const Text(
+                            'We can\'t wait to get your thoughts on your app. what would you like to do',
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  feedbackListTile(
-                    icon: Icons.bug_report_outlined,
-                    title: bug,
-                    subtitle:
-                        'Let us know so we can forward this to our bug control.',
-                    cTitle: bug,
-                    email: user.email,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  feedbackListTile(
-                    icon: Icons.message_outlined,
-                    title: feature,
-                    subtitle:
-                        'Do you have any idea that would make this our app better? We would love to know!',
-                    cTitle: feature,
-                    email: user.email,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  feedbackListTile(
-                    icon: Icons.emoji_events_outlined,
-                    title: applause,
-                    subtitle:
-                        'Let us know what you like about our app, maybe we can make it even better!',
-                    cTitle: applause,
-                    email: user.email,
-                  ),
-                ]);
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    feedbackListTile(
+                      icon: Icons.bug_report_outlined,
+                      title: bug,
+                      subtitle:
+                          'Let us know so we can forward this to our bug control.',
+                      cTitle: bug,
+                      email: user.email,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    feedbackListTile(
+                      icon: Icons.message_outlined,
+                      title: feature,
+                      subtitle:
+                          'Do you have any idea that would make this our app better? We would love to know!',
+                      cTitle: feature,
+                      email: user.email,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    feedbackListTile(
+                      icon: Icons.emoji_events_outlined,
+                      title: applause,
+                      subtitle:
+                          'Let us know what you like about our app, maybe we can make it even better!',
+                      cTitle: applause,
+                      email: user.email,
+                    ),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
+                    // Center(
+                    //   child: Image.asset('assets/images/loading.gif'),
+                    // ),
+                  ],
+                );
               } else {
                 /////////////////////////////
                 return GestureDetector(
@@ -132,7 +140,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
       tileColor: Colors.white,
       contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
       onTap: () {
-        buildBottomSheet(title: cTitle,email: email);
+        buildBottomSheet(title: cTitle, email: email);
       },
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(50.0),
@@ -162,7 +170,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
             title: title,
             name: nameController.text.trim(),
             message: messageController.text.trim(),
-        email: email);
+            email: email);
         AwesomeDialog(
             autoDismiss: false,
             context: context,
@@ -181,7 +189,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
     );
   }
 
-  Future buildBottomSheet({required String title,required String email}) {
+  Future buildBottomSheet({required String title, required String email}) {
     return showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -213,13 +221,18 @@ class _FeedbackPageState extends State<FeedbackPage> {
   Future sendFeedback({
     required String title,
     required String name,
-    required String message, required String email,
+    required String message,
+    required String email,
   }) async {
     try {
       final docUser = FirebaseFirestore.instance.collection('feedback').doc();
 
       final user = SendFeedback(
-          id: currentUser.uid, name: name, title: title, message: message,email: email);
+          id: currentUser.uid,
+          name: name,
+          title: title,
+          message: message,
+          email: email);
 
       final json = user.toJson();
 

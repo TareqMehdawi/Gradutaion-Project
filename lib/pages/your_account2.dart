@@ -1,14 +1,23 @@
 import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import '../widgets/user_class.dart';
 import 'appointment.dart';
+
 class YourAccount2 extends StatefulWidget {
   final String uid;
   final String stdName;
-  const YourAccount2({  Key? key,  required this.uid,  required this.stdName}) : super(key: key);
+  final String stdImage;
+  const YourAccount2(
+      {Key? key,
+      required this.uid,
+      required this.stdName,
+      required this.stdImage})
+      : super(key: key);
 
   @override
   _YourAccount2 createState() => _YourAccount2();
@@ -32,26 +41,25 @@ class _YourAccount2 extends State<YourAccount2> {
     }
   }
 
-  String officeDays( Map<dynamic, dynamic> map){
-   String office ="";
+  String officeDays(Map<dynamic, dynamic> map) {
+    String office = "";
 
-    for(var m in map.keys){
-   office ='$office$m : \n';
+    for (var m in map.keys) {
+      office = '$office$m : \n';
     }
 
     return office;
   }
 
-  String officeHours( Map<dynamic, dynamic> map){
-    String office ="";
+  String officeHours(Map<dynamic, dynamic> map) {
+    String office = "";
 
-    for(var m in map.keys){
-      office ='$office${map[m]}  \n';
+    for (var m in map.keys) {
+      office = '$office${map[m]}  \n';
     }
 
     return office;
   }
-
 
   @override
   void initState() {
@@ -64,236 +72,241 @@ class _YourAccount2 extends State<YourAccount2> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-              child: FutureBuilder<UserAccount?> (
-                  future: readUser(),
-                builder: (context, snapshot){
-                  if (snapshot.hasError) {
-                    return const Text('Something went wrong');
-                  }else if (snapshot.hasData) {
-                  final user = snapshot.data! ;
-                  return ListView(
-                      children : [
+        child: FutureBuilder<UserAccount?>(
+            future: readUser(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return const Text('Something went wrong');
+              } else if (snapshot.hasData) {
+                final user = snapshot.data!;
+                return ListView(children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 5),
+                    child: Column(
+                      children: <Widget>[
                         Container(
-                        margin: const EdgeInsets.only(top: 5),
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              alignment: Alignment.centerLeft,
-                              height: 50,
-                              width: MediaQuery.of(context).size.width,
-                              padding: const EdgeInsets.only(left: 5),
-                              child: IconButton(
-                                icon: const Icon(
-                                  Icons.chevron_left_sharp,
-                                  color: Colors.indigo,
-                                  size: 30,
-                                ),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          width: MediaQuery.of(context).size.width,
+                          padding: const EdgeInsets.only(left: 5),
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.chevron_left_sharp,
+                              color: Colors.indigo,
+                              size: 30,
                             ),
-                            CircleAvatar(
-                              backgroundImage: NetworkImage(user.image,),
-                              //backgroundColor: Colors.lightBlue[100],
-                              radius: 80,
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              user.name,
-                              style: GoogleFonts.lato(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 24,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            // Row(
-                            //   mainAxisAlignment: MainAxisAlignment.center,
-                            //   // children: [
-                            //   //   for (var i = 0; i < document['rating']; i++)
-                            //   //     Icon(
-                            //   //       Icons.star_rounded,
-                            //   //       color: Colors.indigoAccent,
-                            //   //       size: 30,
-                            //   //     ),
-                            //   //   if (5 - document['rating'] > 0)
-                            //   //     for (var i = 0; i < 5 - document['rating']; i++)
-                            //   //       Icon(
-                            //   //         Icons.star_rounded,
-                            //   //         color: Colors.black12,
-                            //   //         size: 30,
-                            //   //       ),
-                            //   // ],
-                            // ),
-                            const SizedBox(
-                              height: 14,
-                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ),
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(
+                            user.image,
+                          ),
+                          //backgroundColor: Colors.lightBlue[100],
+                          radius: 80,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          user.name,
+                          style: GoogleFonts.lato(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   // children: [
+                        //   //   for (var i = 0; i < document['rating']; i++)
+                        //   //     Icon(
+                        //   //       Icons.star_rounded,
+                        //   //       color: Colors.indigoAccent,
+                        //   //       size: 30,
+                        //   //     ),
+                        //   //   if (5 - document['rating'] > 0)
+                        //   //     for (var i = 0; i < 5 - document['rating']; i++)
+                        //   //       Icon(
+                        //   //         Icons.star_rounded,
+                        //   //         color: Colors.black12,
+                        //   //         size: 30,
+                        //   //       ),
+                        //   // ],
+                        // ),
+                        const SizedBox(
+                          height: 14,
+                        ),
 
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              margin: const EdgeInsets.symmetric(horizontal: 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    width: 15,
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              const Icon(Icons.place_outlined),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width / 1.4,
+                                child: Text(
+                                  user.office.isEmpty
+                                      ? "no location"
+                                      : user.office,
+                                  style: GoogleFonts.lato(
+                                    fontSize: 16,
                                   ),
-                                  const Icon(Icons.place_outlined),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width / 1.4,
-                                    child: Text(
-                                      user.office.isEmpty?"no location":user.office,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: MediaQuery.of(context).size.height / 12,
+                          margin: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Row(
+                            children: [
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              const Icon(Icons.email),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Text(
+                                user.email,
+                                style: GoogleFonts.lato(
+                                    fontSize: 16, color: Colors.blue),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 0,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Row(
+                            children: [
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              const Icon(Icons.access_time_rounded),
+                              Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                padding: const EdgeInsets.only(left: 8),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      user.officeHours.isEmpty
+                                          ? "no office hours"
+                                          : officeDays(user.officeHours),
                                       style: GoogleFonts.lato(
                                         fontSize: 16,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              height: MediaQuery.of(context).size.height / 12,
-                              margin: const EdgeInsets.symmetric(horizontal: 10),
-                              child: Row(
-                                children: [
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
-                                  const Icon(Icons.email),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text(
-                                   user.email,
-                                    style: GoogleFonts.lato(
-                                        fontSize: 16, color: Colors.blue),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 0,
-                            ),
-                            Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 10),
-                              child: Row(
-                                children: [
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
-                                  const Icon(Icons.access_time_rounded),
-                                  Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 10),
-                                    padding: const EdgeInsets.only(left: 8),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          user.officeHours.isEmpty?"no office hours":officeDays(user.officeHours),
-                                          style: GoogleFonts.lato(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          user.officeHours.isEmpty?"no office hours":officeHours(user.officeHours),
-                                          style: GoogleFonts.lato(
-                                            fontSize: 17,
-                                          ),
-                                        ),
-                                      ],
+                                    const SizedBox(
+                                      width: 10,
                                     ),
-                                  ),
-
-                                ],
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 50,
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 30),
-                              height: 50,
-                              width: MediaQuery.of(context).size.width,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 2,
-                                  primary: Colors.indigo.withOpacity(0.9),
-                                  onPrimary: Colors.black,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(32.0),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => BookingScreen(
-                                          uid:widget.uid,
-                                          empName: user.name,
-                                          stdName: widget.stdName,
+                                    Text(
+                                      user.officeHours.isEmpty
+                                          ? "no office hours"
+                                          : officeHours(user.officeHours),
+                                      style: GoogleFonts.lato(
+                                        fontSize: 17,
                                       ),
-
-                                      // builder: (context) => BookingScreen(
-                                      //   doctor: document['name'],
-                                      // ),
                                     ),
-                                  );
-                                },
-                                child: Text(
-                                  'Book an Appointment',
-                                  style: GoogleFonts.lato(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  ],
                                 ),
                               ),
-                            ),
-                            const SizedBox(
-                              height: 40,
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      ]
-                  );}else {
-                    print(snapshot.error);
-                    /////////////////////////////
-                    return const Center(
-                      child: Text('Loading...'),
-                    );
-                  }
-                }
+                        const SizedBox(
+                          height: 50,
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          height: 50,
+                          width: MediaQuery.of(context).size.width,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 2,
+                              primary: Colors.indigo.withOpacity(0.9),
+                              onPrimary: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(32.0),
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BookingScreen(
+                                    uid: widget.uid,
+                                    empName: user.name,
+                                    stdName: widget.stdName,
+                                    officeHours: user.officeHours,
+                                    stdImage: widget.stdImage,
+                                  ),
 
-              ),
-
+                                  // builder: (context) => BookingScreen(
+                                  //   doctor: document['name'],
+                                  // ),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              'Book an Appointment',
+                              style: GoogleFonts.lato(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                      ],
+                    ),
+                  ),
+                ]);
+              } else {
+                print(snapshot.error);
+                /////////////////////////////
+                return const Center(
+                  child: Text('Loading...'),
+                );
+              }
+            }),
       ),
     );
   }
-
 
   Widget imageCircle() {
     return Center(
@@ -341,9 +354,7 @@ class _YourAccount2 extends State<YourAccount2> {
       return UserAccount.fromJson(snapshot.data()!);
     }
     return null;
-
   }
-
 
   FutureOr onGoBack(dynamic value) {
     setState(() {});
@@ -353,13 +364,7 @@ class _YourAccount2 extends State<YourAccount2> {
     Route route = MaterialPageRoute(builder: (context) => editForm);
     Navigator.push(context, route).then(onGoBack);
   }
-
-
-
-
 }
-
-
 
 class User {
   String image;
