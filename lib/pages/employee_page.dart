@@ -22,12 +22,16 @@ class EmployeePage extends StatefulWidget {
 class _EmployeePageState extends State<EmployeePage> {
   String day = 'Every Day';
   bool picture = false;
+  // @override
+  // void initState() {
+  //   readReservation();
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
     // String selectedService =
     //     Provider.of<ReservationInfo>(context).selectedService;
-
     return Scaffold(
       //backgroundColor: Theme.of(context).backgroundColor,
       appBar: PreferredSize(
@@ -117,15 +121,15 @@ class _EmployeePageState extends State<EmployeePage> {
       body: StreamBuilder<List<StudentsReservation>>(
         stream: readReservation(),
         builder: (context, snapshot) {
-          if (picture) {
-            return Center(
-              child: Image.asset('assets/images/Schedule-bro.png'),
-            );
-          } else if (snapshot.hasData) {
+          if (snapshot.hasData) {
             final users = snapshot.data!;
             return ListView(
               padding: const EdgeInsets.all(12.0),
               children: [...users.map(buildListTile).toList()],
+            );
+          } else if (picture) {
+            return Center(
+              child: Image.asset('assets/images/Schedule-bro.png'),
             );
           } else if (snapshot.hasError) {
             return const Center(
@@ -232,10 +236,10 @@ class _EmployeePageState extends State<EmployeePage> {
         ),
       ),
       onPressed: () {
-        Navigator.pop(context);
         setState(() {
           day = title;
         });
+        Navigator.pop(context);
       },
       child: Text(
         title,

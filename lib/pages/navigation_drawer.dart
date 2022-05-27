@@ -322,7 +322,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                   FirebaseAuth.instance.signOut();
                 },
                 child: const Center(
-                  child: Text('Loading....'),
+                  child: Text('hi'),
                 ),
               );
             }

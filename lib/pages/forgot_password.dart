@@ -4,14 +4,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/widgets/utils_show_snackbar.dart';
 
 class ForgotPassword extends StatefulWidget {
-   const ForgotPassword({Key? key}) : super(key: key);
+  const ForgotPassword({Key? key}) : super(key: key);
 
   @override
   State<ForgotPassword> createState() => _ForgotPasswordState();
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
-
   final formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   final regEmailStu = RegExp(r"^[a-zA-Z]{3}[0-9]{7}@ju\.edu\.jo");
@@ -20,6 +19,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     emailController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,23 +51,26 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 ),
               ],
             ),
-
             SingleChildScrollView(
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      IconButton(
-                        padding: EdgeInsets.all(15),
-                        iconSize: 30.0,
-                        icon: Icon(Icons.arrow_back , color:  Color(0xff205375),),
-                        color:Colors.white,
-                        onPressed: (){
-                          Navigator.pop(context);
-                        },
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: IconButton(
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      iconSize: 30.0,
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: Color(0xff205375),
                       ),
-                    ],
+                      color: Colors.white,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
                   ),
                   SizedBox(
                     width: double.infinity,
@@ -111,7 +114,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   Widget emailFormField() {
     return Padding(
-      padding:  EdgeInsets.only(left: 20, top: 0, bottom: 0,right: 20),
+      padding: EdgeInsets.only(left: 20, top: 0, bottom: 0, right: 20),
       child: TextFormField(
         style: GoogleFonts.lato(
           fontSize: 18,
@@ -133,21 +136,18 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             fontSize: 18,
             fontWeight: FontWeight.w800,
           ),
-          suffixIcon: Icon(Icons.email_outlined ,color: Color(0xff205375)),
+          suffixIcon: Icon(Icons.email_outlined, color: Color(0xff205375)),
         ),
         textInputAction: TextInputAction.next,
         validator: (value) {
           if (value!.isEmpty) {
-            return 'Enter an email';}
-        else {
+            return 'Enter an email';
+          } else {
             return 'Please enter a valid email!';
           }
-
         },
       ),
     );
-
-
 
     // return Padding(
     //   padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -165,32 +165,31 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   Widget submitButton(BuildContext context) {
     return Container(
-      padding:EdgeInsets.only(left: 20, top: 0, bottom: 0,right: 20),
+      padding: EdgeInsets.only(left: 20, top: 0, bottom: 0, right: 20),
       child: SizedBox(
         width: double.infinity,
         height: 50,
         child: ElevatedButton(
           child: Text(
-              'Submit',
+            'Submit',
             style: GoogleFonts.lato(
               color: Colors.white,
               fontSize: 18.0,
               fontWeight: FontWeight.bold,
             ),
           ),
-            onPressed: () async{
-              try {
-                await FirebaseAuth.instance.sendPasswordResetEmail(
-                    email: emailController.text.trim());
+          onPressed: () async {
+            try {
+              await FirebaseAuth.instance
+                  .sendPasswordResetEmail(email: emailController.text.trim());
 
-                Utils.showSnackBar('Password Reset Email Sent');
-                Navigator.of(context).popUntil((route) => route.isFirst);
-
-              } on FirebaseAuthException catch (error){
-                Utils.showSnackBar(error.message);
-                Navigator.of(context).pop;
-              }
-            },
+              Utils.showSnackBar('Password Reset Email Sent');
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            } on FirebaseAuthException catch (error) {
+              Utils.showSnackBar(error.message);
+              Navigator.of(context).pop;
+            }
+          },
           style: ElevatedButton.styleFrom(
             elevation: 2,
             primary: Color(0xff205375),
@@ -237,4 +236,3 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     // );
   }
 }
-
