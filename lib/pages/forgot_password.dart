@@ -25,53 +25,84 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     return Scaffold(
       body: Form(
         key: formKey,
-        child: ListView(
+        child: Stack(
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                IconButton(
-                  padding: EdgeInsets.all(10),
-                  iconSize: 30.0,
-                  icon: Icon(Icons.arrow_back , color:  Color(0xff205375),),
-                  color:Colors.white,
-                  onPressed: (){
-                    Navigator.pop(context);
-                  },
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Image.asset(
+                    "assets/images/top_right.png",
+                    width: MediaQuery.of(context).size.width * .3,
+                  ),
                 ),
               ],
             ),
-            SizedBox(
-              width: double.infinity,
-              child: Container(
-                child: Image.asset(
-                  'assets/images/Forgot password.png',
-                  scale: 2.5,
-                  width: 280,
-                  height: 280,
-                ),
-              ),
-            ),
-            Center(
-              child: Container(
-                padding: EdgeInsets.only(bottom: 25),
-                child: Text(
-                  'Forgot Password',
-                  style: GoogleFonts.lato(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Image.asset(
+                    "assets/images/bottom_left.png",
+                    width: MediaQuery.of(context).size.width * .3,
                   ),
                 ),
+              ],
+            ),
+
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        padding: EdgeInsets.all(15),
+                        iconSize: 30.0,
+                        icon: Icon(Icons.arrow_back , color:  Color(0xff205375),),
+                        color:Colors.white,
+                        onPressed: (){
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: Container(
+                      child: Image.asset(
+                        'assets/images/Forgot password.png',
+                        scale: 2.5,
+                        width: 280,
+                        height: 280,
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Container(
+                      padding: EdgeInsets.only(bottom: 25),
+                      child: Text(
+                        'Forgot Password',
+                        style: GoogleFonts.lato(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  emailFormField(),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  submitButton(context),
+                ],
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            emailFormField(),
-            const SizedBox(
-              height: 15,
-            ),
-            submitButton(context),
           ],
         ),
       ),
