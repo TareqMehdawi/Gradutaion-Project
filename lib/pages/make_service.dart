@@ -50,7 +50,16 @@ class _ServicePageState extends State<ServicePage> {
     '25 minute',
     '30 minute',
   ];
+  List<DayInWeek> officeHoursDays( UserAccount? user){
+    final List<DayInWeek> days=[];
+    List day=[];
+    day.addAll(user!.officeHours.keys);
+    for(int i=0; i<day.length;i++) {
+     days.add(DayInWeek(day[i].toString()));
+    }
 
+      return days;
+  }
   final List<DayInWeek> _days = [
     DayInWeek(
       "Sunday",
@@ -81,11 +90,11 @@ class _ServicePageState extends State<ServicePage> {
     super.dispose();
   }
 
-  @override
-  void initState() {
-    readUser();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   readUser();
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +108,8 @@ class _ServicePageState extends State<ServicePage> {
       body: FutureBuilder<UserAccount?>(
           future: readUser(),
           builder: (context, snapshot) {
-            final user = snapshot.data;
+            if(snapshot.hasData){
+            final user = snapshot.data!;
             return Stack(
               children: [
                 Row(
@@ -195,7 +205,7 @@ class _ServicePageState extends State<ServicePage> {
                         child: SelectWeekDays(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          days: _days,
+                          days: officeHoursDays(user),
                           border: false,
                           boxDecoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30.0),
@@ -211,28 +221,39 @@ class _ServicePageState extends State<ServicePage> {
                           ),
                           onSelect: (value) {
                             // <== Callback to handle the selected days
-                            int i = 0;
                             List hi = value;
-                            for (var t in user!.officeHours.keys) {
-                              //print(t);
-                              //print(value);
-                              if (i < hi.length) {
-                                if (t.toString().trim() ==
-                                    value[i].toString().trim()) {
-                                  print(t);
-                                  days.addEntries([
-                                    MapEntry(value[i].toString(),
-                                        user.officeHours[value[i].toString()])
-                                  ]);
-                                  print(days);
+                            List day=[];
+                            day.addAll(user.officeHours.keys);
+                            for(int i=0; i<hi.length;i++){
+                              for(int j=0;j<day.length;j++){
+                                if (hi[i].toString().trim()==day[j].toString().trim()){
+                                  Map map1 ={ hi[i].toString().trim():user.officeHours[hi[i]].toString()};
+                                  days.addAll(map1);
                                 }
 
-                                i++;
-                              } else {
-                                break;
                               }
+
+
                             }
-                            //print(days);
+                            print(days);
+
+                            // for (var t in user.officeHours.keys) {
+                            //
+                            //   //print(value);
+                            //   if (i < hi.length) {
+                            //     if (t.toString().trim().contains(value[i].toString().trim())
+                            //         ) {
+                            //       Map map1 ={ value[i].toString():user.officeHours[value[i].toString()].toString()};
+                            //       days.addAll(map1);
+                            //       //print(days);
+                            //     }
+                            //
+                            //     i++;
+                            //   } else {
+                            //     break;
+                            //   }
+                            // }
+
                             //days = {value: };
                           },
                         ),
@@ -255,7 +276,7 @@ class _ServicePageState extends State<ServicePage> {
                                 ),
                                 Expanded(
                                   child: Text(
-                                    'Select Day',
+                                    'Select Time',
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
@@ -397,6 +418,9 @@ class _ServicePageState extends State<ServicePage> {
                 ),
               ],
             );
+          }else
+          return Text("data");
+
           }),
     );
   }
