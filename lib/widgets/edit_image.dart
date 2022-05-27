@@ -26,7 +26,7 @@ class EditImagePageState extends State<EditImagePage> {
   var pickedImage;
   bool isLoading = false;
 
-  Widget isNull(String data) {
+  Widget userImages(String data) {
     if (pickedImage == null) {
       return Image.network(data);
     } else {
@@ -37,12 +37,6 @@ class EditImagePageState extends State<EditImagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          iconTheme: const IconThemeData(color: Colors.black),
-          leading: const BackButton(),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-        ),
         backgroundColor: Color(0xFFFFFFFF),
         body: FutureBuilder<Users?>(
           future: readUser(),
@@ -57,18 +51,29 @@ class EditImagePageState extends State<EditImagePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: BackButton(),
+                        ),
+                      ),
                       const SizedBox(
-                          width: 330,
-                          child: Center(
-                            child: Text(
-                              "Upload a photo of yourself:",
-                              style: TextStyle(
-                                fontSize: 23,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xff205375),
-                              ),
+                        width: 330,
+                        child: Center(
+                          child: Text(
+                            "Upload a photo of yourself:",
+                            style: TextStyle(
+                              fontSize: 23,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff205375),
                             ),
-                          )),
+                          ),
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(top: 20),
                         child: SizedBox(
@@ -78,7 +83,7 @@ class EditImagePageState extends State<EditImagePage> {
                             onTap: () async {
                               buildBottomSheet();
                             },
-                            child: isNull(userImage!.image),
+                            child: userImages(userImage!.image),
                           ),
                         ),
                       ),
@@ -91,16 +96,16 @@ class EditImagePageState extends State<EditImagePage> {
                               function: () async {
                                 buildBottomSheet();
                               },
-                              textColor: Colors.white,
-                              buttonColor: Color(0xff205375),
+                              textColor: Color(0xff205375),
+                              buttonColor: Colors.grey.shade400,
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 15,
                             ),
                             editImageButton(
                               name: 'Update',
-                              textColor: Color(0xff205375),
-                              buttonColor: Colors.grey.shade400,
+                              textColor: Colors.white,
+                              buttonColor: Color(0xff205375),
                               function: () async {
                                 setState(() {
                                   isLoading = true;
@@ -130,12 +135,19 @@ class EditImagePageState extends State<EditImagePage> {
                                       desc: 'Image uploaded successfully',
                                       btnOkText: "Ok",
                                       btnOkOnPress: () {
-                                        Navigator.of(context)
-                                            .popUntil((route) => route.isFirst);
+                                        Navigator.pop(context);
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const EditImagePage()));
                                       },
                                       onDissmissCallback: (d) {
-                                        Navigator.of(context)
-                                            .popUntil((route) => route.isFirst);
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const EditImagePage()));
                                       }).show();
                                   //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const StudentAccount()));
                                 } catch (e) {
@@ -143,15 +155,21 @@ class EditImagePageState extends State<EditImagePage> {
                                     isLoading = false;
                                   });
                                   AwesomeDialog(
-                                    context: context,
-                                    dialogType: DialogType.ERROR,
-                                    animType: AnimType.BOTTOMSLIDE,
-                                    title: 'Error',
-                                    desc: 'Please choose a photo first',
-                                    btnOkText: "Go Back",
-                                    btnOkColor: Colors.red,
-                                    btnOkOnPress: () {},
-                                  ).show();
+                                      context: context,
+                                      dialogType: DialogType.ERROR,
+                                      animType: AnimType.BOTTOMSLIDE,
+                                      title: 'Error',
+                                      desc: 'Please choose a photo first',
+                                      btnOkText: "Go Back",
+                                      btnOkColor: Colors.red,
+                                      btnOkOnPress: () {
+                                        Navigator.of(context)
+                                            .popUntil((route) => route.isFirst);
+                                      },
+                                      onDissmissCallback: (d) {
+                                        Navigator.of(context)
+                                            .popUntil((route) => route.isFirst);
+                                      }).show();
                                 }
                               },
                             ),
@@ -184,38 +202,38 @@ class EditImagePageState extends State<EditImagePage> {
         ));
   }
 
-  Widget editButton(
-      {required VoidCallback function,
-      required String name,
-      required int style}) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SizedBox(
-        width: 330,
-        height: 50,
-        child: ElevatedButton(
-          onPressed: function,
-          style: style == 1
-              ? ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.black),
-                  elevation: MaterialStateProperty.all<double>(5),
-                )
-              : ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
-                  elevation: MaterialStateProperty.all<double>(5),
-                ),
-          child: Text(
-            name,
-            style: style == 1
-                ? const TextStyle(fontSize: 15)
-                : const TextStyle(fontSize: 15, color: Colors.black),
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget editButton(
+  //     {required VoidCallback function,
+  //     required String name,
+  //     required int style}) {
+  //   return Padding(
+  //     padding: const EdgeInsets.all(8.0),
+  //     child: SizedBox(
+  //       width: 330,
+  //       height: 50,
+  //       child: ElevatedButton(
+  //         onPressed: function,
+  //         style: style == 1
+  //             ? ButtonStyle(
+  //                 backgroundColor:
+  //                     MaterialStateProperty.all<Color>(Colors.black),
+  //                 elevation: MaterialStateProperty.all<double>(5),
+  //               )
+  //             : ButtonStyle(
+  //                 backgroundColor:
+  //                     MaterialStateProperty.all<Color>(Colors.white),
+  //                 elevation: MaterialStateProperty.all<double>(5),
+  //               ),
+  //         child: Text(
+  //           name,
+  //           style: style == 1
+  //               ? const TextStyle(fontSize: 15)
+  //               : const TextStyle(fontSize: 15, color: Colors.black),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget editImageButton({
     required VoidCallback function,

@@ -108,7 +108,7 @@ class EditNameFormPageState extends State<EditNameFormPage> {
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: SizedBox(
-                  width: 440,
+                  width: double.infinity,
                   height: 50,
                   child: editNameButton(),
                 ),
@@ -169,7 +169,7 @@ class EditNameFormPageState extends State<EditNameFormPage> {
         child: ElevatedButton(
           //focusNode: f3,
           child: Text(
-            "Login",
+            "Update",
             style: GoogleFonts.lato(
               color: Colors.white,
               fontSize: 18.0,

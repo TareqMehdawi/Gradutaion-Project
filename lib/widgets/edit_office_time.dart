@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:day_picker/day_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/widgets/user_class.dart';
 import 'package:time_range_picker/time_range_picker.dart';
 
@@ -70,12 +71,6 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          iconTheme: const IconThemeData(color: Colors.black),
-          leading: const BackButton(),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-        ),
         body: FutureBuilder<UserAccount?>(
             future: readUser(),
             builder: (context, snapshot) {
@@ -86,19 +81,27 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                 return Form(
                     key: _formKey,
                     child: ListView(
-                      // crossAxisAlignment: CrossAxisAlignment.center,
-                      // mainAxisAlignment: MainAxisAlignment.start,
                       children: [
+                        Align(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: BackButton(),
+                          ),
+                          alignment: Alignment.topLeft,
+                        ),
                         const SizedBox(
-                            width: 320,
-                            child: Center(
-                              child: Text(
-                                "What's your Office Hours?",
-                                style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.left,
-                              ),
-                            )),
+                          width: 320,
+                          child: Center(
+                            child: Text(
+                              "What's your Office Hours?",
+                              style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff205375)),
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                        ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -131,70 +134,63 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 16),
+                              padding: const EdgeInsets.symmetric(vertical: 16),
                               child: Align(
                                 alignment: Alignment.bottomCenter,
                                 child: SizedBox(
-                                  width: 320,
+                                  width: double.infinity,
                                   height: 50,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        maximumSize: const Size.fromHeight(40),
-                                        primary: Colors.black),
-                                    child: FittedBox(
-                                      child: Text(
-                                        getTime()!,
-                                        style: const TextStyle(
-                                            fontSize: 15, color: Colors.white),
-                                      ),
-                                    ),
-                                    onPressed: () async {
-                                      TimeRange result =
-                                          await showTimeRangePicker(
-                                              context: context,
-                                              start: const TimeOfDay(
-                                                  hour: 9, minute: 0),
-                                              end: const TimeOfDay(
-                                                  hour: 12, minute: 0),
-                                              disabledTime: TimeRange(
-                                                  startTime: const TimeOfDay(
-                                                      hour: 18, minute: 0),
-                                                  endTime: const TimeOfDay(
-                                                      hour: 6, minute: 0)),
-                                              disabledColor:
-                                                  Colors.red.withOpacity(0.5),
-                                              strokeWidth: 4,
-                                              ticks: 24,
-                                              ticksOffset: -7,
-                                              ticksLength: 15,
-                                              ticksColor: Colors.grey,
-                                              labels: [
-                                                "12 am",
-                                                "3 am",
-                                                "6 am",
-                                                "9 am",
-                                                "12 pm",
-                                                "3 pm",
-                                                "6 pm",
-                                                "9 pm"
-                                              ].asMap().entries.map((e) {
-                                                return ClockLabel.fromIndex(
-                                                    idx: e.key,
-                                                    length: 8,
-                                                    text: e.value);
-                                              }).toList(),
-                                              labelOffset: 35,
-                                              rotateLabels: false,
-                                              padding: 60);
-                                      setState(() {
-                                        startTime = result.startTime;
-                                        endTime = result.endTime;
-                                        officeHours =
-                                            '${startTime.toString().substring(10, 15)} - ${endTime.toString().substring(10, 15)}';
-                                      });
-                                    },
-                                  ),
+                                  child: editOfficeTimeButton(
+                                      function: () async {
+                                        TimeRange result =
+                                            await showTimeRangePicker(
+                                                context: context,
+                                                start: const TimeOfDay(
+                                                    hour: 9, minute: 0),
+                                                end: const TimeOfDay(
+                                                    hour: 12, minute: 0),
+                                                disabledTime: TimeRange(
+                                                    startTime: const TimeOfDay(
+                                                        hour: 18, minute: 0),
+                                                    endTime: const TimeOfDay(
+                                                        hour: 6, minute: 0)),
+                                                disabledColor:
+                                                    Colors.red.withOpacity(0.5),
+                                                strokeWidth: 4,
+                                                ticks: 24,
+                                                ticksOffset: -7,
+                                                ticksLength: 15,
+                                                ticksColor: Colors.grey,
+                                                labels: [
+                                                  "12 am",
+                                                  "3 am",
+                                                  "6 am",
+                                                  "9 am",
+                                                  "12 pm",
+                                                  "3 pm",
+                                                  "6 pm",
+                                                  "9 pm"
+                                                ].asMap().entries.map((e) {
+                                                  return ClockLabel.fromIndex(
+                                                      idx: e.key,
+                                                      length: 8,
+                                                      text: e.value);
+                                                }).toList(),
+                                                labelOffset: 35,
+                                                rotateLabels: false,
+                                                padding: 60);
+                                        setState(
+                                          () {
+                                            startTime = result.startTime;
+                                            endTime = result.endTime;
+                                            officeHours =
+                                                '${startTime.toString().substring(10, 15)} - ${endTime.toString().substring(10, 15)}';
+                                          },
+                                        );
+                                      },
+                                      name: getTime()!,
+                                      buttonColor: Colors.grey.shade400,
+                                      textColor: Color(0xff205375)),
                                 ),
                               ),
                             ),
@@ -203,26 +199,18 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                               child: Align(
                                 alignment: Alignment.bottomCenter,
                                 child: SizedBox(
-                                  width: 320,
-                                  height: 50,
-                                  child: ElevatedButton(
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.black),
-                                    ),
-                                    onPressed: () {
-                                      updateOfficeTimeField(
-                                          officeHours: ttt(),
-                                          day: days,
-                                          time: officeHours);
-                                    },
-                                    child: const Text(
-                                      'Update',
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                  ),
-                                ),
+                                    width: double.infinity,
+                                    height: 50,
+                                    child: editOfficeTimeButton(
+                                        function: () {
+                                          updateOfficeTimeField(
+                                              officeHours: ttt(),
+                                              day: days,
+                                              time: officeHours);
+                                        },
+                                        name: 'Update',
+                                        buttonColor: Color(0xff205375),
+                                        textColor: Colors.white)),
                               ),
                             ),
                             SizedBox(
@@ -360,13 +348,13 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
           desc: 'Office Hours Updated successfully',
           btnOkText: "Ok",
           btnOkOnPress: () {
-            Navigator.pop(context);
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                     builder: (context) => const EditOfficeHoursFormPage()));
           },
           onDissmissCallback: (d) {
+            Navigator.pop(context);
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -470,7 +458,10 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                 children: [
                   Expanded(
                     child: OutlinedButton(
-                      child: Text('Delete',style: TextStyle(color: Color(MyColors.header01)),),
+                      child: Text(
+                        'Delete',
+                        style: TextStyle(color: Color(MyColors.header01)),
+                      ),
                       onPressed: () async {
                         AwesomeDialog(
                           context: context,
@@ -483,7 +474,7 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                           btnCancelOnPress: () {},
                           btnOkOnPress: () {
                             try {
-                              deleteOfficeHours(day) ;
+                              deleteOfficeHours(day);
                               AwesomeDialog(
                                 autoDismiss: false,
                                 context: context,
@@ -521,15 +512,12 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                                 btnCancelText: 'Go back',
                                 btnCancelColor: Colors.black87,
                                 onDissmissCallback: (d) {
-                                  Navigator.pop(context);
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const EditOfficeHoursFormPage()));
+                                  Navigator.of(context)
+                                      .popUntil((route) => route.isFirst);
                                 },
                                 btnCancelOnPress: () {
-                                  Navigator.pop(context);
+                                  Navigator.of(context)
+                                      .popUntil((route) => route.isFirst);
                                 },
                               ).show();
                             }
@@ -579,6 +567,41 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
       //     // });
       //   },
       // ),
+    );
+  }
+
+  Widget editOfficeTimeButton({
+    required VoidCallback function,
+    required String name,
+    required Color buttonColor,
+    required Color textColor,
+  }) {
+    return Container(
+      padding: EdgeInsets.only(left: 20, top: 0, bottom: 0, right: 20),
+      child: SizedBox(
+        width: double.infinity,
+        height: 50,
+        child: ElevatedButton(
+          //focusNode: f3,
+          child: Text(
+            name,
+            style: GoogleFonts.lato(
+              color: textColor,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          onPressed: function,
+          style: ElevatedButton.styleFrom(
+            elevation: 2,
+            primary: buttonColor,
+            onPrimary: Color(0xff205375),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(32.0),
+            ),
+          ),
+        ),
+      ),
     );
   }
 

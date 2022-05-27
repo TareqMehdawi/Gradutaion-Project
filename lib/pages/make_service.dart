@@ -148,101 +148,101 @@ class _ServicePageState extends State<ServicePage> {
                   child: SizedBox(
                     width: 320,
                     height: 50,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              maximumSize: const Size.fromHeight(40),
-                              primary: Colors.black),
-                          child: FittedBox(
-                            child: Text(
-                              startTime == null
-                                  ? "Select Start Time"
-                                  : "$startTime",
-                              style: const TextStyle(
-                                  fontSize: 15, color: Colors.white),
-                            ),
-                          ),
-                          onPressed: () async {
-                            showCupertinoModalPopup(
-                                context: context,
-                                builder: (BuildContext builder) {
-                                  return Container(
-                                    height: MediaQuery.of(context)
-                                            .copyWith()
-                                            .size
-                                            .height *
-                                        0.25,
-                                    color: Colors.white,
-                                    child: CupertinoDatePicker(
-                                      mode: CupertinoDatePickerMode.time,
-                                      onDateTimeChanged: (value) {
-                                        setState(() {
-                                          if (value != startTime) {
-                                            startTime =
-                                                '${value.hour.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
-                                          }
-                                          int t = value.hour;
-                                          if (t > 12) {
-                                            t = t - 12;
-                                            startTime =
-                                                '${t.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
-                                          }
-                                        });
-                                      },
-                                      initialDateTime: DateTime.now(),
-                                    ),
-                                  );
-                                });
-                          },
-                        ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              maximumSize: const Size.fromHeight(40),
-                              primary: Colors.black),
-                          child: FittedBox(
-                            child: Text(
-                              endTime == null ? "Select End Time" : "$endTime",
-                              style: const TextStyle(
-                                  fontSize: 15, color: Colors.white),
-                            ),
-                          ),
-                          onPressed: () async {
-                            showCupertinoModalPopup(
-                                context: context,
-                                builder: (BuildContext builder) {
-                                  return Container(
-                                    height: MediaQuery.of(context)
-                                            .copyWith()
-                                            .size
-                                            .height *
-                                        0.25,
-                                    color: Colors.white,
-                                    child: CupertinoDatePicker(
-                                      mode: CupertinoDatePickerMode.time,
-                                      onDateTimeChanged: (value) {
-                                        setState(() {
-                                          if (value != endTime) {
-                                            endTime =
-                                                '${value.hour.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
-                                          }
-                                          int t = value.hour;
-                                          if (t > 12) {
-                                            t = t - 12;
-                                            endTime =
-                                                '${t.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
-                                          }
-                                        });
-                                      },
-                                      initialDateTime: DateTime.now(),
-                                    ),
-                                  );
-                                });
-                          },
-                        ),
-                      ],
-                    ),
+                    // child: Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //   children: [
+                    // ElevatedButton(
+                    //   style: ElevatedButton.styleFrom(
+                    //       maximumSize: const Size.fromHeight(40),
+                    //       primary: Colors.black),
+                    //   child: FittedBox(
+                    //     child: Text(
+                    //       startTime == null
+                    //           ? "Select Start Time"
+                    //           : "$startTime",
+                    //       style: const TextStyle(
+                    //           fontSize: 15, color: Colors.white),
+                    //     ),
+                    //   ),
+                    //   onPressed: () async {
+                    //     showCupertinoModalPopup(
+                    //         context: context,
+                    //         builder: (BuildContext builder) {
+                    //           return Container(
+                    //             height: MediaQuery.of(context)
+                    //                     .copyWith()
+                    //                     .size
+                    //                     .height *
+                    //                 0.25,
+                    //             color: Colors.white,
+                    //             child: CupertinoDatePicker(
+                    //               mode: CupertinoDatePickerMode.time,
+                    //               onDateTimeChanged: (value) {
+                    //                 setState(() {
+                    //                   if (value != startTime) {
+                    //                     startTime =
+                    //                         '${value.hour.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
+                    //                   }
+                    //                   int t = value.hour;
+                    //                   if (t > 12) {
+                    //                     t = t - 12;
+                    //                     startTime =
+                    //                         '${t.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
+                    //                   }
+                    //                 });
+                    //               },
+                    //               initialDateTime: DateTime.now(),
+                    //             ),
+                    //           );
+                    //         });
+                    //   },
+                    // ),
+                    // ElevatedButton(
+                    //   style: ElevatedButton.styleFrom(
+                    //       maximumSize: const Size.fromHeight(40),
+                    //       primary: Colors.black),
+                    //   child: FittedBox(
+                    //     child: Text(
+                    //       endTime == null ? "Select End Time" : "$endTime",
+                    //       style: const TextStyle(
+                    //           fontSize: 15, color: Colors.white),
+                    //     ),
+                    //   ),
+                    //   onPressed: () async {
+                    //     showCupertinoModalPopup(
+                    //         context: context,
+                    //         builder: (BuildContext builder) {
+                    //           return Container(
+                    //             height: MediaQuery.of(context)
+                    //                     .copyWith()
+                    //                     .size
+                    //                     .height *
+                    //                 0.25,
+                    //             color: Colors.white,
+                    //             child: CupertinoDatePicker(
+                    //               mode: CupertinoDatePickerMode.time,
+                    //               onDateTimeChanged: (value) {
+                    //                 setState(() {
+                    //                   if (value != endTime) {
+                    //                     endTime =
+                    //                         '${value.hour.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
+                    //                   }
+                    //                   int t = value.hour;
+                    //                   if (t > 12) {
+                    //                     t = t - 12;
+                    //                     endTime =
+                    //                         '${t.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
+                    //                   }
+                    //                 });
+                    //               },
+                    //               initialDateTime: DateTime.now(),
+                    //             ),
+                    //           );
+                    //         });
+                    //   },
+                    // ),
+                    //   ],
+                    // ),
                   ))),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),

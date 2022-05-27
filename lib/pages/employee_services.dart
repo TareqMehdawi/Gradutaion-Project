@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/pages/Select_service_edit.dart';
+
 import '../styles/colors.dart';
 import '../widgets/user_class.dart';
 
@@ -47,21 +48,20 @@ class _MyServices extends State<MyServices> {
       ),
     );
   }
+
   Future deleteService(SetEmpService user) async {
-      final docUser2 = await FirebaseFirestore.instance
+    final docUser2 = await FirebaseFirestore.instance
+        .collection('Service')
+        .where('Service', isEqualTo: user.Service)
+        .where('id', isEqualTo: user.id)
+        .get();
+    for (var doc in docUser2.docs) {
+      await FirebaseFirestore.instance
           .collection('Service')
-          .where('Service', isEqualTo: user.Service)
-          .where('id', isEqualTo: user.id)
-          .get();
-      for (var doc in docUser2.docs) {
-        await FirebaseFirestore.instance
-            .collection('Service')
-            .doc(doc.id)
-            .delete();
-      }
+          .doc(doc.id)
+          .delete();
     }
-
-
+  }
 
   Stream<List<SetEmpService>> reviewService() {
     final currentUser = FirebaseAuth.instance.currentUser!;
@@ -172,10 +172,11 @@ class _MyServices extends State<MyServices> {
                             dialogType: DialogType.WARNING,
                             animType: AnimType.BOTTOMSLIDE,
                             title: 'Warning',
-                            desc: 'Are you sure you want to delete this service',
+                            desc:
+                                'Are you sure you want to delete this service',
                             btnOkText: "Delete",
                             btnCancelText: 'Cancel',
-                            btnCancelOnPress: (){},
+                            btnCancelOnPress: () {},
                             btnOkOnPress: () {
                               try {
                                 deleteService(user);
@@ -194,7 +195,7 @@ class _MyServices extends State<MyServices> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                            const MyServices()));
+                                                const MyServices()));
                                   },
                                   btnOkOnPress: () {
                                     Navigator.pop(context);
@@ -202,10 +203,10 @@ class _MyServices extends State<MyServices> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                            const MyServices()));
+                                                const MyServices()));
                                   },
                                 ).show();
-                              } on FirebaseAuthException catch(error){
+                              } on FirebaseAuthException catch (error) {
                                 AwesomeDialog(
                                   autoDismiss: false,
                                   context: context,
@@ -221,7 +222,7 @@ class _MyServices extends State<MyServices> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                            const MyServices()));
+                                                const MyServices()));
                                   },
                                   btnCancelOnPress: () {
                                     Navigator.pop(context);
@@ -229,13 +230,12 @@ class _MyServices extends State<MyServices> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                            const MyServices()));
+                                                const MyServices()));
                                   },
                                 ).show();
                               }
                             },
                           ).show();
-
                         },
                       ),
                     ),
@@ -246,18 +246,18 @@ class _MyServices extends State<MyServices> {
                       child: ElevatedButton(
                         child: Text('Reschedule'),
                         onPressed: () => {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DeleteSelectService(
-                                  serviceName: user.Service,
-                                  days: user.days,
-                                  time: user.Time,
-                                  duration: user.Duration,
-                                  uid: user.id,
-                                ),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DeleteSelectService(
+                                serviceName: user.Service,
+                                days: user.days,
+                                time: user.Time,
+                                duration: user.Duration,
+                                uid: user.id,
                               ),
-                            )
+                            ),
+                          )
                         },
                       ),
                     )
@@ -267,7 +267,7 @@ class _MyServices extends State<MyServices> {
             ),
           ),
         ),
-    // child: ListTile(
+        // child: ListTile(
         //   leading: Padding(
         //     padding: const EdgeInsets.only(top: 10.0),
         //     child: Text("${user.Duration.substring(0, 2)} min"),

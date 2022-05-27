@@ -35,7 +35,7 @@ class _YourAccount2 extends State<EmployeeAccount> {
   var user = UserData.myUser;
   bool isLoading = false;
 
-  Object isNull() {
+  Object userImage() {
     if (imgUrl == null) {
       return const AssetImage('assets/images/default_image.png');
     } else {
@@ -104,7 +104,7 @@ class _YourAccount2 extends State<EmployeeAccount> {
                               ),
                               InkWell(
                                 onTap: () async {
-                                  await Navigator.pushReplacement(
+                                  await Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
@@ -399,7 +399,7 @@ class _YourAccount2 extends State<EmployeeAccount> {
             radius: 75,
             backgroundColor: const Color.fromRGBO(64, 105, 225, 1),
             child: CircleAvatar(
-              backgroundImage: isNull() as ImageProvider,
+              backgroundImage: userImage() as ImageProvider,
               radius: 70,
             ),
           ),
