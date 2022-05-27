@@ -5,6 +5,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
 
 import '../widgets/user_class.dart';
@@ -90,274 +91,466 @@ class _ServicePageState extends State<ServicePage> {
         leading: const BackButton(),
         centerTitle: true,
       ),
-      body: ListView(
-        //crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-            child: Form(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              key: formKey,
-              child: TextFormField(
-                controller: serviceController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Enter your new service',
-                  labelText: 'Service',
-                  suffixIcon: Icon(
-                    Icons.design_services_rounded,
-                  ),
-                ),
-                validator: (value) {
-                  if (serviceController.text.isEmpty) {
-                    return 'Please enter a service name.';
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-            child: SelectWeekDays(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              days: _days,
-              border: false,
-              boxDecoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30.0),
-                gradient: const LinearGradient(
-                  begin: Alignment.topLeft,
-                  colors: [Color(0xFFE55CE4), Color(0xFFBB75FB)],
-                  tileMode:
-                      TileMode.repeated, // repeats the gradient over the canvas
+      body: Stack(
+        children: [
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Image.asset(
+                  "assets/images/bottom_left.png",
+                  width: MediaQuery.of(context).size.width * .3,
                 ),
               ),
-              onSelect: (values) {
-                // <== Callback to handle the selected days
-                days = [];
-                days.addAll(values);
-              },
-            ),
+            ],
           ),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SizedBox(
-                    width: 320,
-                    height: 50,
-                    // child: Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //   children: [
-                    // ElevatedButton(
-                    //   style: ElevatedButton.styleFrom(
-                    //       maximumSize: const Size.fromHeight(40),
-                    //       primary: Colors.black),
-                    //   child: FittedBox(
-                    //     child: Text(
-                    //       startTime == null
-                    //           ? "Select Start Time"
-                    //           : "$startTime",
-                    //       style: const TextStyle(
-                    //           fontSize: 15, color: Colors.white),
-                    //     ),
-                    //   ),
-                    //   onPressed: () async {
-                    //     showCupertinoModalPopup(
-                    //         context: context,
-                    //         builder: (BuildContext builder) {
-                    //           return Container(
-                    //             height: MediaQuery.of(context)
-                    //                     .copyWith()
-                    //                     .size
-                    //                     .height *
-                    //                 0.25,
-                    //             color: Colors.white,
-                    //             child: CupertinoDatePicker(
-                    //               mode: CupertinoDatePickerMode.time,
-                    //               onDateTimeChanged: (value) {
-                    //                 setState(() {
-                    //                   if (value != startTime) {
-                    //                     startTime =
-                    //                         '${value.hour.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
-                    //                   }
-                    //                   int t = value.hour;
-                    //                   if (t > 12) {
-                    //                     t = t - 12;
-                    //                     startTime =
-                    //                         '${t.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
-                    //                   }
-                    //                 });
-                    //               },
-                    //               initialDateTime: DateTime.now(),
-                    //             ),
-                    //           );
-                    //         });
-                    //   },
-                    // ),
-                    // ElevatedButton(
-                    //   style: ElevatedButton.styleFrom(
-                    //       maximumSize: const Size.fromHeight(40),
-                    //       primary: Colors.black),
-                    //   child: FittedBox(
-                    //     child: Text(
-                    //       endTime == null ? "Select End Time" : "$endTime",
-                    //       style: const TextStyle(
-                    //           fontSize: 15, color: Colors.white),
-                    //     ),
-                    //   ),
-                    //   onPressed: () async {
-                    //     showCupertinoModalPopup(
-                    //         context: context,
-                    //         builder: (BuildContext builder) {
-                    //           return Container(
-                    //             height: MediaQuery.of(context)
-                    //                     .copyWith()
-                    //                     .size
-                    //                     .height *
-                    //                 0.25,
-                    //             color: Colors.white,
-                    //             child: CupertinoDatePicker(
-                    //               mode: CupertinoDatePickerMode.time,
-                    //               onDateTimeChanged: (value) {
-                    //                 setState(() {
-                    //                   if (value != endTime) {
-                    //                     endTime =
-                    //                         '${value.hour.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
-                    //                   }
-                    //                   int t = value.hour;
-                    //                   if (t > 12) {
-                    //                     t = t - 12;
-                    //                     endTime =
-                    //                         '${t.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
-                    //                   }
-                    //                 });
-                    //               },
-                    //               initialDateTime: DateTime.now(),
-                    //             ),
-                    //           );
-                    //         });
-                    //   },
-                    // ),
-                    //   ],
-                    // ),
-                  ))),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-            child: Center(
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton2(
-                  isExpanded: true,
-                  hint: Row(
-                    children: const [
-                      Icon(
-                        Icons.list,
-                        size: 16,
-                        color: Colors.yellow,
-                      ),
-                      SizedBox(
-                        width: 4,
-                      ),
-                      Expanded(
-                        child: Text(
-                          'Select Time',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.yellow,
-                          ),
-                          overflow: TextOverflow.ellipsis,
+          SingleChildScrollView(
+            child: Column(
+              //crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const Image(
+                  image: AssetImage('assets/images/addservice.gif'),
+                  height: 250,
+                ),
+
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: Form(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    key: formKey,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          left: 20, top: 0, bottom: 0, right: 20),
+                      child: TextFormField(
+                        style: GoogleFonts.lato(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
                         ),
+                        keyboardType: TextInputType.emailAddress,
+                        controller: serviceController,
+                        decoration: InputDecoration(
+                          contentPadding:
+                              EdgeInsets.only(left: 20, top: 20, bottom: 20),
+                          border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(90.0)),
+                            borderSide: BorderSide.none,
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey[350],
+                          hintText: 'Enter your new service',
+                          labelText: 'Service',
+                          hintStyle: GoogleFonts.lato(
+                            color: Colors.black26,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                          ),
+                          suffixIcon: Icon(Icons.design_services,
+                              color: Color(0xff205375)),
+                        ),
+                        textInputAction: TextInputAction.next,
+                        validator: (value) {
+                          if (serviceController.text.isEmpty) {
+                            return 'Please enter a service name.';
+                          } else {
+                            return null;
+                          }
+                        },
                       ),
-                    ],
+                    ),
+                    // child: TextFormField(
+                    //   controller: serviceController,
+                    //   decoration: const InputDecoration(
+                    //     border: OutlineInputBorder(),
+                    //     hintText: 'Enter your new service',
+                    //     labelText: 'Service',
+                    //     suffixIcon: Icon(
+                    //       Icons.design_services_rounded,
+                    //     ),
+                    //   ),
+                    //   validator: (value) {
+                    //     if (serviceController.text.isEmpty) {
+                    //       return 'Please enter a service name.';
+                    //     } else {
+                    //       return null;
+                    //     }
+                    //   },
+                    // ),
                   ),
-                  items: items
-                      .map((item) => DropdownMenuItem<String>(
-                            value: item,
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                  child: SelectWeekDays(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    days: _days,
+                    border: false,
+                    boxDecoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30.0),
+                      gradient: const LinearGradient(
+                        begin: Alignment.topLeft,
+                        colors: [
+                          Color(0xff205375),
+                          Color(0xff92B4EC),
+                        ],
+                        tileMode: TileMode
+                            .repeated, // repeats the gradient over the canvas
+                      ),
+                    ),
+                    onSelect: (values) {
+                      // <== Callback to handle the selected days
+                      days = [];
+                      days.addAll(values);
+                    },
+                  ),
+                ),
+                // Padding(
+                //     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                //     child: Align(
+                //         alignment: Alignment.bottomCenter,
+                //         child: SizedBox(
+                //           width: 320,
+                //           height: 50,
+                //           // child: Row(
+                //           //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //           //   children: [
+                //           // ElevatedButton(
+                //           //   style: ElevatedButton.styleFrom(
+                //           //       maximumSize: const Size.fromHeight(40),
+                //           //       primary: Colors.black),
+                //           //   child: FittedBox(
+                //           //     child: Text(
+                //           //       startTime == null
+                //           //           ? "Select Start Time"
+                //           //           : "$startTime",
+                //           //       style: const TextStyle(
+                //           //           fontSize: 15, color: Colors.white),
+                //           //     ),
+                //           //   ),
+                //           //   onPressed: () async {
+                //           //     showCupertinoModalPopup(
+                //           //         context: context,
+                //           //         builder: (BuildContext builder) {
+                //           //           return Container(
+                //           //             height: MediaQuery.of(context)
+                //           //                     .copyWith()
+                //           //                     .size
+                //           //                     .height *
+                //           //                 0.25,
+                //           //             color: Colors.white,
+                //           //             child: CupertinoDatePicker(
+                //           //               mode: CupertinoDatePickerMode.time,
+                //           //               onDateTimeChanged: (value) {
+                //           //                 setState(() {
+                //           //                   if (value != startTime) {
+                //           //                     startTime =
+                //           //                         '${value.hour.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
+                //           //                   }
+                //           //                   int t = value.hour;
+                //           //                   if (t > 12) {
+                //           //                     t = t - 12;
+                //           //                     startTime =
+                //           //                         '${t.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
+                //           //                   }
+                //           //                 });
+                //           //               },
+                //           //               initialDateTime: DateTime.now(),
+                //           //             ),
+                //           //           );
+                //           //         });
+                //           //   },
+                //           // ),
+                //           // ElevatedButton(
+                //           //   style: ElevatedButton.styleFrom(
+                //           //       maximumSize: const Size.fromHeight(40),
+                //           //       primary: Colors.black),
+                //           //   child: FittedBox(
+                //           //     child: Text(
+                //           //       endTime == null ? "Select End Time" : "$endTime",
+                //           //       style: const TextStyle(
+                //           //           fontSize: 15, color: Colors.white),
+                //           //     ),
+                //           //   ),
+                //           //   onPressed: () async {
+                //           //     showCupertinoModalPopup(
+                //           //         context: context,
+                //           //         builder: (BuildContext builder) {
+                //           //           return Container(
+                //           //             height: MediaQuery.of(context)
+                //           //                     .copyWith()
+                //           //                     .size
+                //           //                     .height *
+                //           //                 0.25,
+                //           //             color: Colors.white,
+                //           //             child: CupertinoDatePicker(
+                //           //               mode: CupertinoDatePickerMode.time,
+                //           //               onDateTimeChanged: (value) {
+                //           //                 setState(() {
+                //           //                   if (value != endTime) {
+                //           //                     endTime =
+                //           //                         '${value.hour.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
+                //           //                   }
+                //           //                   int t = value.hour;
+                //           //                   if (t > 12) {
+                //           //                     t = t - 12;
+                //           //                     endTime =
+                //           //                         '${t.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
+                //           //                   }
+                //           //                 });
+                //           //               },
+                //           //               initialDateTime: DateTime.now(),
+                //           //             ),
+                //           //           );
+                //           //         });
+                //           //   },
+                //           // ),
+                //           //   ],
+                //           // ),
+                //         ))),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                //   child: Center(
+                //     child: DropdownButtonHideUnderline(
+                //       child: DropdownButton2(
+                //         isExpanded: true,
+                //         hint: Row(
+                //           children: const [
+                //             Icon(
+                //               Icons.list,
+                //               size: 16,
+                //               color: Colors.yellow,
+                //             ),
+                //             SizedBox(
+                //               width: 4,
+                //             ),
+                //             Expanded(
+                //               child: Text(
+                //                 'Select Time',
+                //                 style: TextStyle(
+                //                   fontSize: 14,
+                //                   fontWeight: FontWeight.bold,
+                //                   color: Colors.yellow,
+                //                 ),
+                //                 overflow: TextOverflow.ellipsis,
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //         items: items
+                //             .map((item) => DropdownMenuItem<String>(
+                //                   value: item,
+                //                   child: Text(
+                //                     item,
+                //                     style: const TextStyle(
+                //                       fontSize: 14,
+                //                       fontWeight: FontWeight.bold,
+                //                       color: Colors.white,
+                //                     ),
+                //                     overflow: TextOverflow.ellipsis,
+                //                   ),
+                //                 ))
+                //             .toList(),
+                //         value: selectedValue,
+                //         onChanged: (value) {
+                //           setState(() {
+                //             selectedValue = value as String;
+                //             duration = value;
+                //           });
+                //         },
+                //         icon: const Icon(
+                //           Icons.arrow_forward_ios_outlined,
+                //         ),
+                //         iconSize: 14,
+                //         iconEnabledColor: Colors.yellow,
+                //         iconDisabledColor: Colors.grey,
+                //         buttonHeight: 50,
+                //         buttonWidth: 160,
+                //         buttonPadding: const EdgeInsets.only(left: 14, right: 14),
+                //         buttonDecoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(14),
+                //           border: Border.all(
+                //             color: Colors.black26,
+                //           ),
+                //           color: Colors.redAccent,
+                //         ),
+                //         buttonElevation: 2,
+                //         itemHeight: 40,
+                //         itemPadding: const EdgeInsets.only(left: 14, right: 14),
+                //         dropdownMaxHeight: 200,
+                //         dropdownWidth: 200,
+                //         dropdownPadding: null,
+                //         dropdownDecoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(14),
+                //           color: Colors.redAccent,
+                //         ),
+                //         dropdownElevation: 8,
+                //         scrollbarRadius: const Radius.circular(40),
+                //         scrollbarThickness: 6,
+                //         scrollbarAlwaysShow: true,
+                //         offset: const Offset(-20, 0),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton2(
+                      isExpanded: true,
+                      hint: Row(
+                        children: const [
+                          Icon(
+                            Icons.list,
+                            size: 16,
+                            color: Color(0xff205375),
+                          ),
+                          SizedBox(
+                            width: 4,
+                          ),
+                          Expanded(
                             child: Text(
-                              item,
-                              style: const TextStyle(
+                              'Select Day',
+                              style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                                color: Color(0xff205375),
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),
-                          ))
-                      .toList(),
-                  value: selectedValue,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedValue = value as String;
-                      duration = value;
-                    });
-                  },
-                  icon: const Icon(
-                    Icons.arrow_forward_ios_outlined,
-                  ),
-                  iconSize: 14,
-                  iconEnabledColor: Colors.yellow,
-                  iconDisabledColor: Colors.grey,
-                  buttonHeight: 50,
-                  buttonWidth: 160,
-                  buttonPadding: const EdgeInsets.only(left: 14, right: 14),
-                  buttonDecoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(
-                      color: Colors.black26,
+                          ),
+                        ],
+                      ),
+                      items: items
+                          .map((item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ))
+                          .toList(),
+                      value: selectedValue,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedValue = value as String;
+                          duration = value;
+                        });
+                      },
+                      icon: const Icon(
+                        Icons.arrow_forward_ios_outlined,
+                      ),
+                      iconSize: 14,
+                      iconEnabledColor: Color(0xff205375),
+                      iconDisabledColor: Colors.white,
+                      buttonHeight: 50,
+                      buttonWidth: 500,
+                      buttonPadding: const EdgeInsets.only(left: 14, right: 14),
+                      buttonDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(
+                          color: Colors.black26,
+                        ),
+                        color: Colors.grey.shade400,
+                      ),
+                      buttonElevation: 2,
+                      itemHeight: 40,
+                      itemPadding: const EdgeInsets.only(left: 14, right: 14),
+                      dropdownMaxHeight: 200,
+                      dropdownPadding: null,
+                      dropdownDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        color: Colors.grey.shade400,
+                      ),
+                      dropdownElevation: 8,
+                      scrollbarRadius: const Radius.circular(40),
+                      scrollbarThickness: 6,
+                      scrollbarAlwaysShow: true,
                     ),
-                    color: Colors.redAccent,
                   ),
-                  buttonElevation: 2,
-                  itemHeight: 40,
-                  itemPadding: const EdgeInsets.only(left: 14, right: 14),
-                  dropdownMaxHeight: 200,
-                  dropdownWidth: 200,
-                  dropdownPadding: null,
-                  dropdownDecoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    color: Colors.redAccent,
-                  ),
-                  dropdownElevation: 8,
-                  scrollbarRadius: const Radius.circular(40),
-                  scrollbarThickness: 6,
-                  scrollbarAlwaysShow: true,
-                  offset: const Offset(-20, 0),
                 ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 150),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: SizedBox(
-                width: 320,
-                height: 50,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.black),
+                SizedBox( height: 20,),
+                Container(
+                  padding: EdgeInsets.only(
+                      left: 20, top: 0, bottom: 0, right: 20),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      child: Text(
+                        "Add",
+                        style: GoogleFonts.lato(
+                          color: Colors.white,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                              onPressed: () {
+                                final isValid = formKey.currentState!.validate();
+                                if (isValid) {
+                                  setService(
+                                    Duration: duration!,
+                                    Service: serviceController.text,
+                                    Time: "$startTime - $endTime",
+                                    days: days,
+                                  );
+                                }
+                              },
+                      style: ElevatedButton.styleFrom(
+                        elevation: 2,
+                        primary: Color(0xff205375),
+                        onPrimary: Color(0xff205375),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(32.0),
+                        ),
+                      ),
+                    ),
                   ),
-                  child: const Text(
-                    'Add',
-                    style: TextStyle(fontSize: 15),
-                  ),
-                  onPressed: () {
-                    final isValid = formKey.currentState!.validate();
-                    if (isValid) {
-                      setService(
-                        Duration: duration!,
-                        Service: serviceController.text,
-                        Time: "$startTime - $endTime",
-                        days: days,
-                      );
-                    }
-                  },
                 ),
-              ),
+
+
+
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 150),
+                //   child: Align(
+                //     alignment: Alignment.bottomCenter,
+                //     child: SizedBox(
+                //       width: 320,
+                //       height: 50,
+                //       child: ElevatedButton(
+                //         style: ButtonStyle(
+                //           backgroundColor:
+                //               MaterialStateProperty.all<Color>(Colors.black),
+                //         ),
+                //         child: const Text(
+                //           'Add',
+                //           style: TextStyle(fontSize: 15),
+                //         ),
+                //         onPressed: () {
+                //           final isValid = formKey.currentState!.validate();
+                //           if (isValid) {
+                //             setService(
+                //               Duration: duration!,
+                //               Service: serviceController.text,
+                //               Time: "$startTime - $endTime",
+                //               days: days,
+                //             );
+                //           }
+                //         },
+                //       ),
+                //     ),
+                //   ),
+                // ),
+              ],
             ),
           ),
         ],

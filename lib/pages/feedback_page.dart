@@ -56,16 +56,19 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                 style: TextStyle(
                                   fontSize: 40,
                                   fontWeight: FontWeight.bold,
+                                  color: Color(0xff205375)
                                 ),
                               ),
                               Icon(
                                 Icons.emoji_emotions_outlined,
                                 size: 40,
+                                color:Color(0xff205375) ,
                               ),
                             ],
                           ),
                           const Text(
                             'We can\'t wait to get your thoughts on your app. what would you like to do',
+                            style: TextStyle(color: Color(0xff205375)),
                           ),
                         ],
                       ),
@@ -80,6 +83,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                           'Let us know so we can forward this to our bug control.',
                       cTitle: bug,
                       email: user.email,
+
                     ),
                     const SizedBox(
                       height: 10,

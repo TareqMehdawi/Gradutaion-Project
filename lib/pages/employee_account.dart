@@ -189,7 +189,7 @@ class _YourAccount2 extends State<EmployeeAccount> {
                                         Text(
                                           user.name,
                                           style: TextStyle(
-                                            fontSize: 18,
+                                            fontSize: 15,
                                           ),
                                         ),
                                         Spacer(),
@@ -235,7 +235,7 @@ class _YourAccount2 extends State<EmployeeAccount> {
                                         Text(
                                           user.number,
                                           style: TextStyle(
-                                            fontSize: 18,
+                                            fontSize: 15,
                                           ),
                                         ),
                                         Spacer(),
@@ -281,7 +281,7 @@ class _YourAccount2 extends State<EmployeeAccount> {
                                         Text(
                                           user.email,
                                           style: TextStyle(
-                                            fontSize: 18,
+                                            fontSize: 15,
                                           ),
                                         ),
                                         Spacer(),
@@ -327,7 +327,7 @@ class _YourAccount2 extends State<EmployeeAccount> {
                                         Text(
                                           user.office,
                                           style: TextStyle(
-                                            fontSize: 18,
+                                            fontSize: 15,
                                           ),
                                         ),
                                         Spacer(),

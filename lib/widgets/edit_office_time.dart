@@ -80,197 +80,228 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                 final user = snapshot.data!;
                 return Form(
                     key: _formKey,
-                    child: ListView(
+                    child: Stack(
                       children: [
-                        Align(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: BackButton(),
-                          ),
-                          alignment: Alignment.topLeft,
-                        ),
-                        const SizedBox(
-                          width: 320,
-                          child: Center(
-                            child: Text(
-                              "What's your Office Hours?",
-                              style: TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xff205375)),
-                              textAlign: TextAlign.left,
-                            ),
-                          ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 40, left: 20, right: 20),
-                              child: SelectWeekDays(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                days: _days,
-                                border: false,
-                                boxDecoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                  gradient: const LinearGradient(
-                                    begin: Alignment.topLeft,
-                                    colors: [
-                                      Color(0xFF252120),
-                                      Color(0xFF131212)
-                                    ],
-                                    tileMode: TileMode
-                                        .repeated, // repeats the gradient over the canvas
-                                  ),
-                                ),
-                                onSelect: (values) {
-                                  // <== Callback to handle the selected days
-                                  days = [];
-                                  days.addAll(values);
-                                },
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Image.asset(
+                                "assets/images/top_right.png",
+                                width: MediaQuery.of(context).size.width * .3,
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              child: Align(
-                                alignment: Alignment.bottomCenter,
-                                child: SizedBox(
-                                  width: double.infinity,
-                                  height: 50,
-                                  child: editOfficeTimeButton(
-                                      function: () async {
-                                        TimeRange result =
-                                            await showTimeRangePicker(
-                                                context: context,
-                                                start: const TimeOfDay(
-                                                    hour: 9, minute: 0),
-                                                end: const TimeOfDay(
-                                                    hour: 12, minute: 0),
-                                                disabledTime: TimeRange(
-                                                    startTime: const TimeOfDay(
-                                                        hour: 18, minute: 0),
-                                                    endTime: const TimeOfDay(
-                                                        hour: 6, minute: 0)),
-                                                disabledColor:
-                                                    Colors.red.withOpacity(0.5),
-                                                strokeWidth: 4,
-                                                ticks: 24,
-                                                ticksOffset: -7,
-                                                ticksLength: 15,
-                                                ticksColor: Colors.grey,
-                                                labels: [
-                                                  "12 am",
-                                                  "3 am",
-                                                  "6 am",
-                                                  "9 am",
-                                                  "12 pm",
-                                                  "3 pm",
-                                                  "6 pm",
-                                                  "9 pm"
-                                                ].asMap().entries.map((e) {
-                                                  return ClockLabel.fromIndex(
-                                                      idx: e.key,
-                                                      length: 8,
-                                                      text: e.value);
-                                                }).toList(),
-                                                labelOffset: 35,
-                                                rotateLabels: false,
-                                                padding: 60);
-                                        setState(
-                                          () {
-                                            startTime = result.startTime;
-                                            endTime = result.endTime;
-                                            officeHours =
-                                                '${startTime.toString().substring(10, 15)} - ${endTime.toString().substring(10, 15)}';
-                                          },
-                                        );
-                                      },
-                                      name: getTime()!,
-                                      buttonColor: Colors.grey.shade400,
-                                      textColor: Color(0xff205375)),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 40),
-                              child: Align(
-                                alignment: Alignment.bottomCenter,
-                                child: SizedBox(
-                                    width: double.infinity,
-                                    height: 50,
-                                    child: editOfficeTimeButton(
-                                        function: () {
-                                          updateOfficeTimeField(
-                                              officeHours: ttt(),
-                                              day: days,
-                                              time: officeHours);
-                                        },
-                                        name: 'Update',
-                                        buttonColor: Color(0xff205375),
-                                        textColor: Colors.white)),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Column(
-                              children: [
-                                for (var a in user.officeHours.keys.toList())
-                                  if (a.toString() == 'Sunday')
-                                    buildDays(
-                                        day: 'Sunday',
-                                        value: user.officeHours['Sunday']),
-                                for (var a in user.officeHours.keys.toList())
-                                  if (a.toString() == 'Monday')
-                                    buildDays(
-                                        day: 'Monday',
-                                        value: user.officeHours['Monday']),
-                                for (var a in user.officeHours.keys.toList())
-                                  if (a.toString() == 'Tuesday')
-                                    buildDays(
-                                        day: 'Tuesday',
-                                        value: user.officeHours['Tuesday']),
-                                for (var a in user.officeHours.keys.toList())
-                                  if (a.toString() == 'Wednesday')
-                                    buildDays(
-                                        day: 'Wednesday',
-                                        value: user.officeHours['Wednesday']),
-                                for (var a in user.officeHours.keys.toList())
-                                  if (a.toString() == 'Thursday')
-                                    buildDays(
-                                        day: 'Thursday',
-                                        value: user.officeHours['Thursday']),
-                                for (var a in user.officeHours.keys.toList())
-                                  if (a.toString() == 'Friday')
-                                    buildDays(
-                                        day: 'Friday',
-                                        value: user.officeHours['Friday']),
-                                for (var a in user.officeHours.keys.toList())
-                                  if (a.toString() == 'Saturday')
-                                    buildDays(
-                                        day: 'Saturday',
-                                        value: user.officeHours['Saturday']),
-                                // day.add(user.officeHours.keys.toList());
-                                // hour.add(user.officeHours.values.toList());
-                                //   Padding(
-                                //     padding: const EdgeInsets.symmetric(horizontal: 50.0),
-                                //     child: Row(
-                                //       crossAxisAlignment: CrossAxisAlignment.center,
-                                //       children: [
-                                //         const Text('Sunday: ', style: TextStyle(fontSize: 18),),
-                                //         const SizedBox(
-                                //           width: 20,
-                                //         ),
-                                //         Text(user.officeHours['Thursday'], style: TextStyle(fontSize: 18),),
-                                //       ],
-                                //     ),
-                                //   ),
-                              ],
                             ),
                           ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Image.asset(
+                                "assets/images/bottom_left.png",
+                                width: MediaQuery.of(context).size.width * .3,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Align(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: BackButton(),
+                                ),
+                                alignment: Alignment.topLeft,
+                              ),
+                              const SizedBox(
+                                width: 320,
+                                child: Center(
+                                  child: Text(
+                                    "What's your Office Hours?",
+                                    style: TextStyle(
+
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xff205375)),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 40, left: 20, right: 20),
+                                    child: SelectWeekDays(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      days: _days,
+                                      border: false,
+                                      boxDecoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(30.0),
+                                        gradient: const LinearGradient(
+                                          begin: Alignment.topLeft,
+                                          colors: [
+                                            Color(0xff205375),
+                                            Color(0xff92B4EC),
+                                          ],
+                                          tileMode: TileMode
+                                              .repeated, // repeats the gradient over the canvas
+                                        ),
+                                      ),
+                                      onSelect: (values) {
+                                        // <== Callback to handle the selected days
+                                        days = [];
+                                        days.addAll(values);
+                                      },
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 16),
+                                    child: Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: SizedBox(
+                                        width: double.infinity,
+                                        height: 50,
+                                        child: editOfficeTimeButton(
+                                            function: () async {
+                                              TimeRange result =
+                                                  await showTimeRangePicker(
+                                                      context: context,
+                                                      start: const TimeOfDay(
+                                                          hour: 9, minute: 0),
+                                                      end: const TimeOfDay(
+                                                          hour: 12, minute: 0),
+                                                      disabledTime: TimeRange(
+                                                          startTime: const TimeOfDay(
+                                                              hour: 18, minute: 0),
+                                                          endTime: const TimeOfDay(
+                                                              hour: 6, minute: 0)),
+                                                      disabledColor:
+                                                          Colors.red.withOpacity(0.5),
+                                                      strokeWidth: 4,
+                                                      ticks: 24,
+                                                      ticksOffset: -7,
+                                                      ticksLength: 15,
+                                                      ticksColor: Colors.grey,
+                                                      labels: [
+                                                        "12 am",
+                                                        "3 am",
+                                                        "6 am",
+                                                        "9 am",
+                                                        "12 pm",
+                                                        "3 pm",
+                                                        "6 pm",
+                                                        "9 pm"
+                                                      ].asMap().entries.map((e) {
+                                                        return ClockLabel.fromIndex(
+                                                            idx: e.key,
+                                                            length: 8,
+                                                            text: e.value);
+                                                      }).toList(),
+                                                      labelOffset: 35,
+                                                      rotateLabels: false,
+                                                      padding: 60);
+                                              setState(
+                                                () {
+                                                  startTime = result.startTime;
+                                                  endTime = result.endTime;
+                                                  officeHours =
+                                                      '${startTime.toString().substring(10, 15)} - ${endTime.toString().substring(10, 15)}';
+                                                },
+                                              );
+                                            },
+                                            name: getTime()!,
+                                            buttonColor: Colors.grey.shade400,
+                                            textColor: Color(0xff205375)),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 40),
+                                    child: Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: SizedBox(
+                                          width: double.infinity,
+                                          height: 50,
+                                          child: editOfficeTimeButton(
+                                              function: () {
+                                                updateOfficeTimeField(
+                                                    officeHours: ttt(),
+                                                    day: days,
+                                                    time: officeHours);
+                                              },
+                                              name: 'Update',
+                                              buttonColor: Color(0xff205375),
+                                              textColor: Colors.white)),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Column(
+                                    children: [
+                                      for (var a in user.officeHours.keys.toList())
+                                        if (a.toString() == 'Sunday')
+                                          buildDays(
+                                              day: 'Sunday',
+                                              value: user.officeHours['Sunday']),
+                                      for (var a in user.officeHours.keys.toList())
+                                        if (a.toString() == 'Monday')
+                                          buildDays(
+                                              day: 'Monday',
+                                              value: user.officeHours['Monday']),
+                                      for (var a in user.officeHours.keys.toList())
+                                        if (a.toString() == 'Tuesday')
+                                          buildDays(
+                                              day: 'Tuesday',
+                                              value: user.officeHours['Tuesday']),
+                                      for (var a in user.officeHours.keys.toList())
+                                        if (a.toString() == 'Wednesday')
+                                          buildDays(
+                                              day: 'Wednesday',
+                                              value: user.officeHours['Wednesday']),
+                                      for (var a in user.officeHours.keys.toList())
+                                        if (a.toString() == 'Thursday')
+                                          buildDays(
+                                              day: 'Thursday',
+                                              value: user.officeHours['Thursday']),
+                                      for (var a in user.officeHours.keys.toList())
+                                        if (a.toString() == 'Friday')
+                                          buildDays(
+                                              day: 'Friday',
+                                              value: user.officeHours['Friday']),
+                                      for (var a in user.officeHours.keys.toList())
+                                        if (a.toString() == 'Saturday')
+                                          buildDays(
+                                              day: 'Saturday',
+                                              value: user.officeHours['Saturday']),
+                                      // day.add(user.officeHours.keys.toList());
+                                      // hour.add(user.officeHours.values.toList());
+                                      //   Padding(
+                                      //     padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                                      //     child: Row(
+                                      //       crossAxisAlignment: CrossAxisAlignment.center,
+                                      //       children: [
+                                      //         const Text('Sunday: ', style: TextStyle(fontSize: 18),),
+                                      //         const SizedBox(
+                                      //           width: 20,
+                                      //         ),
+                                      //         Text(user.officeHours['Thursday'], style: TextStyle(fontSize: 18),),
+                                      //       ],
+                                      //     ),
+                                      //   ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ));

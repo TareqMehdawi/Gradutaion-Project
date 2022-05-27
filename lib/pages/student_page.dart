@@ -176,7 +176,7 @@ class _StudentPageState extends State<StudentPage> {
                       width: double.infinity,
                       padding: EdgeInsets.all(20),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Icon(
                             Icons.calendar_today,
@@ -191,7 +191,7 @@ class _StudentPageState extends State<StudentPage> {
                             style: TextStyle(color: Colors.black),
                           ),
                           SizedBox(
-                            width: 100,
+                            width: 80,
                           ),
                           Icon(
                             Icons.access_alarm,
