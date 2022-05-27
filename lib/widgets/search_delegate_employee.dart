@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/pages/make_reservations.dart';
-import 'package:graduation_project/pages/your_account2.dart';
+import 'package:graduation_project/pages/selected_employee.dart';
 import 'package:provider/provider.dart';
 
 class EmployeeSearchDelegate extends SearchDelegate {

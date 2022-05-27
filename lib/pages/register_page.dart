@@ -726,7 +726,6 @@ class _RegisterPageState extends State<RegisterPage> {
         width: double.infinity,
         height: 50,
         child: ElevatedButton(
-          focusNode: f3,
           child: Text(
             "Log in",
             style: GoogleFonts.lato(
