@@ -472,10 +472,10 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                           btnOkText: "Delete",
                           btnCancelText: 'Cancel',
                           btnCancelOnPress: () {},
-                          btnOkOnPress: () {
+                          btnOkOnPress: () async {
                             try {
-                              deleteOfficeHours(day);
-                              AwesomeDialog(
+                              await deleteOfficeHours(day);
+                              await AwesomeDialog(
                                 autoDismiss: false,
                                 context: context,
                                 dialogType: DialogType.SUCCES,
@@ -485,7 +485,6 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                                 btnOkText: 'Go back',
                                 btnCancelColor: Colors.black87,
                                 onDissmissCallback: (d) {
-                                  Navigator.pop(context);
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
@@ -633,9 +632,5 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
     final docUser =
         FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
     await docUser.update({'officeHours.$day': FieldValue.delete()});
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => const EditOfficeHoursFormPage()));
   }
 }
