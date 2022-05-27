@@ -918,3 +918,191 @@ class DateTimeCard extends StatelessWidget {
     );
   }
 }
+// Padding(
+//     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+//     child: Align(
+//         alignment: Alignment.bottomCenter,
+//         child: SizedBox(
+//           width: 320,
+//           height: 50,
+//           // child: Row(
+//           //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//           //   children: [
+//           // ElevatedButton(
+//           //   style: ElevatedButton.styleFrom(
+//           //       maximumSize: const Size.fromHeight(40),
+//           //       primary: Colors.black),
+//           //   child: FittedBox(
+//           //     child: Text(
+//           //       startTime == null
+//           //           ? "Select Start Time"
+//           //           : "$startTime",
+//           //       style: const TextStyle(
+//           //           fontSize: 15, color: Colors.white),
+//           //     ),
+//           //   ),
+//           //   onPressed: () async {
+//           //     showCupertinoModalPopup(
+//           //         context: context,
+//           //         builder: (BuildContext builder) {
+//           //           return Container(
+//           //             height: MediaQuery.of(context)
+//           //                     .copyWith()
+//           //                     .size
+//           //                     .height *
+//           //                 0.25,
+//           //             color: Colors.white,
+//           //             child: CupertinoDatePicker(
+//           //               mode: CupertinoDatePickerMode.time,
+//           //               onDateTimeChanged: (value) {
+//           //                 setState(() {
+//           //                   if (value != startTime) {
+//           //                     startTime =
+//           //                         '${value.hour.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
+//           //                   }
+//           //                   int t = value.hour;
+//           //                   if (t > 12) {
+//           //                     t = t - 12;
+//           //                     startTime =
+//           //                         '${t.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
+//           //                   }
+//           //                 });
+//           //               },
+//           //               initialDateTime: DateTime.now(),
+//           //             ),
+//           //           );
+//           //         });
+//           //   },
+//           // ),
+//           // ElevatedButton(
+//           //   style: ElevatedButton.styleFrom(
+//           //       maximumSize: const Size.fromHeight(40),
+//           //       primary: Colors.black),
+//           //   child: FittedBox(
+//           //     child: Text(
+//           //       endTime == null ? "Select End Time" : "$endTime",
+//           //       style: const TextStyle(
+//           //           fontSize: 15, color: Colors.white),
+//           //     ),
+//           //   ),
+//           //   onPressed: () async {
+//           //     showCupertinoModalPopup(
+//           //         context: context,
+//           //         builder: (BuildContext builder) {
+//           //           return Container(
+//           //             height: MediaQuery.of(context)
+//           //                     .copyWith()
+//           //                     .size
+//           //                     .height *
+//           //                 0.25,
+//           //             color: Colors.white,
+//           //             child: CupertinoDatePicker(
+//           //               mode: CupertinoDatePickerMode.time,
+//           //               onDateTimeChanged: (value) {
+//           //                 setState(() {
+//           //                   if (value != endTime) {
+//           //                     endTime =
+//           //                         '${value.hour.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
+//           //                   }
+//           //                   int t = value.hour;
+//           //                   if (t > 12) {
+//           //                     t = t - 12;
+//           //                     endTime =
+//           //                         '${t.toString().padLeft(2, "0")}:${value.minute.toString().padLeft(2, "0")}';
+//           //                   }
+//           //                 });
+//           //               },
+//           //               initialDateTime: DateTime.now(),
+//           //             ),
+//           //           );
+//           //         });
+//           //   },
+//           // ),
+//           //   ],
+//           // ),
+//         ))),
+// Padding(
+//   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+//   child: Center(
+//     child: DropdownButtonHideUnderline(
+//       child: DropdownButton2(
+//         isExpanded: true,
+//         hint: Row(
+//           children: const [
+//             Icon(
+//               Icons.list,
+//               size: 16,
+//               color: Colors.yellow,
+//             ),
+//             SizedBox(
+//               width: 4,
+//             ),
+//             Expanded(
+//               child: Text(
+//                 'Select Time',
+//                 style: TextStyle(
+//                   fontSize: 14,
+//                   fontWeight: FontWeight.bold,
+//                   color: Colors.yellow,
+//                 ),
+//                 overflow: TextOverflow.ellipsis,
+//               ),
+//             ),
+//           ],
+//         ),
+//         items: items
+//             .map((item) => DropdownMenuItem<String>(
+//                   value: item,
+//                   child: Text(
+//                     item,
+//                     style: const TextStyle(
+//                       fontSize: 14,
+//                       fontWeight: FontWeight.bold,
+//                       color: Colors.white,
+//                     ),
+//                     overflow: TextOverflow.ellipsis,
+//                   ),
+//                 ))
+//             .toList(),
+//         value: selectedValue,
+//         onChanged: (value) {
+//           setState(() {
+//             selectedValue = value as String;
+//             duration = value;
+//           });
+//         },
+//         icon: const Icon(
+//           Icons.arrow_forward_ios_outlined,
+//         ),
+//         iconSize: 14,
+//         iconEnabledColor: Colors.yellow,
+//         iconDisabledColor: Colors.grey,
+//         buttonHeight: 50,
+//         buttonWidth: 160,
+//         buttonPadding: const EdgeInsets.only(left: 14, right: 14),
+//         buttonDecoration: BoxDecoration(
+//           borderRadius: BorderRadius.circular(14),
+//           border: Border.all(
+//             color: Colors.black26,
+//           ),
+//           color: Colors.redAccent,
+//         ),
+//         buttonElevation: 2,
+//         itemHeight: 40,
+//         itemPadding: const EdgeInsets.only(left: 14, right: 14),
+//         dropdownMaxHeight: 200,
+//         dropdownWidth: 200,
+//         dropdownPadding: null,
+//         dropdownDecoration: BoxDecoration(
+//           borderRadius: BorderRadius.circular(14),
+//           color: Colors.redAccent,
+//         ),
+//         dropdownElevation: 8,
+//         scrollbarRadius: const Radius.circular(40),
+//         scrollbarThickness: 6,
+//         scrollbarAlwaysShow: true,
+//         offset: const Offset(-20, 0),
+//       ),
+//     ),
+//   ),
+// ),

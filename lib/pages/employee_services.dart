@@ -52,7 +52,7 @@ class _MyServices extends State<MyServices> {
   Future deleteService(SetEmpService user) async {
     final docUser2 = await FirebaseFirestore.instance
         .collection('Service')
-        .where('Service', isEqualTo: user.Service)
+        .where('Service', isEqualTo: user.service)
         .where('id', isEqualTo: user.id)
         .get();
     for (var doc in docUser2.docs) {
@@ -88,7 +88,7 @@ class _MyServices extends State<MyServices> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          user.Service,
+                          user.service,
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w700,
@@ -146,7 +146,7 @@ class _MyServices extends State<MyServices> {
                             width: 5,
                           ),
                           Text(
-                            user.Duration,
+                            user.duration,
                             style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
@@ -250,10 +250,9 @@ class _MyServices extends State<MyServices> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => DeleteSelectService(
-                                serviceName: user.Service,
+                                serviceName: user.service,
                                 days: user.days,
-                                time: user.Time,
-                                duration: user.Duration,
+                                duration: user.duration,
                                 uid: user.id,
                               ),
                             ),

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/pages/make_service.dart';
 import 'package:provider/provider.dart';
-import 'package:shimmer/shimmer.dart';
+//import 'package:shimmer/shimmer.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
@@ -139,18 +139,19 @@ class _EmployeePageState extends State<EmployeePage> {
             return SizedBox(
               width: 200.0,
               height: 100.0,
-              child: Shimmer.fromColors(
-                baseColor: Colors.red,
-                highlightColor: Colors.yellow,
-                child: const Text(
-                  'Shimmer',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 40.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+              child: CircularProgressIndicator(),
+              // Shimmer.fromColors(
+              //   baseColor: Colors.red,
+              //   highlightColor: Colors.yellow,
+              //   child: const Text(
+              //     'Shimmer',
+              //     textAlign: TextAlign.center,
+              //     style: TextStyle(
+              //       fontSize: 40.0,
+              //       fontWeight: FontWeight.bold,
+              //     ),
+              //   ),
+              // ),
             );
           } else {
             return const Center(

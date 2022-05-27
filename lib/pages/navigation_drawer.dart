@@ -225,8 +225,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) =>
-                                                const ServicePage(),
+                                            builder: (context) => ServicePage(),
                                           ),
                                         );
                                       },
@@ -322,7 +321,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                   FirebaseAuth.instance.signOut();
                 },
                 child: const Center(
-                  child: Text('hi'),
+                  child: CircularProgressIndicator(),
                 ),
               );
             }

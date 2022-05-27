@@ -6,14 +6,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/pages/employee_services.dart';
-import 'package:time_range_picker/time_range_picker.dart';
-
 
 class DeleteSelectService extends StatefulWidget {
-  String time;
   String serviceName;
   String duration;
-  List<dynamic> days;
+  Map days;
   String uid;
   final currentUser = FirebaseAuth.instance.currentUser!;
 
@@ -21,7 +18,6 @@ class DeleteSelectService extends StatefulWidget {
       {Key? key,
       required this.serviceName,
       required this.days,
-      required this.time,
       required this.duration,
       required this.uid})
       : super(key: key);
@@ -91,15 +87,15 @@ class _DeleteSelectService extends State<DeleteSelectService> {
 
   String? time2;
 
-  String? getTime() {
-    if (startTime == null && endTime == null) {
-      return widget.time;
-    } else {
-      time2 =
-          "${startTime.toString().substring(10, 15)} - ${endTime.toString().substring(10, 15)}";
-      return time2;
-    }
-  }
+  // String? getTime() {
+  //   if (startTime == null && endTime == null) {
+  //     return widget.time;
+  //   } else {
+  //     time2 =
+  //         "${startTime.toString().substring(10, 15)} - ${endTime.toString().substring(10, 15)}";
+  //     return time2;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +122,6 @@ class _DeleteSelectService extends State<DeleteSelectService> {
               ),
             ],
           ),
-
           Column(
             //crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -135,12 +130,13 @@ class _DeleteSelectService extends State<DeleteSelectService> {
                 height: 250,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 child: Form(
                   key: formKey,
                   child: Padding(
-                    padding: EdgeInsets.only(
-                        left: 20, top: 0, bottom: 0, right: 20),
+                    padding:
+                        EdgeInsets.only(left: 20, top: 0, bottom: 0, right: 20),
                     child: TextFormField(
                       style: GoogleFonts.lato(
                         fontSize: 18,
@@ -150,10 +146,9 @@ class _DeleteSelectService extends State<DeleteSelectService> {
                       controller: serviceController,
                       decoration: InputDecoration(
                         contentPadding:
-                        EdgeInsets.only(left: 20, top: 20, bottom: 20),
+                            EdgeInsets.only(left: 20, top: 20, bottom: 20),
                         border: OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(90.0)),
+                          borderRadius: BorderRadius.all(Radius.circular(90.0)),
                           borderSide: BorderSide.none,
                         ),
                         filled: true,
@@ -179,7 +174,6 @@ class _DeleteSelectService extends State<DeleteSelectService> {
                     ),
                   ),
 
-
                   // child: TextFormField(
                   //   controller: serviceController,
                   //   decoration:  InputDecoration(
@@ -201,7 +195,7 @@ class _DeleteSelectService extends State<DeleteSelectService> {
               ),
               Padding(
                 padding:
-                const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
                 child: SelectWeekDays(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
@@ -219,14 +213,13 @@ class _DeleteSelectService extends State<DeleteSelectService> {
                           .repeated, // repeats the gradient over the canvas
                     ),
                   ),
-                      onSelect: (values) {
-                        // <== Callback to handle the selected days
-                        newDays = [];
-                        newDays.addAll(values);
-                      },
+                  onSelect: (values) {
+                    // <== Callback to handle the selected days
+                    newDays = [];
+                    newDays.addAll(values);
+                  },
                 ),
               ),
-
 
               // Padding(
               //   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
@@ -313,7 +306,7 @@ class _DeleteSelectService extends State<DeleteSelectService> {
                   child: DropdownButton2(
                     isExpanded: true,
                     hint: Row(
-                      children:  [
+                      children: [
                         Icon(
                           Icons.list,
                           size: 16,
@@ -337,20 +330,20 @@ class _DeleteSelectService extends State<DeleteSelectService> {
                     ),
                     items: items
                         .map((item) => DropdownMenuItem<String>(
-                      value: item,
-                      child: Text(
-                        item,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ))
+                              value: item,
+                              child: Text(
+                                item,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ))
                         .toList(),
                     value: selectedValue,
-                  onChanged: (value) {
+                    onChanged: (value) {
                       setState(() {
                         selectedValue = value as String;
                         duration = value;
@@ -388,8 +381,6 @@ class _DeleteSelectService extends State<DeleteSelectService> {
                   ),
                 ),
               ),
-
-
 
               // Padding(
               //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -477,10 +468,12 @@ class _DeleteSelectService extends State<DeleteSelectService> {
               //   ),
               // ),
 
-              SizedBox( height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Container(
-                padding: EdgeInsets.only(
-                    left: 20, top: 0, bottom: 0, right: 20),
+                padding:
+                    EdgeInsets.only(left: 20, top: 0, bottom: 0, right: 20),
                 child: SizedBox(
                   width: double.infinity,
                   height: 50,
@@ -493,7 +486,7 @@ class _DeleteSelectService extends State<DeleteSelectService> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                     onPressed: () {
+                    onPressed: () {
                       final isValid = formKey.currentState!.validate();
                       if (isValid) {
                         try {

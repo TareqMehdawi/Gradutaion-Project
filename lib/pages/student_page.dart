@@ -56,18 +56,18 @@ class _StudentPageState extends State<StudentPage> {
                     children: [
                       Builder(
                           builder: (context) => IconButton(
-                            onPressed: () {
-                              setState(() {
-                                Provider.of<NavigationProvider>(context,
-                                    listen: false)
-                                    .changeValue();
-                              });
-                            },
-                            icon: const Icon(
-                              Icons.menu,
-                              color: Colors.white,
-                            ),
-                          )),
+                                onPressed: () {
+                                  setState(() {
+                                    Provider.of<NavigationProvider>(context,
+                                            listen: false)
+                                        .changeValue();
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.menu,
+                                  color: Colors.white,
+                                ),
+                              )),
                       Center(
                         child: Padding(
                             padding: EdgeInsets.only(
@@ -75,7 +75,7 @@ class _StudentPageState extends State<StudentPage> {
                             child: const Text(
                               "Student page",
                               style:
-                              TextStyle(fontSize: 20, color: Colors.white),
+                                  TextStyle(fontSize: 20, color: Colors.white),
                             )),
                       ),
                     ],
@@ -122,127 +122,127 @@ class _StudentPageState extends State<StudentPage> {
   }
 
   Widget buildListTile(StudentsReservation user) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 5.0),
-    child: Column(
-      children: [
-        Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: const Color(0xff398AB9),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              //onTap: onTap,
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    Row(
+        padding: const EdgeInsets.symmetric(vertical: 5.0),
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: const Color(0xff398AB9),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  //onTap: onTap,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
                       children: [
-                        CircleAvatar(
-                          radius: 30.0,
-                          backgroundImage: NetworkImage(user.image),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        Row(
                           children: [
-                            Text(user.empName,
-                                style: TextStyle(color: Colors.white)),
-                            SizedBox(
-                              height: 2,
+                            CircleAvatar(
+                              radius: 30.0,
+                              backgroundImage: NetworkImage(user.image),
                             ),
-                            Text(
-                              user.service,
-                              style: TextStyle(color: Colors.white),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(user.empName,
+                                    style: TextStyle(color: Colors.white)),
+                                SizedBox(
+                                  height: 2,
+                                ),
+                                Text(
+                                  user.service,
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ],
                             ),
                           ],
                         ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Color(0xffEEEEEE),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          width: double.infinity,
+                          padding: EdgeInsets.all(20),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.calendar_today,
+                                color: Colors.black,
+                                size: 15,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                user.date,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              SizedBox(
+                                width: 80,
+                              ),
+                              Icon(
+                                Icons.access_alarm,
+                                color: Colors.black,
+                                size: 17,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Flexible(
+                                child: Text(
+                                  user.time,
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Color(0xffEEEEEE),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      width: double.infinity,
-                      padding: EdgeInsets.all(20),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(
-                            Icons.calendar_today,
-                            color: Colors.black,
-                            size: 15,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            user.date,
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          SizedBox(
-                            width: 80,
-                          ),
-                          Icon(
-                            Icons.access_alarm,
-                            color: Colors.black,
-                            size: 17,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Flexible(
-                            child: Text(
-                              user.time,
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 20),
-          width: double.infinity,
-          height: 10,
-          decoration: BoxDecoration(
-            color: Color(MyColors.bg02),
-            borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(10),
-              bottomLeft: Radius.circular(10),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              width: double.infinity,
+              height: 10,
+              decoration: BoxDecoration(
+                color: Color(MyColors.bg02),
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(10),
+                  bottomLeft: Radius.circular(10),
+                ),
+              ),
             ),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 40),
-          width: double.infinity,
-          height: 10,
-          decoration: BoxDecoration(
-            color: Color(MyColors.bg03),
-            borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(10),
-              bottomLeft: Radius.circular(10),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 40),
+              width: double.infinity,
+              height: 10,
+              decoration: BoxDecoration(
+                color: Color(MyColors.bg03),
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(10),
+                  bottomLeft: Radius.circular(10),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
-      ],
-    ),
-  );
+      );
 
   Stream<List<StudentsReservation>> readReservation() {
     final currentUser = FirebaseAuth.instance.currentUser!;
