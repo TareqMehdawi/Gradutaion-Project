@@ -22,7 +22,7 @@ class EmployeePage extends StatefulWidget {
 
 class _EmployeePageState extends State<EmployeePage> {
   String day = 'Every Day';
-  bool picture = false;
+
   // @override
   // void initState() {
   //   readReservation();
@@ -123,16 +123,19 @@ class _EmployeePageState extends State<EmployeePage> {
         stream: readReservation(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+
             final users = snapshot.data!;
+
+            if(users.isEmpty){
+               return Center(
+                child: Image.asset('assets/images/Schedule-bro.png'),
+              );
+            }else{
             return ListView(
               padding: const EdgeInsets.all(12.0),
               children: [...users.map(buildListTile).toList()],
-            );
-          } else if (picture) {
-            return Center(
-              child: Image.asset('assets/images/Schedule-bro.png'),
-            );
-          } else if (snapshot.hasError) {
+            );}
+          }  else if (snapshot.hasError) {
             return const Center(
               child: Text("hi"),
             );
@@ -255,9 +258,7 @@ class _EmployeePageState extends State<EmployeePage> {
   Stream<List<StudentsReservation>> readReservation() {
     final currentUser = FirebaseAuth.instance.currentUser!;
     if (day == 'Every Day') {
-      setState(() {
-        picture = false;
-      });
+
       var ref2 = FirebaseFirestore.instance
           .collection('reservation')
           .where("empId", isEqualTo: currentUser.uid)
@@ -268,9 +269,7 @@ class _EmployeePageState extends State<EmployeePage> {
 
       return ref2;
     } else {
-      setState(() {
-        picture = true;
-      });
+
       var ref = FirebaseFirestore.instance
           .collection('reservation')
           .where("empId", isEqualTo: currentUser.uid)

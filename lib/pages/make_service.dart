@@ -367,6 +367,7 @@ class _ServicePageState extends State<ServicePage> {
                                   duration: duration!,
                                   service: serviceController.text,
                                   days: days,
+                                  image: user.image
                                 );
                               }
                             },
@@ -440,6 +441,7 @@ class _ServicePageState extends State<ServicePage> {
     required String duration,
     required String service,
     required Map days,
+    required String image,
   }) async {
     try {
       final docUser = FirebaseFirestore.instance.collection('Service').doc();
@@ -448,6 +450,8 @@ class _ServicePageState extends State<ServicePage> {
         service: service,
         days: days,
         duration: duration,
+        image: image
+
       );
       final json = user.toJson();
       await docUser.set(json);

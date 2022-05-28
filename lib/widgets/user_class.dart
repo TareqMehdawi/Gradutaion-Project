@@ -46,6 +46,7 @@ class StudentsReservation {
   final String image;
   final String duration;
   final String officehour;
+  final String imageemp;
 
   StudentsReservation({
     this.id = '',
@@ -59,6 +60,7 @@ class StudentsReservation {
     required this.image,
     required this.duration,
     required this.officehour,
+    required this.imageemp
   });
 
   Map<String, dynamic> toJson() => {
@@ -72,7 +74,8 @@ class StudentsReservation {
         'student': student,
         'image': image,
          'duration':duration,
-         'officehour':officehour
+         'officehour':officehour,
+          'imageemp':imageemp
       };
 
   static StudentsReservation fromJson(Map<String, dynamic> json) =>
@@ -87,7 +90,8 @@ class StudentsReservation {
         student: json['student'],
         image: json['image'],
         duration:json['duration'],
-        officehour: json['officehour']
+        officehour: json['officehour'],
+        imageemp: json['imageemp']
       );
 }
 
@@ -96,12 +100,14 @@ class SetEmpService {
   final String duration;
   final String service;
   final Map days;
+  final String image;
 
   SetEmpService({
     this.id = '',
     required this.duration,
     required this.service,
     required this.days,
+    required this.image
   });
 
   Map<String, dynamic> toJson() => {
@@ -109,6 +115,7 @@ class SetEmpService {
         'service': service,
         'days': days,
         'duration': duration,
+         'image':image
       };
 
   static SetEmpService fromJson(Map<String, dynamic> json) => SetEmpService(
@@ -116,6 +123,8 @@ class SetEmpService {
         service: json['service'],
         days: json['days'],
         duration: json['duration'],
+    image: json['image'],
+
       );
 }
 

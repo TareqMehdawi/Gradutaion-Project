@@ -27,6 +27,7 @@ class _StudentPageState extends State<StudentPage> {
   // DateTime time = DateTime.now();
   // String? format;
   // List arr = [];
+  String day = 'Every Day';
   @override
   Widget build(BuildContext context) {
     // format = DateFormat.jm().format(time).trim();
@@ -38,7 +39,7 @@ class _StudentPageState extends State<StudentPage> {
     //String name = selectedService;
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size(300, 300),
+        preferredSize: Size(400, 300),
         child: Container(
           //color: Theme.of(context).primaryColor,
           width: MediaQuery.of(context).size.width,
@@ -87,6 +88,16 @@ class _StudentPageState extends State<StudentPage> {
                                   TextStyle(fontSize: 20, color: Colors.white),
                             )),
                       ),
+                      const Spacer(),
+                      IconButton(
+                        onPressed: () {
+                          buildBottomSheet2();
+                        },
+                        icon: const Icon(
+                          Icons.filter_alt_outlined,
+                          color: Colors.white,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -108,25 +119,50 @@ class _StudentPageState extends State<StudentPage> {
       ),
       body: StreamBuilder<List<StudentsReservation>>(
           stream: readReservation(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              final users = snapshot.data!;
-              return Padding(
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+
+            final users = snapshot.data!;
+
+            if(users.isEmpty){
+              return Center(
+                child: Image.asset('assets/images/Schedule-bro.png'),
+              );
+            }else{
+              return ListView(
                 padding: const EdgeInsets.all(12.0),
-                child: ListView(
-                  children: users.map(buildListTile).toList(),
-                ),
-              );
-            } else if (snapshot.hasError) {
-              return const Center(
-                child: Text("Loading"),
-              );
-            } else {
-              return const Center(
-                child: Text("Loading"),
-              );
-            }
-          }),
+                children: [...users.map(buildListTile).toList()],
+              );}
+          }  else if (snapshot.hasError) {
+            return const Center(
+              child: Text("hi"),
+            );
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return SizedBox(
+              width: 200.0,
+              height: 100.0,
+              child: CircularProgressIndicator(),
+              // Shimmer.fromColors(
+              //   baseColor: Colors.red,
+              //   highlightColor: Colors.yellow,
+              //   child: const Text(
+              //     'Shimmer',
+              //     textAlign: TextAlign.center,
+              //     style: TextStyle(
+              //       fontSize: 40.0,
+              //       fontWeight: FontWeight.bold,
+              //     ),
+              //   ),
+              // ),
+            );
+          } else {
+            return const Center(
+              child: Text("Error"),
+            );
+          }
+        },
+
+          ),
     );
   }
 
@@ -156,7 +192,7 @@ class _StudentPageState extends State<StudentPage> {
                                 CircleAvatar(
                                   radius: 30.0,
                                   backgroundColor: Colors.white,
-                                  backgroundImage: NetworkImage(user.image),
+                                  backgroundImage: NetworkImage(user.imageemp),
                                 ),
                                 SizedBox(width: 10,),
                                 Column(
@@ -216,7 +252,7 @@ class _StudentPageState extends State<StudentPage> {
                                 style: TextStyle(color: Colors.black),
                               ),
                               SizedBox(
-                                width: 80,
+                                width: 85,
                               ),
                               Icon(
                                 Icons.access_alarm,
@@ -269,17 +305,137 @@ class _StudentPageState extends State<StudentPage> {
         ),
       );
 
+  // Stream<List<StudentsReservation>> readReservation() {
+  //   final currentUser = FirebaseAuth.instance.currentUser!;
+  //   return FirebaseFirestore.instance
+  //       .collection('reservation')
+  //       .where("id", isEqualTo: currentUser.uid)
+  //       .snapshots()
+  //       .map((snapshot) => snapshot.docs
+  //           .map((doc) => StudentsReservation.fromJson(doc.data()))
+  //           .toList());
+  // }
   Stream<List<StudentsReservation>> readReservation() {
     final currentUser = FirebaseAuth.instance.currentUser!;
-    return FirebaseFirestore.instance
-        .collection('reservation')
-        .where("id", isEqualTo: currentUser.uid)
-        .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => StudentsReservation.fromJson(doc.data()))
-            .toList());
+    if (day == 'Every Day') {
+      var ref2 = FirebaseFirestore.instance
+          .collection('reservation')
+          .where("id", isEqualTo: currentUser.uid)
+          .snapshots()
+          .map((snapshot) => snapshot.docs
+          .map((doc) => StudentsReservation.fromJson(doc.data()))
+          .toList());
+
+      return ref2;
+    } else {
+
+      var ref = FirebaseFirestore.instance
+          .collection('reservation')
+          .where("id", isEqualTo: currentUser.uid)
+          .where("date", isEqualTo: day.trim())
+          .snapshots()
+          .map((snapshot) => snapshot.docs
+          .map((doc) => StudentsReservation.fromJson(doc.data()))
+          .toList());
+
+
+      return ref;
+    }
   }
 
+
+
+
+
+
+
+
+  Future buildBottomSheet2() {
+    return showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      builder: (context) => SizedBox(
+        height: 320,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 30),
+          child: ListView(
+            children: [
+              const Center(
+                child: Text(
+                  "Choose what day you want to filter:",
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Center(
+                child: Wrap(
+                  spacing: 15,
+                  runSpacing: 16,
+                  children: [
+                    loginButton2(
+                      title: 'Sunday',
+                    ),
+                    loginButton2(
+                      title: 'Monday',
+                    ),
+                    loginButton2(
+                      title: 'Tuesday',
+                    ),
+                    loginButton2(
+                      title: 'Wednesday',
+                    ),
+                    loginButton2(
+                      title: 'Thursday',
+                    ),
+                    loginButton2(
+                      title: 'Friday',
+                    ),
+                    loginButton2(
+                      title: 'Saturday',
+                    ),
+                    loginButton2(
+                      title: 'Every Day',
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+  Widget loginButton2({required String title}) {
+    return OutlinedButton(
+      style: OutlinedButton.styleFrom(
+        minimumSize: Size(MediaQuery.of(context).size.width * .20,
+            MediaQuery.of(context).size.height * .06),
+        side: const BorderSide(width: 1, color: Colors.black),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+        ),
+      ),
+      onPressed: () {
+        setState(() {
+          day = title;
+        });
+        Navigator.pop(context);
+      },
+      child: Text(
+        title,
+        style: GoogleFonts.ubuntu(
+          textStyle: const TextStyle(fontSize: 20, color: Colors.black),
+        ),
+      ),
+    );
+  }
   Future buildBottomSheet() {
     return showModalBottomSheet(
       context: context,

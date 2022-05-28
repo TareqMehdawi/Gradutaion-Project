@@ -49,7 +49,7 @@ class _BookingScreenState extends State<BookingScreen> {
   Map? selectDay;
   String office_hour_selected = "";
   String duration_selected = "";
-
+  String? imageemp;
   int? onTimeSelect = -1;
   int isAvailable = 10;
   int isBooked = 2;
@@ -63,6 +63,7 @@ class _BookingScreenState extends State<BookingScreen> {
       String a = items2[i]["service"];
       items.add(a);
     }
+    imageemp=items2[0]["image"];
     return items;
   }
 
@@ -762,7 +763,9 @@ class _BookingScreenState extends State<BookingScreen> {
                                             people: 10,
                                             currentTime: selectedTime!,
                                             currentDate: daySelect!,
-                                            studentName: widget.stdName);
+                                            studentName: widget.stdName,
+                                            imageemp:imageemp!,
+                                        );
                                         AwesomeDialog(
                                             autoDismiss: false,
                                             context: context,
@@ -959,6 +962,7 @@ class _BookingScreenState extends State<BookingScreen> {
     required String currentTime,
     required String currentDate,
     required String studentName,
+    required String imageemp
   }) async {
     final docUser = FirebaseFirestore.instance.collection('reservation').doc();
     final user = StudentsReservation(
@@ -972,7 +976,8 @@ class _BookingScreenState extends State<BookingScreen> {
         student: studentName,
         image: widget.stdImage,
         duration: duration_selected,
-        officehour: office_hour_selected);
+        officehour: office_hour_selected,
+        imageemp: imageemp);
     final json = user.toJson();
     await docUser.set(json);
   }
