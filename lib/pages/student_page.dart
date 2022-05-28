@@ -23,8 +23,16 @@ class StudentPage extends StatefulWidget {
 }
 
 class _StudentPageState extends State<StudentPage> {
+  // DateTime time = DateTime.now();
+  // String? format;
+  // List arr = [];
   @override
   Widget build(BuildContext context) {
+    // format = DateFormat.jm().format(time).trim();
+    // arr.add(format?.split(
+    //   ': ',
+    // ));
+    // print(arr);
 //    String selectedService = Provider.of<ReservationInfo>(context).selectedService;
     //String name = selectedService;
     return Scaffold(

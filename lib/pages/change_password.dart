@@ -69,6 +69,18 @@ class _ChangePasswordState extends State<ChangePassword> {
                 //padding: EdgeInsets.zero,
                 children: [
                   SizedBox(
+                    height: 20,
+                  ),
+                  Align(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: BackButton(
+                        color: Color(0xff205375),
+                      ),
+                    ),
+                    alignment: Alignment.topLeft,
+                  ),
+                  SizedBox(
                     width: double.infinity,
                     child: Container(
                       child: Image.asset(
@@ -99,7 +111,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                     height: 15,
                   ),
                   newPasswordFormField(
-                      title: 'Enter New Password', controller: newPasswordController),
+                      title: 'Enter New Password',
+                      controller: newPasswordController),
                   const SizedBox(
                     height: 15,
                   ),
@@ -151,20 +164,19 @@ class _ChangePasswordState extends State<ChangePassword> {
           FocusScope.of(context).requestFocus(f2);
         },
         obscureText: !showPassword,
-          validator: (value) {
-                  final regPassword = RegExp(
-                      "^(?=.{8,32}\$)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[_!@#\$%^&*(),.?:{}|<>]).*");
-                  if (value!.isEmpty) {
-                    return 'Enter a password';
-                  } else if (!regPassword.hasMatch(value)) {
-                    return 'Password must have at least:\nOne upper case,\nOne lower case,\nOne digit,\nOne special character,\nMinimum eight characters,';
-                  }
-                  return null;
-                },
+        validator: (value) {
+          final regPassword = RegExp(
+              "^(?=.{8,32}\$)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[_!@#\$%^&*(),.?:{}|<>]).*");
+          if (value!.isEmpty) {
+            return 'Enter a password';
+          } else if (!regPassword.hasMatch(value)) {
+            return 'Password must have at least:\nOne upper case,\nOne lower case,\nOne digit,\nOne special character,\nMinimum eight characters,';
+          }
+          return null;
+        },
         textInputAction: TextInputAction.done,
       ),
     );
-
 
     // return Padding(
     //   padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -227,23 +239,22 @@ class _ChangePasswordState extends State<ChangePassword> {
           FocusScope.of(context).requestFocus(f3);
         },
         obscureText: !showPassword,
-            validator: (value) {
-              final regPassword = RegExp(
-                  "^(?=.{8,32}\$)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[_!@#\$%^&*(),.?:{}|<>]).*");
-              if (value!.isEmpty) {
-                return 'Enter a password';
-              } else if (!regPassword.hasMatch(value)) {
-                return 'Password must have at least:\nOne upper case,\nOne lower case,\nOne digit,\nOne special character,\nMinimum eight characters,';
-              } else if (oldPasswordController.text.trim() == newPasswordController.text.trim()) {
-                return 'New Password cannot be the same as the old password';
-              }
-              return null;
-            },
+        validator: (value) {
+          final regPassword = RegExp(
+              "^(?=.{8,32}\$)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[_!@#\$%^&*(),.?:{}|<>]).*");
+          if (value!.isEmpty) {
+            return 'Enter a password';
+          } else if (!regPassword.hasMatch(value)) {
+            return 'Password must have at least:\nOne upper case,\nOne lower case,\nOne digit,\nOne special character,\nMinimum eight characters,';
+          } else if (oldPasswordController.text.trim() ==
+              newPasswordController.text.trim()) {
+            return 'New Password cannot be the same as the old password';
+          }
+          return null;
+        },
         textInputAction: TextInputAction.done,
       ),
     );
-
-
 
     // return Padding(
     //   padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -303,19 +314,16 @@ class _ChangePasswordState extends State<ChangePassword> {
           ),
         ),
         obscureText: !showPassword,
-          validator: (value) {
-                  if (newPasswordController.value != checkNewPasswordController.value) {
-                    return 'Password doesn\'t match';
-                  } else {
-                    return null;
-                  }
-                },
+        validator: (value) {
+          if (newPasswordController.value != checkNewPasswordController.value) {
+            return 'Password doesn\'t match';
+          } else {
+            return null;
+          }
+        },
         textInputAction: TextInputAction.done,
       ),
     );
-
-
-
 
     // return Padding(
     //   padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -363,7 +371,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   Widget submitButton(BuildContext context) {
     return Container(
-      padding:EdgeInsets.only(left: 20, top: 0, bottom: 0,right: 20),
+      padding: EdgeInsets.only(left: 20, top: 0, bottom: 0, right: 20),
       child: SizedBox(
         width: double.infinity,
         height: 50,
@@ -376,53 +384,53 @@ class _ChangePasswordState extends State<ChangePassword> {
               fontWeight: FontWeight.bold,
             ),
           ),
-              onPressed: () async {
-                setState(() {
-                  showValidate = true;
-                });
-                final isValid = key.currentState!.validate();
-                FocusScope.of(context).unfocus();
-                if (isValid) {
-                  key.currentState?.save();
-                  try {
-                    var result = await currentUser.reauthenticateWithCredential(
-                      EmailAuthProvider.credential(
-                          email: currentUser.email!,
-                          password: oldPasswordController.text),
-                    );
-                    await result.user?.updatePassword(newPasswordController.text);
-                    AwesomeDialog(
-                      autoDismiss: false,
-                      context: context,
-                      dialogType: DialogType.SUCCES,
-                      animType: AnimType.BOTTOMSLIDE,
-                      title: 'Success',
-                      desc: 'Password changed successfully',
-                      btnOkText: "Ok",
-                      btnOkOnPress: () {
-                        Navigator.of(context).popUntil((route) => route.isFirst);
-                      },
-                        onDissmissCallback: (d){
-                          return Navigator.of(context).popUntil((route) => route.isFirst);
-                        }
-                    ).show();
-                  } on FirebaseAuthException catch (error) {
-                    AwesomeDialog(
-                      context: context,
-                      dialogType: DialogType.ERROR,
-                      animType: AnimType.BOTTOMSLIDE,
-                      title: 'Warning',
-                      desc: '${error.message}',
-                      btnOkText: "Ok",
-                      btnOkOnPress: () {},
-                      btnCancelOnPress: (){
-                        Navigator.pop(context);
-                        },
-                    ).show();
-                    // Utils.showSnackBar(error.message);
-                  }
-                }
-              },
+          onPressed: () async {
+            setState(() {
+              showValidate = true;
+            });
+            final isValid = key.currentState!.validate();
+            FocusScope.of(context).unfocus();
+            if (isValid) {
+              key.currentState?.save();
+              try {
+                var result = await currentUser.reauthenticateWithCredential(
+                  EmailAuthProvider.credential(
+                      email: currentUser.email!,
+                      password: oldPasswordController.text),
+                );
+                await result.user?.updatePassword(newPasswordController.text);
+                AwesomeDialog(
+                    autoDismiss: false,
+                    context: context,
+                    dialogType: DialogType.SUCCES,
+                    animType: AnimType.BOTTOMSLIDE,
+                    title: 'Success',
+                    desc: 'Password changed successfully',
+                    btnOkText: "Ok",
+                    btnOkOnPress: () {
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                    },
+                    onDissmissCallback: (d) {
+                      return Navigator.of(context)
+                          .popUntil((route) => route.isFirst);
+                    }).show();
+              } on FirebaseAuthException catch (error) {
+                AwesomeDialog(
+                  context: context,
+                  dialogType: DialogType.ERROR,
+                  animType: AnimType.BOTTOMSLIDE,
+                  title: 'Warning',
+                  desc: '${error.message}',
+                  btnOkText: "Ok",
+                  btnOkOnPress: () {},
+                  btnCancelOnPress: () {
+                    Navigator.pop(context);
+                  },
+                ).show();
+                // Utils.showSnackBar(error.message);
+              }
+            }
+          },
           style: ElevatedButton.styleFrom(
             elevation: 2,
             primary: Color(0xff205375),
@@ -434,8 +442,6 @@ class _ChangePasswordState extends State<ChangePassword> {
         ),
       ),
     );
-
-
 
     // return Padding(
     //   padding: const EdgeInsets.symmetric(horizontal: 14.0),

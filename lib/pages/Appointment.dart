@@ -16,11 +16,11 @@ class BookingScreen extends StatefulWidget {
 
   const BookingScreen(
       {Key? key,
-        required this.uid,
-        required this.empName,
-        required this.stdName,
-        required Map officeHours,
-        required this.stdImage})
+      required this.uid,
+      required this.empName,
+      required this.stdName,
+      required Map officeHours,
+      required this.stdImage})
       : super(key: key);
 
   @override
@@ -46,7 +46,7 @@ class _BookingScreenState extends State<BookingScreen> {
   bool isSelected = false;
   final currentUser = FirebaseAuth.instance.currentUser!;
   String? selectedTime;
-  List? selectDay;
+  Map? selectDay;
 
   int? onTimeSelect = -1;
   int isAvailable = 10;
@@ -58,7 +58,7 @@ class _BookingScreenState extends State<BookingScreen> {
   List sendItem(List items2) {
     List items = [];
     for (var i = 0; i < items2.length; i++) {
-      String a = items2[i]["Service"];
+      String a = items2[i]["service"];
       items.add(a);
     }
     return items;
@@ -66,19 +66,33 @@ class _BookingScreenState extends State<BookingScreen> {
 
   List sendItem2(List items2) {
     List items = [];
+    Map daysAndtimes = {};
     for (var i = 0; i < items2.length; i++) {
-      if (items2[i]["Service"] == serviceSelect) {
+      if (items2[i]["service"] == serviceSelect) {
         serviceIndex = i;
-        for (var j = 0; j < items2[i]["days"].length; j++) {
-          items.add(items2[i]["days"][j]);
+        Map a = {};
+        a.addAll(items2[i]["days"]);
+        for (var j in a.keys) {
+          items.add(j);
+          Map m1 = {j.toString().trim(): a[j].toString().trim()};
+          daysAndtimes.addAll(m1);
         }
       }
     }
+    selectDay = daysAndtimes;
     return items;
   }
 
-  List send(List bookedDay, String time, String duration) {
-    List offichour = add(time);
+  List send(List bookedDay, String duration) {
+    String Time = "";
+    for (var day in selectDay!.keys) {
+      if (day == daySelect) {
+        Time = selectDay![day].toString();
+        break;
+      }
+    }
+
+    List offichour = add(Time);
     List availableTime = count(bookedDay, offichour);
     List endList = [];
     int t = int.parse(duration.substring(0, 2));
@@ -91,7 +105,7 @@ class _BookingScreenState extends State<BookingScreen> {
       case 10:
         for (int i = 0; i < fo; i++) {
           String endHourCurrently =
-          availableTime[i].toString().substring(8, 13);
+              availableTime[i].toString().substring(8, 13);
           String startHourFromNext = '';
 
           startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
@@ -108,7 +122,7 @@ class _BookingScreenState extends State<BookingScreen> {
         String start = "";
         for (int i = 0; i < fo; i++) {
           String endHourCurrently =
-          availableTime[i].toString().substring(8, 13);
+              availableTime[i].toString().substring(8, 13);
           String startHourFromNext = '';
 
           startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
@@ -142,7 +156,7 @@ class _BookingScreenState extends State<BookingScreen> {
         String start = "";
         for (int i = 0; i < fo; i++) {
           String endHourCurrently =
-          availableTime[i].toString().substring(8, 13);
+              availableTime[i].toString().substring(8, 13);
           String startHourFromNext = '';
 
           startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
@@ -176,7 +190,7 @@ class _BookingScreenState extends State<BookingScreen> {
         String start = "";
         for (int i = 0; i < fo; i++) {
           String endHourCurrently =
-          availableTime[i].toString().substring(8, 13);
+              availableTime[i].toString().substring(8, 13);
           String startHourFromNext = '';
 
           startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
@@ -210,7 +224,7 @@ class _BookingScreenState extends State<BookingScreen> {
         String start = "";
         for (int i = 0; i < fo; i++) {
           String endHourCurrently =
-          availableTime[i].toString().substring(8, 13);
+              availableTime[i].toString().substring(8, 13);
           String startHourFromNext = '';
 
           startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
@@ -365,7 +379,6 @@ class _BookingScreenState extends State<BookingScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       key: _scaffoldKey,
-
       body: FutureBuilder(
           future: readUser(),
           builder: (context, snapshot) {
@@ -375,20 +388,6 @@ class _BookingScreenState extends State<BookingScreen> {
               final List user = snapshot.data as List;
               return Stack(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      IconButton(
-                        padding: EdgeInsets.all(15),
-                        iconSize: 30.0,
-                        icon: Icon(Icons.arrow_back , color:  Color(0xff205375),),
-                        color:Colors.white,
-                        onPressed: (){
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
-                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -413,13 +412,26 @@ class _BookingScreenState extends State<BookingScreen> {
                       ),
                     ],
                   ),
-
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const SizedBox(
-                      height:80,
-                    ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: IconButton(
+                          iconSize: 30.0,
+                          icon: Icon(
+                            Icons.arrow_back,
+                            color: Color(0xff205375),
+                          ),
+                          color: Colors.white,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
                       const Image(
                         image: AssetImage('assets/images/app.gif'),
                         height: 250,
@@ -437,7 +449,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                 padding: const EdgeInsets.only(left: 18),
                                 child: Center(
                                   child: Text(
-                                       'Appointment booking',
+                                    'Appointment booking',
                                     style: GoogleFonts.lato(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
@@ -450,13 +462,13 @@ class _BookingScreenState extends State<BookingScreen> {
                                 height: 30,
                               ),
                               Padding(
-                                padding:
-                                const EdgeInsets.symmetric(horizontal: 15.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15.0),
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton2(
                                     isExpanded: true,
                                     hint: Row(
-                                      children:  [
+                                      children: [
                                         Icon(
                                           Icons.list,
                                           size: 16,
@@ -481,23 +493,24 @@ class _BookingScreenState extends State<BookingScreen> {
                                     items: sendItem(user)
                                         .map(
                                           (item) => DropdownMenuItem(
-                                        value: item,
-                                        child: Text(
-                                          item,
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
+                                            value: item,
+                                            child: Text(
+                                              item,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
                                           ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    )
+                                        )
                                         .toList(),
                                     value: selectedValue,
                                     onChanged: (value) {
                                       setState(() {
                                         selectedValue2 = null;
+                                        isSelected = false;
                                         selectedValue = value as String;
                                         serviceSelect = value;
                                       });
@@ -540,8 +553,8 @@ class _BookingScreenState extends State<BookingScreen> {
                                 height: 20,
                               ),
                               Padding(
-                                padding:
-                                const EdgeInsets.symmetric(horizontal: 15.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15.0),
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton2(
                                     isExpanded: true,
@@ -570,17 +583,17 @@ class _BookingScreenState extends State<BookingScreen> {
                                     ),
                                     items: sendItem2(user)
                                         .map((item) => DropdownMenuItem<String>(
-                                      value: item,
-                                      child: Text(
-                                        item,
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ))
+                                              value: item,
+                                              child: Text(
+                                                item,
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ))
                                         .toList(),
                                     value: selectedValue2,
                                     onChanged: (value) {
@@ -633,78 +646,81 @@ class _BookingScreenState extends State<BookingScreen> {
                                     future: getTime(user),
                                     builder: (context, snapshot) {
                                       if (snapshot.hasError) {
-                                        return const Text('Something went wrong');
+                                        return const Text(
+                                            'Something went wrong');
                                       } else if (snapshot.hasData) {
-                                        final List user2 = snapshot.data as List;
+                                        final List user2 =
+                                            snapshot.data as List;
                                         return Expanded(
                                           child: Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 0, vertical: 0),
                                             child: ListView.builder(
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 10.0),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 10.0),
                                               shrinkWrap: true,
                                               scrollDirection: Axis.horizontal,
                                               itemCount: send(
-                                                  user2,
-                                                  user[serviceIndex!]["Time"],
-                                                  user[serviceIndex!]
-                                                  ["Duration"])
+                                                      user2,
+                                                      user[serviceIndex!]
+                                                          ["duration"])
                                                   .length,
-                                              itemBuilder: (BuildContext context,
-                                                  int index) =>
-                                                  Padding(
-                                                    padding:
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                          int index) =>
+                                                      Padding(
+                                                padding:
                                                     const EdgeInsets.all(8.0),
-                                                    child: InkWell(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          onTimeSelect = index;
-                                                          selectedTime = send(
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      onTimeSelect = index;
+                                                      selectedTime = send(
                                                               user2,
                                                               user[serviceIndex!]
-                                                              ["Time"],
-                                                              user[serviceIndex!][
-                                                              "Duration"])[index];
-                                                          //onTimeSelect = !onTimeSelect;
-                                                        });
-                                                      },
-                                                      borderRadius:
-                                                      BorderRadius.circular(32.0),
-                                                      splashColor: Colors.indigo,
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                            border: Border.all(),
-                                                            borderRadius:
-                                                            BorderRadius.circular(
-                                                                32.0),
-                                                            color:
-                                                            index == onTimeSelect
-                                                                ? Color(0xff205375)
-                                                                : Colors.grey.shade400),
-                                                        height: 30,
-                                                        child: Center(
-                                                            child: Padding(
-                                                              padding:
-                                                              const EdgeInsets.all(
-                                                                  8.0),
-                                                              child: Text(
-                                                                send(
-                                                                    user2,
-                                                                    user[serviceIndex!]
-                                                                    ["Time"],
-                                                                    user[serviceIndex!][
-                                                                    "Duration"])[index],
-                                                                style: const TextStyle(
-                                                                    fontSize: 14,
-                                                                    color: Colors.white,
-                                                                    fontWeight:
-                                                                    FontWeight.bold),
-                                                              ),
-                                                            )),
+                                                                  ["duration"])[
+                                                          index];
+                                                      //onTimeSelect = !onTimeSelect;
+                                                    });
+                                                  },
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          32.0),
+                                                  splashColor: Colors.indigo,
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(32.0),
+                                                        color: index ==
+                                                                onTimeSelect
+                                                            ? Color(0xff205375)
+                                                            : Colors
+                                                                .grey.shade400),
+                                                    height: 30,
+                                                    child: Center(
+                                                        child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Text(
+                                                        send(
+                                                            user2,
+                                                            user[serviceIndex!][
+                                                                "duration"])[index],
+                                                        style: const TextStyle(
+                                                            fontSize: 14,
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
                                                       ),
-                                                    ),
+                                                    )),
                                                   ),
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         );
@@ -732,72 +748,69 @@ class _BookingScreenState extends State<BookingScreen> {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                          onPressed: () async {
-                                            try {
-                                              await checkUser();
-                                              await setReservation(
-                                                  empName: widget.empName,
-                                                  empId: widget.uid,
-                                                  service: serviceSelect!,
-                                                  people: 10,
-                                                  currentTime: selectedTime!,
-                                                  currentDate: daySelect!,
-                                                  studentName: widget.stdName);
-                                              AwesomeDialog(
-                                                  autoDismiss: false,
-                                                  context: context,
-                                                  dialogType: DialogType.SUCCES,
-                                                  animType: AnimType.BOTTOMSLIDE,
-                                                  title: 'Success',
-                                                  desc:
-                                                  'Appointment Scheduled Successfully',
-                                                  btnOkText: "Ok",
-                                                  btnOkOnPress: () {
-                                                    Navigator.of(context).popUntil(
-                                                            (route) => route.isFirst);
-                                                  },
-                                                  onDissmissCallback: (d) {
-                                                    return Navigator.of(context)
-                                                        .popUntil(
-                                                            (route) => route.isFirst);
-                                                  }).show();
-                                            } catch (e) {
-                                              AwesomeDialog(
-                                                  autoDismiss: false,
-                                                  context: context,
-                                                  dialogType: DialogType.ERROR,
-                                                  animType: AnimType.BOTTOMSLIDE,
-                                                  title: 'ERROR',
-                                                  desc:
-                                                  'You already have an appointment with ${widget.empName}',
-                                                  btnOkText: "Go Back",
-                                                  btnOkColor: Colors.red,
-                                                  btnOkOnPress: () {
-                                                    Navigator.of(context).popUntil(
-                                                            (route) => route.isFirst);
-                                                  },
-                                                  onDissmissCallback: (d) {
-                                                    return Navigator.of(context)
-                                                        .popUntil(
-                                                            (route) => route.isFirst);
-                                                  }).show();
-                                            }
-                                          },
+                                    onPressed: () async {
+                                      try {
+                                        await checkUser();
+                                        await setReservation(
+                                            empName: widget.empName,
+                                            empId: widget.uid,
+                                            service: serviceSelect!,
+                                            people: 10,
+                                            currentTime: selectedTime!,
+                                            currentDate: daySelect!,
+                                            studentName: widget.stdName);
+                                        AwesomeDialog(
+                                            autoDismiss: false,
+                                            context: context,
+                                            dialogType: DialogType.SUCCES,
+                                            animType: AnimType.BOTTOMSLIDE,
+                                            title: 'Success',
+                                            desc:
+                                                'Appointment Scheduled Successfully',
+                                            btnOkText: "Ok",
+                                            btnOkOnPress: () {
+                                              Navigator.of(context).popUntil(
+                                                  (route) => route.isFirst);
+                                            },
+                                            onDissmissCallback: (d) {
+                                              return Navigator.of(context)
+                                                  .popUntil(
+                                                      (route) => route.isFirst);
+                                            }).show();
+                                      } catch (e) {
+                                        AwesomeDialog(
+                                            autoDismiss: false,
+                                            context: context,
+                                            dialogType: DialogType.ERROR,
+                                            animType: AnimType.BOTTOMSLIDE,
+                                            title: 'ERROR',
+                                            desc:
+                                                'You already have an appointment with ${widget.empName}',
+                                            btnOkText: "Go Back",
+                                            btnOkColor: Colors.red,
+                                            btnOkOnPress: () {
+                                              Navigator.of(context).popUntil(
+                                                  (route) => route.isFirst);
+                                            },
+                                            onDissmissCallback: (d) {
+                                              return Navigator.of(context)
+                                                  .popUntil(
+                                                      (route) => route.isFirst);
+                                            }).show();
+                                      }
+                                    },
                                     style: ElevatedButton.styleFrom(
                                       elevation: 2,
                                       primary: Color(0xff205375),
                                       onPrimary: Color(0xff205375),
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(32.0),
+                                        borderRadius:
+                                            BorderRadius.circular(32.0),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-
-
-
-
 
                               // SizedBox(
                               //   height: 50,
