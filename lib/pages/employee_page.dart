@@ -9,6 +9,7 @@ import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
 import '../styles/colors.dart';
+import '../widgets/edit_appointment.dart';
 import '../widgets/user_class.dart';
 import 'navigation_drawer.dart';
 
@@ -87,7 +88,7 @@ class _EmployeePageState extends State<EmployeePage> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width * .18),
+                            left: MediaQuery.of(context).size.width * .13),
                         child: IconButton(
                           onPressed: () {
                             buildBottomSheet();
@@ -133,7 +134,7 @@ class _EmployeePageState extends State<EmployeePage> {
             );
           } else if (snapshot.hasError) {
             return const Center(
-              child: Text("Loading1"),
+              child: Text("hi"),
             );
           } else if (snapshot.connectionState == ConnectionState.waiting) {
             return SizedBox(
@@ -257,13 +258,15 @@ class _EmployeePageState extends State<EmployeePage> {
       setState(() {
         picture = false;
       });
-      return FirebaseFirestore.instance
+      var ref2 = FirebaseFirestore.instance
           .collection('reservation')
           .where("empId", isEqualTo: currentUser.uid)
           .snapshots()
           .map((snapshot) => snapshot.docs
-              .map((doc) => StudentsReservation.fromJson(doc.data()))
-              .toList());
+          .map((doc) => StudentsReservation.fromJson(doc.data()))
+          .toList());
+
+      return ref2;
     } else {
       setState(() {
         picture = true;
@@ -271,11 +274,13 @@ class _EmployeePageState extends State<EmployeePage> {
       var ref = FirebaseFirestore.instance
           .collection('reservation')
           .where("empId", isEqualTo: currentUser.uid)
-          .where("date", isEqualTo: day)
+          .where("date", isEqualTo: day.trim())
           .snapshots()
           .map((snapshot) => snapshot.docs
               .map((doc) => StudentsReservation.fromJson(doc.data()))
               .toList());
+
+
       return ref;
     }
   }
@@ -299,30 +304,45 @@ class _EmployeePageState extends State<EmployeePage> {
                     child: Column(
                       children: [
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            CircleAvatar(
-                              radius: 30.0,
-                              backgroundColor: Colors.white,
-                              backgroundImage: NetworkImage(user.image),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            Row(
                               children: [
-                                Text(user.student,
-                                    style: TextStyle(color: Colors.white)),
-                                SizedBox(
-                                  height: 2,
+                                CircleAvatar(
+                                  radius: 30.0,
+                                  backgroundColor: Colors.white,
+                                  backgroundImage: NetworkImage(user.image),
                                 ),
-                                Text(
-                                  user.service,
-                                  style: TextStyle(color: Colors.white),
+                                SizedBox(width: 10,),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(user.student,
+                                        style: TextStyle(color: Colors.white)),
+                                    SizedBox(
+                                      height: 2,
+                                    ),
+                                    Text(
+                                      user.service,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+
+                                  ],
                                 ),
                               ],
                             ),
+                            IconButton(
+                              iconSize: 30.0,
+                              icon: Icon(Icons.edit_sharp, color: Colors.white),
+                              onPressed: (){
+                                //Navigator.pop(context);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                         EditScreen(student_id: user.id,emp_id: user.empId,service: user.service,time: user.time,duration: user.duration,officeHour: user.officehour,day: user.date,)));
+                              },
+                            )
                           ],
                         ),
                         SizedBox(

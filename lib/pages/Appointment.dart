@@ -46,7 +46,9 @@ class _BookingScreenState extends State<BookingScreen> {
   bool isSelected = false;
   final currentUser = FirebaseAuth.instance.currentUser!;
   String? selectedTime;
-  List? selectDay;
+  Map? selectDay;
+  String office_hour_selected="";
+  String duration_selected="";
 
   int? onTimeSelect = -1;
   int isAvailable = 10;
@@ -58,7 +60,7 @@ class _BookingScreenState extends State<BookingScreen> {
   List sendItem(List items2) {
     List items = [];
     for (var i = 0; i < items2.length; i++) {
-      String a = items2[i]["Service"];
+      String a = items2[i]["service"];
       items.add(a);
     }
     return items;
@@ -66,19 +68,38 @@ class _BookingScreenState extends State<BookingScreen> {
 
   List sendItem2(List items2) {
     List items = [];
+    Map daysAndtimes={};
     for (var i = 0; i < items2.length; i++) {
-      if (items2[i]["Service"] == serviceSelect) {
+      if (items2[i]["service"] == serviceSelect) {
         serviceIndex = i;
-        for (var j = 0; j < items2[i]["days"].length; j++) {
-          items.add(items2[i]["days"][j]);
+        Map a={};
+        a.addAll(items2[i]["days"]);
+        for (var j in a.keys) {
+          items.add(j);
+          Map m1={ j.toString().trim():a[j].toString().trim() };
+          daysAndtimes.addAll(m1);
         }
       }
     }
+    selectDay=daysAndtimes;
     return items;
   }
 
-  List send(List bookedDay, String time, String duration) {
-    List offichour = add(time);
+  List send(List bookedDay, String duration) {
+    String Time="";
+    for( var day in selectDay!.keys ){
+      if(day == daySelect) {
+        Time = selectDay![day].toString();
+        break;
+      }
+    }
+    office_hour_selected=Time;
+    duration_selected=duration;
+
+
+
+
+    List offichour = add(Time);
     List availableTime = count(bookedDay, offichour);
     List endList = [];
     int t = int.parse(duration.substring(0, 2));
@@ -376,20 +397,6 @@ class _BookingScreenState extends State<BookingScreen> {
               return Stack(
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      IconButton(
-                        padding: EdgeInsets.all(15),
-                        iconSize: 30.0,
-                        icon: Icon(Icons.arrow_back , color:  Color(0xff205375),),
-                        color:Colors.white,
-                        onPressed: (){
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
-                  ),
-                  Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Align(
@@ -417,9 +424,19 @@ class _BookingScreenState extends State<BookingScreen> {
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const SizedBox(
-                      height:80,
-                    ),
+
+                      SizedBox(height: 15,),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: IconButton(
+                          iconSize: 30.0,
+                          icon: Icon(Icons.arrow_back , color:  Color(0xff205375),),
+                          color:Colors.white,
+                          onPressed: (){
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
                       const Image(
                         image: AssetImage('assets/images/app.gif'),
                         height: 250,
@@ -498,6 +515,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                     onChanged: (value) {
                                       setState(() {
                                         selectedValue2 = null;
+                                        isSelected=false;
                                         selectedValue = value as String;
                                         serviceSelect = value;
                                       });
@@ -647,9 +665,8 @@ class _BookingScreenState extends State<BookingScreen> {
                                               scrollDirection: Axis.horizontal,
                                               itemCount: send(
                                                   user2,
-                                                  user[serviceIndex!]["Time"],
                                                   user[serviceIndex!]
-                                                  ["Duration"])
+                                                  ["duration"])
                                                   .length,
                                               itemBuilder: (BuildContext context,
                                                   int index) =>
@@ -662,10 +679,8 @@ class _BookingScreenState extends State<BookingScreen> {
                                                           onTimeSelect = index;
                                                           selectedTime = send(
                                                               user2,
-                                                              user[serviceIndex!]
-                                                              ["Time"],
                                                               user[serviceIndex!][
-                                                              "Duration"])[index];
+                                                              "duration"])[index];
                                                           //onTimeSelect = !onTimeSelect;
                                                         });
                                                       },
@@ -691,10 +706,8 @@ class _BookingScreenState extends State<BookingScreen> {
                                                               child: Text(
                                                                 send(
                                                                     user2,
-                                                                    user[serviceIndex!]
-                                                                    ["Time"],
                                                                     user[serviceIndex!][
-                                                                    "Duration"])[index],
+                                                                    "duration"])[index],
                                                                 style: const TextStyle(
                                                                     fontSize: 14,
                                                                     color: Colors.white,
@@ -954,6 +967,8 @@ class _BookingScreenState extends State<BookingScreen> {
       date: currentDate,
       student: studentName,
       image: widget.stdImage,
+      duration: duration_selected,
+      officehour: office_hour_selected
     );
     final json = user.toJson();
     await docUser.set(json);
