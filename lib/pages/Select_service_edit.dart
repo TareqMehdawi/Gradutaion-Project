@@ -49,6 +49,7 @@ class _DeleteSelectService extends State<DeleteSelectService> {
     '30 minute',
   ];
 
+
   List<DayInWeek> daysSelected() {
     final List<DayInWeek> days = [
       DayInWeek(

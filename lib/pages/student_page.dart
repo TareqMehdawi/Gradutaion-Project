@@ -7,6 +7,7 @@ import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
 import '../styles/colors.dart';
+import '../widgets/edit_appointment.dart';
 import '../widgets/search_delegate_employee.dart';
 import '../widgets/user_class.dart';
 import 'navigation_drawer.dart';
@@ -148,29 +149,45 @@ class _StudentPageState extends State<StudentPage> {
                     child: Column(
                       children: [
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            CircleAvatar(
-                              radius: 30.0,
-                              backgroundImage: NetworkImage(user.image),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            Row(
                               children: [
-                                Text(user.empName,
-                                    style: TextStyle(color: Colors.white)),
-                                SizedBox(
-                                  height: 2,
+                                CircleAvatar(
+                                  radius: 30.0,
+                                  backgroundColor: Colors.white,
+                                  backgroundImage: NetworkImage(user.image),
                                 ),
-                                Text(
-                                  user.service,
-                                  style: TextStyle(color: Colors.white),
+                                SizedBox(width: 10,),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(user.empName,
+                                        style: TextStyle(color: Colors.white)),
+                                    SizedBox(
+                                      height: 2,
+                                    ),
+                                    Text(
+                                      user.service,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+
+                                  ],
                                 ),
                               ],
                             ),
+                            IconButton(
+                              iconSize: 30.0,
+                              icon: Icon(Icons.edit_sharp, color: Colors.white),
+                              onPressed: (){
+                                //Navigator.pop(context);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            EditScreen(student_id: user.id,emp_id: user.empId,service: user.service,time: user.time,duration: user.duration,officeHour: user.officehour,day: user.date,)));
+                              },
+                            )
                           ],
                         ),
                         SizedBox(

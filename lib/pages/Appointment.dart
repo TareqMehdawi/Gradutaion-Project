@@ -47,6 +47,8 @@ class _BookingScreenState extends State<BookingScreen> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   String? selectedTime;
   Map? selectDay;
+  String office_hour_selected = "";
+  String duration_selected = "";
 
   int? onTimeSelect = -1;
   int isAvailable = 10;
@@ -91,6 +93,8 @@ class _BookingScreenState extends State<BookingScreen> {
         break;
       }
     }
+    office_hour_selected = Time;
+    duration_selected = duration;
 
     List offichour = add(Time);
     List availableTime = count(bookedDay, offichour);
@@ -958,16 +962,17 @@ class _BookingScreenState extends State<BookingScreen> {
   }) async {
     final docUser = FirebaseFirestore.instance.collection('reservation').doc();
     final user = StudentsReservation(
-      id: currentUser.uid,
-      empName: empName,
-      empId: empId,
-      service: service,
-      people: people,
-      time: currentTime,
-      date: currentDate,
-      student: studentName,
-      image: widget.stdImage,
-    );
+        id: currentUser.uid,
+        empName: empName,
+        empId: empId,
+        service: service,
+        people: people,
+        time: currentTime,
+        date: currentDate,
+        student: studentName,
+        image: widget.stdImage,
+        duration: duration_selected,
+        officehour: office_hour_selected);
     final json = user.toJson();
     await docUser.set(json);
   }
