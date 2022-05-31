@@ -123,9 +123,7 @@ class _EmployeePageState extends State<EmployeePage> {
         stream: readReservation(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-
             final users = snapshot.data!;
-
             if(users.isEmpty){
                return Center(
                 child: Image.asset('assets/images/Schedule-bro.png'),
