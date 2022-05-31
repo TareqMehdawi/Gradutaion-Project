@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../pages/your_account.dart';
+import 'backbutton_widget.dart';
 
 // This class handles the Page to edit the Phone Section of the User Profile.
 class EditPhoneFormPage extends StatefulWidget {
@@ -37,69 +38,65 @@ class EditPhoneFormPageState extends State<EditPhoneFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          iconTheme: const IconThemeData(color: Colors.black),
-          leading: const BackButton(),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-        ),
         body: Form(
-          key: _formKey,
-          child: ListView(
-            children: <Widget>[
-              const SizedBox(
-                  width: 320,
-                  child: Center(
-                    child: Text(
-                      "What's Your Phone Number?",
-                      style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xff205375)),
-                    ),
-                  )),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                      padding: const EdgeInsets.only(top: 40),
-                      child: SizedBox(
-                          height: 100,
-                          width: 200,
-                          child: TextFormField(
-                            // Handles Form Validation
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your phone number';
-                              } else if (isAlpha(value)) {
-                                return 'Only Numbers Please';
-                              } else if (value.length < 10) {
-                                return 'Please enter a VALID phone number';
-                              }
-                              return null;
-                            },
-                            controller: phoneController,
-                            decoration: const InputDecoration(
-                              labelText: 'Your Phone Number',
-                            ),
-                          ))),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 150),
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: editPhoneNumberButton(),
-                  ),
+      key: _formKey,
+      child: ListView(
+        children: [
+          customBackButton(color: Color(0xff205375)),
+          const SizedBox(
+              width: 320,
+              child: Center(
+                child: Text(
+                  "What's Your Phone Number?",
+                  style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xff205375)),
                 ),
-              ),
+              )),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                  padding: const EdgeInsets.only(top: 40),
+                  child: SizedBox(
+                      height: 100,
+                      width: 200,
+                      child: TextFormField(
+                        //keyboardType:,
+                        // Handles Form Validation
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your phone number';
+                          } else if (isAlpha(value)) {
+                            return 'Only Numbers Please';
+                          } else if (value.length < 10) {
+                            return 'Please enter a VALID phone number';
+                          }
+                          return null;
+                        },
+                        controller: phoneController,
+                        decoration: const InputDecoration(
+                          labelText: 'Your Phone Number',
+                        ),
+                      ))),
             ],
           ),
-        ));
+          Padding(
+            padding: const EdgeInsets.only(top: 150),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: editPhoneNumberButton(),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ));
   }
 
   Future updateUserPhone({required String phoneNumber}) async {

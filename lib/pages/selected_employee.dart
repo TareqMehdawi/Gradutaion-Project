@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../widgets/backbutton_widget.dart';
 import '../widgets/user_class.dart';
 import 'appointment.dart';
 
@@ -87,7 +88,7 @@ class _YourAccount2 extends State<YourAccount2> {
                       begin: Alignment.topRight,
                       end: Alignment.bottomLeft,
                       colors: [
-                        Color(0xff205375),
+                        Color(0xff205399),
                         Color(0xff92B4EC),
                       ],
                     )),
@@ -116,270 +117,237 @@ class _YourAccount2 extends State<YourAccount2> {
                       ),
                     ],
                   ),
-                  SingleChildScrollView(
-                    child: Column(children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 5),
-                        child: Column(
-                          children: <Widget>[
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: IconButton(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 15,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 25.0),
+                    child: customBackButton(color: Colors.white),
+                  ),
+                  Center(
+                    child: SingleChildScrollView(
+                      child: Column(children: [
+                        Container(
+                          child: Column(
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: Colors.white,
+                                backgroundImage: NetworkImage(
+                                  user.image,
                                 ),
-                                iconSize: 30.0,
-                                icon: Icon(
-                                  Icons.arrow_back,
-                                  color: Colors.white,
+                                //backgroundColor: Colors.lightBlue[100],
+                                radius: 80,
+                              ),
+                              const SizedBox(
+                                height: 25,
+                              ),
+                              Text(
+                                user.name,
+                                style: GoogleFonts.lato(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 24,
+                                    color: Colors.white),
+                              ),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(
+                                      width: 15,
+                                    ),
+                                    const Icon(Icons.place_outlined,
+                                        color: Colors.white),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width /
+                                          1.4,
+                                      child: Text(
+                                        user.office.isEmpty
+                                            ? "no location"
+                                            : user.office,
+                                        style: GoogleFonts.lato(
+                                            fontSize: 16, color: Colors.white),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                  ],
                                 ),
-                                color: Colors.white,
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
                               ),
-                            ),
-                            CircleAvatar(
-                              backgroundColor: Colors.white,
-                              backgroundImage: NetworkImage(
-                                user.image,
-                              ),
-                              //backgroundColor: Colors.lightBlue[100],
-                              radius: 80,
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              user.name,
-                              style: GoogleFonts.lato(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 24,
-                                  color: Colors.white),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            // Row(
-                            //   mainAxisAlignment: MainAxisAlignment.center,
-                            //   // children: [
-                            //   //   for (var i = 0; i < document['rating']; i++)
-                            //   //     Icon(
-                            //   //       Icons.star_rounded,
-                            //   //       color: Colors.indigoAccent,
-                            //   //       size: 30,
-                            //   //     ),
-                            //   //   if (5 - document['rating'] > 0)
-                            //   //     for (var i = 0; i < 5 - document['rating']; i++)
-                            //   //       Icon(
-                            //   //         Icons.star_rounded,
-                            //   //         color: Colors.black12,
-                            //   //         size: 30,
-                            //   //       ),
-                            //   // ],
-                            // ),
-
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
-                                  const Icon(Icons.place_outlined,
-                                      color: Colors.white),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width / 1.4,
-                                    child: Text(
-                                      user.office.isEmpty
-                                          ? "no location"
-                                          : user.office,
+                              Container(
+                                height: MediaQuery.of(context).size.height / 12,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Row(
+                                  children: [
+                                    const SizedBox(
+                                      width: 15,
+                                    ),
+                                    const Icon(Icons.email,
+                                        color: Colors.white),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(
+                                      user.email,
                                       style: GoogleFonts.lato(
                                           fontSize: 16, color: Colors.white),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              height: MediaQuery.of(context).size.height / 12,
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Row(
-                                children: [
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
-                                  const Icon(Icons.email, color: Colors.white),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text(
-                                    user.email,
-                                    style: GoogleFonts.lato(
-                                        fontSize: 16, color: Colors.white),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                ],
-                              ),
-                            ),
-
-                            Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Row(
-                                children: [
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
-                                  const Icon(Icons.access_time_rounded,
-                                      color: Colors.white),
-                                  Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    padding: const EdgeInsets.only(left: 8),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          user.officeHours.isEmpty
-                                              ? "no office hours"
-                                              : officeDays(user.officeHours),
-                                          style: GoogleFonts.lato(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          user.officeHours.isEmpty
-                                              ? "no office hours"
-                                              : officeHours(user.officeHours),
-                                          style: GoogleFonts.lato(
-                                              fontSize: 17,
-                                              color: Colors.white),
-                                        ),
-                                      ],
+                                    const SizedBox(
+                                      width: 10,
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(
-                                  left: 20, top: 0, bottom: 0, right: 20),
-                              child: SizedBox(
-                                width: double.infinity,
-                                height: 50,
-                                child: ElevatedButton(
-                                  child: Text(
-                                    'Book an Appointment',
-                                    style: GoogleFonts.lato(
-                                      color: Colors.white,
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => BookingScreen(
-                                          uid: widget.uid,
-                                          empName: user.name,
-                                          stdName: widget.stdName,
-                                          officeHours: user.officeHours,
-                                          stdImage: widget.stdImage,
-                                        ),
 
-                                        // builder: (context) => BookingScreen(
-                                        //   doctor: document['name'],
-                                        // ),
+                              Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Row(
+                                  children: [
+                                    const SizedBox(
+                                      width: 15,
+                                    ),
+                                    const Icon(Icons.access_time_rounded,
+                                        color: Colors.white),
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      padding: const EdgeInsets.only(left: 8),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            user.officeHours.isEmpty
+                                                ? "no office hours"
+                                                : officeDays(user.officeHours),
+                                            style: GoogleFonts.lato(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            user.officeHours.isEmpty
+                                                ? "no office hours"
+                                                : officeHours(user.officeHours),
+                                            style: GoogleFonts.lato(
+                                                fontSize: 17,
+                                                color: Colors.white),
+                                          ),
+                                        ],
                                       ),
-                                    );
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 2,
-                                    primary: Color(0xff205375),
-                                    onPrimary: Color(0xff205375),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(32.0),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    height: 50,
+                                    child: ElevatedButton(
+                                      child: Text(
+                                        'Book an Appointment',
+                                        style: GoogleFonts.lato(
+                                          color: Colors.white,
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => BookingScreen(
+                                              uid: widget.uid,
+                                              empName: user.name,
+                                              stdName: widget.stdName,
+                                              officeHours: user.officeHours,
+                                              stdImage: widget.stdImage,
+                                            ),
+
+                                            // builder: (context) => BookingScreen(
+                                            //   doctor: document['name'],
+                                            // ),
+                                          ),
+                                        );
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        elevation: 2,
+                                        primary: Color(0xff205375),
+                                        onPrimary: Color(0xff205375),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(32.0),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            // Container(
-                            //   padding: const EdgeInsets.symmetric(horizontal: 30),
-                            //   height: 50,
-                            //   width: MediaQuery.of(context).size.width,
-                            //   child: ElevatedButton(
-                            //     style: ElevatedButton.styleFrom(
-                            //       elevation: 2,
-                            //       primary: Colors.indigo.withOpacity(0.9),
-                            //       onPrimary: Colors.black,
-                            //       shape: RoundedRectangleBorder(
-                            //         borderRadius: BorderRadius.circular(32.0),
-                            //       ),
-                            //     ),
-                            //     onPressed: () {
-                            //       Navigator.push(
-                            //         context,
-                            //         MaterialPageRoute(
-                            //           builder: (context) => BookingScreen(
-                            //             uid: widget.uid,
-                            //             empName: user.name,
-                            //             stdName: widget.stdName,
-                            //             officeHours: user.officeHours,
-                            //             stdImage: widget.stdImage,
-                            //           ),
-                            //
-                            //           // builder: (context) => BookingScreen(
-                            //           //   doctor: document['name'],
-                            //           // ),
-                            //         ),
-                            //       );
-                            //     },
-                            //     child: Text(
-                            //       'Book an Appointment',
-                            //       style: GoogleFonts.lato(
-                            //         color: Colors.white,
-                            //         fontSize: 16,
-                            //         fontWeight: FontWeight.bold,
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
-                            const SizedBox(
-                              height: 40,
-                            ),
-                          ],
+                              // Container(
+                              //   padding: const EdgeInsets.symmetric(horizontal: 30),
+                              //   height: 50,
+                              //   width: MediaQuery.of(context).size.width,
+                              //   child: ElevatedButton(
+                              //     style: ElevatedButton.styleFrom(
+                              //       elevation: 2,
+                              //       primary: Colors.indigo.withOpacity(0.9),
+                              //       onPrimary: Colors.black,
+                              //       shape: RoundedRectangleBorder(
+                              //         borderRadius: BorderRadius.circular(32.0),
+                              //       ),
+                              //     ),
+                              //     onPressed: () {
+                              //       Navigator.push(
+                              //         context,
+                              //         MaterialPageRoute(
+                              //           builder: (context) => BookingScreen(
+                              //             uid: widget.uid,
+                              //             empName: user.name,
+                              //             stdName: widget.stdName,
+                              //             officeHours: user.officeHours,
+                              //             stdImage: widget.stdImage,
+                              //           ),
+                              //
+                              //           // builder: (context) => BookingScreen(
+                              //           //   doctor: document['name'],
+                              //           // ),
+                              //         ),
+                              //       );
+                              //     },
+                              //     child: Text(
+                              //       'Book an Appointment',
+                              //       style: GoogleFonts.lato(
+                              //         color: Colors.white,
+                              //         fontSize: 16,
+                              //         fontWeight: FontWeight.bold,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
+                              const SizedBox(
+                                height: 40,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ]),
+                      ]),
+                    ),
                   ),
                 ],
               );

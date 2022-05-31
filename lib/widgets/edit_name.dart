@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../pages/your_account.dart';
+import 'backbutton_widget.dart';
 
 class EditNameFormPage extends StatefulWidget {
   const EditNameFormPage({Key? key}) : super(key: key);
@@ -36,18 +37,11 @@ class EditNameFormPageState extends State<EditNameFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.black),
-        leading: const BackButton(),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
       body: Form(
         key: _formKey,
         child: ListView(
-          //crossAxisAlignment: CrossAxisAlignment.center,
-          //mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
+          children: [
+            customBackButton(color: Color(0xff205375)),
             const SizedBox(
               width: 330,
               child: Center(

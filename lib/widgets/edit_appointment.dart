@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-import '../widgets/user_class.dart';
-
 class EditScreen extends StatefulWidget {
   final String student_id;
   final String emp_id;
@@ -19,12 +17,12 @@ class EditScreen extends StatefulWidget {
 
   const EditScreen(
       {Key? key,
-        required this.student_id,
-        required this.time,
-        required this.service,
-        required this.emp_id,
-        required this.officeHour,
-        required this.duration,
+      required this.student_id,
+      required this.time,
+      required this.service,
+      required this.emp_id,
+      required this.officeHour,
+      required this.duration,
       required this.day})
       : super(key: key);
 
@@ -79,7 +77,7 @@ class _EditScreenState extends State<EditScreen> {
         a.addAll(items2[i]["days"]);
         for (var j in a.keys) {
           items.add(j);
-          Map m1 = { j.toString().trim(): a[j].toString().trim()};
+          Map m1 = {j.toString().trim(): a[j].toString().trim()};
           daysAndtimes.addAll(m1);
         }
       }
@@ -102,16 +100,14 @@ class _EditScreenState extends State<EditScreen> {
       case 10:
         for (int i = 0; i < fo; i++) {
           String endHourCurrently =
-          availableTime[i].toString().substring(8, 13);
+              availableTime[i].toString().substring(8, 13);
           String startHourFromNext = '';
 
           startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
 
           if (startHourFromNext == endHourCurrently) {
             endList.add(
-                "${availableTime[i].toString().substring(
-                    0, 5)} - ${availableTime[i + 1].toString().substring(
-                    8, 13)}");
+                "${availableTime[i].toString().substring(0, 5)} - ${availableTime[i + 1].toString().substring(8, 13)}");
           }
         }
         break;
@@ -121,7 +117,7 @@ class _EditScreenState extends State<EditScreen> {
         String start = "";
         for (int i = 0; i < fo; i++) {
           String endHourCurrently =
-          availableTime[i].toString().substring(8, 13);
+              availableTime[i].toString().substring(8, 13);
           String startHourFromNext = '';
 
           startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
@@ -155,7 +151,7 @@ class _EditScreenState extends State<EditScreen> {
         String start = "";
         for (int i = 0; i < fo; i++) {
           String endHourCurrently =
-          availableTime[i].toString().substring(8, 13);
+              availableTime[i].toString().substring(8, 13);
           String startHourFromNext = '';
 
           startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
@@ -189,7 +185,7 @@ class _EditScreenState extends State<EditScreen> {
         String start = "";
         for (int i = 0; i < fo; i++) {
           String endHourCurrently =
-          availableTime[i].toString().substring(8, 13);
+              availableTime[i].toString().substring(8, 13);
           String startHourFromNext = '';
 
           startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
@@ -223,7 +219,7 @@ class _EditScreenState extends State<EditScreen> {
         String start = "";
         for (int i = 0; i < fo; i++) {
           String endHourCurrently =
-          availableTime[i].toString().substring(8, 13);
+              availableTime[i].toString().substring(8, 13);
           String startHourFromNext = '';
 
           startHourFromNext = availableTime[i + 1].toString().substring(0, 5);
@@ -305,9 +301,7 @@ class _EditScreenState extends State<EditScreen> {
     }
     var one = format.parse(oneTime);
     var two = format.parse(secTime);
-    var min = two
-        .difference(one)
-        .inMinutes / t;
+    var min = two.difference(one).inMinutes / t;
     var intMin = min.floor();
 
     return intMin;
@@ -380,7 +374,6 @@ class _EditScreenState extends State<EditScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       key: _scaffoldKey,
-
       body: Stack(
         children: [
           Row(
@@ -390,10 +383,7 @@ class _EditScreenState extends State<EditScreen> {
                 alignment: Alignment.topRight,
                 child: Image.asset(
                   "assets/images/top_right.png",
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width * .3,
+                  width: MediaQuery.of(context).size.width * .3,
                 ),
               ),
             ],
@@ -405,25 +395,25 @@ class _EditScreenState extends State<EditScreen> {
                 alignment: Alignment.bottomLeft,
                 child: Image.asset(
                   "assets/images/bottom_left.png",
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width * .3,
+                  width: MediaQuery.of(context).size.width * .3,
                 ),
               ),
             ],
           ),
-
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-
-              SizedBox(height: 15,),
+              SizedBox(
+                height: 15,
+              ),
               Align(
                 alignment: Alignment.topLeft,
                 child: IconButton(
                   iconSize: 30.0,
-                  icon: Icon(Icons.arrow_back, color: Color(0xff205375),),
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Color(0xff205375),
+                  ),
                   color: Colors.white,
                   onPressed: () {
                     Navigator.pop(context);
@@ -434,7 +424,6 @@ class _EditScreenState extends State<EditScreen> {
                 image: AssetImage('assets/images/app.gif'),
                 height: 200,
               ),
-
               Form(
                 key: _formKey,
                 child: Expanded(
@@ -445,7 +434,7 @@ class _EditScreenState extends State<EditScreen> {
                         padding: const EdgeInsets.only(left: 18),
                         child: Center(
                           child: Text(
-                            'Appointment booking',
+                            'Appointment Update',
                             style: GoogleFonts.lato(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -458,8 +447,7 @@ class _EditScreenState extends State<EditScreen> {
                         height: 30,
                       ),
                       Padding(
-                        padding:
-                        const EdgeInsets.symmetric(horizontal: 15.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton2(
                             isExpanded: true,
@@ -488,8 +476,7 @@ class _EditScreenState extends State<EditScreen> {
                             ),
                             items: empty
                                 .map(
-                                  (item) =>
-                                  DropdownMenuItem(
+                                  (item) => DropdownMenuItem(
                                     value: item,
                                     child: Text(
                                       item,
@@ -501,7 +488,7 @@ class _EditScreenState extends State<EditScreen> {
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
-                            )
+                                )
                                 .toList(),
                             value: selectedValue,
                             onChanged: (value) {},
@@ -513,8 +500,8 @@ class _EditScreenState extends State<EditScreen> {
                             iconDisabledColor: Color(0xff205375),
                             buttonHeight: 50,
                             buttonWidth: 500,
-                            buttonPadding: const EdgeInsets.only(
-                                left: 14, right: 14),
+                            buttonPadding:
+                                const EdgeInsets.only(left: 14, right: 14),
                             buttonDecoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(14),
                               border: Border.all(
@@ -524,8 +511,8 @@ class _EditScreenState extends State<EditScreen> {
                             ),
                             buttonElevation: 2,
                             itemHeight: 40,
-                            itemPadding: const EdgeInsets.symmetric(
-                                horizontal: 14),
+                            itemPadding:
+                                const EdgeInsets.symmetric(horizontal: 14),
                             dropdownMaxHeight: 200,
                             dropdownPadding: null,
                             dropdownDecoration: BoxDecoration(
@@ -543,8 +530,7 @@ class _EditScreenState extends State<EditScreen> {
                         height: 20,
                       ),
                       Padding(
-                        padding:
-                        const EdgeInsets.symmetric(horizontal: 15.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton2(
                             isExpanded: true,
@@ -572,19 +558,18 @@ class _EditScreenState extends State<EditScreen> {
                               ],
                             ),
                             items: empty
-                                .map((item) =>
-                                DropdownMenuItem<String>(
-                                  value: item,
-                                  child: Text(
-                                    item,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ))
+                                .map((item) => DropdownMenuItem<String>(
+                                      value: item,
+                                      child: Text(
+                                        item,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ))
                                 .toList(),
                             value: selectedValue2,
                             onChanged: (value) {
@@ -592,8 +577,8 @@ class _EditScreenState extends State<EditScreen> {
                             },
                             buttonHeight: 50,
                             buttonWidth: 500,
-                            buttonPadding: const EdgeInsets.only(
-                                left: 14, right: 14),
+                            buttonPadding:
+                                const EdgeInsets.only(left: 14, right: 14),
                             buttonDecoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(14),
                               border: Border.all(
@@ -603,8 +588,8 @@ class _EditScreenState extends State<EditScreen> {
                             ),
                             buttonElevation: 2,
                             itemHeight: 40,
-                            itemPadding: const EdgeInsets.only(
-                                left: 14, right: 14),
+                            itemPadding:
+                                const EdgeInsets.only(left: 14, right: 14),
                             dropdownMaxHeight: 200,
                             dropdownPadding: null,
                             dropdownDecoration: BoxDecoration(
@@ -640,59 +625,54 @@ class _EditScreenState extends State<EditScreen> {
                                     itemCount: send(
                                       user2,
                                       widget.duration,
-                                      widget.officeHour,)
-                                        .length,
-                                    itemBuilder: (BuildContext context,
-                                        int index) =>
-                                        Padding(
-                                          padding:
-                                          const EdgeInsets.all(8.0),
-                                          child: InkWell(
-                                            onTap: () {
-                                              setState(() {
-                                                onTimeSelect = index;
-                                                selectedTime = send(
-                                                  user2,
-                                                  widget.duration,
-                                                  widget.officeHour,)[index];
-                                                //onTimeSelect = !onTimeSelect;
-                                              });
-                                            },
-                                            borderRadius:
+                                      widget.officeHour,
+                                    ).length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) =>
+                                            Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            onTimeSelect = index;
+                                            selectedTime = send(
+                                              user2,
+                                              widget.duration,
+                                              widget.officeHour,
+                                            )[index];
+                                            //onTimeSelect = !onTimeSelect;
+                                          });
+                                        },
+                                        borderRadius:
                                             BorderRadius.circular(32.0),
-                                            splashColor: Colors.indigo,
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(),
-                                                  borderRadius:
-                                                  BorderRadius.circular(
-                                                      32.0),
-                                                  color:
-                                                  index == onTimeSelect
-                                                      ? Color(0xff205375)
-                                                      : Colors.grey.shade400),
-                                              height: 30,
-                                              child: Center(
-                                                  child: Padding(
-                                                    padding:
-                                                    const EdgeInsets.all(
-                                                        8.0),
-                                                    child: Text(
-                                                      send(
-                                                        user2,
-                                                        widget.duration,
-                                                        widget
-                                                            .officeHour,)[index],
-                                                      style: const TextStyle(
-                                                          fontSize: 14,
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                          FontWeight.bold),
-                                                    ),
-                                                  )),
+                                        splashColor: Colors.indigo,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              border: Border.all(),
+                                              borderRadius:
+                                                  BorderRadius.circular(32.0),
+                                              color: index == onTimeSelect
+                                                  ? Color(0xff205375)
+                                                  : Colors.grey.shade400),
+                                          height: 30,
+                                          child: Center(
+                                              child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              send(
+                                                user2,
+                                                widget.duration,
+                                                widget.officeHour,
+                                              )[index],
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
                                             ),
-                                          ),
+                                          )),
                                         ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               );
@@ -721,50 +701,47 @@ class _EditScreenState extends State<EditScreen> {
                               ),
                             ),
                             onPressed: () async {
-
-                                //final isValid = formKey.currentState!
-                                //     .validate();
-                                // if (isValid) {
-                                  try {
-                                    updateTime();
-                                    AwesomeDialog(
-                                      autoDismiss: false,
-                                      context: context,
-                                      dialogType: DialogType.SUCCES,
-                                      animType: AnimType.BOTTOMSLIDE,
-                                      title: 'Success',
-                                      desc: 'Service updated successfully',
-                                      btnOkText: "Go back",
-                                      btnCancelColor: Colors.black87,
-                                      btnOkOnPress: () {
-                                        Navigator.pop(context);
-
-                                      },
-                                      onDissmissCallback: (d) {
-                                        Navigator.pop(context);
-                                      },
-                                    ).show();
-                                  } on FirebaseAuthException catch (error) {
-                                    AwesomeDialog(
-                                      autoDismiss: false,
-                                      context: context,
-                                      dialogType: DialogType.ERROR,
-                                      animType: AnimType.BOTTOMSLIDE,
-                                      title: 'Error',
-                                      desc: '${error.message}',
-                                      btnCancelText: 'Go back',
-                                      btnCancelColor: Colors.black87,
-                                      onDissmissCallback: (d) {
-                                        Navigator.pop(context);
-                                      },
-                                      btnCancelOnPress: () {
-                                        Navigator.pop(context);
-
-                                      },
-                                    ).show();
-                                  };
+                              //final isValid = formKey.currentState!
+                              //     .validate();
+                              // if (isValid) {
+                              try {
+                                updateTime();
+                                AwesomeDialog(
+                                  autoDismiss: false,
+                                  context: context,
+                                  dialogType: DialogType.SUCCES,
+                                  animType: AnimType.BOTTOMSLIDE,
+                                  title: 'Success',
+                                  desc: 'Service updated successfully',
+                                  btnOkText: "Go back",
+                                  btnCancelColor: Colors.black87,
+                                  btnOkOnPress: () {
+                                    Navigator.pop(context);
+                                  },
+                                  onDissmissCallback: (d) {
+                                    Navigator.pop(context);
+                                  },
+                                ).show();
+                              } on FirebaseAuthException catch (error) {
+                                AwesomeDialog(
+                                  autoDismiss: false,
+                                  context: context,
+                                  dialogType: DialogType.ERROR,
+                                  animType: AnimType.BOTTOMSLIDE,
+                                  title: 'Error',
+                                  desc: '${error.message}',
+                                  btnCancelText: 'Go back',
+                                  btnCancelColor: Colors.black87,
+                                  onDissmissCallback: (d) {
+                                    Navigator.pop(context);
+                                  },
+                                  btnCancelOnPress: () {
+                                    Navigator.pop(context);
+                                  },
+                                ).show();
                               }
-                              ,
+                              ;
+                            },
                             style: ElevatedButton.styleFrom(
                               elevation: 2,
                               primary: Color(0xff205375),
@@ -776,10 +753,9 @@ class _EditScreenState extends State<EditScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20,),
                       Container(
                         padding: EdgeInsets.only(
-                            left: 20, top: 0, bottom: 0, right: 20),
+                            left: 20, top: 20, bottom: 20, right: 20),
                         child: SizedBox(
                           width: double.infinity,
                           height: 50,
@@ -792,7 +768,6 @@ class _EditScreenState extends State<EditScreen> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-
                             onPressed: () async {
                               AwesomeDialog(
                                 context: context,
@@ -800,7 +775,7 @@ class _EditScreenState extends State<EditScreen> {
                                 animType: AnimType.BOTTOMSLIDE,
                                 title: 'Warning',
                                 desc:
-                                'Are you sure you want to delete this service',
+                                    'Are you sure you want to delete this service',
                                 btnOkText: "Delete",
                                 btnCancelText: 'Cancel',
                                 btnCancelOnPress: () {},
@@ -821,7 +796,6 @@ class _EditScreenState extends State<EditScreen> {
                                       },
                                       btnOkOnPress: () {
                                         Navigator.pop(context);
-
                                       },
                                     ).show();
                                   } on FirebaseAuthException catch (error) {
@@ -856,7 +830,6 @@ class _EditScreenState extends State<EditScreen> {
                           ),
                         ),
                       ),
-
 
                       // SizedBox(
                       //   height: 50,
@@ -1013,8 +986,9 @@ class _EditScreenState extends State<EditScreen> {
     final docUser2 = await FirebaseFirestore.instance
         .collection('reservation')
         .where('service', isEqualTo: widget.service)
-        .where('empId', isEqualTo: widget.emp_id).where(
-        'id', isEqualTo: widget.student_id).get();
+        .where('empId', isEqualTo: widget.emp_id)
+        .where('id', isEqualTo: widget.student_id)
+        .get();
     for (var doc in docUser2.docs) {
       await FirebaseFirestore.instance
           .collection('reservation')
@@ -1022,12 +996,13 @@ class _EditScreenState extends State<EditScreen> {
           .delete();
     }
   }
+
   Future updateTime() async {
     final docUser2 = await FirebaseFirestore.instance
         .collection('reservation')
         .where('service', isEqualTo: widget.service)
-        .where('empId', isEqualTo: widget.emp_id).where(
-        'id', isEqualTo: widget.student_id)
+        .where('empId', isEqualTo: widget.emp_id)
+        .where('id', isEqualTo: widget.student_id)
         .get();
     for (var doc in docUser2.docs) {
       await FirebaseFirestore.instance
@@ -1035,9 +1010,8 @@ class _EditScreenState extends State<EditScreen> {
           .doc(doc.id)
           .update({'time': selectedTime});
     }
-
-
   }
+
   Future getTime() async {
     List data = [];
     final docUser2 = await FirebaseFirestore.instance

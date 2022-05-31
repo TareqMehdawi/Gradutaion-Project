@@ -2,9 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:graduation_project/widgets/custom_appbar.dart';
 import 'package:provider/provider.dart';
-import 'package:wave/config.dart';
-import 'package:wave/wave.dart';
 
 import '../styles/colors.dart';
 import '../widgets/edit_appointment.dart';
@@ -38,74 +37,17 @@ class _StudentPageState extends State<StudentPage> {
 //    String selectedService = Provider.of<ReservationInfo>(context).selectedService;
     //String name = selectedService;
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size(400, 300),
-        child: Container(
-          //color: Theme.of(context).primaryColor,
-          width: MediaQuery.of(context).size.width,
-          height: 100,
-          child: Container(
-            height: 80,
-            child: Container(
-              color: Colors.white,
-              child: Stack(
-                children: <Widget>[
-                  RotatedBox(
-                      quarterTurns: 2,
-                      child: WaveWidget(
-                        config: CustomConfig(
-                          colors: [const Color(0xff205375)],
-                          durations: [22000],
-                          heightPercentages: [-0.1],
-                        ),
-                        size: const Size(double.infinity, double.infinity),
-                        waveAmplitude: 1,
-                      )),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Builder(
-                          builder: (context) => IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    Provider.of<NavigationProvider>(context,
-                                            listen: false)
-                                        .changeValue();
-                                  });
-                                },
-                                icon: const Icon(
-                                  Icons.menu,
-                                  color: Colors.white,
-                                ),
-                              )),
-                      Center(
-                        child: Padding(
-                            padding: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width * .22),
-                            child: const Text(
-                              "Student page",
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
-                            )),
-                      ),
-                      const Spacer(),
-                      IconButton(
-                        onPressed: () {
-                          buildBottomSheet2();
-                        },
-                        icon: const Icon(
-                          Icons.filter_alt_outlined,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+      appBar: CustomAppBar(
+          title: 'Student Page',
+          filterFunction: () {
+            buildBottomSheet2();
+          },
+          menuFunction: () {
+            setState(() {
+              Provider.of<NavigationProvider>(context, listen: false)
+                  .changeValue();
+            });
+          }),
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color(0xff205375),
         child: const Icon(Icons.add),
@@ -118,22 +60,63 @@ class _StudentPageState extends State<StudentPage> {
         },
       ),
       body: StreamBuilder<List<StudentsReservation>>(
-          stream: readReservation(),
+        stream: readReservation(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-
             final users = snapshot.data!;
 
-            if(users.isEmpty){
-              return Center(
-                child: Image.asset('assets/images/Schedule-bro.png'),
+            if (users.isEmpty) {
+              return Stack(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: MediaQuery.of(context).size.height * 0.1),
+                    child: Image.asset('assets/images/Schedule-bro.png'),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 40.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              "You have no meetings for today",
+                              style: TextStyle(
+                                  fontSize: 24, color: Color(0xff205375)),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Add one",
+                                  style: TextStyle(
+                                      fontSize: 24, color: Color(0xff205375)),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Icon(Icons.arrow_forward_sharp,
+                                    color: Color(0xff205375)),
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ],
               );
-            }else{
+            } else {
               return ListView(
                 padding: const EdgeInsets.all(12.0),
                 children: [...users.map(buildListTile).toList()],
-              );}
-          }  else if (snapshot.hasError) {
+              );
+            }
+          } else if (snapshot.hasError) {
             return const Center(
               child: Text("hi"),
             );
@@ -161,8 +144,7 @@ class _StudentPageState extends State<StudentPage> {
             );
           }
         },
-
-          ),
+      ),
     );
   }
 
@@ -194,7 +176,9 @@ class _StudentPageState extends State<StudentPage> {
                                   backgroundColor: Colors.white,
                                   backgroundImage: NetworkImage(user.imageemp),
                                 ),
-                                SizedBox(width: 10,),
+                                SizedBox(
+                                  width: 10,
+                                ),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -207,7 +191,6 @@ class _StudentPageState extends State<StudentPage> {
                                       user.service,
                                       style: TextStyle(color: Colors.white),
                                     ),
-
                                   ],
                                 ),
                               ],
@@ -215,13 +198,21 @@ class _StudentPageState extends State<StudentPage> {
                             IconButton(
                               iconSize: 30.0,
                               icon: Icon(Icons.edit_sharp, color: Colors.white),
-                              onPressed: (){
+                              onPressed: () {
                                 //Navigator.pop(context);
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (BuildContext context) =>
-                                            EditScreen(student_id: user.id,emp_id: user.empId,service: user.service,time: user.time,duration: user.duration,officeHour: user.officehour,day: user.date,)));
+                                            EditScreen(
+                                              student_id: user.id,
+                                              emp_id: user.empId,
+                                              service: user.service,
+                                              time: user.time,
+                                              duration: user.duration,
+                                              officeHour: user.officehour,
+                                              day: user.date,
+                                            )));
                               },
                             )
                           ],
@@ -323,32 +314,23 @@ class _StudentPageState extends State<StudentPage> {
           .where("id", isEqualTo: currentUser.uid)
           .snapshots()
           .map((snapshot) => snapshot.docs
-          .map((doc) => StudentsReservation.fromJson(doc.data()))
-          .toList());
+              .map((doc) => StudentsReservation.fromJson(doc.data()))
+              .toList());
 
       return ref2;
     } else {
-
       var ref = FirebaseFirestore.instance
           .collection('reservation')
           .where("id", isEqualTo: currentUser.uid)
           .where("date", isEqualTo: day.trim())
           .snapshots()
           .map((snapshot) => snapshot.docs
-          .map((doc) => StudentsReservation.fromJson(doc.data()))
-          .toList());
-
+              .map((doc) => StudentsReservation.fromJson(doc.data()))
+              .toList());
 
       return ref;
     }
   }
-
-
-
-
-
-
-
 
   Future buildBottomSheet2() {
     return showModalBottomSheet(
@@ -411,6 +393,7 @@ class _StudentPageState extends State<StudentPage> {
       ),
     );
   }
+
   Widget loginButton2({required String title}) {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
@@ -436,6 +419,7 @@ class _StudentPageState extends State<StudentPage> {
       ),
     );
   }
+
   Future buildBottomSheet() {
     return showModalBottomSheet(
       context: context,

@@ -212,11 +212,22 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                         //     delegate: EmployeeSearchDelegate());
                                       },
                                     ),
+                              // Text(
+                              //   '',
+                              //   style: TextStyle(fontSize: 0),
+                              // )
                               user.type == 'student'
                                   ? drawerTiles(
                                       icon: Icons.connect_without_contact,
                                       title: 'Make Reservations',
-                                      function: () {},
+                                      function: () {
+                                        setState(() {
+                                          Provider.of<NavigationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .value = 0;
+                                        });
+                                      },
                                     )
                                   : drawerTiles(
                                       icon: Icons.add_circle,

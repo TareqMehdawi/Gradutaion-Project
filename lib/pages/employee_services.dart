@@ -52,7 +52,7 @@ class _MyServices extends State<MyServices> {
   Future deleteService(SetEmpService user) async {
     final docUser2 = await FirebaseFirestore.instance
         .collection('Service')
-        .where('Service', isEqualTo: user.service)
+        .where('service', isEqualTo: user.service)
         .where('id', isEqualTo: user.id)
         .get();
     for (var doc in docUser2.docs) {
@@ -74,31 +74,21 @@ class _MyServices extends State<MyServices> {
             .toList());
   }
 
-  String days(Map map){
-    String day="";
-    for(var m in map.keys)
-      {
-        if(map.keys.length>1){
-          if(m==map.keys.last)
-            {
-              day=day+"$m";
-              break;
-
-            }
-          day=day+"$m\n";
-
+  String days(Map map) {
+    String day = "";
+    for (var m in map.keys) {
+      if (map.keys.length > 1) {
+        if (m == map.keys.last) {
+          day = day + "$m";
+          break;
         }
-
-        else
-          day=day+"$m";
-
-
-      }
-
+        day = day + "$m\n";
+      } else
+        day = day + "$m";
+    }
 
     return day;
   }
-
 
   Widget buildListTile(SetEmpService user) => Padding(
         padding: const EdgeInsets.symmetric(vertical: 5.0),

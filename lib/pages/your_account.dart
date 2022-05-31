@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:graduation_project/widgets/backbutton_widget.dart';
 import 'package:graduation_project/widgets/spinKit_widget.dart';
 
 import '../widgets/edit_image.dart';
@@ -73,20 +74,7 @@ class YourAccount2 extends State<StudentAccount> {
                     } else if (snapshot.hasData) {
                       final user = snapshot.data;
                       return ListView(children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            IconButton(
-                              padding: EdgeInsets.all(10),
-                              iconSize: 30.0,
-                              icon: Icon(Icons.arrow_back),
-                              color: Colors.white,
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
-                        ),
+                        customBackButton(color: Colors.white),
                         Stack(
                           alignment: Alignment.center,
                           children: [
