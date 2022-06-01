@@ -52,11 +52,12 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
   bool isEmployee = true;
   final currentUser = FirebaseAuth.instance.currentUser!;
   String imgUrl = '';
-  @override
-  void initState() {
-    readUser();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   readUser();
+  //   super.initState();
+  //   updateToken();
+  // }
 
   @override
   Widget build(BuildContext context) {

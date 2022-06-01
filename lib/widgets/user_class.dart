@@ -48,20 +48,19 @@ class StudentsReservation {
   final String officehour;
   final String imageemp;
 
-  StudentsReservation({
-    this.id = '',
-    required this.empName,
-    required this.service,
-    required this.people,
-    required this.time,
-    required this.date,
-    required this.student,
-    required this.empId,
-    required this.image,
-    required this.duration,
-    required this.officehour,
-    required this.imageemp
-  });
+  StudentsReservation(
+      {this.id = '',
+      required this.empName,
+      required this.service,
+      required this.people,
+      required this.time,
+      required this.date,
+      required this.student,
+      required this.empId,
+      required this.image,
+      required this.duration,
+      required this.officehour,
+      required this.imageemp});
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -73,26 +72,25 @@ class StudentsReservation {
         'date': date,
         'student': student,
         'image': image,
-         'duration':duration,
-         'officehour':officehour,
-          'imageemp':imageemp
+        'duration': duration,
+        'officehour': officehour,
+        'imageemp': imageemp
       };
 
   static StudentsReservation fromJson(Map<String, dynamic> json) =>
       StudentsReservation(
-        id: json['id'],
-        empName: json['empName'],
-        empId: json['empId'],
-        service: json['service'],
-        people: json['people'],
-        time: json['time'],
-        date: json['date'],
-        student: json['student'],
-        image: json['image'],
-        duration:json['duration'],
-        officehour: json['officehour'],
-        imageemp: json['imageemp']
-      );
+          id: json['id'],
+          empName: json['empName'],
+          empId: json['empId'],
+          service: json['service'],
+          people: json['people'],
+          time: json['time'],
+          date: json['date'],
+          student: json['student'],
+          image: json['image'],
+          duration: json['duration'],
+          officehour: json['officehour'],
+          imageemp: json['imageemp']);
 }
 
 class SetEmpService {
@@ -102,20 +100,19 @@ class SetEmpService {
   final Map days;
   final String image;
 
-  SetEmpService({
-    this.id = '',
-    required this.duration,
-    required this.service,
-    required this.days,
-    required this.image
-  });
+  SetEmpService(
+      {this.id = '',
+      required this.duration,
+      required this.service,
+      required this.days,
+      required this.image});
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'service': service,
         'days': days,
         'duration': duration,
-         'image':image
+        'image': image
       };
 
   static SetEmpService fromJson(Map<String, dynamic> json) => SetEmpService(
@@ -123,8 +120,7 @@ class SetEmpService {
         service: json['service'],
         days: json['days'],
         duration: json['duration'],
-    image: json['image'],
-
+        image: json['image'],
       );
 }
 

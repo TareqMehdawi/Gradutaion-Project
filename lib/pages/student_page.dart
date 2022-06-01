@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/widgets/custom_appbar.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import '../styles/colors.dart';
@@ -27,7 +31,50 @@ class _StudentPageState extends State<StudentPage> {
   // String? format;
   // List arr = [];
   String day = 'Every Day';
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   updateToken();
+  // }
+
+  final currentUser = FirebaseAuth.instance.currentUser!;
+
+  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  var token;
+
+  void sendPushMessage(String token, String body, String title) async {
+    try {
+      await http.post(
+        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization':
+              'key=AAAAc7t946A:APA91bFfNHbG4zCoFxqgR8-i3UnX0E1SkSGJZ_iW5k6YSI-uIGpVYMqP4lgw9j45xVDXX1KnGDvW9gSejPu-tHdQFP_I11FlH_qYTrs24X3sBR7pLcbUGwPt8Qres-IoFHWCw8VuFwjw',
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            'notification': <String, dynamic>{'body': body, 'title': title},
+            'priority': 'high',
+            'data': <String, dynamic>{
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'id': '1',
+              'status': 'done'
+            },
+            "to": token,
+          },
+        ),
+      );
+    } catch (e) {
+      print("error push notification");
+    }
+  }
+
   @override
+  void initState() {
+    updateToken();
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     // format = DateFormat.jm().format(time).trim();
     // arr.add(format?.split(
@@ -64,7 +111,8 @@ class _StudentPageState extends State<StudentPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final users = snapshot.data!;
-
+            updateUserName(token: token);
+            sendPushMessage(token, 'body ', 'title');
             if (users.isEmpty) {
               return Stack(
                 children: [
@@ -303,7 +351,7 @@ class _StudentPageState extends State<StudentPage> {
               width: double.infinity,
               height: 10,
               decoration: BoxDecoration(
-                color: Color(MyColors.bg02),
+                color: Color(0xff92B4EC),
                 borderRadius: BorderRadius.only(
                   bottomRight: Radius.circular(10),
                   bottomLeft: Radius.circular(10),
@@ -422,6 +470,33 @@ class _StudentPageState extends State<StudentPage> {
         ),
       ),
     );
+  }
+
+  updateToken() async {
+    try {
+      await _fcm.getToken().then((currentToken) {
+        setState(() {
+          token = currentToken;
+
+          print(token);
+        });
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future updateUserName({required String token}) async {
+    try {
+      final docUser =
+          FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
+      final json = {
+        'token': token,
+      };
+      await docUser.update(json);
+    } catch (e) {
+      print(e);
+    }
   }
 
   Widget loginButton2({required String title}) {

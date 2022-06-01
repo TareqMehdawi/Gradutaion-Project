@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:graduation_project/main.dart';
 import 'package:graduation_project/pages/login_page.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
 import 'package:graduation_project/widgets/user_class.dart';
@@ -33,114 +34,114 @@ class _RegisterPageState extends State<RegisterPage> {
   bool showPassword = false;
   bool isLoading = false;
   String? type;
-  //int page = 0;
   String imgUrl = '';
 
-  // final regEmail = RegExp(
-  //     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
   final regEmailDoc = RegExp(
       r"^((?!Reg)|(?!reg))[a-zA-Z]+\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
   final regEmailReg = RegExp(
       r"^((Reg)|(reg))\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
   final regEmailStu = RegExp(r"^[a-zA-Z]{3}[0-9]{7}@ju\.edu\.jo");
 
-  @override
-  void initState() {
-    getImageData();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   getImageData();
+  //   super.initState();
+  //   updateToken();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Form(
-        key: formKey,
-        autovalidateMode: showValidate == true
-            ? AutovalidateMode.onUserInteraction
-            : AutovalidateMode.disabled,
-        child: Stack(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Image.asset(
-                    "assets/images/top_right.png",
-                    width: MediaQuery.of(context).size.width * .3,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Image.asset(
-                    "assets/images/bottom_left.png",
-                    width: MediaQuery.of(context).size.width * .3,
-                  ),
-                ),
-              ],
-            ),
-            SingleChildScrollView(
-              child: Column(
+    return isLoading == true
+        ? splashScreen()
+        : Scaffold(
+            body: Form(
+              key: formKey,
+              autovalidateMode: showValidate == true
+                  ? AutovalidateMode.onUserInteraction
+                  : AutovalidateMode.disabled,
+              child: Stack(
                 children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: Container(
-                      child: Image.asset(
-                        'assets/images/Sign up.png',
-                        scale: 2.5,
-                        width: 250,
-                        height: 250,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Image.asset(
+                          "assets/images/top_right.png",
+                          width: MediaQuery.of(context).size.width * .3,
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 25),
-                    child: Text(
-                      'Sign Up',
-                      style: GoogleFonts.lato(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Image.asset(
+                          "assets/images/bottom_left.png",
+                          width: MediaQuery.of(context).size.width * .3,
+                        ),
                       ),
+                    ],
+                  ),
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: Container(
+                            child: Image.asset(
+                              'assets/images/Sign up.png',
+                              scale: 2.5,
+                              width: 250,
+                              height: 250,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(bottom: 25),
+                          child: Text(
+                            'Sign Up',
+                            style: GoogleFonts.lato(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        usernameFormField(),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        emailFormField(),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        phoneFormField(),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        passwordFormField(),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        confirmPasswordFormField(),
+                        checkBoxWidget(),
+                        registerButton(),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        loginButton(),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                      ],
                     ),
-                  ),
-                  usernameFormField(),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  emailFormField(),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  phoneFormField(),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  passwordFormField(),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  confirmPasswordFormField(),
-                  checkBoxWidget(),
-                  registerButton(),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  loginButton(),
-                  const SizedBox(
-                    height: 12,
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 
   Widget usernameFormField() {
@@ -622,101 +623,6 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ),
     );
-    // return ElevatedButton(
-    //   style: OutlinedButton.styleFrom(
-    //     backgroundColor: const Color(0xff141E27),
-    //     minimumSize: Size(MediaQuery.of(context).size.width * .94,
-    //         MediaQuery.of(context).size.height * .06),
-    //     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-    //     shape: RoundedRectangleBorder(
-    //       borderRadius: BorderRadius.circular(18),
-    //     ),
-    //   ),
-    //   child: Text(
-    //     'Register',
-    //     style: GoogleFonts.ubuntu(
-    //       textStyle: const TextStyle(fontSize: 20),
-    //     ),
-    //   ),
-    //   onPressed: () async {
-    //     final isValid = formKey.currentState!.validate();
-    //     FocusScope.of(context).unfocus();
-    //     setState(() {
-    //       showValidate = true;
-    //     });
-    //     if (isValid) {
-    //       formKey.currentState?.save();
-    //       final username = usernameController.text;
-    //       final phoneNumber = phoneNumberController.text;
-    //
-    //       setState(() {
-    //         isLoading = true;
-    //       });
-    //       try {
-    //           await FirebaseAuth.instance.createUserWithEmailAndPassword(
-    //               email: emailController.text.trim(),
-    //               password: passwordController.text.trim());
-    //           final user = FirebaseAuth.instance.currentUser!;
-    //           if(type == 'student') {
-    //             createUser(
-    //                 name: username,
-    //                 number: phoneNumber,
-    //                 id: user.uid,
-    //                 email: emailController.text,
-    //                 type: type!);
-    //           }else{
-    //             createEmployee(
-    //                 name: username,
-    //                 number: phoneNumber,
-    //                 id: user.uid,
-    //                 email: emailController.text,
-    //                 type: type!);
-    //           }
-    //           AwesomeDialog(
-    //               autoDismiss: false,
-    //               context: context,
-    //               dialogType: DialogType.SUCCES,
-    //               animType: AnimType.BOTTOMSLIDE,
-    //               title: 'Success',
-    //               desc: 'Account successfully created',
-    //               btnOkText: "Ok",
-    //               btnOkOnPress: () {
-    //                 return Navigator.push(
-    //                   context,
-    //                   MaterialPageRoute(
-    //                     builder: (context) => const NavigationDrawer(),
-    //                   ),
-    //                 );
-    //               },
-    //               onDissmissCallback: (d){
-    //                 return Navigator.push(
-    //                   context,
-    //                   MaterialPageRoute(
-    //                     builder: (context) => const NavigationDrawer(),
-    //                   ),
-    //                 );
-    //               }
-    //           ).show();
-    //       } on FirebaseAuthException catch (error) {
-    //         // Utils.showSnackBar(error.message);
-    //         AwesomeDialog(
-    //           context: context,
-    //           dialogType: DialogType.ERROR,
-    //           animType: AnimType.BOTTOMSLIDE,
-    //           title: 'Warning',
-    //           desc: '${error.message}',
-    //           btnCancelText: "Cancel",
-    //           btnOkText: "Ok",
-    //           btnOkOnPress: () {},
-    //           btnCancelOnPress: () {},
-    //         ).show();
-    //       }
-    //       setState(() {
-    //         isLoading = false;
-    //       });
-    //     }
-    //   },
-    // );
   }
 
   Widget loginButton() {
