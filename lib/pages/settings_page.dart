@@ -60,7 +60,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     title: 'Phone number',
                     subtitle: user!.number,
                     function: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const EditPhoneFormPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const EditPhoneFormPage()));
                     },
                   ),
                   settingsTiles(
@@ -68,7 +71,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     title: 'Username',
                     subtitle: user.name,
                     function: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const EditNameFormPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const EditNameFormPage()));
                     },
                   ),
                   settingsTilesNoSubtitle(
@@ -114,10 +120,14 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget settingsTitle({required String title}) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(12.0),
       child: Text(
         title,
-        style: TextStyle(color: Colors.grey.shade700),
+        style: TextStyle(
+          color: Colors.grey.shade700,
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
       ),
     );
   }
@@ -130,10 +140,13 @@ class _SettingsPageState extends State<SettingsPage> {
   }) {
     return ListTile(
       tileColor: Colors.white,
-      leading: Icon(icon  ,color: Color(0xff205375)),
+      leading: Icon(icon, color: Color(0xff205375)),
       title: Text(title),
       subtitle: Text(subtitle),
-      trailing: const Icon(Icons.arrow_forward_ios),
+      trailing: const Icon(
+        Icons.arrow_forward_ios,
+        color: Color(0xff205375),
+      ),
       onTap: function,
     );
   }
@@ -144,9 +157,15 @@ class _SettingsPageState extends State<SettingsPage> {
       required VoidCallback function}) {
     return ListTile(
       tileColor: Colors.white,
-      leading: Icon(icon,color: Color(0xff205375),),
+      leading: Icon(
+        icon,
+        color: Color(0xff205375),
+      ),
       title: Text(title),
-      trailing: const Icon(Icons.arrow_forward_ios),
+      trailing: const Icon(
+        Icons.arrow_forward_ios,
+        color: Color(0xff205375),
+      ),
       onTap: function,
     );
   }
@@ -154,11 +173,11 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget lockAppTile({required IconData icon, required String title}) {
     return ListTile(
         tileColor: Colors.white,
-        leading: Icon(icon,color: Color(0xff205375)),
+        leading: Icon(icon, color: Color(0xff205375)),
         title: Text(title),
         trailing: Switch(
           value: lockApp,
-          activeColor: const Color(0xff141E27),
+          activeColor: const Color(0xff205375),
           onChanged: (bool value) {
             setState(() {
               lockApp = value;
@@ -175,11 +194,11 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget useFingerPrintsTile({required IconData icon, required String title}) {
     return ListTile(
         tileColor: Colors.white,
-        leading: Icon(icon,color: Color(0xff205375)),
+        leading: Icon(icon, color: Color(0xff205375)),
         title: Text(title),
         trailing: Switch(
           value: fingerPrint,
-          activeColor: const Color(0xff141E27),
+          activeColor: const Color(0xff205375),
           onChanged: (bool value) {
             setState(() {
               fingerPrint = value;
@@ -197,11 +216,11 @@ class _SettingsPageState extends State<SettingsPage> {
       {required IconData icon, required String title}) {
     return ListTile(
         tileColor: Colors.white,
-        leading: Icon(icon,color: Color(0xff205375)),
+        leading: Icon(icon, color: Color(0xff205375)),
         title: Text(title),
         trailing: Switch(
           value: notifications,
-          activeColor: const Color(0xff141E27),
+          activeColor: const Color(0xff205375),
           onChanged: (bool value) {
             setState(() {
               notifications = value;

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/pages/login_page.dart';
-import 'package:graduation_project/pages/make_reservations.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
 import 'package:graduation_project/widgets/utils_show_snackbar.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +33,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => ReservationInfo()),
         ChangeNotifierProvider(create: (context) => NavigationProvider()),
       ],
       child: MaterialApp(
@@ -100,30 +98,28 @@ class SplashScreen extends StatefulWidget {
       _SplashScreenWithDurationState();
 }
 
-class _SplashScreenState extends State<SplashScreenWithDuration> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/images/logo.png',
-              height: 160,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            const CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Color(0xff398AB9)),
-            )
-          ],
-        ),
+Widget splashScreen() {
+  return Scaffold(
+    backgroundColor: Colors.white,
+    body: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            'assets/images/logo.png',
+            height: 160,
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          const CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Color(0xff205375)),
+            //Color(0xff398AB9)
+          )
+        ],
       ),
-    );
-  }
+    ),
+  );
 }
 /*
 class MyHomePage extends StatefulWidget {

@@ -4,6 +4,8 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:graduation_project/main.dart';
 import 'package:graduation_project/pages/employee_account.dart';
 import 'package:graduation_project/pages/employee_page.dart';
 import 'package:graduation_project/pages/feedback_page.dart';
@@ -12,6 +14,7 @@ import 'package:graduation_project/pages/student_page.dart';
 import 'package:graduation_project/pages/your_account.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets/search_delegate_employee.dart';
 import '../widgets/user_class.dart';
 import 'employee_services.dart';
 import 'login_page.dart';
@@ -220,13 +223,16 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                   ? drawerTiles(
                                       icon: Icons.connect_without_contact,
                                       title: 'Make Reservations',
-                                      function: () {
+                                      function: () async {
                                         setState(() {
                                           Provider.of<NavigationProvider>(
                                                   context,
                                                   listen: false)
                                               .value = 0;
                                         });
+                                        buildBottomSheet(
+                                            stdName: user.name,
+                                            stdImage: user.image);
                                       },
                                     )
                                   : drawerTiles(
@@ -326,6 +332,8 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                   ),
                 ],
               );
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return splashScreen();
             } else {
               return GestureDetector(
                 onTap: () {
@@ -337,6 +345,88 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               );
             }
           }),
+    );
+  }
+
+  Future buildBottomSheet({required String stdName, required stdImage}) {
+    return showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      builder: (context) => SizedBox(
+        height: 200,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 30),
+          child: ListView(
+            children: [
+              const Center(
+                child: Text(
+                  "Choose who you want to meet:",
+                  style: TextStyle(fontSize: 22),
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  loginButton(
+                    title: 'Doctor',
+                    function: () async {
+                      Navigator.pop(context);
+                      await showSearch(
+                        context: context,
+                        delegate: EmployeeSearchDelegate(
+                            type: 'doctor',
+                            stdName: stdName,
+                            stdImage: stdImage),
+                      );
+                    },
+                  ),
+                  loginButton(
+                    title: 'Registration',
+                    function: () async {
+                      Navigator.pop(context);
+                      await showSearch(
+                        context: context,
+                        delegate: EmployeeSearchDelegate(
+                            type: 'registration',
+                            stdName: stdName,
+                            stdImage: stdImage),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget loginButton({required String title, required VoidCallback function}) {
+    return OutlinedButton(
+      style: OutlinedButton.styleFrom(
+        minimumSize: Size(MediaQuery.of(context).size.width * .35,
+            MediaQuery.of(context).size.height * .06),
+        side: const BorderSide(width: 1, color: Colors.black),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+        ),
+      ),
+      onPressed: function,
+      child: Text(
+        title,
+        style: GoogleFonts.ubuntu(
+          textStyle: const TextStyle(fontSize: 20, color: Colors.black),
+        ),
+      ),
     );
   }
 

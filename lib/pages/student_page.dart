@@ -83,7 +83,9 @@ class _StudentPageState extends State<StudentPage> {
                             Text(
                               "You have no meetings for today",
                               style: TextStyle(
-                                  fontSize: 24, color: Color(0xff205375)),
+                                  fontSize: 24,
+                                  color: Color(0xff205375),
+                                  fontWeight: FontWeight.bold),
                             ),
                             SizedBox(
                               height: 10,
@@ -94,13 +96,18 @@ class _StudentPageState extends State<StudentPage> {
                                 Text(
                                   "Add one",
                                   style: TextStyle(
-                                      fontSize: 24, color: Color(0xff205375)),
+                                      fontSize: 24,
+                                      color: Color(0xff205375),
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 SizedBox(
                                   width: 10,
                                 ),
-                                Icon(Icons.arrow_forward_sharp,
-                                    color: Color(0xff205375)),
+                                Icon(
+                                  Icons.arrow_forward_sharp,
+                                  color: Color(0xff205375),
+                                  size: 35,
+                                ),
                               ],
                             ),
                           ],
@@ -111,9 +118,25 @@ class _StudentPageState extends State<StudentPage> {
                 ],
               );
             } else {
-              return ListView(
-                padding: const EdgeInsets.all(12.0),
-                children: [...users.map(buildListTile).toList()],
+              return Stack(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Image.asset(
+                          "assets/images/bottom_left.png",
+                          width: MediaQuery.of(context).size.width * .3,
+                        ),
+                      ),
+                    ],
+                  ),
+                  ListView(
+                    padding: const EdgeInsets.all(12.0),
+                    children: [...users.map(buildListTile).toList()],
+                  ),
+                ],
               );
             }
           } else if (snapshot.hasError) {
@@ -155,7 +178,14 @@ class _StudentPageState extends State<StudentPage> {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: const Color(0xff398AB9),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xff205375),
+                    Color(0xff92B4EC),
+                  ],
+                ),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Material(

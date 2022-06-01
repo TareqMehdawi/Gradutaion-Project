@@ -4,10 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../pages/your_account.dart';
-import 'backbutton_widget.dart';
-
-// This class handles the Page to edit the Phone Section of the User Profile.
 class EditPhoneFormPage extends StatefulWidget {
   const EditPhoneFormPage({Key? key}) : super(key: key);
 
@@ -20,7 +16,6 @@ class EditPhoneFormPage extends StatefulWidget {
 class EditPhoneFormPageState extends State<EditPhoneFormPage> {
   final _formKey = GlobalKey<FormState>();
   final phoneController = TextEditingController();
-  var user = UserData.myUser;
   final currentUser = FirebaseAuth.instance.currentUser!;
 
   @override
@@ -29,23 +24,25 @@ class EditPhoneFormPageState extends State<EditPhoneFormPage> {
     super.dispose();
   }
 
-  void updateUserValue(String phone) {
-    String formattedPhoneNumber =
-        "(${phone.substring(0, 3)}) ${phone.substring(3, 6)}-${phone.substring(6, phone.length)}";
-    user.phone = formattedPhoneNumber;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Edit Account',
+          ),
+          centerTitle: true,
+          backgroundColor: Color(0xff205375),
+          elevation: 0,
+        ),
         body: Form(
-      key: _formKey,
-      child: ListView(
-        children: [
-          customBackButton(color: Color(0xff205375)),
-          const SizedBox(
-              width: 320,
-              child: Center(
+          key: _formKey,
+          child: ListView(
+            children: [
+              SizedBox(
+                height: 20,
+              ),
+              Center(
                 child: Text(
                   "What's Your Phone Number?",
                   style: TextStyle(
@@ -53,50 +50,51 @@ class EditPhoneFormPageState extends State<EditPhoneFormPage> {
                       fontWeight: FontWeight.bold,
                       color: Color(0xff205375)),
                 ),
-              )),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.only(top: 40),
+                      child: SizedBox(
+                          height: 100,
+                          width: 200,
+                          child: TextFormField(
+                            //keyboardType:,
+                            // Handles Form Validation
+                            keyboardType: TextInputType.number,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your phone number';
+                              } else if (isAlpha(value)) {
+                                return 'Only Numbers Please';
+                              } else if (value.length < 10) {
+                                return 'Please enter a VALID phone number';
+                              }
+                              return null;
+                            },
+                            controller: phoneController,
+                            decoration: const InputDecoration(
+                              labelText: 'Your Phone Number',
+                            ),
+                          ))),
+                ],
+              ),
               Padding(
-                  padding: const EdgeInsets.only(top: 40),
+                padding: const EdgeInsets.only(top: 150),
+                child: Align(
+                  alignment: Alignment.bottomCenter,
                   child: SizedBox(
-                      height: 100,
-                      width: 200,
-                      child: TextFormField(
-                        //keyboardType:,
-                        // Handles Form Validation
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your phone number';
-                          } else if (isAlpha(value)) {
-                            return 'Only Numbers Please';
-                          } else if (value.length < 10) {
-                            return 'Please enter a VALID phone number';
-                          }
-                          return null;
-                        },
-                        controller: phoneController,
-                        decoration: const InputDecoration(
-                          labelText: 'Your Phone Number',
-                        ),
-                      ))),
+                    width: double.infinity,
+                    height: 50,
+                    child: editPhoneNumberButton(),
+                  ),
+                ),
+              ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 150),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: editPhoneNumberButton(),
-              ),
-            ),
-          ),
-        ],
-      ),
-    ));
+        ));
   }
 
   Future updateUserPhone({required String phoneNumber}) async {

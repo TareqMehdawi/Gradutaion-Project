@@ -3,8 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../pages/your_account.dart';
-
 class EditOfficeFormPage extends StatefulWidget {
   const EditOfficeFormPage({Key? key}) : super(key: key);
 
@@ -17,7 +15,6 @@ class EditOfficeFormPage extends StatefulWidget {
 class EditOfficeFormPageState extends State<EditOfficeFormPage> {
   final _formKey = GlobalKey<FormState>();
   final officeController = TextEditingController();
-  var user = UserData.myUser;
   final currentUser = FirebaseAuth.instance.currentUser!;
 
   @override
@@ -26,17 +23,15 @@ class EditOfficeFormPageState extends State<EditOfficeFormPage> {
     super.dispose();
   }
 
-  void updateUserValue(String email) {
-    user.email = email;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.black),
-        leading: const BackButton(),
-        backgroundColor: Colors.transparent,
+        title: Text(
+          'Edit Account',
+        ),
+        centerTitle: true,
+        backgroundColor: Color(0xff205375),
         elevation: 0,
       ),
       body: Form(
@@ -44,18 +39,18 @@ class EditOfficeFormPageState extends State<EditOfficeFormPage> {
         child: ListView(
           // crossAxisAlignment: CrossAxisAlignment.center,
           // mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            const SizedBox(
-              width: 320,
-              child: Center(
-                child: Text(
-                  "What's your office location?",
-                  style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xff205375)),
-                  textAlign: TextAlign.left,
-                ),
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: Text(
+                "What's your office location?",
+                style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff205375)),
+                textAlign: TextAlign.left,
               ),
             ),
             Column(
@@ -110,36 +105,32 @@ class EditOfficeFormPageState extends State<EditOfficeFormPage> {
   }
 
   Widget editOfficeButton() {
-    return Container(
-      padding: EdgeInsets.only(left: 20, top: 0, bottom: 0, right: 20),
-      child: SizedBox(
-        width: double.infinity,
-        height: 50,
-        child: ElevatedButton(
-          //focusNode: f3,
-          child: Text(
-            'Update',
-            style: GoogleFonts.lato(
-              color: Colors.white,
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
-            ),
+    return SizedBox(
+      width: double.infinity,
+      height: 50,
+      child: ElevatedButton(
+        //focusNode: f3,
+        child: Text(
+          'Update',
+          style: GoogleFonts.lato(
+            color: Colors.white,
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
           ),
-          onPressed: () {
-            if (_formKey.currentState!.validate() &&
-                isAlpha(officeController.text)) {
-              updateUserValue(officeController.text);
-              createOfficeField(office: officeController.text.trim());
-              Navigator.pop(context);
-            }
-          },
-          style: ElevatedButton.styleFrom(
-            elevation: 2,
-            primary: Color(0xff205375),
-            onPrimary: Color(0xff205375),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(32.0),
-            ),
+        ),
+        onPressed: () {
+          if (_formKey.currentState!.validate() &&
+              isAlpha(officeController.text)) {
+            createOfficeField(office: officeController.text.trim());
+            Navigator.pop(context);
+          }
+        },
+        style: ElevatedButton.styleFrom(
+          elevation: 2,
+          primary: Color(0xff205375),
+          onPrimary: Color(0xff205375),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(32.0),
           ),
         ),
       ),

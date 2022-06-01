@@ -5,7 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/pages/forgot_password.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
 import 'package:graduation_project/pages/register_page.dart';
-import 'package:graduation_project/widgets/spinKit_widget.dart';
+
+import '../main.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -38,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return isLoading == true
-        ? const SpinKitWidget()
+        ? splashScreen()
         : Scaffold(
             body: StreamBuilder<User?>(
               stream: FirebaseAuth.instance.authStateChanges(),

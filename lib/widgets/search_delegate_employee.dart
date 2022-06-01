@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:graduation_project/pages/make_reservations.dart';
 import 'package:graduation_project/pages/selected_employee.dart';
-import 'package:provider/provider.dart';
 
 class EmployeeSearchDelegate extends SearchDelegate {
   String stdName;
@@ -69,16 +67,23 @@ class EmployeeSearchDelegate extends SearchDelegate {
                     final String email = data.get('email');
                     return ListTile(
                       onTap: () {
-                        Provider.of<ReservationInfo>(context, listen: false)
-                            .selectedEmployee = data.get('name');
+                        // Provider.of<ReservationInfo>(context, listen: false)
+                        //     .selectedEmployee = data.get('name');
+                        // Provider.of<ReservationInfo>(context,listen: false).selectedEmployeeId = id ;
                         close(context, null);
-                        Provider.of<ReservationInfo>(context, listen: false)
-                            .selectedEmployeeId = id;
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    const ReservationPage()));
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => YourAccount2(
+                              uid: id,
+                              stdName: stdName,
+                              stdImage: stdImage,
+                            ),
+                          ),
+                        );
+                        // Provider.of<ReservationInfo>(context,listen: false).selectedEmployeeId = id ;
+                        // query = name;
+                        // close(context, query);
                       },
                       leading: CircleAvatar(
                         backgroundImage: NetworkImage(image),

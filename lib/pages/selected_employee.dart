@@ -84,14 +84,15 @@ class _YourAccount2 extends State<YourAccount2> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: [
-                        Color(0xff205399),
-                        Color(0xff92B4EC),
-                      ],
-                    )),
+                      gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [
+                          Color(0xff205399),
+                          Color(0xff92B4EC),
+                        ],
+                      ),
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
