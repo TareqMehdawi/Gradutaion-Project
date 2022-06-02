@@ -43,20 +43,21 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const SplashScreen(),
+        home: const SplashScreenWithDuration(),
       ),
     );
   }
 }
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+class SplashScreenWithDuration extends StatefulWidget {
+  const SplashScreenWithDuration({Key? key}) : super(key: key);
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  State<SplashScreenWithDuration> createState() =>
+      _SplashScreenWithDurationState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenWithDurationState extends State<SplashScreenWithDuration> {
   @override
   void initState() {
     super.initState();
@@ -91,6 +92,39 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 }
 
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SplashScreenWithDuration> createState() =>
+      _SplashScreenWithDurationState();
+}
+
+class _SplashScreenState extends State<SplashScreenWithDuration> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/logo.png',
+              height: 160,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Color(0xff398AB9)),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
 /*
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
+import '../widgets/backbutton_widget.dart';
 import '../widgets/user_class.dart';
 
 class BookingScreen extends StatefulWidget {
@@ -63,7 +64,7 @@ class _BookingScreenState extends State<BookingScreen> {
       String a = items2[i]["service"];
       items.add(a);
     }
-    imageemp=items2[0]["image"];
+    imageemp = items2[0]["image"];
     return items;
   }
 
@@ -417,490 +418,369 @@ class _BookingScreenState extends State<BookingScreen> {
                       ),
                     ],
                   ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: IconButton(
-                          iconSize: 30.0,
-                          icon: Icon(
-                            Icons.arrow_back,
-                            color: Color(0xff205375),
-                          ),
-                          color: Colors.white,
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
+                  Padding(
+                    padding: const EdgeInsets.only(top: 25.0),
+                    child: customBackButton(color: Color(0xff205375)),
+                  ),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * .1,
                         ),
-                      ),
-                      const Image(
-                        image: AssetImage('assets/images/app.gif'),
-                        height: 250,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Form(
-                        key: _formKey,
-                        child: Expanded(
-                          child: Column(
-                            children: [
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                padding: const EdgeInsets.only(left: 18),
-                                child: Center(
-                                  child: Text(
-                                    'Appointment booking',
-                                    style: GoogleFonts.lato(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black54,
-                                    ),
+                        const Image(
+                          image: AssetImage('assets/images/app.gif'),
+                          height: 250,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          padding: const EdgeInsets.only(left: 18),
+                          child: Center(
+                            child: Text(
+                              'Appointment booking',
+                              style: GoogleFonts.lato(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black54,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton2(
+                              isExpanded: true,
+                              hint: Row(
+                                children: [
+                                  Icon(
+                                    Icons.list,
+                                    size: 16,
+                                    color: Colors.grey.shade400,
                                   ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 30,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15.0),
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton2(
-                                    isExpanded: true,
-                                    hint: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.list,
-                                          size: 16,
-                                          color: Colors.grey.shade400,
-                                        ),
-                                        SizedBox(
-                                          width: 4,
-                                        ),
-                                        Expanded(
-                                          child: Text(
-                                            'Select Service',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.grey.shade400,
-                                            ),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    items: sendItem(user)
-                                        .map(
-                                          (item) => DropdownMenuItem(
-                                            value: item,
-                                            child: Text(
-                                              item,
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                              ),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                        )
-                                        .toList(),
-                                    value: selectedValue,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedValue2 = null;
-                                        isSelected = false;
-                                        selectedValue = value as String;
-                                        serviceSelect = value;
-                                      });
-                                    },
-                                    icon: const Icon(
-                                      Icons.arrow_forward_ios_outlined,
-                                    ),
-                                    iconSize: 14,
-                                    iconEnabledColor: Colors.grey.shade400,
-                                    iconDisabledColor: Color(0xff205375),
-                                    buttonHeight: 50,
-                                    buttonWidth: 500,
-                                    buttonPadding: const EdgeInsets.only(
-                                        left: 14, right: 14),
-                                    buttonDecoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(14),
-                                      border: Border.all(
-                                        color: Colors.black26,
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      'Select Service',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey.shade400,
                                       ),
-                                      color: Color(0xff205375),
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    buttonElevation: 2,
-                                    itemHeight: 40,
-                                    itemPadding: const EdgeInsets.symmetric(
-                                        horizontal: 14),
-                                    dropdownMaxHeight: 200,
-                                    dropdownPadding: null,
-                                    dropdownDecoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(14),
-                                      color: Color(0xff205375),
-                                    ),
-                                    dropdownElevation: 8,
-                                    scrollbarRadius: const Radius.circular(40),
-                                    scrollbarThickness: 6,
-                                    scrollbarAlwaysShow: true,
                                   ),
-                                ),
+                                ],
                               ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15.0),
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton2(
-                                    isExpanded: true,
-                                    hint: Row(
-                                      children: const [
-                                        Icon(
-                                          Icons.list,
-                                          size: 16,
-                                          color: Color(0xff205375),
+                              items: sendItem(user)
+                                  .map(
+                                    (item) => DropdownMenuItem(
+                                      value: item,
+                                      child: Text(
+                                        item,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
                                         ),
-                                        SizedBox(
-                                          width: 4,
-                                        ),
-                                        Expanded(
-                                          child: Text(
-                                            'Select Day',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                              color: Color(0xff205375),
-                                            ),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    items: sendItem2(user)
-                                        .map((item) => DropdownMenuItem<String>(
-                                              value: item,
-                                              child: Text(
-                                                item,
-                                                style: const TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white,
-                                                ),
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ))
-                                        .toList(),
-                                    value: selectedValue2,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        isSelected = true;
-                                        selectedValue2 = value as String;
-                                        daySelect = value;
-                                        //print(value);
-                                      });
-                                    },
-                                    icon: const Icon(
-                                      Icons.arrow_forward_ios_outlined,
-                                    ),
-                                    iconSize: 14,
-                                    iconEnabledColor: Color(0xff205375),
-                                    iconDisabledColor: Colors.white,
-                                    buttonHeight: 50,
-                                    buttonWidth: 500,
-                                    buttonPadding: const EdgeInsets.only(
-                                        left: 14, right: 14),
-                                    buttonDecoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(14),
-                                      border: Border.all(
-                                        color: Colors.black26,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                      color: Colors.grey.shade400,
                                     ),
-                                    buttonElevation: 2,
-                                    itemHeight: 40,
-                                    itemPadding: const EdgeInsets.only(
-                                        left: 14, right: 14),
-                                    dropdownMaxHeight: 200,
-                                    dropdownPadding: null,
-                                    dropdownDecoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(14),
-                                      color: Colors.grey.shade400,
-                                    ),
-                                    dropdownElevation: 8,
-                                    scrollbarRadius: const Radius.circular(40),
-                                    scrollbarThickness: 6,
-                                    scrollbarAlwaysShow: true,
-                                  ),
+                                  )
+                                  .toList(),
+                              value: selectedValue,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedValue2 = null;
+                                  isSelected = false;
+                                  selectedValue = value as String;
+                                  serviceSelect = value;
+                                });
+                              },
+                              icon: const Icon(
+                                Icons.arrow_forward_ios_outlined,
+                              ),
+                              iconSize: 14,
+                              iconEnabledColor: Colors.grey.shade400,
+                              iconDisabledColor: Color(0xff205375),
+                              buttonHeight: 50,
+                              buttonWidth: 500,
+                              buttonPadding:
+                                  const EdgeInsets.only(left: 14, right: 14),
+                              buttonDecoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(14),
+                                border: Border.all(
+                                  color: Colors.black26,
                                 ),
+                                color: Color(0xff205375),
                               ),
-                              const SizedBox(
-                                height: 20,
+                              buttonElevation: 2,
+                              itemHeight: 40,
+                              itemPadding:
+                                  const EdgeInsets.symmetric(horizontal: 14),
+                              dropdownMaxHeight: 200,
+                              dropdownPadding: null,
+                              dropdownDecoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(14),
+                                color: Colors.grey.shade400,
                               ),
-                              if (isSelected == true)
-                                FutureBuilder(
-                                    future: getTime(user),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasError) {
-                                        return const Text(
-                                            'Something went wrong');
-                                      } else if (snapshot.hasData) {
-                                        final List user2 =
-                                            snapshot.data as List;
-                                        return Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 0, vertical: 0),
-                                            child: ListView.builder(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 10.0),
-                                              shrinkWrap: true,
-                                              scrollDirection: Axis.horizontal,
-                                              itemCount: send(
+                              dropdownElevation: 8,
+                              scrollbarRadius: const Radius.circular(40),
+                              scrollbarThickness: 6,
+                              scrollbarAlwaysShow: true,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton2(
+                              isExpanded: true,
+                              hint: Row(
+                                children: const [
+                                  Icon(
+                                    Icons.list,
+                                    size: 16,
+                                    color: Color(0xff205375),
+                                  ),
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      'Select Day',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xff205375),
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              items: sendItem2(user)
+                                  .map((item) => DropdownMenuItem<String>(
+                                        value: item,
+                                        child: Text(
+                                          item,
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ))
+                                  .toList(),
+                              value: selectedValue2,
+                              onChanged: (value) {
+                                setState(() {
+                                  isSelected = true;
+                                  selectedValue2 = value as String;
+                                  daySelect = value;
+                                  //print(value);
+                                });
+                              },
+                              icon: const Icon(
+                                Icons.arrow_forward_ios_outlined,
+                              ),
+                              iconSize: 14,
+                              iconEnabledColor: Color(0xff205375),
+                              iconDisabledColor: Colors.white,
+                              buttonHeight: 50,
+                              buttonWidth: 500,
+                              buttonPadding:
+                                  const EdgeInsets.only(left: 14, right: 14),
+                              buttonDecoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(14),
+                                border: Border.all(
+                                  color: Colors.black26,
+                                ),
+                                color: Colors.grey.shade400,
+                              ),
+                              buttonElevation: 2,
+                              itemHeight: 40,
+                              itemPadding:
+                                  const EdgeInsets.only(left: 14, right: 14),
+                              dropdownMaxHeight: 200,
+                              dropdownPadding: null,
+                              dropdownDecoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(14),
+                                color: Color(0xff205375),
+                              ),
+                              dropdownElevation: 8,
+                              scrollbarRadius: const Radius.circular(40),
+                              scrollbarThickness: 6,
+                              scrollbarAlwaysShow: true,
+                            ),
+                          ),
+                        ),
+                        if (isSelected == true)
+                          FutureBuilder(
+                              future: getTime(user),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return const Text('Something went wrong');
+                                } else if (snapshot.hasData) {
+                                  final List user2 = snapshot.data as List;
+                                  return Expanded(
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: send(user2,
+                                              user[serviceIndex!]["duration"])
+                                          .length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) =>
+                                              Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0, vertical: 50),
+                                        child: InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              onTimeSelect = index;
+                                              selectedTime = send(
+                                                  user2,
+                                                  user[serviceIndex!]
+                                                      ["duration"])[index];
+                                              //onTimeSelect = !onTimeSelect;
+                                            });
+                                          },
+                                          splashColor: Colors.indigo,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                border: Border.all(),
+                                                borderRadius:
+                                                    BorderRadius.circular(32.0),
+                                                color: index == onTimeSelect
+                                                    ? Color(0xff205375)
+                                                    : Colors.grey.shade400),
+                                            child: Center(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 25.0),
+                                                child: Text(
+                                                  send(
                                                       user2,
                                                       user[serviceIndex!]
-                                                          ["duration"])
-                                                  .length,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                          int index) =>
-                                                      Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      onTimeSelect = index;
-                                                      selectedTime = send(
-                                                              user2,
-                                                              user[serviceIndex!]
-                                                                  ["duration"])[
-                                                          index];
-                                                      //onTimeSelect = !onTimeSelect;
-                                                    });
-                                                  },
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          32.0),
-                                                  splashColor: Colors.indigo,
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        border: Border.all(),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(32.0),
-                                                        color: index ==
-                                                                onTimeSelect
-                                                            ? Color(0xff205375)
-                                                            : Colors
-                                                                .grey.shade400),
-                                                    height: 30,
-                                                    child: Center(
-                                                        child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Text(
-                                                        send(
-                                                            user2,
-                                                            user[serviceIndex!][
-                                                                "duration"])[index],
-                                                        style: const TextStyle(
-                                                            fontSize: 14,
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                    )),
-                                                  ),
+                                                          ["duration"])[index],
+                                                  style: const TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        );
-                                      } else {
-                                        return const Center(
-                                          child: Text('hi'),
-                                        );
-                                      }
-                                    }),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(
-                                    left: 20, top: 0, bottom: 0, right: 20),
-                                child: SizedBox(
-                                  width: double.infinity,
-                                  height: 50,
-                                  child: ElevatedButton(
-                                    child: Text(
-                                      "Book Appointment",
-                                      style: GoogleFonts.lato(
-                                        color: Colors.white,
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
-                                    onPressed: () async {
-                                      try {
-                                        await checkUser();
-                                        await setReservation(
-                                            empName: widget.empName,
-                                            empId: widget.uid,
-                                            service: serviceSelect!,
-                                            people: 10,
-                                            currentTime: selectedTime!,
-                                            currentDate: daySelect!,
-                                            studentName: widget.stdName,
-                                            imageemp:imageemp!,
-                                        );
-                                        AwesomeDialog(
-                                            autoDismiss: false,
-                                            context: context,
-                                            dialogType: DialogType.SUCCES,
-                                            animType: AnimType.BOTTOMSLIDE,
-                                            title: 'Success',
-                                            desc:
-                                                'Appointment Scheduled Successfully',
-                                            btnOkText: "Ok",
-                                            btnOkOnPress: () {
-                                              Navigator.of(context).popUntil(
-                                                  (route) => route.isFirst);
-                                            },
-                                            onDissmissCallback: (d) {
-                                              return Navigator.of(context)
-                                                  .popUntil(
-                                                      (route) => route.isFirst);
-                                            }).show();
-                                      } catch (e) {
-                                        AwesomeDialog(
-                                            autoDismiss: false,
-                                            context: context,
-                                            dialogType: DialogType.ERROR,
-                                            animType: AnimType.BOTTOMSLIDE,
-                                            title: 'ERROR',
-                                            desc:
-                                                'You already have an appointment with ${widget.empName}',
-                                            btnOkText: "Go Back",
-                                            btnOkColor: Colors.red,
-                                            btnOkOnPress: () {
-                                              Navigator.of(context).popUntil(
-                                                  (route) => route.isFirst);
-                                            },
-                                            onDissmissCallback: (d) {
-                                              return Navigator.of(context)
-                                                  .popUntil(
-                                                      (route) => route.isFirst);
-                                            }).show();
-                                      }
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      elevation: 2,
-                                      primary: Color(0xff205375),
-                                      onPrimary: Color(0xff205375),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(32.0),
-                                      ),
-                                    ),
+                                  );
+                                } else {
+                                  return const Center(
+                                    child: Text('hi'),
+                                  );
+                                }
+                              }),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: 70,
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 15.0),
+                              child: ElevatedButton(
+                                child: Text(
+                                  "Book Appointment",
+                                  style: GoogleFonts.lato(
+                                    color: Colors.white,
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  try {
+                                    await checkUser();
+                                    await setReservation(
+                                      empName: widget.empName,
+                                      empId: widget.uid,
+                                      service: serviceSelect!,
+                                      people: 10,
+                                      currentTime: selectedTime!,
+                                      currentDate: daySelect!,
+                                      studentName: widget.stdName,
+                                      imageemp: imageemp!,
+                                    );
+                                    AwesomeDialog(
+                                        autoDismiss: false,
+                                        context: context,
+                                        dialogType: DialogType.SUCCES,
+                                        animType: AnimType.BOTTOMSLIDE,
+                                        title: 'Success',
+                                        desc:
+                                            'Appointment Scheduled Successfully',
+                                        btnOkText: "Ok",
+                                        btnOkOnPress: () {
+                                          Navigator.of(context).popUntil(
+                                              (route) => route.isFirst);
+                                        },
+                                        onDissmissCallback: (d) {
+                                          return Navigator.of(context).popUntil(
+                                              (route) => route.isFirst);
+                                        }).show();
+                                  } catch (e) {
+                                    AwesomeDialog(
+                                        autoDismiss: false,
+                                        context: context,
+                                        dialogType: DialogType.ERROR,
+                                        animType: AnimType.BOTTOMSLIDE,
+                                        title: 'ERROR',
+                                        desc:
+                                            'You already have an appointment with ${widget.empName}',
+                                        btnOkText: "Go Back",
+                                        btnOkColor: Colors.red,
+                                        btnOkOnPress: () {
+                                          Navigator.of(context).popUntil(
+                                              (route) => route.isFirst);
+                                        },
+                                        onDissmissCallback: (d) {
+                                          return Navigator.of(context).popUntil(
+                                              (route) => route.isFirst);
+                                        }).show();
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 2,
+                                  primary: Color(0xff205375),
+                                  onPrimary: Color(0xff205375),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14.0),
                                   ),
                                 ),
                               ),
-
-                              // SizedBox(
-                              //   height: 50,
-                              //   width: MediaQuery.of(context).size.width,
-                              //   child: Padding(
-                              //     padding: const EdgeInsets.symmetric(
-                              //         horizontal: 18.0),
-                              //     child: ElevatedButton(
-                              //       style: ElevatedButton.styleFrom(
-                              //         elevation: 2,
-                              //         primary: Colors.indigo,
-                              //         onPrimary: Colors.black,
-                              //         shape: RoundedRectangleBorder(
-                              //           borderRadius: BorderRadius.circular(32.0),
-                              //         ),
-                              //       ),
-                              //       onPressed: () async {
-                              //         try {
-                              //           await checkUser();
-                              //           await setReservation(
-                              //               empName: widget.empName,
-                              //               empId: widget.uid,
-                              //               service: serviceSelect!,
-                              //               people: 10,
-                              //               currentTime: selectedTime!,
-                              //               currentDate: daySelect!,
-                              //               studentName: widget.stdName);
-                              //           AwesomeDialog(
-                              //               autoDismiss: false,
-                              //               context: context,
-                              //               dialogType: DialogType.SUCCES,
-                              //               animType: AnimType.BOTTOMSLIDE,
-                              //               title: 'Success',
-                              //               desc:
-                              //               'Appointment Scheduled Successfully',
-                              //               btnOkText: "Ok",
-                              //               btnOkOnPress: () {
-                              //                 Navigator.of(context).popUntil(
-                              //                         (route) => route.isFirst);
-                              //               },
-                              //               onDissmissCallback: (d) {
-                              //                 return Navigator.of(context)
-                              //                     .popUntil(
-                              //                         (route) => route.isFirst);
-                              //               }).show();
-                              //         } catch (e) {
-                              //           AwesomeDialog(
-                              //               autoDismiss: false,
-                              //               context: context,
-                              //               dialogType: DialogType.ERROR,
-                              //               animType: AnimType.BOTTOMSLIDE,
-                              //               title: 'ERROR',
-                              //               desc:
-                              //               'You already have an appointment with ${widget.empName}',
-                              //               btnOkText: "Go Back",
-                              //               btnOkColor: Colors.red,
-                              //               btnOkOnPress: () {
-                              //                 Navigator.of(context).popUntil(
-                              //                         (route) => route.isFirst);
-                              //               },
-                              //               onDissmissCallback: (d) {
-                              //                 return Navigator.of(context)
-                              //                     .popUntil(
-                              //                         (route) => route.isFirst);
-                              //               }).show();
-                              //         }
-                              //       },
-                              //       child: Text(
-                              //         "Book Appointment",
-                              //         style: GoogleFonts.lato(
-                              //           color: Colors.white,
-                              //           fontSize: 18,
-                              //           fontWeight: FontWeight.bold,
-                              //         ),
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               );
@@ -954,16 +834,15 @@ class _BookingScreenState extends State<BookingScreen> {
     }
   }
 
-  Future setReservation({
-    required String empName,
-    required String empId,
-    required String service,
-    required int people,
-    required String currentTime,
-    required String currentDate,
-    required String studentName,
-    required String imageemp
-  }) async {
+  Future setReservation(
+      {required String empName,
+      required String empId,
+      required String service,
+      required int people,
+      required String currentTime,
+      required String currentDate,
+      required String studentName,
+      required String imageemp}) async {
     final docUser = FirebaseFirestore.instance.collection('reservation').doc();
     final user = StudentsReservation(
         id: currentUser.uid,

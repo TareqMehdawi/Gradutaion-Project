@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:graduation_project/widgets/backbutton_widget.dart';
 import 'package:graduation_project/widgets/user_class.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -52,15 +53,9 @@ class EditImagePageState extends State<EditImagePage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       SizedBox(
-                        height: 20,
+                        height: 30,
                       ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: BackButton(),
-                        ),
-                      ),
+                      customBackButton(color: Color(0xff205375)),
                       const SizedBox(
                         width: 330,
                         child: Center(
