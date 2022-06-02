@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -81,6 +81,34 @@ class _StudentPageState extends State<StudentPage> {
       print("error push notification");
     }
   }
+  Future deleteCard() async {
+    var date = DateTime.now();
+    var hourMinute = DateFormat("HH:mm").format(date);
+    final day = DateFormat('EEEE').format(date);
+    final docUser2 = await FirebaseFirestore.instance
+        .collection('reservation')
+        .where('date', isEqualTo: day.toString())
+        .where('id', isEqualTo: currentUser.uid)
+        .get();
+
+    for (var doc in docUser2.docs) {
+      String time = doc.data()['time'].toString().substring(8, 13);
+
+      if (((int.parse(time.substring(3, 5)) ==
+          int.parse(hourMinute.toString().substring(3, 5)) &&
+          int.parse(time.substring(0, 2)) ==
+              int.parse(hourMinute.toString().substring(0, 2))) ||
+          int.parse(time.substring(0, 2)) <
+              int.parse(hourMinute.toString().substring(0, 2)))) {
+        await FirebaseFirestore.instance
+            .collection('reservation')
+            .doc(doc.id)
+            .delete();
+      }
+    }
+    return null;
+  }
+
 
   @override
   void initState() {
@@ -100,6 +128,7 @@ class _StudentPageState extends State<StudentPage> {
   }
 
   Widget build(BuildContext context) {
+    deleteCard();
     return Scaffold(
       appBar: CustomAppBar(
           title: 'Student Page',

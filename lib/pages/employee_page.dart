@@ -7,7 +7,7 @@ import 'package:graduation_project/main.dart';
 import 'package:graduation_project/pages/make_service.dart';
 import 'package:graduation_project/widgets/custom_appbar.dart';
 import 'package:provider/provider.dart';
-
+import 'package:intl/intl.dart';
 import '../styles/colors.dart';
 import '../widgets/edit_appointment.dart';
 import '../widgets/local_notification_service.dart';
@@ -51,6 +51,33 @@ class _EmployeePageState extends State<EmployeePage> {
       print(e);
     }
   }
+  Future deleteCard() async {
+    var date = DateTime.now();
+    var hourMinute = DateFormat("HH:mm").format(date);
+    final day = DateFormat('EEEE').format(date);
+    final docUser2 = await FirebaseFirestore.instance
+        .collection('reservation')
+        .where('date', isEqualTo: day.toString())
+        .where('empId', isEqualTo: currentUser.uid)
+        .get();
+
+    for (var doc in docUser2.docs) {
+      String time = doc.data()['time'].toString().substring(8, 13);
+
+      if (((int.parse(time.substring(3, 5)) ==
+          int.parse(hourMinute.toString().substring(3, 5)) &&
+          int.parse(time.substring(0, 2)) ==
+              int.parse(hourMinute.toString().substring(0, 2))) ||
+          int.parse(time.substring(0, 2)) <
+              int.parse(hourMinute.toString().substring(0, 2)))) {
+        await FirebaseFirestore.instance
+            .collection('reservation')
+            .doc(doc.id)
+            .delete();
+      }
+    }
+    return null;
+  }
 
   @override
   void initState() {
@@ -71,6 +98,7 @@ class _EmployeePageState extends State<EmployeePage> {
 
   @override
   Widget build(BuildContext context) {
+    deleteCard();
     // String selectedService =
     //     Provider.of<ReservationInfo>(context).selectedService;
     return Scaffold(
