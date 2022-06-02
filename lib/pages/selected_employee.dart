@@ -289,6 +289,7 @@ class _YourAccount2 extends State<YourAccount2> {
                                             // ),
                                           ),
                                         );
+                                        print(widget.token);
                                       },
                                       style: ElevatedButton.styleFrom(
                                         elevation: 2,
