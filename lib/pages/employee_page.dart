@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:graduation_project/main.dart';
 import 'package:graduation_project/pages/make_service.dart';
 import 'package:graduation_project/widgets/custom_appbar.dart';
 import 'package:provider/provider.dart';
@@ -67,33 +68,33 @@ class _EmployeePageState extends State<EmployeePage> {
                 child: Image.asset('assets/images/Schedule-bro.png'),
               );
             } else {
-              return ListView(
-                padding: const EdgeInsets.all(12.0),
-                children: [...users.map(buildListTile).toList()],
+              return Stack(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Image.asset(
+                          "assets/images/bottom_left.png",
+                          width: MediaQuery.of(context).size.width * .3,
+                        ),
+                      ),
+                    ],
+                  ),
+                  ListView(
+                    padding: const EdgeInsets.all(12.0),
+                    children: [...users.map(buildListTile).toList()],
+                  ),
+                ],
               );
             }
           } else if (snapshot.hasError) {
-            return const Center(
-              child: Text("hi"),
+            return Center(
+              child: Text("${snapshot.error}"),
             );
           } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return SizedBox(
-              width: 200.0,
-              height: 100.0,
-              child: CircularProgressIndicator(),
-              // Shimmer.fromColors(
-              //   baseColor: Colors.red,
-              //   highlightColor: Colors.yellow,
-              //   child: const Text(
-              //     'Shimmer',
-              //     textAlign: TextAlign.center,
-              //     style: TextStyle(
-              //       fontSize: 40.0,
-              //       fontWeight: FontWeight.bold,
-              //     ),
-              //   ),
-              // ),
-            );
+            return splashScreen();
           } else {
             return const Center(
               child: Text("Error"),
@@ -225,7 +226,14 @@ class _EmployeePageState extends State<EmployeePage> {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: const Color(0xff398AB9),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xff205375),
+                    Color(0xff92B4EC),
+                  ],
+                ),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Material(

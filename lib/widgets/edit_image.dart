@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:graduation_project/widgets/backbutton_widget.dart';
+import 'package:graduation_project/main.dart';
 import 'package:graduation_project/widgets/user_class.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -39,6 +39,14 @@ class EditImagePageState extends State<EditImagePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color(0xFFFFFFFF),
+        appBar: AppBar(
+          title: Text(
+            'Edit Account',
+          ),
+          centerTitle: true,
+          backgroundColor: Color(0xff205375),
+          elevation: 0,
+        ),
         body: FutureBuilder<Users?>(
           future: readUser(),
           builder: (context, snapshot) {
@@ -55,7 +63,6 @@ class EditImagePageState extends State<EditImagePage> {
                       SizedBox(
                         height: 30,
                       ),
-                      customBackButton(color: Color(0xff205375)),
                       const SizedBox(
                         width: 330,
                         child: Center(
@@ -97,77 +104,73 @@ class EditImagePageState extends State<EditImagePage> {
                             SizedBox(
                               height: 15,
                             ),
-                            editImageButton(
-                              name: 'Update',
-                              textColor: Colors.white,
-                              buttonColor: Color(0xff205375),
-                              function: () async {
-                                setState(() {
-                                  isLoading = true;
-                                });
-                                try {
-                                  final ref = FirebaseStorage.instance
-                                      .ref()
-                                      .child('userImage')
-                                      .child('${userImage.name}.jpg');
-                                  await ref.putFile(pickedImage);
-                                  url = await ref.getDownloadURL();
-                                  await FirebaseFirestore.instance
-                                      .collection('users')
-                                      .doc(currentUser.uid)
-                                      .update({
-                                    'imageUrl': url,
-                                  });
+                            if (isLoading == false)
+                              editImageButton(
+                                name: 'Update',
+                                textColor: Colors.white,
+                                buttonColor: Color(0xff205375),
+                                function: () async {
                                   setState(() {
-                                    isLoading = false;
+                                    isLoading = true;
                                   });
-                                  AwesomeDialog(
-                                      autoDismiss: false,
-                                      context: context,
-                                      dialogType: DialogType.SUCCES,
-                                      animType: AnimType.BOTTOMSLIDE,
-                                      title: 'Success',
-                                      desc: 'Image uploaded successfully',
-                                      btnOkText: "Ok",
-                                      btnOkOnPress: () {
-                                        Navigator.pop(context);
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const EditImagePage()));
-                                      },
-                                      onDissmissCallback: (d) {
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const EditImagePage()));
-                                      }).show();
-                                  //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const StudentAccount()));
-                                } catch (e) {
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-                                  AwesomeDialog(
-                                      context: context,
-                                      dialogType: DialogType.ERROR,
-                                      animType: AnimType.BOTTOMSLIDE,
-                                      title: 'Error',
-                                      desc: 'Please choose a photo first',
-                                      btnOkText: "Go Back",
-                                      btnOkColor: Colors.red,
-                                      btnOkOnPress: () {
-                                        Navigator.of(context)
-                                            .popUntil((route) => route.isFirst);
-                                      },
-                                      onDissmissCallback: (d) {
-                                        Navigator.of(context)
-                                            .popUntil((route) => route.isFirst);
-                                      }).show();
-                                }
-                              },
-                            ),
+                                  try {
+                                    final ref = FirebaseStorage.instance
+                                        .ref()
+                                        .child('userImage')
+                                        .child('${userImage.name}.jpg');
+                                    await ref.putFile(pickedImage);
+                                    url = await ref.getDownloadURL();
+                                    await FirebaseFirestore.instance
+                                        .collection('users')
+                                        .doc(currentUser.uid)
+                                        .update({
+                                      'imageUrl': url,
+                                    });
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    AwesomeDialog(
+                                        autoDismiss: false,
+                                        context: context,
+                                        dialogType: DialogType.SUCCES,
+                                        animType: AnimType.BOTTOMSLIDE,
+                                        title: 'Success',
+                                        desc: 'Image uploaded successfully',
+                                        btnOkText: "Ok",
+                                        btnOkOnPress: () {
+                                          Navigator.pop(context);
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const EditImagePage()));
+                                        },
+                                        onDissmissCallback: (d) {
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const EditImagePage()));
+                                        }).show();
+                                    //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const StudentAccount()));
+                                  } catch (e) {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    AwesomeDialog(
+                                            context: context,
+                                            dialogType: DialogType.ERROR,
+                                            animType: AnimType.BOTTOMSLIDE,
+                                            title: 'Error',
+                                            desc: 'Please choose a photo first',
+                                            btnOkText: "Go Back",
+                                            btnOkColor: Colors.red,
+                                            btnOkOnPress: () {},
+                                            onDissmissCallback: (d) {})
+                                        .show();
+                                  }
+                                },
+                              ),
                             isLoading == true
                                 ? Center(
                                     child: Container(
@@ -182,16 +185,9 @@ class EditImagePageState extends State<EditImagePage> {
                   ),
                 ),
               );
-            } else if (snapshot.connectionState == ConnectionState.waiting) {
-              /////////////////////////////
-              return Center(
-                child: Image.asset('assets/images/loading.gif'),
-              );
             } else {
               /////////////////////////////
-              return Center(
-                child: Text('Error ${snapshot.error}'),
-              );
+              return splashScreen();
             }
           },
         ));

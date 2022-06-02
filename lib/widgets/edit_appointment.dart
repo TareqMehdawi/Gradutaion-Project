@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
+import 'backbutton_widget.dart';
+
 class EditScreen extends StatefulWidget {
   final String student_id;
   final String emp_id;
@@ -404,22 +406,9 @@ class _EditScreenState extends State<EditScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
-                height: 15,
+                height: 35,
               ),
-              Align(
-                alignment: Alignment.topLeft,
-                child: IconButton(
-                  iconSize: 30.0,
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Color(0xff205375),
-                  ),
-                  color: Colors.white,
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
+              customBackButton(color: Color(0xff205375)),
               const Image(
                 image: AssetImage('assets/images/app.gif'),
                 height: 200,

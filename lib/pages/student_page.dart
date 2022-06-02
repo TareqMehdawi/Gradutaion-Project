@@ -1,8 +1,14 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/widgets/custom_appbar.dart';
+import 'package:graduation_project/widgets/local_notification_service.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import '../styles/colors.dart';
@@ -27,7 +33,82 @@ class _StudentPageState extends State<StudentPage> {
   // String? format;
   // List arr = [];
   String day = 'Every Day';
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   updateToken();
+  // }
+
+  final currentUser = FirebaseAuth.instance.currentUser!;
+
+  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  var token;
+  String receivedPushMessage = '';
+
+  void listenForMessages() {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Got a message whilst in the foreground!');
+      print('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+        setState(() {
+          String? body = message.notification?.body;
+          if (body != null) {
+            this.receivedPushMessage = body;
+          } else {
+            this.receivedPushMessage = "message boy was null";
+          }
+        });
+      }
+    });
+  }
+
+  void sendPushMessage(String token, String body, String title) async {
+    try {
+      await http.post(
+        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization':
+              'key=AAAAc7t946A:APA91bFfNHbG4zCoFxqgR8-i3UnX0E1SkSGJZ_iW5k6YSI-uIGpVYMqP4lgw9j45xVDXX1KnGDvW9gSejPu-tHdQFP_I11FlH_qYTrs24X3sBR7pLcbUGwPt8Qres-IoFHWCw8VuFwjw',
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            'notification': <String, dynamic>{'body': body, 'title': title},
+            'priority': 'high',
+            'data': {
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'id': '1',
+              'status': 'done'
+            },
+            "to": token,
+          },
+        ),
+      );
+    } catch (e) {
+      print("error push notification");
+    }
+  }
+
   @override
+  void initState() {
+    updateToken();
+    listenForMessages();
+
+    FirebaseMessaging.instance.getInitialMessage();
+
+    FirebaseMessaging.onMessage.listen((message) {
+      if (message.notification != null) {
+        print(message.notification!.body);
+        print(message.notification!.title);
+      }
+      LocalNotificationService.display(message);
+    });
+
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     // format = DateFormat.jm().format(time).trim();
     // arr.add(format?.split(
@@ -43,6 +124,10 @@ class _StudentPageState extends State<StudentPage> {
             buildBottomSheet2();
           },
           menuFunction: () {
+            sendPushMessage(
+                'dOpMnt_pRYiwTuheCIxfRG:APA91bH0_IVtIYF1N-W2d7dn6Sq1mCvAp9s-2fQLCAtnM6hHf0qJ6x2i2mEojJQPqrHX40JqSptVLnvOS4gg_b4_wqSfaXW5NC-mI8c1UfON9aqzrLe8izkbI8H66K4l765Puh-pmb6W',
+                'body ',
+                'title');
             setState(() {
               Provider.of<NavigationProvider>(context, listen: false)
                   .changeValue();
@@ -64,6 +149,7 @@ class _StudentPageState extends State<StudentPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final users = snapshot.data!;
+            updateUserName(token: token);
 
             if (users.isEmpty) {
               return Stack(
@@ -83,7 +169,9 @@ class _StudentPageState extends State<StudentPage> {
                             Text(
                               "You have no meetings for today",
                               style: TextStyle(
-                                  fontSize: 24, color: Color(0xff205375)),
+                                  fontSize: 24,
+                                  color: Color(0xff205375),
+                                  fontWeight: FontWeight.bold),
                             ),
                             SizedBox(
                               height: 10,
@@ -94,13 +182,18 @@ class _StudentPageState extends State<StudentPage> {
                                 Text(
                                   "Add one",
                                   style: TextStyle(
-                                      fontSize: 24, color: Color(0xff205375)),
+                                      fontSize: 24,
+                                      color: Color(0xff205375),
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 SizedBox(
                                   width: 10,
                                 ),
-                                Icon(Icons.arrow_forward_sharp,
-                                    color: Color(0xff205375)),
+                                Icon(
+                                  Icons.arrow_forward_sharp,
+                                  color: Color(0xff205375),
+                                  size: 35,
+                                ),
                               ],
                             ),
                           ],
@@ -111,9 +204,25 @@ class _StudentPageState extends State<StudentPage> {
                 ],
               );
             } else {
-              return ListView(
-                padding: const EdgeInsets.all(12.0),
-                children: [...users.map(buildListTile).toList()],
+              return Stack(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Image.asset(
+                          "assets/images/bottom_left.png",
+                          width: MediaQuery.of(context).size.width * .3,
+                        ),
+                      ),
+                    ],
+                  ),
+                  ListView(
+                    padding: const EdgeInsets.all(12.0),
+                    children: [...users.map(buildListTile).toList()],
+                  ),
+                ],
               );
             }
           } else if (snapshot.hasError) {
@@ -155,7 +264,14 @@ class _StudentPageState extends State<StudentPage> {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: const Color(0xff398AB9),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xff205375),
+                    Color(0xff92B4EC),
+                  ],
+                ),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Material(
@@ -273,7 +389,7 @@ class _StudentPageState extends State<StudentPage> {
               width: double.infinity,
               height: 10,
               decoration: BoxDecoration(
-                color: Color(MyColors.bg02),
+                color: Color(0xff92B4EC),
                 borderRadius: BorderRadius.only(
                   bottomRight: Radius.circular(10),
                   bottomLeft: Radius.circular(10),
@@ -392,6 +508,33 @@ class _StudentPageState extends State<StudentPage> {
         ),
       ),
     );
+  }
+
+  updateToken() async {
+    try {
+      await _fcm.getToken().then((currentToken) {
+        setState(() {
+          token = currentToken;
+
+          print(token);
+        });
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future updateUserName({required String token}) async {
+    try {
+      final docUser =
+          FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
+      final json = {
+        'token': token,
+      };
+      await docUser.update(json);
+    } catch (e) {
+      print(e);
+    }
   }
 
   Widget loginButton2({required String title}) {

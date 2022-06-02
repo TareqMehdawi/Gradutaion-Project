@@ -5,7 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/pages/forgot_password.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
 import 'package:graduation_project/pages/register_page.dart';
-import 'package:graduation_project/widgets/spinKit_widget.dart';
+
+import '../main.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -38,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return isLoading == true
-        ? const SpinKitWidget()
+        ? splashScreen()
         : Scaffold(
             body: StreamBuilder<User?>(
               stream: FirebaseAuth.instance.authStateChanges(),
@@ -209,20 +210,6 @@ class _LoginPageState extends State<LoginPage> {
         textInputAction: TextInputAction.done,
       ),
     );
-
-    // return Padding(
-    //   padding: const EdgeInsets.symmetric(horizontal: 15.0),
-    //   child: TextFormField(
-    //     controller: passwordController,
-    //     keyboardType: TextInputType.visiblePassword,
-    //     decoration: const InputDecoration(
-    //       labelText: 'Password',
-    //       border: OutlineInputBorder(),
-    //       suffixIcon: Icon(Icons.lock_outline),
-    //     ),
-    //     obscureText: !showPassword,
-    //   ),
-    // );
   }
 
   Widget checkBoxWidget() {
@@ -315,65 +302,6 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-    // return ElevatedButton(
-    //     style: OutlinedButton.styleFrom(
-    //       backgroundColor: const Color(0xff141E27),
-    //       minimumSize: Size(MediaQuery.of(context).size.width * .94,
-    //           MediaQuery.of(context).size.height * .06),
-    //       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-    //       shape: RoundedRectangleBorder(
-    //         borderRadius: BorderRadius.circular(18),
-    //       ),
-    //     ),
-    //     child: Text(
-    //       'Login',
-    //       style: GoogleFonts.ubuntu(
-    //         textStyle:
-    //             const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-    //       ),
-    //     ),
-    //     onPressed: () async {
-    //       setState(() {
-    //         isLoading = true ;
-    //       });
-    //       try {
-    //         await FirebaseAuth.instance.signInWithEmailAndPassword(
-    //             email: emailController.text.trim(),
-    //             password: passwordController.text.trim());
-    //         if(regEmailStu.hasMatch(emailController.text.trim())){
-    //           Navigator.push(
-    //             context,
-    //             MaterialPageRoute(
-    //               builder: (context) => const NavigationDrawer(),
-    //             ),
-    //           );
-    //         }else if(regEmailEmp.hasMatch(emailController.text.trim())){
-    //           Navigator.push(
-    //             context,
-    //             MaterialPageRoute(
-    //               builder: (context) => const NavigationDrawer(),
-    //             ),
-    //           );
-    //         }
-    //       } on FirebaseAuthException catch (e){
-    //         // Utils.showSnackBar('Wrong Email or Password!');
-    //         AwesomeDialog(
-    //           context: context,
-    //           dialogType: DialogType.ERROR,
-    //           animType: AnimType.BOTTOMSLIDE,
-    //           title: 'Warning',
-    //           desc: '${e.message}',
-    //           btnCancelText: "Cancel",
-    //           btnOkText: "Ok",
-    //           btnOkOnPress: () {},
-    //           btnCancelOnPress: () {},
-    //         ).show();
-    //       }
-    //       setState(() {
-    //         isLoading = false ;
-    //       });
-    //     }
-    //     );
   }
 
   Widget registerButton() {

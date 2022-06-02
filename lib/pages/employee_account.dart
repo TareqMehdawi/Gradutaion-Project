@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/widgets/edit_office.dart';
 import 'package:graduation_project/widgets/edit_office_time.dart';
-import 'package:graduation_project/widgets/spinKit_widget.dart';
 
+import '../main.dart';
 import '../widgets/edit_email.dart';
 import '../widgets/edit_image.dart';
 import '../widgets/edit_name.dart';
@@ -33,7 +33,6 @@ class _YourAccount2 extends State<EmployeeAccount> {
   String userPhone = '';
   String? imgUrl;
   var user = UserData.myUser;
-  bool isLoading = false;
 
   Object userImage() {
     if (imgUrl == null) {
@@ -51,310 +50,296 @@ class _YourAccount2 extends State<EmployeeAccount> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading == true
-        ? const SpinKitWidget()
-        : Scaffold(
-            //backgroundColor: Color(0xff205375),
-            // appBar: AppBar(
-            //   title: const Text('Your Account'),
-            //   centerTitle: true,
-            //   elevation: 0,
-            //   backgroundColor: Colors.transparent,
-            // ),
-            body: Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: [
-                  Color(0xff205375),
-                  Color(0xff92B4EC),
-                ],
-              )),
-              child: FutureBuilder<UserAccount?>(
-                  future: readUser(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Something ${snapshot.error}');
-                    } else if (snapshot.hasData) {
-                      final user = snapshot.data;
-                      return ListView(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              IconButton(
-                                padding: EdgeInsets.all(10),
-                                iconSize: 30.0,
-                                icon: Icon(Icons.arrow_back),
-                                color: Colors.white,
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ],
-                          ),
-                          Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Container(
-                                //color: const Color(0xff205375),
-                                height:
-                                    MediaQuery.of(context).size.height * .27,
-                              ),
-                              InkWell(
-                                onTap: () async {
-                                  await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const EditImagePage()));
-                                },
-                                child: Center(
-                                  child: Stack(
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 75,
-                                        backgroundColor:
-                                            const Color(0xffD8D2CB),
-                                        child: CircleAvatar(
-                                          backgroundColor: Colors.white,
-                                          backgroundImage: NetworkImage(
-                                            user!.image,
-                                          ),
-                                          radius: 70,
-                                        ),
-                                      ),
-                                      Positioned(
-                                        right: 4,
-                                        top: 10,
-                                        child: ClipOval(
-                                          child: Container(
-                                            padding: const EdgeInsets.all(8),
-                                            color: Colors.white,
-                                            child: const Icon(
-                                              Icons.edit,
-                                              color: Color.fromRGBO(
-                                                  64, 105, 225, 1),
-                                              size: 20,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+    return Scaffold(
+      //backgroundColor: Color(0xff205375),
+      // appBar: AppBar(
+      //   title: const Text('Your Account'),
+      //   centerTitle: true,
+      //   elevation: 0,
+      //   backgroundColor: Colors.transparent,
+      // ),
+      body: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          colors: [
+            Color(0xff205375),
+            Color(0xff92B4EC),
+          ],
+        )),
+        child: FutureBuilder<UserAccount?>(
+            future: readUser(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Text('Something ${snapshot.error}');
+              } else if (snapshot.hasData) {
+                final user = snapshot.data;
+                return ListView(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        IconButton(
+                          padding: EdgeInsets.all(10),
+                          iconSize: 30.0,
+                          icon: Icon(Icons.arrow_back),
+                          color: Colors.white,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    ),
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          //color: const Color(0xff205375),
+                          height: MediaQuery.of(context).size.height * .27,
+                        ),
+                        InkWell(
+                          onTap: () async {
+                            await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const EditImagePage()));
+                          },
+                          child: Center(
+                            child: Stack(
                               children: [
-                                const SizedBox(
-                                  height: 20,
+                                CircleAvatar(
+                                  radius: 75,
+                                  backgroundColor: const Color(0xffD8D2CB),
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    backgroundImage: NetworkImage(
+                                      user!.image,
+                                    ),
+                                    radius: 70,
+                                  ),
                                 ),
-                                GestureDetector(
-                                  onTap: () {
-                                    navigateSecondPage(
-                                        const EditNameFormPage());
-                                  },
-                                  child: Container(
-                                    height: kSpacingUnit * 5.5,
-                                    width:
-                                        MediaQuery.of(context).size.width * 2.7,
-                                    margin: EdgeInsets.symmetric(
-                                      horizontal: kSpacingUnit * 4,
-                                    ).copyWith(
-                                      bottom: kSpacingUnit * 1,
-                                    ),
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: kSpacingUnit * 2,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          kSpacingUnit * 3),
+                                Positioned(
+                                  right: 4,
+                                  top: 10,
+                                  child: ClipOval(
+                                    child: Container(
+                                      padding: const EdgeInsets.all(8),
                                       color: Colors.white,
-                                    ),
-                                    child: Row(
-                                      children: <Widget>[
-                                        Icon(
-                                          Icons.person,
-                                          color: Color(0xff205375),
-                                          size: kSpacingUnit * 2.5,
-                                        ),
-                                        SizedBox(width: kSpacingUnit * 1.5),
-                                        Text(
-                                          user.name,
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                          ),
-                                        ),
-                                        Spacer(),
-                                        Icon(
-                                          Icons.keyboard_arrow_right,
-                                          size: kSpacingUnit * 2.5,
-                                        ),
-                                      ],
+                                      child: const Icon(
+                                        Icons.edit,
+                                        color: Color.fromRGBO(64, 105, 225, 1),
+                                        size: 20,
+                                      ),
                                     ),
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    navigateSecondPage(
-                                        const EditPhoneFormPage());
-                                  },
-                                  child: Container(
-                                    height: kSpacingUnit * 5.5,
-                                    margin: EdgeInsets.symmetric(
-                                      horizontal: kSpacingUnit * 4,
-                                    ).copyWith(
-                                      bottom: kSpacingUnit * 1,
-                                    ),
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: kSpacingUnit * 2,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          kSpacingUnit * 3),
-                                      color: Colors.white,
-                                    ),
-                                    child: Row(
-                                      children: <Widget>[
-                                        Icon(
-                                          Icons.phone,
-                                          color: Color(0xff205375),
-                                          size: kSpacingUnit * 2.5,
-                                        ),
-                                        SizedBox(width: kSpacingUnit * 1.5),
-                                        Text(
-                                          user.number,
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                          ),
-                                        ),
-                                        Spacer(),
-                                        Icon(
-                                          Icons.keyboard_arrow_right,
-                                          size: kSpacingUnit * 2.5,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    navigateSecondPage(
-                                        const EditEmailFormPage());
-                                  },
-                                  child: Container(
-                                    height: kSpacingUnit * 5.5,
-                                    margin: EdgeInsets.symmetric(
-                                      horizontal: kSpacingUnit * 4,
-                                    ).copyWith(
-                                      bottom: kSpacingUnit * 1,
-                                    ),
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: kSpacingUnit * 2,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          kSpacingUnit * 3),
-                                      color: Colors.white,
-                                    ),
-                                    child: Row(
-                                      children: <Widget>[
-                                        Icon(
-                                          Icons.email,
-                                          color: Color(0xff205375),
-                                          size: kSpacingUnit * 2.5,
-                                        ),
-                                        SizedBox(width: kSpacingUnit * 1.5),
-                                        Text(
-                                          user.email,
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                          ),
-                                        ),
-                                        Spacer(),
-                                        Icon(
-                                          Icons.keyboard_arrow_right,
-                                          size: kSpacingUnit * 2.5,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    navigateSecondPage(
-                                        const EditOfficeFormPage());
-                                  },
-                                  child: Container(
-                                    height: kSpacingUnit * 5.5,
-                                    margin: EdgeInsets.symmetric(
-                                      horizontal: kSpacingUnit * 4,
-                                    ).copyWith(
-                                      bottom: kSpacingUnit * 2,
-                                    ),
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: kSpacingUnit * 2,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          kSpacingUnit * 3),
-                                      color: Colors.white,
-                                    ),
-                                    child: Row(
-                                      children: <Widget>[
-                                        Icon(
-                                          Icons.location_on,
-                                          color: Color(0xff205375),
-                                          size: kSpacingUnit * 2.5,
-                                        ),
-                                        SizedBox(width: kSpacingUnit * 1.5),
-                                        Text(
-                                          user.office,
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                          ),
-                                        ),
-                                        Spacer(),
-                                        Icon(
-                                          Icons.keyboard_arrow_right,
-                                          size: kSpacingUnit * 2.5,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                workingHoursButton(),
                               ],
                             ),
                           ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              navigateSecondPage(const EditNameFormPage());
+                            },
+                            child: Container(
+                              height: kSpacingUnit * 5.5,
+                              width: MediaQuery.of(context).size.width * 2.7,
+                              margin: EdgeInsets.symmetric(
+                                horizontal: kSpacingUnit * 4,
+                              ).copyWith(
+                                bottom: kSpacingUnit * 1,
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: kSpacingUnit * 2,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(kSpacingUnit * 3),
+                                color: Colors.white,
+                              ),
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.person,
+                                    color: Color(0xff205375),
+                                    size: kSpacingUnit * 2.5,
+                                  ),
+                                  SizedBox(width: kSpacingUnit * 1.5),
+                                  Text(
+                                    user.name,
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Icon(
+                                    Icons.keyboard_arrow_right,
+                                    size: kSpacingUnit * 2.5,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              navigateSecondPage(const EditPhoneFormPage());
+                            },
+                            child: Container(
+                              height: kSpacingUnit * 5.5,
+                              margin: EdgeInsets.symmetric(
+                                horizontal: kSpacingUnit * 4,
+                              ).copyWith(
+                                bottom: kSpacingUnit * 1,
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: kSpacingUnit * 2,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(kSpacingUnit * 3),
+                                color: Colors.white,
+                              ),
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.phone,
+                                    color: Color(0xff205375),
+                                    size: kSpacingUnit * 2.5,
+                                  ),
+                                  SizedBox(width: kSpacingUnit * 1.5),
+                                  Text(
+                                    user.number,
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Icon(
+                                    Icons.keyboard_arrow_right,
+                                    size: kSpacingUnit * 2.5,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              navigateSecondPage(
+                                  EditEmailFormPage(type: user.type));
+                            },
+                            child: Container(
+                              height: kSpacingUnit * 5.5,
+                              margin: EdgeInsets.symmetric(
+                                horizontal: kSpacingUnit * 4,
+                              ).copyWith(
+                                bottom: kSpacingUnit * 1,
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: kSpacingUnit * 2,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(kSpacingUnit * 3),
+                                color: Colors.white,
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.email,
+                                    color: Color(0xff205375),
+                                    size: kSpacingUnit * 2.5,
+                                  ),
+                                  SizedBox(width: kSpacingUnit * 1.5),
+                                  Text(
+                                    currentUser.email!,
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Icon(
+                                    Icons.keyboard_arrow_right,
+                                    size: kSpacingUnit * 2.5,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              navigateSecondPage(const EditOfficeFormPage());
+                            },
+                            child: Container(
+                              height: kSpacingUnit * 5.5,
+                              margin: EdgeInsets.symmetric(
+                                horizontal: kSpacingUnit * 4,
+                              ).copyWith(
+                                bottom: kSpacingUnit * 2,
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: kSpacingUnit * 2,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(kSpacingUnit * 3),
+                                color: Colors.white,
+                              ),
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.location_on,
+                                    color: Color(0xff205375),
+                                    size: kSpacingUnit * 2.5,
+                                  ),
+                                  SizedBox(width: kSpacingUnit * 1.5),
+                                  Text(
+                                    user.office,
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Icon(
+                                    Icons.keyboard_arrow_right,
+                                    size: kSpacingUnit * 2.5,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          workingHoursButton(),
                         ],
-                      );
-                    } else {
-                      print(snapshot.error);
-                      /////////////////////////////
-                      return const Center(
-                        child: Text('Loading...'),
-                      );
-                    }
-                  }),
-            ),
-          );
+                      ),
+                    ),
+                  ],
+                );
+              } else {
+                return splashScreen();
+              }
+            }),
+      ),
+    );
   }
 
   Widget workingHoursButton() {
@@ -424,16 +409,10 @@ class _YourAccount2 extends State<EmployeeAccount> {
   }
 
   Future<UserAccount?> readUser() async {
-    setState(() {
-      isLoading = true;
-    });
     final getUser =
         FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
     final snapshot = await getUser.get();
     if (snapshot.exists) {
-      setState(() {
-        isLoading = false;
-      });
       return UserAccount.fromJson(snapshot.data()!);
     }
     return null;

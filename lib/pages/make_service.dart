@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
 
+import '../widgets/edit_office_time.dart';
 import '../widgets/user_class.dart';
 
 class ServicePage extends StatefulWidget {
@@ -50,6 +51,7 @@ class _ServicePageState extends State<ServicePage> {
     '25 minute',
     '30 minute',
   ];
+
   List<DayInWeek> officeHoursDays(UserAccount? user) {
     final List<DayInWeek> days = [];
     List day = [];
@@ -83,10 +85,12 @@ class _ServicePageState extends State<ServicePage> {
         centerTitle: true,
       ),
       body: FutureBuilder<UserAccount?>(
-          future: readUser(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              final user = snapshot.data!;
+        future: readUser(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final user = snapshot.data!;
+            bool officeHours = user.officeHours.isEmpty;
+            if (!officeHours) {
               return Stack(
                 children: [
                   Row(
@@ -176,6 +180,7 @@ class _ServicePageState extends State<ServicePage> {
                             // ),
                           ),
                         ),
+
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 16),
@@ -214,25 +219,6 @@ class _ServicePageState extends State<ServicePage> {
                                 }
                               }
                               print(days);
-
-                              // for (var t in user.officeHours.keys) {
-                              //
-                              //   //print(value);
-                              //   if (i < hi.length) {
-                              //     if (t.toString().trim().contains(value[i].toString().trim())
-                              //         ) {
-                              //       Map map1 ={ value[i].toString():user.officeHours[value[i].toString()].toString()};
-                              //       days.addAll(map1);
-                              //       //print(days);
-                              //     }
-                              //
-                              //     i++;
-                              //   } else {
-                              //     break;
-                              //   }
-                              // }
-
-                              //days = {value: };
                             },
                           ),
                         ),
@@ -397,9 +383,86 @@ class _ServicePageState extends State<ServicePage> {
                   ),
                 ],
               );
-            } else
-              return Text("data");
-          }),
+            } else {
+              return Stack(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: MediaQuery.of(context).size.height * 0.1),
+                    child: Image.asset('assets/images/Schedule-bro.png'),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 40.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              "You didn't add any office hours!",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Color(0xff205375),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 15),
+                                  child: SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.9,
+                                    height: 70,
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 15.0),
+                                      child: ElevatedButton(
+                                        child: Text(
+                                          "Add Office Hours",
+                                          style: GoogleFonts.lato(
+                                            color: Colors.white,
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      EditOfficeHoursFormPage()));
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          elevation: 2,
+                                          primary: Color(0xff205375),
+                                          onPrimary: Color(0xff205375),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(14.0),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              );
+            }
+          } else
+            return Text("data");
+        },
+      ),
     );
   }
 

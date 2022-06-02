@@ -4,9 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../pages/your_account.dart';
-import 'backbutton_widget.dart';
-
 class EditNameFormPage extends StatefulWidget {
   const EditNameFormPage({Key? key}) : super(key: key);
 
@@ -20,7 +17,6 @@ class EditNameFormPageState extends State<EditNameFormPage> {
   final _formKey = GlobalKey<FormState>();
   final firstNameController = TextEditingController();
   final secondNameController = TextEditingController();
-  var user = UserData.myUser;
   final currentUser = FirebaseAuth.instance.currentUser!;
   bool isLoading = false;
 
@@ -30,28 +26,31 @@ class EditNameFormPageState extends State<EditNameFormPage> {
     super.dispose();
   }
 
-  void updateUserValue(String name) {
-    user.name = name;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Edit Account',
+        ),
+        centerTitle: true,
+        backgroundColor: Color(0xff205375),
+        elevation: 0,
+      ),
       body: Form(
         key: _formKey,
         child: ListView(
           children: [
-            customBackButton(color: Color(0xff205375)),
-            const SizedBox(
-              width: 330,
-              child: Center(
-                child: Text(
-                  "What's Your Name?",
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff205375),
-                  ),
+            SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: Text(
+                "What's Your Name?",
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xff205375),
                 ),
               ),
             ),
