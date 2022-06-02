@@ -18,15 +18,17 @@ class BookingScreen extends StatefulWidget {
   final String empName;
   final String stdName;
   final String stdImage;
+  final String token;
 
-  const BookingScreen(
-      {Key? key,
-      required this.uid,
-      required this.empName,
-      required this.stdName,
-      required Map officeHours,
-      required this.stdImage})
-      : super(key: key);
+  const BookingScreen({
+    Key? key,
+    required this.uid,
+    required this.empName,
+    required this.stdName,
+    required Map officeHours,
+    required this.stdImage,
+    required this.token,
+  }) : super(key: key);
 
   @override
   _BookingScreenState createState() => _BookingScreenState();
@@ -422,7 +424,8 @@ class _BookingScreenState extends State<BookingScreen> {
                                       imageemp: imageemp!,
                                     );
                                     sendPushMessage(
-                                        'cbSymk6TS4y28q_OjfU1Nn:APA91bHFQ30eB-KIYDzCIxl1Cw1U3HmiaezitixHSgdGwl_a81Xd3wWkBt-1N0uvRbJDF1UlbtIAdJ85WrczPRrs8sb2irdJnQG9IJd_2zp24soEAzBIHgE6twUelfCmg4fSqCBNoaah',
+                                        //'cbSymk6TS4y28q_OjfU1Nn:APA91bHFQ30eB-KIYDzCIxl1Cw1U3HmiaezitixHSgdGwl_a81Xd3wWkBt-1N0uvRbJDF1UlbtIAdJ85WrczPRrs8sb2irdJnQG9IJd_2zp24soEAzBIHgE6twUelfCmg4fSqCBNoaah',
+                                        widget.token,
                                         'Appointment Scheduled',
                                         '${widget.stdName} reserved a new appointment');
                                     AwesomeDialog(

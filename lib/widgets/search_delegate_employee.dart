@@ -5,8 +5,11 @@ import 'package:graduation_project/pages/selected_employee.dart';
 class EmployeeSearchDelegate extends SearchDelegate {
   String stdName;
   String stdImage;
-  EmployeeSearchDelegate(
-      {required this.type, required this.stdName, required this.stdImage});
+  EmployeeSearchDelegate({
+    required this.type,
+    required this.stdName,
+    required this.stdImage,
+  });
 
   final String type;
   final CollectionReference _employees =
@@ -65,6 +68,7 @@ class EmployeeSearchDelegate extends SearchDelegate {
                     final String id = data.get('id');
                     final String image = data.get('imageUrl');
                     final String email = data.get('email');
+                    final String token = data.get('token');
                     return ListTile(
                       onTap: () {
                         // Provider.of<ReservationInfo>(context, listen: false)
@@ -78,6 +82,7 @@ class EmployeeSearchDelegate extends SearchDelegate {
                               uid: id,
                               stdName: stdName,
                               stdImage: stdImage,
+                              token: token,
                             ),
                           ),
                         );
@@ -130,6 +135,7 @@ class EmployeeSearchDelegate extends SearchDelegate {
                     final String id = data.get('id');
                     final String image = data.get('imageUrl');
                     final String email = data.get('email');
+                    final String token = data.get('token');
                     return ListTile(
                       onTap: () {
                         // Provider.of<ReservationInfo>(context, listen: false)
@@ -143,6 +149,7 @@ class EmployeeSearchDelegate extends SearchDelegate {
                               uid: id,
                               stdName: stdName,
                               stdImage: stdImage,
+                              token: token,
                             ),
                           ),
                         );

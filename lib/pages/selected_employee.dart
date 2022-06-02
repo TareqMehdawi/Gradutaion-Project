@@ -13,13 +13,15 @@ class YourAccount2 extends StatefulWidget {
   final String uid;
   final String stdName;
   final String stdImage;
+  final String token;
 
-  const YourAccount2(
-      {Key? key,
-      required this.uid,
-      required this.stdName,
-      required this.stdImage})
-      : super(key: key);
+  const YourAccount2({
+    Key? key,
+    required this.uid,
+    required this.stdName,
+    required this.stdImage,
+    required this.token,
+  }) : super(key: key);
 
   @override
   _YourAccount2 createState() => _YourAccount2();
@@ -279,6 +281,7 @@ class _YourAccount2 extends State<YourAccount2> {
                                               stdName: widget.stdName,
                                               officeHours: user.officeHours,
                                               stdImage: widget.stdImage,
+                                              token: widget.token,
                                             ),
 
                                             // builder: (context) => BookingScreen(

@@ -1,14 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/main.dart';
 import 'package:graduation_project/pages/make_service.dart';
 import 'package:graduation_project/widgets/custom_appbar.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
+
 import '../styles/colors.dart';
 import '../widgets/edit_appointment.dart';
+import '../widgets/local_notification_service.dart';
 import '../widgets/user_class.dart';
 import 'navigation_drawer.dart';
 
@@ -22,11 +24,50 @@ class EmployeePage extends StatefulWidget {
 class _EmployeePageState extends State<EmployeePage> {
   String day = 'Every Day';
   final currentUser = FirebaseAuth.instance.currentUser!;
+  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  var token;
 
+  updateToken() async {
+    try {
+      await _fcm.getToken().then((currentToken) {
+        setState(() {
+          token = currentToken;
+        });
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
 
+  Future updateUserName({required String token}) async {
+    try {
+      final docUser =
+          FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
+      final json = {
+        'token': token,
+      };
+      await docUser.update(json);
+    } catch (e) {
+      print(e);
+    }
+  }
 
+  @override
+  void initState() {
+    updateToken();
 
+    FirebaseMessaging.instance.getInitialMessage();
 
+    FirebaseMessaging.onMessage.listen((message) {
+      if (message.notification != null) {
+        print(message.notification!.body);
+        print(message.notification!.title);
+      }
+      LocalNotificationService.display(message);
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +103,9 @@ class _EmployeePageState extends State<EmployeePage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final users = snapshot.data!;
+            updateUserName(token: token);
             if (users.isEmpty) {
               return Center(
-
                 child: Image.asset('assets/images/Schedule-bro.png'),
               );
             } else {

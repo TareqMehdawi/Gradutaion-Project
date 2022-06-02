@@ -85,7 +85,6 @@ class _StudentPageState extends State<StudentPage> {
   @override
   void initState() {
     updateToken();
-    listenForMessages();
 
     FirebaseMessaging.instance.getInitialMessage();
 
@@ -580,9 +579,10 @@ class _StudentPageState extends State<StudentPage> {
                       await showSearch(
                         context: context,
                         delegate: EmployeeSearchDelegate(
-                            type: 'doctor',
-                            stdName: widget.stdName,
-                            stdImage: widget.stdImage),
+                          type: 'doctor',
+                          stdName: widget.stdName,
+                          stdImage: widget.stdImage,
+                        ),
                       );
                     },
                   ),
@@ -593,9 +593,10 @@ class _StudentPageState extends State<StudentPage> {
                       await showSearch(
                         context: context,
                         delegate: EmployeeSearchDelegate(
-                            type: 'registration',
-                            stdName: widget.stdName,
-                            stdImage: widget.stdImage),
+                          type: 'registration',
+                          stdName: widget.stdName,
+                          stdImage: widget.stdImage,
+                        ),
                       );
                     },
                   ),
