@@ -35,8 +35,6 @@ class BookingScreen extends StatefulWidget {
 class _BookingScreenState extends State<BookingScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _timeController = TextEditingController();
-
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   DateTime selectedDate = DateTime.now();
   TimeOfDay currentTime = TimeOfDay.now();
@@ -748,11 +746,6 @@ class _BookingScreenState extends State<BookingScreen> {
 
     return intMin;
   }
-
-  // int makeHour(int hour) {
-  //   hour = hour + 1;
-  //   return hour;
-  // }
 
   count(List b, List notAvailable) {
     List c = [];

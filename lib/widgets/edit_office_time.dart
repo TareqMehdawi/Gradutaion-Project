@@ -176,11 +176,11 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                                                         disabledTime: TimeRange(
                                                             startTime:
                                                                 const TimeOfDay(
-                                                                    hour: 18,
+                                                                    hour: 24,
                                                                     minute: 0),
                                                             endTime:
                                                                 const TimeOfDay(
-                                                                    hour: 6,
+                                                                    hour: 0,
                                                                     minute: 0)),
                                                         disabledColor: Colors
                                                             .red

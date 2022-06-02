@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import 'package:intl/intl.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -53,13 +53,6 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
   bool isEmployee = true;
   final currentUser = FirebaseAuth.instance.currentUser!;
   String imgUrl = '';
-  @override
-  void initState() {
-    readUser();
-    super.initState();
-    updateToken();
-  }
-
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   var token;
   updateToken() async {
@@ -75,7 +68,40 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
   }
 
   @override
+  void initState() {
+    readUser();
+    super.initState();
+    updateToken();
+
+  }
+  Future deletecard() async{
+    var date=DateTime.now();
+    var hourMinute = DateFormat("HH:mm").format(date);
+    final day= DateFormat('EEEE').format(date);
+    final docUser2 = await FirebaseFirestore.instance
+        .collection('reservation')
+        .where('date', isEqualTo: day.toString())
+        .where('empId', isEqualTo: currentUser.uid)
+        .get();
+
+    print("hi");
+
+    for (var doc in docUser2.docs) {
+      String time =doc.data()['time'].toString().substring(8,13);
+      print(hourMinute.toString());
+
+    if(((int.parse(time.substring(3,5))==int.parse(hourMinute.toString().substring(3,5)) && int.parse(time.substring(0,2))==int.parse(hourMinute.toString().substring(0,2))) || int.parse(time.substring(0,2))<int.parse(hourMinute.toString().substring(0,2)) )){
+
+        await FirebaseFirestore.instance
+            .collection('reservation')
+            .doc(doc.id)
+            .delete();
+      }}
+    return null;
+  }
+  @override
   Widget build(BuildContext context) {
+    deletecard();
     double value = Provider.of<NavigationProvider>(context).value;
     return Scaffold(
       body: FutureBuilder<Users?>(
