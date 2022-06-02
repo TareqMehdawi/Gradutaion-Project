@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -5,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/main.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 import '../widgets/backbutton_widget.dart';
@@ -420,6 +423,10 @@ class _BookingScreenState extends State<BookingScreen> {
                                       studentName: widget.stdName,
                                       imageemp: imageemp!,
                                     );
+                                    sendPushMessage(
+                                        'cbSymk6TS4y28q_OjfU1Nn:APA91bHFQ30eB-KIYDzCIxl1Cw1U3HmiaezitixHSgdGwl_a81Xd3wWkBt-1N0uvRbJDF1UlbtIAdJ85WrczPRrs8sb2irdJnQG9IJd_2zp24soEAzBIHgE6twUelfCmg4fSqCBNoaah',
+                                        'Appointment Scheduled',
+                                        '${widget.stdName} reserved a new appointment');
                                     AwesomeDialog(
                                         autoDismiss: false,
                                         context: context,
@@ -713,7 +720,7 @@ class _BookingScreenState extends State<BookingScreen> {
         notAvailable.add(oldHour + newHour);
       } else {
         minute = '00';
-        hours = makeHour(hours);
+        hours = hours + 1;
         hour = hours.toString().padLeft(2, '0');
         newHour = "$hour:$minute";
         doctorOfficeHours = newHour;
@@ -742,15 +749,10 @@ class _BookingScreenState extends State<BookingScreen> {
     return intMin;
   }
 
-  int makeHour(int hour) {
-    if (hour < 12) {
-      hour = hour + 1;
-      return hour;
-    } else {
-      hour = 1;
-      return hour;
-    }
-  }
+  // int makeHour(int hour) {
+  //   hour = hour + 1;
+  //   return hour;
+  // }
 
   count(List b, List notAvailable) {
     List c = [];
@@ -786,23 +788,22 @@ class _BookingScreenState extends State<BookingScreen> {
     }
     return notAvailable;
   }
-
-  Future<void> selectTime(BuildContext context) async {
-    TimeOfDay? selectedTime = await showTimePicker(
-      context: context,
-      initialTime: currentTime,
-    );
-
-    MaterialLocalizations localizations = MaterialLocalizations.of(context);
-    String formattedTime = localizations.formatTimeOfDay(selectedTime!,
-        alwaysUse24HourFormat: false);
-
-    setState(() {
-      timeText = formattedTime;
-      _timeController.text = timeText;
-    });
-    dateTime = selectedTime.toString().substring(10, 15);
-  }
+  // Future<void> selectTime(BuildContext context) async {
+  //   TimeOfDay? selectedTime = await showTimePicker(
+  //     context: context,
+  //     initialTime: currentTime,
+  //   );
+  //
+  //   MaterialLocalizations localizations = MaterialLocalizations.of(context);
+  //   String formattedTime = localizations.formatTimeOfDay(selectedTime!,
+  //       alwaysUse24HourFormat: false);
+  //
+  //   setState(() {
+  //     timeText = formattedTime;
+  //     _timeController.text = timeText;
+  //   });
+  //   dateTime = selectedTime.toString().substring(10, 15);
+  // }
 
   Future readUser() async {
     List data = [];
@@ -875,6 +876,33 @@ class _BookingScreenState extends State<BookingScreen> {
       data.add(ele.data()['time']);
     }
     return data;
+  }
+
+  void sendPushMessage(String token, String body, String title) async {
+    try {
+      await http.post(
+        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization':
+              'key=AAAAc7t946A:APA91bFfNHbG4zCoFxqgR8-i3UnX0E1SkSGJZ_iW5k6YSI-uIGpVYMqP4lgw9j45xVDXX1KnGDvW9gSejPu-tHdQFP_I11FlH_qYTrs24X3sBR7pLcbUGwPt8Qres-IoFHWCw8VuFwjw',
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            'notification': <String, dynamic>{'body': body, 'title': title},
+            'priority': 'high',
+            'data': {
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'id': '1',
+              'status': 'done'
+            },
+            "to": token,
+          },
+        ),
+      );
+    } catch (e) {
+      print("error push notification");
+    }
   }
 }
 

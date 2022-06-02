@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/main.dart';
@@ -52,12 +53,26 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
   bool isEmployee = true;
   final currentUser = FirebaseAuth.instance.currentUser!;
   String imgUrl = '';
-  // @override
-  // void initState() {
-  //   readUser();
-  //   super.initState();
-  //   updateToken();
-  // }
+  @override
+  void initState() {
+    readUser();
+    super.initState();
+    updateToken();
+  }
+
+  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  var token;
+  updateToken() async {
+    try {
+      await _fcm.getToken().then((currentToken) {
+        setState(() {
+          token = currentToken;
+        });
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

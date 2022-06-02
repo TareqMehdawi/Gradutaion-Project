@@ -8,7 +8,7 @@ class LocalNotificationService {
   static void initialize() {
     final InitializationSettings initializationSettings =
         InitializationSettings(
-            android: AndroidInitializationSettings("@mipmap/ic_launcher"));
+            android: AndroidInitializationSettings('splash'));
 
     _notificationsPluginn.initialize(initializationSettings);
   }

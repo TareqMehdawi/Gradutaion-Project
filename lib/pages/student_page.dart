@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/widgets/custom_appbar.dart';
@@ -29,15 +28,7 @@ class StudentPage extends StatefulWidget {
 }
 
 class _StudentPageState extends State<StudentPage> {
-  // DateTime time = DateTime.now();
-  // String? format;
-  // List arr = [];
   String day = 'Every Day';
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   updateToken();
-  // }
 
   final currentUser = FirebaseAuth.instance.currentUser!;
 
@@ -110,13 +101,6 @@ class _StudentPageState extends State<StudentPage> {
   }
 
   Widget build(BuildContext context) {
-    // format = DateFormat.jm().format(time).trim();
-    // arr.add(format?.split(
-    //   ': ',
-    // ));
-    // print(arr);
-//    String selectedService = Provider.of<ReservationInfo>(context).selectedService;
-    //String name = selectedService;
     return Scaffold(
       appBar: CustomAppBar(
           title: 'Student Page',
@@ -124,10 +108,10 @@ class _StudentPageState extends State<StudentPage> {
             buildBottomSheet2();
           },
           menuFunction: () {
-            sendPushMessage(
-                'dOpMnt_pRYiwTuheCIxfRG:APA91bH0_IVtIYF1N-W2d7dn6Sq1mCvAp9s-2fQLCAtnM6hHf0qJ6x2i2mEojJQPqrHX40JqSptVLnvOS4gg_b4_wqSfaXW5NC-mI8c1UfON9aqzrLe8izkbI8H66K4l765Puh-pmb6W',
-                'body ',
-                'title');
+            // sendPushMessage(
+            //     'cbSymk6TS4y28q_OjfU1Nn:APA91bHFQ30eB-KIYDzCIxl1Cw1U3HmiaezitixHSgdGwl_a81Xd3wWkBt-1N0uvRbJDF1UlbtIAdJ85WrczPRrs8sb2irdJnQG9IJd_2zp24soEAzBIHgE6twUelfCmg4fSqCBNoaah',
+            //     'body ',
+            //     'title');
             setState(() {
               Provider.of<NavigationProvider>(context, listen: false)
                   .changeValue();
