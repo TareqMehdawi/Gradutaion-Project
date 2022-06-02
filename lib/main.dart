@@ -1,29 +1,27 @@
 import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/pages/login_page.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
+import 'package:graduation_project/widgets/local_notification_service.dart';
 import 'package:graduation_project/widgets/utils_show_snackbar.dart';
 import 'package:provider/provider.dart';
 
 //key =AAAAc7t946A:APA91bFfNHbG4zCoFxqgR8-i3UnX0E1SkSGJZ_iW5k6YSI-uIGpVYMqP4lgw9j45xVDXX1KnGDvW9gSejPu-tHdQFP_I11FlH_qYTrs24X3sBR7pLcbUGwPt8Qres-IoFHWCw8VuFwjw
-// Future<void> _firemessaging(RemoteMessage message) async{
-//   await Firebase.initializeApp();
-// }
+Future<void> _firemessaging(RemoteMessage message) async {
+  await Firebase.initializeApp();
+}
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  LocalNotificationService.initialize();
   await Firebase.initializeApp();
-  // FirebaseMessaging.onBackgroundMessage((message) => _firemessaging(message));
-  // FirebaseMessaging notification = FirebaseMessaging.instance;
-  // FirebaseMessaging.onMessage.listen((message) {
-  //   print('Got a message whilst in the foreground');
-  //   print('Message Data: ${message.data}');
-  //   if(message.notification !=null){
-  //     print('Message notification ${message.notification}');
-  //   }
-  // });
+  //FirebaseMessaging.onBackgroundMessage((message) => _firemessaging(message));
+  //FirebaseMessaging notification = FirebaseMessaging.instance;
+
   runApp(const MyApp());
 }
 

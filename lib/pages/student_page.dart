@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/widgets/custom_appbar.dart';
+import 'package:graduation_project/widgets/local_notification_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -41,6 +43,26 @@ class _StudentPageState extends State<StudentPage> {
 
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   var token;
+  String receivedPushMessage = '';
+
+  void listenForMessages() {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Got a message whilst in the foreground!');
+      print('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+        setState(() {
+          String? body = message.notification?.body;
+          if (body != null) {
+            this.receivedPushMessage = body;
+          } else {
+            this.receivedPushMessage = "message boy was null";
+          }
+        });
+      }
+    });
+  }
 
   void sendPushMessage(String token, String body, String title) async {
     try {
@@ -55,7 +77,7 @@ class _StudentPageState extends State<StudentPage> {
           <String, dynamic>{
             'notification': <String, dynamic>{'body': body, 'title': title},
             'priority': 'high',
-            'data': <String, dynamic>{
+            'data': {
               'click_action': 'FLUTTER_NOTIFICATION_CLICK',
               'id': '1',
               'status': 'done'
@@ -72,6 +94,18 @@ class _StudentPageState extends State<StudentPage> {
   @override
   void initState() {
     updateToken();
+    listenForMessages();
+
+    FirebaseMessaging.instance.getInitialMessage();
+
+    FirebaseMessaging.onMessage.listen((message) {
+      if (message.notification != null) {
+        print(message.notification!.body);
+        print(message.notification!.title);
+      }
+      LocalNotificationService.display(message);
+    });
+
     super.initState();
   }
 
@@ -90,6 +124,10 @@ class _StudentPageState extends State<StudentPage> {
             buildBottomSheet2();
           },
           menuFunction: () {
+            sendPushMessage(
+                'dOpMnt_pRYiwTuheCIxfRG:APA91bH0_IVtIYF1N-W2d7dn6Sq1mCvAp9s-2fQLCAtnM6hHf0qJ6x2i2mEojJQPqrHX40JqSptVLnvOS4gg_b4_wqSfaXW5NC-mI8c1UfON9aqzrLe8izkbI8H66K4l765Puh-pmb6W',
+                'body ',
+                'title');
             setState(() {
               Provider.of<NavigationProvider>(context, listen: false)
                   .changeValue();
@@ -112,7 +150,7 @@ class _StudentPageState extends State<StudentPage> {
           if (snapshot.hasData) {
             final users = snapshot.data!;
             updateUserName(token: token);
-            sendPushMessage(token, 'body ', 'title');
+
             if (users.isEmpty) {
               return Stack(
                 children: [

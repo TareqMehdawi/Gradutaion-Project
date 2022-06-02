@@ -42,12 +42,11 @@ class _RegisterPageState extends State<RegisterPage> {
       r"^((Reg)|(reg))\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
   final regEmailStu = RegExp(r"^[a-zA-Z]{3}[0-9]{7}@ju\.edu\.jo");
 
-  // @override
-  // void initState() {
-  //   getImageData();
-  //   super.initState();
-  //   updateToken();
-  // }
+  @override
+  void initState() {
+    getImageData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -298,7 +297,6 @@ class _RegisterPageState extends State<RegisterPage> {
           fontSize: 18,
           fontWeight: FontWeight.w800,
         ),
-        keyboardType: TextInputType.number,
         controller: phoneNumberController,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.only(left: 20, top: 15, bottom: 15),
