@@ -423,6 +423,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                       studentName: widget.stdName,
                                       imageemp: imageemp!,
                                     );
+                                    print(widget.token);
                                     sendPushMessage(
                                         //'cbSymk6TS4y28q_OjfU1Nn:APA91bHFQ30eB-KIYDzCIxl1Cw1U3HmiaezitixHSgdGwl_a81Xd3wWkBt-1N0uvRbJDF1UlbtIAdJ85WrczPRrs8sb2irdJnQG9IJd_2zp24soEAzBIHgE6twUelfCmg4fSqCBNoaah',
                                         widget.token,
