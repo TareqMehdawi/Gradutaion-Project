@@ -6,7 +6,7 @@ import 'package:graduation_project/main.dart';
 import 'package:graduation_project/pages/make_service.dart';
 import 'package:graduation_project/widgets/custom_appbar.dart';
 import 'package:provider/provider.dart';
-
+import 'package:intl/intl.dart';
 import '../styles/colors.dart';
 import '../widgets/edit_appointment.dart';
 import '../widgets/user_class.dart';
@@ -21,12 +21,12 @@ class EmployeePage extends StatefulWidget {
 
 class _EmployeePageState extends State<EmployeePage> {
   String day = 'Every Day';
+  final currentUser = FirebaseAuth.instance.currentUser!;
 
-  // @override
-  // void initState() {
-  //   readReservation();
-  //   super.initState();
-  // }
+
+
+
+
 
   @override
   Widget build(BuildContext context) {

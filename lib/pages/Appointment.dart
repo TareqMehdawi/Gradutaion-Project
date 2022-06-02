@@ -713,7 +713,7 @@ class _BookingScreenState extends State<BookingScreen> {
         notAvailable.add(oldHour + newHour);
       } else {
         minute = '00';
-        hours = makeHour(hours);
+        hours = hours+1;
         hour = hours.toString().padLeft(2, '0');
         newHour = "$hour:$minute";
         doctorOfficeHours = newHour;
@@ -787,22 +787,22 @@ class _BookingScreenState extends State<BookingScreen> {
     return notAvailable;
   }
 
-  Future<void> selectTime(BuildContext context) async {
-    TimeOfDay? selectedTime = await showTimePicker(
-      context: context,
-      initialTime: currentTime,
-    );
-
-    MaterialLocalizations localizations = MaterialLocalizations.of(context);
-    String formattedTime = localizations.formatTimeOfDay(selectedTime!,
-        alwaysUse24HourFormat: false);
-
-    setState(() {
-      timeText = formattedTime;
-      _timeController.text = timeText;
-    });
-    dateTime = selectedTime.toString().substring(10, 15);
-  }
+  // Future<void> selectTime(BuildContext context) async {
+  //   TimeOfDay? selectedTime = await showTimePicker(
+  //     context: context,
+  //     initialTime: currentTime,
+  //   );
+  //
+  //   MaterialLocalizations localizations = MaterialLocalizations.of(context);
+  //   String formattedTime = localizations.formatTimeOfDay(selectedTime!,
+  //       alwaysUse24HourFormat: false);
+  //
+  //   setState(() {
+  //     timeText = formattedTime;
+  //     _timeController.text = timeText;
+  //   });
+  //   dateTime = selectedTime.toString().substring(10, 15);
+  // }
 
   Future readUser() async {
     List data = [];
