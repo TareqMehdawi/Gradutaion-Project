@@ -5,6 +5,7 @@ class Users {
   final String email;
   final String image;
   final String type;
+  final int notificationCounter;
 
   Users({
     this.id = '',
@@ -13,6 +14,7 @@ class Users {
     required this.name,
     required this.number,
     required this.email,
+    required this.notificationCounter,
   });
 
   Map<String, dynamic> toJson() => {
@@ -22,6 +24,7 @@ class Users {
         'phoneNumber': number,
         'email': email,
         'imageUrl': image,
+        'notificationCounter': notificationCounter,
       };
 
   static Users fromJson(Map<String, dynamic> json) => Users(
@@ -31,6 +34,7 @@ class Users {
         email: json['email'],
         image: json['imageUrl'],
         type: json['type'],
+        notificationCounter: json['notificationCounter'],
       );
 }
 
@@ -133,6 +137,7 @@ class UserAccount {
   final String type;
   final String office;
   final Map officeHours;
+  final int notificationCounter;
 
   UserAccount({
     this.id = '',
@@ -143,6 +148,7 @@ class UserAccount {
     required this.email,
     this.office = '',
     required this.officeHours,
+    required this.notificationCounter,
   });
 
   Map<String, dynamic> toJson() => {
@@ -154,6 +160,7 @@ class UserAccount {
         'imageUrl': image,
         'office': office,
         'officeHours': officeHours,
+        'notificationCounter': notificationCounter,
       };
 
   static UserAccount fromJson(Map<String, dynamic> json) => UserAccount(
@@ -165,6 +172,7 @@ class UserAccount {
         type: json['type'],
         office: json['office'],
         officeHours: json['officeHours'],
+        notificationCounter: json['notificationCounter'],
       );
 }
 
@@ -256,4 +264,3 @@ class Notifications {
         time: json['time'],
       );
 }
-

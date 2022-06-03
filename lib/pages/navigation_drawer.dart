@@ -4,6 +4,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/main.dart';
@@ -16,6 +17,7 @@ import 'package:graduation_project/pages/student_page.dart';
 import 'package:graduation_project/pages/your_account.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets/local_notification_service.dart';
 import '../widgets/search_delegate_employee.dart';
 import '../widgets/user_class.dart';
 import 'employee_services.dart';
@@ -51,11 +53,28 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
   bool isEmployee = true;
   final currentUser = FirebaseAuth.instance.currentUser!;
   String imgUrl = '';
+  int? notificationCounter;
 
   @override
   void initState() {
     readUser();
     super.initState();
+    FirebaseMessaging.instance.getInitialMessage();
+
+    FirebaseMessaging.onMessage.listen((message) async {
+      if (message.notification != null) {
+        print(message.notification!.body);
+        print(message.notification!.title);
+      }
+      LocalNotificationService.display(message);
+      notificationCounter = (notificationCounter! + 1);
+      final docUser =
+          FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
+      final json = {
+        'notificationCounter': notificationCounter,
+      };
+      await docUser.update(json);
+    });
   }
 
   @override
@@ -83,6 +102,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               return const Text('Something went wrong');
             } else if (snapshot.hasData) {
               final user = snapshot.data;
+              notificationCounter = user?.notificationCounter;
               return Stack(
                 children: [
                   Container(
@@ -252,8 +272,15 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                               ),
                               drawerTiles(
                                 icon: Icons.notifications,
-                                title: 'Notification',
-                                function: () {
+                                title: 'Notifications',
+                                function: () async {
+                                  final docUser = FirebaseFirestore.instance
+                                      .collection('users')
+                                      .doc(currentUser.uid);
+                                  final json = {
+                                    'notificationCounter': 0,
+                                  };
+                                  await docUser.update(json);
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -450,17 +477,22 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
     return ListTile(
       selectedTileColor: const Color(0xff92B4EC),
       onTap: function,
-      leading: title == "Notification"
-          ? Badge(
-              badgeContent: Text(
-                '2',
-                style: TextStyle(color: Colors.white),
-              ),
-              child: Icon(
-                icon,
-                color: const Color(0xff205375),
-              ),
-            )
+      leading: title == "Notifications"
+          ? notificationCounter != 0
+              ? Badge(
+                  badgeContent: Text(
+                    '$notificationCounter',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  child: Icon(
+                    icon,
+                    color: const Color(0xff205375),
+                  ),
+                )
+              : Icon(
+                  icon,
+                  color: const Color(0xff205375),
+                )
           : Icon(
               icon,
               color: const Color(0xff205375),

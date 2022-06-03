@@ -239,7 +239,6 @@ class _RegisterPageState extends State<RegisterPage> {
           return null;
         },
       ),
-
     );
   }
 
@@ -341,7 +340,6 @@ class _RegisterPageState extends State<RegisterPage> {
               return null;
             }
           }),
-
     );
   }
 
@@ -385,7 +383,6 @@ class _RegisterPageState extends State<RegisterPage> {
           }
         },
       ),
-
     );
   }
 
@@ -562,12 +559,14 @@ class _RegisterPageState extends State<RegisterPage> {
     final docUser = FirebaseFirestore.instance.collection('users').doc(id);
 
     final user = Users(
-        id: docUser.id,
-        name: name,
-        number: number,
-        email: email,
-        image: imgUrl,
-        type: type);
+      id: docUser.id,
+      name: name,
+      number: number,
+      email: email,
+      image: imgUrl,
+      type: type,
+      notificationCounter: 0,
+    );
 
     final json = user.toJson();
 
@@ -593,6 +592,7 @@ class _RegisterPageState extends State<RegisterPage> {
       type: type,
       office: 'Office No.',
       officeHours: {},
+      notificationCounter: 0,
     );
 
     final json = user.toJson();

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:graduation_project/main.dart';
 import 'package:graduation_project/widgets/user_class.dart';
 
 class UserNotifications extends StatefulWidget {
@@ -31,7 +32,7 @@ class _UserNotificationsState extends State<UserNotifications> {
                 children: [...users.map(buildListTile).toList()],
               );
             } else {
-              return Center(child: Text('data'));
+              return splashScreen();
             }
           }),
     );

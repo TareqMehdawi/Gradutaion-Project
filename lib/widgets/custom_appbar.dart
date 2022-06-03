@@ -8,7 +8,7 @@ PreferredSizeWidget CustomAppBar({
   required VoidCallback menuFunction,
 }) {
   return PreferredSize(
-    preferredSize: Size(300, 300),
+    preferredSize: Size(200, 200),
     child: Builder(builder: (context) {
       return Container(
         //color: Theme.of(context).primaryColor,

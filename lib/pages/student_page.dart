@@ -41,53 +41,6 @@ class _StudentPageState extends State<StudentPage> {
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   var token;
   String? empToken;
-  // String receivedPushMessage = '';
-
-  // void listenForMessages() {
-  //   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-  //     print('Got a message whilst in the foreground!');
-  //     print('Message data: ${message.data}');
-  //
-  //     if (message.notification != null) {
-  //       print('Message also contained a notification: ${message.notification}');
-  //       setState(() {
-  //         String? body = message.notification?.body;
-  //         if (body != null) {
-  //           this.receivedPushMessage = body;
-  //         } else {
-  //           this.receivedPushMessage = "message boy was null";
-  //         }
-  //       });
-  //     }
-  //   });
-  // }
-
-  // void sendPushMessage(String token, String body, String title) async {
-  //   try {
-  //     await http.post(
-  //       Uri.parse('https://fcm.googleapis.com/fcm/send'),
-  //       headers: <String, String>{
-  //         'Content-Type': 'application/json',
-  //         'Authorization':
-  //         'key=AAAAc7t946A:APA91bFfNHbG4zCoFxqgR8-i3UnX0E1SkSGJZ_iW5k6YSI-uIGpVYMqP4lgw9j45xVDXX1KnGDvW9gSejPu-tHdQFP_I11FlH_qYTrs24X3sBR7pLcbUGwPt8Qres-IoFHWCw8VuFwjw',
-  //       },
-  //       body: jsonEncode(
-  //         <String, dynamic>{
-  //           'notification': <String, dynamic>{'body': body, 'title': title},
-  //           'priority': 'high',
-  //           'data': {
-  //             'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-  //             'id': '1',
-  //             'status': 'done'
-  //           },
-  //           "to": token,
-  //         },
-  //       ),
-  //     );
-  //   } catch (e) {
-  //     print("error push notification");
-  //   }
-  // }
 
   Future deleteCard() async {
     var date = DateTime.now();
@@ -137,7 +90,6 @@ class _StudentPageState extends State<StudentPage> {
           (reservationHour == hour || reservationHour - hour == 1)) {
         sendPushMessage(token, 'Your Appointment will start in 15 minutes',
             'Appointment Ahead');
-        print('hi');
       }
     }
     return null;
@@ -568,8 +520,6 @@ class _StudentPageState extends State<StudentPage> {
       await _fcm.getToken().then((currentToken) {
         setState(() {
           token = currentToken;
-
-          print(token);
         });
       });
     } catch (e) {

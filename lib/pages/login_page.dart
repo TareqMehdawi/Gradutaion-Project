@@ -2,8 +2,8 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:graduation_project/pages/forgot_password.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
+import 'package:graduation_project/pages/register_page.dart';
 
 import '../main.dart';
 
@@ -354,7 +354,7 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const ForgotPassword(),
+              builder: (context) => const RegisterPage(),
             ),
           );
         },
