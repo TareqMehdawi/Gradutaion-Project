@@ -43,7 +43,6 @@ class StudentsReservation {
   final String empName;
   final String empId;
   final String service;
-  final int people;
   final String time;
   final String date;
   final String student;
@@ -56,7 +55,6 @@ class StudentsReservation {
       {this.id = '',
       required this.empName,
       required this.service,
-      required this.people,
       required this.time,
       required this.date,
       required this.student,
@@ -71,7 +69,6 @@ class StudentsReservation {
         'empName': empName,
         'empId': empId,
         'service': service,
-        'people': people,
         'time': time,
         'date': date,
         'student': student,
@@ -87,7 +84,6 @@ class StudentsReservation {
           empName: json['empName'],
           empId: json['empId'],
           service: json['service'],
-          people: json['people'],
           time: json['time'],
           date: json['date'],
           student: json['student'],

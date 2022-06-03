@@ -60,7 +60,6 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
 
   @override
   void initState() {
-    updateToken();
     readUser();
     super.initState();
     FirebaseMessaging.instance.getInitialMessage();
@@ -387,7 +386,6 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
     try {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       var notification = preferences.getString("NOTIFICATION");
-      print(notification);
       if (notification == "true") {
         await _fcm.getToken().then((currentToken) {
           setState(() {

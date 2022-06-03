@@ -118,7 +118,6 @@ class _BookingScreenState extends State<BookingScreen> {
                           height: 20,
                         ),
                         Container(
-
                           alignment: Alignment.centerLeft,
                           padding: const EdgeInsets.only(left: 18),
                           child: Center(
@@ -350,20 +349,21 @@ class _BookingScreenState extends State<BookingScreen> {
                                               decoration: BoxDecoration(
                                                   border: Border.all(),
                                                   borderRadius:
-                                                      BorderRadius.circular(32.0),
+                                                      BorderRadius.circular(
+                                                          32.0),
                                                   color: index == onTimeSelect
                                                       ? Color(0xff205375)
                                                       : Colors.grey.shade400),
                                               child: Center(
                                                 child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.symmetric(
-                                                          horizontal: 25.0),
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 25.0),
                                                   child: Text(
                                                     send(
                                                         user2,
-                                                        user[serviceIndex!]
-                                                            ["duration"])[index],
+                                                        user[serviceIndex!][
+                                                            "duration"])[index],
                                                     style: const TextStyle(
                                                         fontSize: 14,
                                                         color: Colors.white,
@@ -421,7 +421,6 @@ class _BookingScreenState extends State<BookingScreen> {
                                       empName: widget.empName,
                                       empId: widget.uid,
                                       service: serviceSelect!,
-                                      people: 10,
                                       currentTime: selectedTime!,
                                       currentDate: daySelect!,
                                       studentName: widget.stdName,
@@ -843,7 +842,6 @@ class _BookingScreenState extends State<BookingScreen> {
       {required String empName,
       required String empId,
       required String service,
-      required int people,
       required String currentTime,
       required String currentDate,
       required String studentName,
@@ -854,7 +852,6 @@ class _BookingScreenState extends State<BookingScreen> {
         empName: empName,
         empId: empId,
         service: service,
-        people: people,
         time: currentTime,
         date: currentDate,
         student: studentName,

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/pages/change_password.dart';
+import 'package:graduation_project/pages/navigation_drawer.dart';
 import 'package:graduation_project/pages/test.dart';
 import 'package:graduation_project/widgets/edit_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,6 +41,13 @@ class _SettingsPageState extends State<SettingsPage> {
         backgroundColor: const Color(0xff205375),
         title: const Text('Settings'),
         centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => NavigationDrawer()));
+          },
+        ),
       ),
       body: FutureBuilder<Users?>(
           future: readUser(),
