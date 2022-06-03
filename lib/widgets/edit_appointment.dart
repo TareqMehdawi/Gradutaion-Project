@@ -294,7 +294,7 @@ class _EditScreenState extends State<EditScreen> {
         notAvailable.add(oldHour + newHour);
       } else {
         minute = '00';
-        hours = hours +1;
+        hours = hours + 1;
         hour = hours.toString().padLeft(2, '0');
         newHour = "$hour:$minute";
         doctorOfficeHours = newHour;
@@ -322,8 +322,6 @@ class _EditScreenState extends State<EditScreen> {
 
     return intMin;
   }
-
-
 
   count(List b, List notAvailable) {
     List c = [];
@@ -705,12 +703,10 @@ class _EditScreenState extends State<EditScreen> {
                                 updateTime();
                                 widget.type == 'student'
                                     ? sendPushMessage(
-                                        //'cbSymk6TS4y28q_OjfU1Nn:APA91bHFQ30eB-KIYDzCIxl1Cw1U3HmiaezitixHSgdGwl_a81Xd3wWkBt-1N0uvRbJDF1UlbtIAdJ85WrczPRrs8sb2irdJnQG9IJd_2zp24soEAzBIHgE6twUelfCmg4fSqCBNoaah',
                                         empToken!,
                                         'An Appointment has been updated',
                                         'Appointment Updated')
                                     : sendPushMessage(
-                                        //'cbSymk6TS4y28q_OjfU1Nn:APA91bHFQ30eB-KIYDzCIxl1Cw1U3HmiaezitixHSgdGwl_a81Xd3wWkBt-1N0uvRbJDF1UlbtIAdJ85WrczPRrs8sb2irdJnQG9IJd_2zp24soEAzBIHgE6twUelfCmg4fSqCBNoaah',
                                         stdToken!,
                                         'An Appointment has been updated',
                                         'Appointment Updated');
@@ -806,12 +802,10 @@ class _EditScreenState extends State<EditScreen> {
                                     deleteService();
                                     widget.type == 'student'
                                         ? sendPushMessage(
-                                            //'cbSymk6TS4y28q_OjfU1Nn:APA91bHFQ30eB-KIYDzCIxl1Cw1U3HmiaezitixHSgdGwl_a81Xd3wWkBt-1N0uvRbJDF1UlbtIAdJ85WrczPRrs8sb2irdJnQG9IJd_2zp24soEAzBIHgE6twUelfCmg4fSqCBNoaah',
                                             empToken!,
                                             'An Appointment has been deleted',
                                             'Appointment Deleted')
                                         : sendPushMessage(
-                                            //'cbSymk6TS4y28q_OjfU1Nn:APA91bHFQ30eB-KIYDzCIxl1Cw1U3HmiaezitixHSgdGwl_a81Xd3wWkBt-1N0uvRbJDF1UlbtIAdJ85WrczPRrs8sb2irdJnQG9IJd_2zp24soEAzBIHgE6twUelfCmg4fSqCBNoaah',
                                             stdToken!,
                                             'An Appointment has been deleted',
                                             'Appointment Deleted');

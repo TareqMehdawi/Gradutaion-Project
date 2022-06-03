@@ -12,6 +12,7 @@ class UserNotifications extends StatefulWidget {
 
 class _UserNotificationsState extends State<UserNotifications> {
   final currentUser = FirebaseAuth.instance.currentUser!;
+  String? time;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,11 +53,18 @@ class _UserNotificationsState extends State<UserNotifications> {
             children: [
               InkWell(
                 onTap: () async {
+                  time = user.time;
                   final delete = await FirebaseFirestore.instance
                       .collection('notification')
                       .where('id', isEqualTo: currentUser.uid)
+                      .where('time', isEqualTo: time)
                       .get();
-                  print(delete);
+
+                  var deleted = delete.docs.first;
+                  await FirebaseFirestore.instance
+                      .collection('notification')
+                      .doc(deleted.id)
+                      .delete();
                 },
                 borderRadius: BorderRadius.circular(50),
                 child: const Icon(

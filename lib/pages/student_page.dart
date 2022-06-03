@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/widgets/custom_appbar.dart';
 import 'package:graduation_project/widgets/local_notification_service.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -114,10 +117,64 @@ class _StudentPageState extends State<StudentPage> {
     return null;
   }
 
+  Future notifyBeforeTime() async {
+    var date = DateTime.now();
+    var hourMinute = DateFormat("HH:mm").format(date);
+    final day = DateFormat('EEEE').format(date);
+    final docUser2 = await FirebaseFirestore.instance
+        .collection('reservation')
+        .where('date', isEqualTo: day.toString())
+        .where('empId', isEqualTo: currentUser.uid)
+        .get();
+    for (var doc in docUser2.docs) {
+      String time = doc.data()['time'].toString().substring(0, 5);
+      int reservationSecound = int.parse(time.substring(3, 5));
+      int secound = int.parse(hourMinute.toString().substring(3, 5));
+      int reservationHour = int.parse(time.substring(0, 2));
+
+      int hour = int.parse(hourMinute.toString().substring(0, 2));
+      if (reservationSecound - secound == 15 &&
+          (reservationHour == hour || reservationHour - hour == 1)) {
+        sendPushMessage(token, 'Your Appointment will start in 15 minutes',
+            'Appointment Ahead');
+        print('hi');
+      }
+    }
+    return null;
+  }
+
+  void sendPushMessage(String token, String body, String title) async {
+    try {
+      await http.post(
+        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization':
+              'key=AAAAc7t946A:APA91bFfNHbG4zCoFxqgR8-i3UnX0E1SkSGJZ_iW5k6YSI-uIGpVYMqP4lgw9j45xVDXX1KnGDvW9gSejPu-tHdQFP_I11FlH_qYTrs24X3sBR7pLcbUGwPt8Qres-IoFHWCw8VuFwjw',
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            'notification': <String, dynamic>{'body': body, 'title': title},
+            'priority': 'high',
+            'data': {
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'id': '1',
+              'status': 'done'
+            },
+            "to": token,
+          },
+        ),
+      );
+    } catch (e) {
+      print("error push notification");
+    }
+  }
+
   @override
   void initState() {
     updateToken();
 
+    notifyBeforeTime();
     FirebaseMessaging.instance.getInitialMessage();
 
     FirebaseMessaging.onMessage.listen((message) {
@@ -132,6 +189,7 @@ class _StudentPageState extends State<StudentPage> {
   }
 
   Widget build(BuildContext context) {
+    notifyBeforeTime();
     deleteCard();
     return Scaffold(
       appBar: CustomAppBar(

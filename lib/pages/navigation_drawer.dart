@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -244,7 +245,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          const  UserNotifications(),
+                                          const SettingsPage(),
                                     ),
                                   );
                                 },
@@ -449,10 +450,21 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
     return ListTile(
       selectedTileColor: const Color(0xff92B4EC),
       onTap: function,
-      leading: Icon(
-        icon,
-        color: const Color(0xff205375),
-      ),
+      leading: title == "Notification"
+          ? Badge(
+              badgeContent: Text(
+                '2',
+                style: TextStyle(color: Colors.white),
+              ),
+              child: Icon(
+                icon,
+                color: const Color(0xff205375),
+              ),
+            )
+          : Icon(
+              icon,
+              color: const Color(0xff205375),
+            ),
       title: Text(
         title,
         style: const TextStyle(color: Colors.black),
