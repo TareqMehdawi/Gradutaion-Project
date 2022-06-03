@@ -287,7 +287,7 @@ class _EditScreenState extends State<EditScreen> {
         notAvailable.add(oldHour + newHour);
       } else {
         minute = '00';
-        hours = makeHour(hours);
+        hours = hours +1;
         hour = hours.toString().padLeft(2, '0');
         newHour = "$hour:$minute";
         doctorOfficeHours = newHour;
@@ -316,15 +316,7 @@ class _EditScreenState extends State<EditScreen> {
     return intMin;
   }
 
-  int makeHour(int hour) {
-    if (hour < 12) {
-      hour = hour + 1;
-      return hour;
-    } else {
-      hour = 1;
-      return hour;
-    }
-  }
+
 
   count(List b, List notAvailable) {
     List c = [];

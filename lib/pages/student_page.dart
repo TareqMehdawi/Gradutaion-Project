@@ -339,36 +339,39 @@ class _StudentPageState extends State<StudentPage> {
                           width: double.infinity,
                           padding: EdgeInsets.all(20),
                           child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Icon(
-                                Icons.calendar_today,
-                                color: Colors.black,
-                                size: 15,
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.calendar_today,
+                                    color: Colors.black,
+                                    size: 15,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    user.date,
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ],
                               ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                user.date,
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              SizedBox(
-                                width: 85,
-                              ),
-                              Icon(
-                                Icons.access_alarm,
-                                color: Colors.black,
-                                size: 17,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Flexible(
-                                child: Text(
-                                  user.time,
-                                  style: TextStyle(color: Colors.black),
-                                ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.access_alarm,
+                                    color: Colors.black,
+                                    size: 17,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    user.time,
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ],
                               ),
                             ],
                           ),

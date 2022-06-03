@@ -221,7 +221,6 @@ class SendFeedback {
       );
 }
 
-
 class Notifications {
   final String id;
   final String body;
@@ -253,5 +252,4 @@ class Notifications {
         date: json['date'],
       );
 }
-
 

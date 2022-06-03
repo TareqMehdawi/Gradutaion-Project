@@ -8,7 +8,6 @@ import 'package:graduation_project/pages/make_service.dart';
 import 'package:graduation_project/widgets/custom_appbar.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
 import '../styles/colors.dart';
 import '../widgets/edit_appointment.dart';
 import '../widgets/local_notification_service.dart';
@@ -63,7 +62,6 @@ class _EmployeePageState extends State<EmployeePage> {
         .where('date', isEqualTo: day.toString())
         .where('empId', isEqualTo: currentUser.uid)
         .get();
-
     for (var doc in docUser2.docs) {
       String time = doc.data()['time'].toString().substring(8, 13);
 
@@ -81,9 +79,34 @@ class _EmployeePageState extends State<EmployeePage> {
     }
     return null;
   }
+  Future noti() async {
+    var date = DateTime.now();
+    var hourMinute = DateFormat("HH:mm").format(date);
+    final day = DateFormat('EEEE').format(date);
+    final docUser2 = await FirebaseFirestore.instance
+        .collection('reservation')
+        .where('date', isEqualTo: day.toString())
+        .where('empId', isEqualTo: currentUser.uid)
+        .get();
+    for (var doc in docUser2.docs) {
+      String time = doc.data()['time'].toString().substring(0, 5);
+      int reservationSecound =int.parse(time.substring(3, 5));
+      int secound=int.parse(hourMinute.toString().substring(3, 5));
+      int reservationHour=int.parse(time.substring(0, 2));
+
+      int hour=int.parse(hourMinute.toString().substring(0, 2));
+      if ( reservationSecound-secound ==15&&
+          (reservationHour ==hour ||reservationHour-hour==1)
+              ) {
+        print("hi");
+      }
+    }
+    return null;
+  }
 
   @override
   void initState() {
+
     updateToken();
 
     FirebaseMessaging.instance.getInitialMessage();
@@ -101,6 +124,7 @@ class _EmployeePageState extends State<EmployeePage> {
 
   @override
   Widget build(BuildContext context) {
+    noti();
     deleteCard();
     return Scaffold(
       appBar: CustomAppBar(
@@ -401,7 +425,7 @@ class _EmployeePageState extends State<EmployeePage> {
                                     size: 15,
                                   ),
                                   SizedBox(
-                                    width: 20,
+                                    width: 5,
                                   ),
                                   Text(
                                     user.date,
