@@ -203,10 +203,9 @@ class _MyServices extends State<MyServices> {
                                   animType: AnimType.BOTTOMSLIDE,
                                   title: 'Success',
                                   desc: 'Service deleted successfully',
-                                  btnOkText: 'Go back',
+                                  btnOkText: 'Ok',
                                   btnCancelColor: Colors.black87,
                                   onDissmissCallback: (d) {
-                                    Navigator.pop(context);
                                     Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
@@ -214,7 +213,6 @@ class _MyServices extends State<MyServices> {
                                                 const MyServices()));
                                   },
                                   btnOkOnPress: () {
-                                    Navigator.pop(context);
                                     Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
@@ -282,39 +280,5 @@ class _MyServices extends State<MyServices> {
             ),
           ),
         ),
-        // child: ListTile(
-        //   leading: Padding(
-        //     padding: const EdgeInsets.only(top: 10.0),
-        //     child: Text("${user.Duration.substring(0, 2)} min"),
-        //   ),
-        //   title: Text(user.Service),
-        //   subtitle: Text('days : ${user.days}\nOffice hour: ${user.Time}'),
-        //   trailing: const Icon(Icons.arrow_forward_ios),
-        //   contentPadding:
-        //       const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-        //   onTap: () {
-        //     print(FirebaseFirestore.instance
-        //         .collection('Service')
-        //         .doc('user.uid')
-        //         .get()
-        //         .then((value) => print(value)));
-        //     Navigator.push(
-        //       context,
-        //       MaterialPageRoute(
-        //         builder: (context) => DeleteSelectService(
-        //           serviceName: user.Service,
-        //           days: user.days,
-        //           time: user.Time,
-        //           duration: user.Duration,
-        //           uid: user.id,
-        //         ),
-        //       ),
-        //     );
-        //   },
-        //   shape: RoundedRectangleBorder(
-        //     borderRadius: BorderRadius.circular(10.0),
-        //   ),
-        //   tileColor: Colors.grey.shade300,
-        // ),
       );
 }

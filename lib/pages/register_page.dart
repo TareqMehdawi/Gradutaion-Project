@@ -189,28 +189,6 @@ class _RegisterPageState extends State<RegisterPage> {
           }
         },
       ),
-
-      // child: TextFormField(
-      //   controller: usernameController,
-      //   keyboardType: TextInputType.name,
-      //   decoration: const InputDecoration(
-      //     labelText: 'Username',
-      //     border: OutlineInputBorder(),
-      //     suffixIcon: Icon(Icons.person_outline_rounded),
-      //   ),
-      //   validator: (value) {
-      //     final regUsername = RegExp(r'^[a-zA-Z ]{2,30}$');
-      //     if (value!.isEmpty) {
-      //       return 'Enter an username';
-      //     } else if (value.length < 3) {
-      //       return 'Enter at least 3 characters!';
-      //     } else if (!regUsername.hasMatch(value)) {
-      //       return 'Username can only have letters!';
-      //     } else {
-      //       return null;
-      //     }
-      //   },
-      // ),
     );
   }
 
@@ -262,29 +240,6 @@ class _RegisterPageState extends State<RegisterPage> {
         },
       ),
 
-      // child: TextFormField(
-      //   controller: emailController,
-      //   keyboardType: TextInputType.emailAddress,
-      //   decoration: const InputDecoration(
-      //     labelText: 'Email',
-      //     border: OutlineInputBorder(),
-      //     suffixIcon: Icon(Icons.email_outlined),
-      //   ),
-      //   validator: (value) {
-      //     if (value!.isEmpty) {
-      //       return 'Enter an email';
-      //     } else if (regEmailStu.hasMatch(value)) {
-      //       type = 'student';
-      //     }else if (regEmailReg.hasMatch(value)) {
-      //       type = 'registration';
-      //     } else if (regEmailDoc.hasMatch(value)) {
-      //       type = 'doctor';
-      //     } else {
-      //       return 'Please enter a valid email!';
-      //     }
-      //     return null;
-      //   },
-      // ),
     );
   }
 
@@ -336,29 +291,6 @@ class _RegisterPageState extends State<RegisterPage> {
           }
         },
       ),
-
-      // child: TextFormField(
-      //   controller: phoneNumberController,
-      //   keyboardType: TextInputType.number,
-      //   decoration: const InputDecoration(
-      //     labelText: 'Phone Number',
-      //     border: OutlineInputBorder(),
-      //     suffixIcon: Icon(Icons.phone_outlined),
-      //   ),
-      //   validator: (value) {
-      //     if (value!.isEmpty) {
-      //       return 'Enter a phone number';
-      //       //////////////////////////////////
-      //     } else if (value.length > 10) {
-      //       return 'Enter a valid phone number!';
-      //     } else if (value.length < 10) {
-      //       return 'Enter a valid phone number!';
-      //     } else {
-      //       ///////////////////////////////////////////
-      //       return null;
-      //     }
-      //   },
-      // ),
     );
   }
 
@@ -410,27 +342,6 @@ class _RegisterPageState extends State<RegisterPage> {
             }
           }),
 
-      // child: TextFormField(
-      //   controller: passwordController,
-      //   keyboardType: TextInputType.visiblePassword,
-      //   decoration: const InputDecoration(
-      //     labelText: 'Password',
-      //     border: OutlineInputBorder(),
-      //     suffixIcon: Icon(Icons.lock_outline),
-      //   ),
-      //   obscureText: !showPassword,
-      //   validator: (value) {
-      //     final regPassword = RegExp(
-      //         "^(?=.{8,32}\$)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[_!@#\$%^&*(),.?:{}|<>]).*");
-      //     if (value!.isEmpty) {
-      //       return 'Enter a password';
-      //     } else if (!regPassword.hasMatch(value)) {
-      //       return 'Password must have at least:\nOne upper case,\nOne lower case,\nOne digit,\nOne special character,\nMinimum eight characters,';
-      //     } else {
-      //       return null;
-      //     }
-      //   },
-      // ),
     );
   }
 
@@ -475,23 +386,6 @@ class _RegisterPageState extends State<RegisterPage> {
         },
       ),
 
-      // child: TextFormField(
-      //   controller: confirmPassword,
-      //   keyboardType: TextInputType.visiblePassword,
-      //   decoration: const InputDecoration(
-      //     labelText: 'Confirm Password',
-      //     border: OutlineInputBorder(),
-      //     suffixIcon: Icon(Icons.lock_outline),
-      //   ),
-      //   obscureText: !showPassword,
-      //   validator: (value) {
-      //     if (passwordController.text.trim() != confirmPassword.text.trim()) {
-      //       return 'Password doesn\'t match';
-      //     } else {
-      //       return null;
-      //     }
-      //   },
-      // ),
     );
   }
 
@@ -657,31 +551,6 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ),
     );
-    // return OutlinedButton(
-    //   style: OutlinedButton.styleFrom(
-    //     minimumSize: Size(MediaQuery.of(context).size.width * .94,
-    //         MediaQuery.of(context).size.height * .06),
-    //     side: const BorderSide(width: 1, color: Colors.black),
-    //     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-    //     shape: RoundedRectangleBorder(
-    //       borderRadius: BorderRadius.circular(18),
-    //     ),
-    //   ),
-    //   onPressed: () {
-    //     Navigator.push(
-    //       context,
-    //       MaterialPageRoute(
-    //         builder: (context) => const LoginPage(),
-    //       ),
-    //     );
-    //   },
-    //   child: Text(
-    //     'Login',
-    //     style: GoogleFonts.ubuntu(
-    //       textStyle: const TextStyle(fontSize: 20, color: Colors.black),
-    //     ),
-    //   ),
-    // );
   }
 
   Future createUser(
@@ -715,13 +584,6 @@ class _RegisterPageState extends State<RegisterPage> {
     String workingHours = 'Nothing to show..',
   }) async {
     final docUser = FirebaseFirestore.instance.collection('users').doc(id);
-    // final docHours = FirebaseFirestore.instance.collection('officeHours').doc();
-    // final json1 = {
-    //   'officeHours': 'Nothing to show..',
-    //   'id': id,
-    // };
-    // await docHours.set(json1);
-
     final user = UserAccount(
       id: docUser.id,
       name: name,

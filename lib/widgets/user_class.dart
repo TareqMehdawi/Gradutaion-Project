@@ -221,6 +221,7 @@ class SendFeedback {
       );
 }
 
+<<<<<<< HEAD
 class Notifications {
   final String id;
   final String body;
@@ -252,3 +253,5 @@ class Notifications {
         date: json['date'],
       );
 }
+=======
+>>>>>>> 31cb17e655aac55dcbc6b1ddac4bb3c65209d388

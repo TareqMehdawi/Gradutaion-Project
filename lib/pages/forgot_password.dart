@@ -149,18 +149,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       ),
     );
 
-    // return Padding(
-    //   padding: const EdgeInsets.symmetric(horizontal: 15.0),
-    //   child: TextFormField(
-    //     controller: emailController,
-    //     keyboardType: TextInputType.emailAddress,
-    //     decoration: const InputDecoration(
-    //       labelText: 'Email',
-    //       border: OutlineInputBorder(),
-    //       suffixIcon: Icon(Icons.email_outlined),
-    //     ),
-    //   ),
-    // );
   }
 
   Widget submitButton(BuildContext context) {
@@ -201,38 +189,5 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         ),
       ),
     );
-    // return ElevatedButton(
-    //   style: OutlinedButton.styleFrom(
-    //     backgroundColor: const Color(0xff141E27),
-    //     minimumSize: Size(MediaQuery.of(context).size.width * .94,
-    //         MediaQuery.of(context).size.height * .08),
-    //     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-    //     shape: RoundedRectangleBorder(
-    //       borderRadius: BorderRadius.circular(18),
-    //     ),
-    //   ),
-    //   child: Text(
-    //     'Submit',
-    //     style: GoogleFonts.ubuntu(
-    //       textStyle: const TextStyle(
-    //         fontSize: 22,
-    //           fontWeight: FontWeight.w500,
-    //       ),
-    //     ),
-    //   ),
-    //   onPressed: () async{
-    //     try {
-    //       await FirebaseAuth.instance.sendPasswordResetEmail(
-    //           email: emailController.text.trim());
-    //
-    //       Utils.showSnackBar('Password Reset Email Sent');
-    //       Navigator.of(context).popUntil((route) => route.isFirst);
-    //
-    //     } on FirebaseAuthException catch (error){
-    //       Utils.showSnackBar(error.message);
-    //       Navigator.of(context).pop;
-    //     }
-    //   },
-    // );
   }
 }

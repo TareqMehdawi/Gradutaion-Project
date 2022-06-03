@@ -111,7 +111,6 @@ class _LoginPageState extends State<LoginPage> {
                             const SizedBox(
                               height: 12,
                             ),
-                            registerButton(),
                             buildForgetPassword(),
                           ],
                         ),
@@ -158,18 +157,6 @@ class _LoginPageState extends State<LoginPage> {
         },
       ),
     );
-    // return Padding(
-    //   padding: const EdgeInsets.symmetric(horizontal: 15.0),
-    //   child: TextFormField(
-    //     controller: emailController,
-    //     keyboardType: TextInputType.emailAddress,
-    //     decoration: const InputDecoration(
-    //       labelText: 'Email',
-    //       border: OutlineInputBorder(),
-    //       suffixIcon: Icon(Icons.email_outlined),
-    //     ),
-    //   ),
-    // );
   }
 
   Widget passwordFormField() {
@@ -304,68 +291,42 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget registerButton() {
-    return Container(
-      padding: EdgeInsets.only(left: 20, top: 0, bottom: 0, right: 20),
-      child: SizedBox(
-        width: double.infinity,
-        height: 50,
-        child: ElevatedButton(
-          focusNode: f3,
-          child: Text(
-            "Sign Up",
-            style: GoogleFonts.lato(
-              color: Color(0xff205375),
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          onPressed: () async {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const RegisterPage(),
-                ));
-          },
-          style: ElevatedButton.styleFrom(
-            elevation: 2,
-            primary: Colors.grey.shade400,
-            onPrimary: Color(0xff205375),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(32.0),
-            ),
-          ),
-        ),
-      ),
-    );
-
-    // return OutlinedButton(
-    //   style: OutlinedButton.styleFrom(
-    //     minimumSize: Size(MediaQuery.of(context).size.width * .94,
-    //         MediaQuery.of(context).size.height * .06),
-    //     side: const BorderSide(width: 1, color: Colors.black),
-    //     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-    //     shape: RoundedRectangleBorder(
-    //       borderRadius: BorderRadius.circular(18),
-    //     ),
-    //   ),
-    //   onPressed: () {
-    //     Navigator.push(
-    //       context,
-    //       MaterialPageRoute(
-    //         builder: (context) => const RegisterPage(),
-    //       ),
-    //     );
-    //   },
-    //   child: Text(
-    //     'Sign Up',
-    //     style: GoogleFonts.ubuntu(
-    //       textStyle: const TextStyle(
-    //           fontSize: 20, color: Colors.black, fontWeight: FontWeight.w500),
-    //     ),
-    //   ),
-    // );
-  }
+  // Widget registerButton() {
+  //   return Container(
+  //     padding: EdgeInsets.only(left: 20, top: 0, bottom: 0, right: 20),
+  //     child: SizedBox(
+  //       width: double.infinity,
+  //       height: 50,
+  //       child: ElevatedButton(
+  //         focusNode: f3,
+  //         child: Text(
+  //           "Sign Up",
+  //           style: GoogleFonts.lato(
+  //             color: Color(0xff205375),
+  //             fontSize: 18.0,
+  //             fontWeight: FontWeight.bold,
+  //           ),
+  //         ),
+  //         onPressed: () async {
+  //           Navigator.push(
+  //               context,
+  //               MaterialPageRoute(
+  //                 builder: (context) => const RegisterPage(),
+  //               ));
+  //         },
+  //         style: ElevatedButton.styleFrom(
+  //           elevation: 2,
+  //           primary: Colors.grey.shade400,
+  //           onPrimary: Color(0xff205375),
+  //           shape: RoundedRectangleBorder(
+  //             borderRadius: BorderRadius.circular(32.0),
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  //
+  // }
 
   Widget buildForgetPassword() {
     return Padding(

@@ -193,39 +193,6 @@ class EditImagePageState extends State<EditImagePage> {
         ));
   }
 
-  // Widget editButton(
-  //     {required VoidCallback function,
-  //     required String name,
-  //     required int style}) {
-  //   return Padding(
-  //     padding: const EdgeInsets.all(8.0),
-  //     child: SizedBox(
-  //       width: 330,
-  //       height: 50,
-  //       child: ElevatedButton(
-  //         onPressed: function,
-  //         style: style == 1
-  //             ? ButtonStyle(
-  //                 backgroundColor:
-  //                     MaterialStateProperty.all<Color>(Colors.black),
-  //                 elevation: MaterialStateProperty.all<double>(5),
-  //               )
-  //             : ButtonStyle(
-  //                 backgroundColor:
-  //                     MaterialStateProperty.all<Color>(Colors.white),
-  //                 elevation: MaterialStateProperty.all<double>(5),
-  //               ),
-  //         child: Text(
-  //           name,
-  //           style: style == 1
-  //               ? const TextStyle(fontSize: 15)
-  //               : const TextStyle(fontSize: 15, color: Colors.black),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Widget editImageButton({
     required VoidCallback function,
     required String name,
