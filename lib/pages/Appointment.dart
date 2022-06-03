@@ -423,9 +423,13 @@ class _BookingScreenState extends State<BookingScreen> {
                                       studentName: widget.stdName,
                                       imageemp: imageemp!,
                                     );
-                                    print(widget.token);
+                                    setNotification(
+                                        id: currentUser.uid,
+                                        body:
+                                            '${widget.stdName} reserved a new appointment',
+                                        title: 'Appointment Scheduled',
+                                        name: widget.stdName);
                                     sendPushMessage(
-                                        //'cbSymk6TS4y28q_OjfU1Nn:APA91bHFQ30eB-KIYDzCIxl1Cw1U3HmiaezitixHSgdGwl_a81Xd3wWkBt-1N0uvRbJDF1UlbtIAdJ85WrczPRrs8sb2irdJnQG9IJd_2zp24soEAzBIHgE6twUelfCmg4fSqCBNoaah',
                                         widget.token,
                                         'Appointment Scheduled',
                                         '${widget.stdName} reserved a new appointment');
@@ -858,6 +862,26 @@ class _BookingScreenState extends State<BookingScreen> {
         duration: duration_selected,
         officehour: office_hour_selected,
         imageemp: imageemp);
+    final json = user.toJson();
+    await docUser.set(json);
+  }
+
+  Future setNotification({
+    required String body,
+    required String title,
+    required String name,
+    required String id,
+  }) async {
+    final docUser = FirebaseFirestore.instance.collection('notification').doc();
+    final date = DateTime.now();
+    String formattedDate = DateFormat('dd-MM').format(date);
+    final user = Notifications(
+      id: id,
+      name: name,
+      body: body,
+      title: title,
+      date: formattedDate,
+    );
     final json = user.toJson();
     await docUser.set(json);
   }

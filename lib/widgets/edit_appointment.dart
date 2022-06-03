@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 import 'backbutton_widget.dart';
@@ -16,17 +19,21 @@ class EditScreen extends StatefulWidget {
   final String officeHour;
   final String duration;
   final String day;
+  final String token;
+  final String stdName;
 
-  const EditScreen(
-      {Key? key,
-      required this.student_id,
-      required this.time,
-      required this.service,
-      required this.emp_id,
-      required this.officeHour,
-      required this.duration,
-      required this.day})
-      : super(key: key);
+  const EditScreen({
+    Key? key,
+    required this.student_id,
+    required this.time,
+    required this.service,
+    required this.emp_id,
+    required this.officeHour,
+    required this.duration,
+    required this.day,
+    required this.token,
+    required this.stdName,
+  }) : super(key: key);
 
   @override
   _EditScreenState createState() => _EditScreenState();
@@ -695,6 +702,11 @@ class _EditScreenState extends State<EditScreen> {
                               // if (isValid) {
                               try {
                                 updateTime();
+                                sendPushMessage(
+                                    //'cbSymk6TS4y28q_OjfU1Nn:APA91bHFQ30eB-KIYDzCIxl1Cw1U3HmiaezitixHSgdGwl_a81Xd3wWkBt-1N0uvRbJDF1UlbtIAdJ85WrczPRrs8sb2irdJnQG9IJd_2zp24soEAzBIHgE6twUelfCmg4fSqCBNoaah',
+                                    widget.token,
+                                    'An Appointment has been rescheduled',
+                                    'Appointment Updated');
                                 AwesomeDialog(
                                   autoDismiss: false,
                                   context: context,
@@ -768,9 +780,15 @@ class _EditScreenState extends State<EditScreen> {
                                 btnOkText: "Delete",
                                 btnCancelText: 'Cancel',
                                 btnCancelOnPress: () {},
-                                btnOkOnPress: () {
+                                btnOkOnPress: () async {
                                   try {
                                     deleteService();
+                                    sendPushMessage(
+                                        //'cbSymk6TS4y28q_OjfU1Nn:APA91bHFQ30eB-KIYDzCIxl1Cw1U3HmiaezitixHSgdGwl_a81Xd3wWkBt-1N0uvRbJDF1UlbtIAdJ85WrczPRrs8sb2irdJnQG9IJd_2zp24soEAzBIHgE6twUelfCmg4fSqCBNoaah',
+                                        widget.token,
+                                        //'fuyTrGHBSh6BQt9XvHr7Ba:APA91bHyYkF8wIOf8-qrpW0saQx4ySqRWoSN0RLOYZ-gms8KhroIQDlCll52xcZLNnLL1aEr5JqU-N6zWvTAENj56Jkxssw8-Gj3fxibi0eTiVYPr0FWqJff0H9UwuFrSeCX0Kn3Fweu',
+                                        'An Appointment has been rescheduled',
+                                        'Appointment Updated');
                                     AwesomeDialog(
                                       autoDismiss: false,
                                       context: context,
@@ -1013,89 +1031,31 @@ class _EditScreenState extends State<EditScreen> {
     }
     return data;
   }
-// Color getColor(List bookedDay, List Time, int Ind, int onTime) {
-//
-//
-//   if (a == false) {
-//     for (int i = 0; i < bookedDay.length; i++) {
-//       if (Time[Ind] == bookedDay[i]) {
-//         return Colors.red;
-//       } else if (Time[Ind].toString().substring(0, 7) ==
-//           bookedDay[i].toString().substring(0, 7) &&
-//           Time[Ind].toString().substring(9, 17) !=
-//               bookedDay[i].toString().substring(9, 17)) {
-//         a = true;
-//         t = bookedDay[i].toString().substring(9, 17);
-//         //t2 = Time[Ind+1].toString().substring(0, 7);
-//         //  print(t2);
-//       }
-//       //  if(Time[Ind].toString().substring(0, 3)==bookedDay[i].toString().substring(0, 3) &&)
-//     }
-//   }
-//   if (a == true) {
-//     //print(Time[Ind].toString().substring(9, 17));
-//     if (Time[Ind].toString().substring(9, 17).trim() == t?.trim() ) {
-//       //print(Time[Ind].toString().substring(9, 17).trim());
-//       a = false;
-//       t = "";
-//       return Colors.red;
-//     } else
-//       return Colors.red;
-//   }
-//   if (Ind == onTime) {
-//     return Colors.indigo;
-//   }
-//
-//   return Colors.white12;
-// }
 
-// void sendItem4(List items2) {
-//   selectDay = items2;
-// }
-
-// List sendItem3(List items2) {
-//   List items = [];
-//   int duration =
-//   int.parse(items2[serviceIndex!]["Duration"].toString().substring(0, 2));
-//   int endMin =
-//   int.parse(items2[serviceIndex!]["Time"].toString().substring(11, 13));
-//   int endHour =
-//   int.parse(items2[serviceIndex!]["Time"].toString().substring(8, 10));
-//   // print(duration);
-//   // print(endMin);
-//   // print(items2[serviceIndex!]["days"][0]);
-//   //
-//   // print(endHour);
-//   int min =
-//   int.parse(items2[serviceIndex!]["Time"].toString().substring(3, 5));
-//   int hour =
-//   int.parse(items2[serviceIndex!]["Time"].toString().substring(0, 2));
-//   int min2;
-//   while (hour <= endHour) {
-//     int minute = min;
-//     int ho = hour;
-//     min = min + duration;
-//     if (min < 60) {
-//       if (!(min > endMin && hour == endHour)) {
-//         if (hour <= endHour) {
-//           items.add(
-//               '${ho.toString().padLeft(2, "0")} : ${minute.toString().padLeft(2, "0")} - ${hour.toString().padLeft(2, "0")} : ${min.toString().padLeft(2, "0")} ');
-//         }
-//       }
-//     } else if (min >= 60) {
-//       min2 = min - 60;
-//       hour++;
-//       if (!(min2 > endMin && hour == endHour)) {
-//         if (hour <= endHour) {
-//           items.add(
-//               '${ho.toString().padLeft(2, "0")} : ${minute.toString().padLeft(2, "0")} - ${hour.toString().padLeft(2, "0")} : ${min2.toString().padLeft(2, "0")} ');
-//         }
-//         min = min2;
-//       }
-//     }
-//   }
-//   // print(items);
-//
-//   return items;
-// }
+  void sendPushMessage(String token, String body, String title) async {
+    try {
+      await http.post(
+        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization':
+              'key=AAAAc7t946A:APA91bFfNHbG4zCoFxqgR8-i3UnX0E1SkSGJZ_iW5k6YSI-uIGpVYMqP4lgw9j45xVDXX1KnGDvW9gSejPu-tHdQFP_I11FlH_qYTrs24X3sBR7pLcbUGwPt8Qres-IoFHWCw8VuFwjw',
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            'notification': <String, dynamic>{'body': body, 'title': title},
+            'priority': 'high',
+            'data': {
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'id': '1',
+              'status': 'done'
+            },
+            "to": token,
+          },
+        ),
+      );
+    } catch (e) {
+      print("error push notification");
+    }
+  }
 }

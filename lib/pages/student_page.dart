@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -7,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/widgets/custom_appbar.dart';
 import 'package:graduation_project/widgets/local_notification_service.dart';
-import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../styles/colors.dart';
@@ -34,53 +32,55 @@ class _StudentPageState extends State<StudentPage> {
 
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   var token;
-  String receivedPushMessage = '';
+  String? empToken;
+  // String receivedPushMessage = '';
 
-  void listenForMessages() {
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
+  // void listenForMessages() {
+  //   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  //     print('Got a message whilst in the foreground!');
+  //     print('Message data: ${message.data}');
+  //
+  //     if (message.notification != null) {
+  //       print('Message also contained a notification: ${message.notification}');
+  //       setState(() {
+  //         String? body = message.notification?.body;
+  //         if (body != null) {
+  //           this.receivedPushMessage = body;
+  //         } else {
+  //           this.receivedPushMessage = "message boy was null";
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
 
-      if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
-        setState(() {
-          String? body = message.notification?.body;
-          if (body != null) {
-            this.receivedPushMessage = body;
-          } else {
-            this.receivedPushMessage = "message boy was null";
-          }
-        });
-      }
-    });
-  }
+  // void sendPushMessage(String token, String body, String title) async {
+  //   try {
+  //     await http.post(
+  //       Uri.parse('https://fcm.googleapis.com/fcm/send'),
+  //       headers: <String, String>{
+  //         'Content-Type': 'application/json',
+  //         'Authorization':
+  //         'key=AAAAc7t946A:APA91bFfNHbG4zCoFxqgR8-i3UnX0E1SkSGJZ_iW5k6YSI-uIGpVYMqP4lgw9j45xVDXX1KnGDvW9gSejPu-tHdQFP_I11FlH_qYTrs24X3sBR7pLcbUGwPt8Qres-IoFHWCw8VuFwjw',
+  //       },
+  //       body: jsonEncode(
+  //         <String, dynamic>{
+  //           'notification': <String, dynamic>{'body': body, 'title': title},
+  //           'priority': 'high',
+  //           'data': {
+  //             'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+  //             'id': '1',
+  //             'status': 'done'
+  //           },
+  //           "to": token,
+  //         },
+  //       ),
+  //     );
+  //   } catch (e) {
+  //     print("error push notification");
+  //   }
+  // }
 
-  void sendPushMessage(String token, String body, String title) async {
-    try {
-      await http.post(
-        Uri.parse('https://fcm.googleapis.com/fcm/send'),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-          'Authorization':
-              'key=AAAAc7t946A:APA91bFfNHbG4zCoFxqgR8-i3UnX0E1SkSGJZ_iW5k6YSI-uIGpVYMqP4lgw9j45xVDXX1KnGDvW9gSejPu-tHdQFP_I11FlH_qYTrs24X3sBR7pLcbUGwPt8Qres-IoFHWCw8VuFwjw',
-        },
-        body: jsonEncode(
-          <String, dynamic>{
-            'notification': <String, dynamic>{'body': body, 'title': title},
-            'priority': 'high',
-            'data': {
-              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-              'id': '1',
-              'status': 'done'
-            },
-            "to": token,
-          },
-        ),
-      );
-    } catch (e) {
-      print("error push notification");
-    }
-  }
   Future deleteCard() async {
     var date = DateTime.now();
     var hourMinute = DateFormat("HH:mm").format(date);
@@ -95,9 +95,9 @@ class _StudentPageState extends State<StudentPage> {
       String time = doc.data()['time'].toString().substring(8, 13);
 
       if (((int.parse(time.substring(3, 5)) ==
-          int.parse(hourMinute.toString().substring(3, 5)) &&
-          int.parse(time.substring(0, 2)) ==
-              int.parse(hourMinute.toString().substring(0, 2))) ||
+                  int.parse(hourMinute.toString().substring(3, 5)) &&
+              int.parse(time.substring(0, 2)) ==
+                  int.parse(hourMinute.toString().substring(0, 2))) ||
           int.parse(time.substring(0, 2)) <
               int.parse(hourMinute.toString().substring(0, 2)))) {
         await FirebaseFirestore.instance
@@ -108,7 +108,6 @@ class _StudentPageState extends State<StudentPage> {
     }
     return null;
   }
-
 
   @override
   void initState() {
@@ -136,10 +135,6 @@ class _StudentPageState extends State<StudentPage> {
             buildBottomSheet2();
           },
           menuFunction: () {
-            // sendPushMessage(
-            //     'cbSymk6TS4y28q_OjfU1Nn:APA91bHFQ30eB-KIYDzCIxl1Cw1U3HmiaezitixHSgdGwl_a81Xd3wWkBt-1N0uvRbJDF1UlbtIAdJ85WrczPRrs8sb2irdJnQG9IJd_2zp24soEAzBIHgE6twUelfCmg4fSqCBNoaah',
-            //     'body ',
-            //     'title');
             setState(() {
               Provider.of<NavigationProvider>(context, listen: false)
                   .changeValue();
@@ -150,10 +145,6 @@ class _StudentPageState extends State<StudentPage> {
         child: const Icon(Icons.add),
         onPressed: () async {
           buildBottomSheet();
-          // await showSearch(
-          //     context: context,
-          //     delegate: EmployeeSearchDelegate(),
-          // );
         },
       ),
       body: StreamBuilder<List<StudentsReservation>>(
@@ -161,8 +152,7 @@ class _StudentPageState extends State<StudentPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final users = snapshot.data!;
-            updateUserName(token: token);
-
+            setToken(token: token);
             if (users.isEmpty) {
               return Stack(
                 children: [
@@ -326,21 +316,26 @@ class _StudentPageState extends State<StudentPage> {
                             IconButton(
                               iconSize: 30.0,
                               icon: Icon(Icons.edit_sharp, color: Colors.white),
-                              onPressed: () {
+                              onPressed: () async {
+                                await getEmpToken(user);
                                 //Navigator.pop(context);
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            EditScreen(
-                                              student_id: user.id,
-                                              emp_id: user.empId,
-                                              service: user.service,
-                                              time: user.time,
-                                              duration: user.duration,
-                                              officeHour: user.officehour,
-                                              day: user.date,
-                                            )));
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        EditScreen(
+                                      student_id: user.id,
+                                      emp_id: user.empId,
+                                      service: user.service,
+                                      time: user.time,
+                                      duration: user.duration,
+                                      officeHour: user.officehour,
+                                      day: user.date,
+                                      token: empToken!,
+                                      stdName: user.student,
+                                    ),
+                                  ),
+                                );
                               },
                             )
                           ],
@@ -536,7 +531,7 @@ class _StudentPageState extends State<StudentPage> {
     }
   }
 
-  Future updateUserName({required String token}) async {
+  Future setToken({required String token}) async {
     try {
       final docUser =
           FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
@@ -673,6 +668,17 @@ class _StudentPageState extends State<StudentPage> {
           .doc(doc.id)
           .delete();
     }
+  }
+
+  Future getEmpToken(StudentsReservation user) async {
+    final docUser2 = await FirebaseFirestore.instance
+        .collection('users')
+        .where('id', isEqualTo: user.empId)
+        .get();
+    for (var doc in docUser2.docs) {
+      empToken = doc.data()['token'];
+    }
+    return empToken;
   }
   // for (var doc in docUser2.docs) {
   //   await FirebaseFirestore.instance

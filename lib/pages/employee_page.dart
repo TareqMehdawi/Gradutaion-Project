@@ -6,8 +6,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/main.dart';
 import 'package:graduation_project/pages/make_service.dart';
 import 'package:graduation_project/widgets/custom_appbar.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
 import '../styles/colors.dart';
 import '../widgets/edit_appointment.dart';
 import '../widgets/local_notification_service.dart';
@@ -26,6 +27,7 @@ class _EmployeePageState extends State<EmployeePage> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   var token;
+  String? stdToken;
 
   updateToken() async {
     try {
@@ -39,7 +41,7 @@ class _EmployeePageState extends State<EmployeePage> {
     }
   }
 
-  Future updateUserName({required String token}) async {
+  Future setToken({required String token}) async {
     try {
       final docUser =
           FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
@@ -51,6 +53,7 @@ class _EmployeePageState extends State<EmployeePage> {
       print(e);
     }
   }
+
   Future deleteCard() async {
     var date = DateTime.now();
     var hourMinute = DateFormat("HH:mm").format(date);
@@ -65,9 +68,9 @@ class _EmployeePageState extends State<EmployeePage> {
       String time = doc.data()['time'].toString().substring(8, 13);
 
       if (((int.parse(time.substring(3, 5)) ==
-          int.parse(hourMinute.toString().substring(3, 5)) &&
-          int.parse(time.substring(0, 2)) ==
-              int.parse(hourMinute.toString().substring(0, 2))) ||
+                  int.parse(hourMinute.toString().substring(3, 5)) &&
+              int.parse(time.substring(0, 2)) ==
+                  int.parse(hourMinute.toString().substring(0, 2))) ||
           int.parse(time.substring(0, 2)) <
               int.parse(hourMinute.toString().substring(0, 2)))) {
         await FirebaseFirestore.instance
@@ -99,10 +102,7 @@ class _EmployeePageState extends State<EmployeePage> {
   @override
   Widget build(BuildContext context) {
     deleteCard();
-    // String selectedService =
-    //     Provider.of<ReservationInfo>(context).selectedService;
     return Scaffold(
-      //backgroundColor: Theme.of(context).backgroundColor,
       appBar: CustomAppBar(
           title: "Employee Page",
           filterFunction: () {
@@ -131,7 +131,7 @@ class _EmployeePageState extends State<EmployeePage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final users = snapshot.data!;
-            updateUserName(token: token);
+            setToken(token: token);
             if (users.isEmpty) {
               return Center(
                 child: Image.asset('assets/images/Schedule-bro.png'),
@@ -262,6 +262,17 @@ class _EmployeePageState extends State<EmployeePage> {
     );
   }
 
+  Future getStdToken(StudentsReservation user) async {
+    final docUser2 = await FirebaseFirestore.instance
+        .collection('users')
+        .where('id', isEqualTo: user.empId)
+        .get();
+    for (var doc in docUser2.docs) {
+      stdToken = doc.data()['token'];
+    }
+    return stdToken;
+  }
+
   Stream<List<StudentsReservation>> readReservation() {
     final currentUser = FirebaseAuth.instance.currentUser!;
     if (day == 'Every Day') {
@@ -345,7 +356,8 @@ class _EmployeePageState extends State<EmployeePage> {
                             IconButton(
                               iconSize: 30.0,
                               icon: Icon(Icons.edit_sharp, color: Colors.white),
-                              onPressed: () {
+                              onPressed: () async {
+                                await getStdToken(user);
                                 //Navigator.pop(context);
                                 Navigator.push(
                                   context,
@@ -359,6 +371,8 @@ class _EmployeePageState extends State<EmployeePage> {
                                       duration: user.duration,
                                       officeHour: user.officehour,
                                       day: user.date,
+                                      token: '',
+                                      stdName: user.student,
                                     ),
                                   ),
                                 );

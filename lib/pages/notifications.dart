@@ -1,0 +1,83 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:graduation_project/widgets/user_class.dart';
+
+class UserNotifications extends StatefulWidget {
+  const UserNotifications({Key? key}) : super(key: key);
+
+  @override
+  State<UserNotifications> createState() => _UserNotificationsState();
+}
+
+class _UserNotificationsState extends State<UserNotifications> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Notifications'),
+        centerTitle: true,
+        backgroundColor: const Color(0xff205375),
+      ),
+      body: StreamBuilder<List<Notifications>>(
+          stream: readNotification(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final users = snapshot.data!;
+              return ListView(
+                padding: const EdgeInsets.all(12.0),
+                children: [...users.map(buildListTile).toList()],
+              );
+            } else {
+              return Center(child: Text('data'));
+            }
+          }),
+    );
+  }
+
+  Widget buildListTile(Notifications user) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: ListTile(
+          leading: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(user.date),
+            ],
+          ),
+          title: Text(user.title),
+          subtitle: Text('${user.body}  19:30'),
+          trailing: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: () {},
+                borderRadius: BorderRadius.circular(50),
+                child: const Icon(
+                  Icons.delete,
+                  size: 25,
+                ),
+              ),
+            ],
+          ),
+          tileColor: Colors.white,
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 10,
+            horizontal: 15,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(34.0),
+          ),
+        ),
+      );
+
+  Stream<List<Notifications>> readNotification() {
+    final currentUser = FirebaseAuth.instance.currentUser!;
+    return FirebaseFirestore.instance
+        .collection('notification')
+        .where("id", isEqualTo: currentUser.uid)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => Notifications.fromJson(doc.data()))
+            .toList());
+  }
+}

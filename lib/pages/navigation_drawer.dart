@@ -9,10 +9,10 @@ import 'package:graduation_project/main.dart';
 import 'package:graduation_project/pages/employee_account.dart';
 import 'package:graduation_project/pages/employee_page.dart';
 import 'package:graduation_project/pages/feedback_page.dart';
+import 'package:graduation_project/pages/notifications.dart';
 import 'package:graduation_project/pages/settings_page.dart';
 import 'package:graduation_project/pages/student_page.dart';
 import 'package:graduation_project/pages/your_account.dart';
-
 import 'package:provider/provider.dart';
 
 import '../widgets/search_delegate_employee.dart';
@@ -37,9 +37,6 @@ class NavigationProvider extends ChangeNotifier {
   }
 }
 
-// DateTime date = DateTime.now();
-// String dateFormat = DateFormat('EEEE').format(date);
-
 class NavigationDrawer extends StatefulWidget {
   const NavigationDrawer({
     Key? key,
@@ -53,8 +50,6 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
   bool isEmployee = true;
   final currentUser = FirebaseAuth.instance.currentUser!;
   String imgUrl = '';
-
-
 
   @override
   void initState() {
@@ -190,14 +185,14 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                               ),
                               user.type == 'student'
                                   ? drawerTiles(
-                                      icon: Icons.people,
-                                      title: 'People',
+                                      icon: Icons.notifications,
+                                      title: 'Notifications',
                                       function: () {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                const MyServices(),
+                                                UserNotifications(),
                                           ),
                                         );
                                         // await showSearch(context: context,
@@ -343,9 +338,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                 onTap: () {
                   FirebaseAuth.instance.signOut();
                 },
-                child: const Center(
-                  child: CircularProgressIndicator(),
-                ),
+                child: splashScreen(),
               );
             }
           }),

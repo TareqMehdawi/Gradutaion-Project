@@ -220,23 +220,35 @@ class SendFeedback {
         email: json['email'],
       );
 }
-// class SetEmployeeProfile{
-//   String office;
-//   String workingHours;
-//
-//   SetEmployeeProfile({
-//     required this.office,
-//     required this.workingHours,
-//   });
-//
-//   Map<String, dynamic> toJson() => {
-//       'office': office,
-//       'workingHours': workingHours,
-//   };
-//
-//   static SetEmployeeProfile fromJson(Map<String, dynamic> json) =>
-//       SetEmployeeProfile(
-//         office: json['office'],
-//         workingHours: json['workingHours'],
-//       );
-// }
+
+class Notifications {
+  final String id;
+  final String body;
+  final String title;
+  final String name;
+  final String date;
+
+  Notifications({
+    required this.id,
+    required this.body,
+    required this.title,
+    required this.name,
+    required this.date,
+  });
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'body': body,
+        'title': title,
+        'name': name,
+        'date': date,
+      };
+
+  static Notifications fromJson(Map<String, dynamic> json) => Notifications(
+        id: json['id'],
+        body: json['body'],
+        title: json['title'],
+        name: json['name'],
+        date: json['date'],
+      );
+}
