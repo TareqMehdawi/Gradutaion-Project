@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/pages/forgot_password.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
-import 'package:graduation_project/pages/register_page.dart';
 
 import '../main.dart';
 

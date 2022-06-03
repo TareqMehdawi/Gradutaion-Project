@@ -430,9 +430,10 @@ class _BookingScreenState extends State<BookingScreen> {
                                         title: 'Appointment Scheduled',
                                         name: widget.stdName);
                                     sendPushMessage(
-                                        widget.token,
-                                        'Appointment Scheduled',
-                                        '${widget.stdName} reserved a new appointment');
+                                      widget.token,
+                                      '${widget.stdName} reserved a new appointment',
+                                      'Appointment Scheduled',
+                                    );
                                     AwesomeDialog(
                                         autoDismiss: false,
                                         context: context,

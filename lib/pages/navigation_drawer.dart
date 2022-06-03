@@ -9,7 +9,7 @@ import 'package:graduation_project/main.dart';
 import 'package:graduation_project/pages/employee_account.dart';
 import 'package:graduation_project/pages/employee_page.dart';
 import 'package:graduation_project/pages/feedback_page.dart';
-import 'package:graduation_project/pages/notifications.dart';
+import 'package:graduation_project/pages/make_service.dart';
 import 'package:graduation_project/pages/settings_page.dart';
 import 'package:graduation_project/pages/student_page.dart';
 import 'package:graduation_project/pages/your_account.dart';
@@ -19,7 +19,7 @@ import '../widgets/search_delegate_employee.dart';
 import '../widgets/user_class.dart';
 import 'employee_services.dart';
 import 'login_page.dart';
-import 'make_service.dart';
+import 'notifications.dart';
 
 class NavigationProvider extends ChangeNotifier {
   double value;
@@ -157,6 +157,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                         builder: (context) => StudentPage(
                                           stdName: user.name,
                                           stdImage: user.image,
+                                          type: user.type,
                                         ),
                                       ),
                                     );
@@ -184,21 +185,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                 },
                               ),
                               user.type == 'student'
-                                  ? drawerTiles(
-                                      icon: Icons.notifications,
-                                      title: 'Notifications',
-                                      function: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                UserNotifications(),
-                                          ),
-                                        );
-                                        // await showSearch(context: context,
-                                        //     delegate: EmployeeSearchDelegate());
-                                      },
-                                    )
+                                  ? SizedBox.shrink()
                                   : drawerTiles(
                                       icon: Icons.book,
                                       title: 'My Services',
@@ -263,6 +250,19 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                 },
                               ),
                               drawerTiles(
+                                icon: Icons.notifications,
+                                title: 'Notification',
+                                function: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const UserNotifications(),
+                                    ),
+                                  );
+                                },
+                              ),
+                              drawerTiles(
                                 icon: Icons.feedback,
                                 title: 'Feedback',
                                 function: () {
@@ -308,8 +308,10 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                             ..rotateY((pi / 7) * val),
                           child: user.type == 'student'
                               ? StudentPage(
-                                  stdName: user.name, stdImage: user.image)
-                              : const EmployeePage(),
+                                  stdName: user.name,
+                                  stdImage: user.image,
+                                  type: user.type)
+                              : EmployeePage(type: user.type),
                         ));
                       }),
                   GestureDetector(

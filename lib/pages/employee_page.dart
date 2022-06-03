@@ -16,7 +16,9 @@ import '../widgets/user_class.dart';
 import 'navigation_drawer.dart';
 
 class EmployeePage extends StatefulWidget {
-  const EmployeePage({Key? key, void function}) : super(key: key);
+  final type;
+  const EmployeePage({Key? key, void function, required this.type})
+      : super(key: key);
 
   @override
   State<EmployeePage> createState() => _EmployeePageState();
@@ -373,6 +375,8 @@ class _EmployeePageState extends State<EmployeePage> {
                                       day: user.date,
                                       token: '',
                                       stdName: user.student,
+                                      type: widget.type,
+                                      empName: user.empName,
                                     ),
                                   ),
                                 );
@@ -462,4 +466,3 @@ class _EmployeePageState extends State<EmployeePage> {
         ),
       );
 }
-

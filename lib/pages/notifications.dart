@@ -11,6 +11,7 @@ class UserNotifications extends StatefulWidget {
 }
 
 class _UserNotificationsState extends State<UserNotifications> {
+  final currentUser = FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +51,14 @@ class _UserNotificationsState extends State<UserNotifications> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               InkWell(
-                onTap: () {},
+                onTap: () async {
+                  final delete = await FirebaseFirestore.instance
+                      .collection('notification')
+                      .where('id', isEqualTo: currentUser.uid)
+                      .get();
+
+                  print(delete);
+                },
                 borderRadius: BorderRadius.circular(50),
                 child: const Icon(
                   Icons.delete,
