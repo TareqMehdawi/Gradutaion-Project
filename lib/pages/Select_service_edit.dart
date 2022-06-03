@@ -86,6 +86,16 @@ class _DeleteSelectService extends State<DeleteSelectService> {
     return days;
   }
 
+  List<DayInWeek> officeHoursDays(UserAccount? user) {
+    final List<DayInWeek> days = [];
+    List day = [];
+    day.addAll(user!.officeHours.keys);
+    for (int i = 0; i < day.length; i++) {
+      days.add(DayInWeek(day[i].toString()));
+    }
+
+    return days;
+  }
   String? time2;
 
 
@@ -175,7 +185,7 @@ class _DeleteSelectService extends State<DeleteSelectService> {
                         child: SelectWeekDays(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          days: daysSelected(),
+                          days: officeHoursDays(user),
                           border: false,
                           boxDecoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30.0),
