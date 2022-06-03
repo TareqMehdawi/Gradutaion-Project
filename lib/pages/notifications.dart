@@ -46,7 +46,7 @@ class _UserNotificationsState extends State<UserNotifications> {
             ],
           ),
           title: Text(user.title),
-          subtitle: Text('${user.body}  19:30'),
+          subtitle: Text('${user.body}  ${user.time}'),
           trailing: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -56,7 +56,6 @@ class _UserNotificationsState extends State<UserNotifications> {
                       .collection('notification')
                       .where('id', isEqualTo: currentUser.uid)
                       .get();
-
                   print(delete);
                 },
                 borderRadius: BorderRadius.circular(50),

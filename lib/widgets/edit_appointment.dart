@@ -702,20 +702,20 @@ class _EditScreenState extends State<EditScreen> {
                                 sendPushMessage(
                                     //'cbSymk6TS4y28q_OjfU1Nn:APA91bHFQ30eB-KIYDzCIxl1Cw1U3HmiaezitixHSgdGwl_a81Xd3wWkBt-1N0uvRbJDF1UlbtIAdJ85WrczPRrs8sb2irdJnQG9IJd_2zp24soEAzBIHgE6twUelfCmg4fSqCBNoaah',
                                     widget.token,
-                                    'An Appointment has been rescheduled',
+                                    'An Appointment has been updated',
                                     'Appointment Updated');
                                 widget.type == 'student'
                                     ? setNotification(
                                         id: widget.emp_id,
                                         body:
-                                            '${widget.stdName} reserved a new appointment',
-                                        title: 'Appointment Scheduled',
+                                            '${widget.stdName} updated your appointment',
+                                        title: 'Appointment Updated',
                                         name: widget.stdName)
                                     : setNotification(
                                         id: widget.student_id,
                                         body:
-                                            '${widget.empName} reserved a new appointment',
-                                        title: 'Appointment Scheduled',
+                                            '${widget.empName} updated your appointment',
+                                        title: 'Appointment Updated',
                                         name: widget.empName,
                                       );
                                 AwesomeDialog(
@@ -952,12 +952,14 @@ class _EditScreenState extends State<EditScreen> {
     final docUser = FirebaseFirestore.instance.collection('notification').doc();
     final date = DateTime.now();
     String formattedDate = DateFormat('dd-MM').format(date);
+    String formattedTime = DateFormat('kk:mm').format(date);
     final user = Notifications(
       id: id,
       name: name,
       body: body,
       title: title,
       date: formattedDate,
+      time: formattedTime,
     );
     final json = user.toJson();
     await docUser.set(json);
