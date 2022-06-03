@@ -401,7 +401,7 @@ class _EmployeePageState extends State<EmployeePage> {
                                     size: 15,
                                   ),
                                   SizedBox(
-                                    width: 5,
+                                    width: 20,
                                   ),
                                   Text(
                                     user.date,
