@@ -227,6 +227,7 @@ class Notifications {
   final String title;
   final String name;
   final String date;
+  final String time;
 
   Notifications({
     required this.id,
@@ -234,6 +235,7 @@ class Notifications {
     required this.title,
     required this.name,
     required this.date,
+    required this.time,
   });
 
   Map<String, dynamic> toJson() => {
@@ -242,6 +244,7 @@ class Notifications {
         'title': title,
         'name': name,
         'date': date,
+        'time': time,
       };
 
   static Notifications fromJson(Map<String, dynamic> json) => Notifications(
@@ -250,5 +253,6 @@ class Notifications {
         title: json['title'],
         name: json['name'],
         date: json['date'],
+        time: json['time'],
       );
 }

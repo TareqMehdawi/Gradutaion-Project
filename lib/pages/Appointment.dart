@@ -876,12 +876,14 @@ class _BookingScreenState extends State<BookingScreen> {
     final docUser = FirebaseFirestore.instance.collection('notification').doc();
     final date = DateTime.now();
     String formattedDate = DateFormat('dd-MM').format(date);
+    String formattedTime = DateFormat('kk:mm').format(date);
     final user = Notifications(
       id: id,
       name: name,
       body: body,
       title: title,
       date: formattedDate,
+      time: formattedTime,
     );
     final json = user.toJson();
     await docUser.set(json);
