@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/widgets/backbutton_widget.dart';
 import 'package:graduation_project/widgets/user_class.dart';
-import 'package:time_range_picker/time_range_picker.dart';
 import 'package:intl/intl.dart';
+
 import '../styles/colors.dart';
 
 class EditOfficeHoursFormPage extends StatefulWidget {
@@ -156,27 +156,38 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                                       ),
                                     ),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.symmetric(
-                                              vertical: 16),
-                                          child: Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: SizedBox(
+                                            vertical: 16,
+                                          ),
+                                          child: SizedBox(
+                                            width: 195,
+                                            child: Center(
                                               child: editOfficeTimeButton(
                                                   function: () async {
-                                                    TimeOfDay? pickedTime = await showTimePicker(
-                                                        initialTime: TimeOfDay.now(),
-                                                        context: context,);
-                                                    DateTime parsedTime = DateTime(0, 0, 0, pickedTime!.hour, pickedTime.minute);
-                                                    String starttime = DateFormat('HH:mm').format(parsedTime);
-
-
+                                                    TimeOfDay? pickedTime =
+                                                        await showTimePicker(
+                                                      initialTime:
+                                                          TimeOfDay.now(),
+                                                      context: context,
+                                                    );
+                                                    DateTime parsedTime =
+                                                        DateTime(
+                                                            0,
+                                                            0,
+                                                            0,
+                                                            pickedTime!.hour,
+                                                            pickedTime.minute);
+                                                    String starttime =
+                                                        DateFormat('HH:mm')
+                                                            .format(parsedTime);
 
                                                     setState(
                                                       () {
-                                                        startTime =starttime;
+                                                        startTime = starttime;
                                                         // endTime = result.endTime;
                                                         // officeHours =
                                                         //     '${startTime.toString().substring(10, 15)} - ${endTime.toString().substring(10, 15)}';
@@ -184,7 +195,8 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                                                     );
                                                   },
                                                   name: getStartTime()!,
-                                                  buttonColor: Colors.grey.shade400,
+                                                  buttonColor:
+                                                      Colors.grey.shade400,
                                                   textColor: Color(0xff205375)),
                                             ),
                                           ),
@@ -192,23 +204,31 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                                         Padding(
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 16),
-                                          child: Align(
-                                            alignment: Alignment.centerRight,
-                                            child: SizedBox(
-
+                                          child: SizedBox(
+                                            width: 195,
+                                            child: Center(
                                               child: editOfficeTimeButton(
                                                   function: () async {
-                                                    TimeOfDay? pickedTime = await showTimePicker(
-                                                      initialTime: TimeOfDay.now(),
-                                                      context: context,);
-                                                    DateTime parsedTime = DateTime(0, 0, 0, pickedTime!.hour, pickedTime.minute);
-                                                    String endtime = DateFormat('HH:mm').format(parsedTime);
-
-
+                                                    TimeOfDay? pickedTime =
+                                                        await showTimePicker(
+                                                      initialTime:
+                                                          TimeOfDay.now(),
+                                                      context: context,
+                                                    );
+                                                    DateTime parsedTime =
+                                                        DateTime(
+                                                            0,
+                                                            0,
+                                                            0,
+                                                            pickedTime!.hour,
+                                                            pickedTime.minute);
+                                                    String endtime =
+                                                        DateFormat('HH:mm')
+                                                            .format(parsedTime);
 
                                                     setState(
-                                                          () {
-                                                        endTime =endtime;
+                                                      () {
+                                                        endTime = endtime;
                                                         // endTime = result.endTime;
                                                         // officeHours =
                                                         //     '${startTime.toString().substring(10, 15)} - ${endTime.toString().substring(10, 15)}';
@@ -216,7 +236,8 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                                                     );
                                                   },
                                                   name: getEndTime()!,
-                                                  buttonColor: Colors.grey.shade400,
+                                                  buttonColor:
+                                                      Colors.grey.shade400,
                                                   textColor: Color(0xff205375)),
                                             ),
                                           ),
@@ -232,7 +253,8 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                                             height: 50,
                                             child: editOfficeTimeButton(
                                                 function: () {
-                                                  officeHours="${startTime} - ${endTime}";
+                                                  officeHours =
+                                                      "${startTime} - ${endTime}";
                                                   updateOfficeTimeField(
                                                       officeHours: ttt(),
                                                       day: days,
@@ -322,6 +344,7 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
       return startTime;
     }
   }
+
   String? getEndTime() {
     if (endTime == null) {
       return "Select End Time";
@@ -584,8 +607,6 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
       ),
     );
   }
-
-
 
   Future deleteOfficeHours(String day) async {
     final docUser =

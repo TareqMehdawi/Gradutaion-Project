@@ -272,7 +272,6 @@ class _BookingScreenState extends State<BookingScreen> {
                                   isSelected = true;
                                   selectedValue2 = value as String;
                                   daySelect = value;
-                                  //print(value);
                                 });
                               },
                               icon: const Icon(
@@ -426,7 +425,6 @@ class _BookingScreenState extends State<BookingScreen> {
                                       studentName: widget.stdName,
                                       imageemp: imageemp!,
                                     );
-                                    print(widget.token);
                                     sendPushMessage(
                                         //'cbSymk6TS4y28q_OjfU1Nn:APA91bHFQ30eB-KIYDzCIxl1Cw1U3HmiaezitixHSgdGwl_a81Xd3wWkBt-1N0uvRbJDF1UlbtIAdJ85WrczPRrs8sb2irdJnQG9IJd_2zp24soEAzBIHgE6twUelfCmg4fSqCBNoaah',
                                         widget.token,
@@ -830,10 +828,8 @@ class _BookingScreenState extends State<BookingScreen> {
       data.add(ele.data());
     }
     if (data.isEmpty) {
-      print(true);
       return true;
     } else {
-      print(false);
       throw Exception();
     }
   }
@@ -903,89 +899,3 @@ class _BookingScreenState extends State<BookingScreen> {
     }
   }
 }
-
-// Color getColor(List bookedDay, List Time, int Ind, int onTime) {
-//
-//
-//   if (a == false) {
-//     for (int i = 0; i < bookedDay.length; i++) {
-//       if (Time[Ind] == bookedDay[i]) {
-//         return Colors.red;
-//       } else if (Time[Ind].toString().substring(0, 7) ==
-//           bookedDay[i].toString().substring(0, 7) &&
-//           Time[Ind].toString().substring(9, 17) !=
-//               bookedDay[i].toString().substring(9, 17)) {
-//         a = true;
-//         t = bookedDay[i].toString().substring(9, 17);
-//         //t2 = Time[Ind+1].toString().substring(0, 7);
-//         //  print(t2);
-//       }
-//       //  if(Time[Ind].toString().substring(0, 3)==bookedDay[i].toString().substring(0, 3) &&)
-//     }
-//   }
-//   if (a == true) {
-//     //print(Time[Ind].toString().substring(9, 17));
-//     if (Time[Ind].toString().substring(9, 17).trim() == t?.trim() ) {
-//       //print(Time[Ind].toString().substring(9, 17).trim());
-//       a = false;
-//       t = "";
-//       return Colors.red;
-//     } else
-//       return Colors.red;
-//   }
-//   if (Ind == onTime) {
-//     return Colors.indigo;
-//   }
-//
-//   return Colors.white12;
-// }
-
-// void sendItem4(List items2) {
-//   selectDay = items2;
-// }
-
-// List sendItem3(List items2) {
-//   List items = [];
-//   int duration =
-//   int.parse(items2[serviceIndex!]["Duration"].toString().substring(0, 2));
-//   int endMin =
-//   int.parse(items2[serviceIndex!]["Time"].toString().substring(11, 13));
-//   int endHour =
-//   int.parse(items2[serviceIndex!]["Time"].toString().substring(8, 10));
-//   // print(duration);
-//   // print(endMin);
-//   // print(items2[serviceIndex!]["days"][0]);
-//   //
-//   // print(endHour);
-//   int min =
-//   int.parse(items2[serviceIndex!]["Time"].toString().substring(3, 5));
-//   int hour =
-//   int.parse(items2[serviceIndex!]["Time"].toString().substring(0, 2));
-//   int min2;
-//   while (hour <= endHour) {
-//     int minute = min;
-//     int ho = hour;
-//     min = min + duration;
-//     if (min < 60) {
-//       if (!(min > endMin && hour == endHour)) {
-//         if (hour <= endHour) {
-//           items.add(
-//               '${ho.toString().padLeft(2, "0")} : ${minute.toString().padLeft(2, "0")} - ${hour.toString().padLeft(2, "0")} : ${min.toString().padLeft(2, "0")} ');
-//         }
-//       }
-//     } else if (min >= 60) {
-//       min2 = min - 60;
-//       hour++;
-//       if (!(min2 > endMin && hour == endHour)) {
-//         if (hour <= endHour) {
-//           items.add(
-//               '${ho.toString().padLeft(2, "0")} : ${minute.toString().padLeft(2, "0")} - ${hour.toString().padLeft(2, "0")} : ${min2.toString().padLeft(2, "0")} ');
-//         }
-//         min = min2;
-//       }
-//     }
-//   }
-//   // print(items);
-//
-//   return items;
-// }

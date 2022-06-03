@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:graduation_project/main.dart';
 
 import '../widgets/backbutton_widget.dart';
 import '../widgets/user_class.dart';
@@ -209,7 +210,6 @@ class _YourAccount2 extends State<YourAccount2> {
                                   ],
                                 ),
                               ),
-
                               Container(
                                 margin:
                                     const EdgeInsets.symmetric(horizontal: 10),
@@ -283,10 +283,8 @@ class _YourAccount2 extends State<YourAccount2> {
                                               stdImage: widget.stdImage,
                                               token: widget.token,
                                             ),
-
                                           ),
                                         );
-                                        print(widget.token);
                                       },
                                       style: ElevatedButton.styleFrom(
                                         elevation: 2,
@@ -313,11 +311,7 @@ class _YourAccount2 extends State<YourAccount2> {
                 ],
               );
             } else {
-              print(snapshot.error);
-              /////////////////////////////
-              return const Center(
-                child: Text('Loading...'),
-              );
+              return splashScreen();
             }
           }),
     );

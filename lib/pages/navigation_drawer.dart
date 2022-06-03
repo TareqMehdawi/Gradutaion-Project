@@ -57,6 +57,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
   int? notificationCounter;
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   var token;
+  double? value;
 
   @override
   void initState() {
@@ -65,10 +66,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
     FirebaseMessaging.instance.getInitialMessage();
 
     FirebaseMessaging.onMessage.listen((message) async {
-      if (message.notification != null) {
-        print(message.notification!.body);
-        print(message.notification!.title);
-      }
+      if (message.notification != null) {}
       LocalNotificationService.display(message);
       notificationCounter = (notificationCounter! + 1);
       final docUser =
@@ -82,7 +80,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    double value = Provider.of<NavigationProvider>(context).value;
+    value = Provider.of<NavigationProvider>(context).value;
     return Scaffold(
       body: FutureBuilder<Users?>(
           future: readUser(),
@@ -214,6 +212,12 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                       icon: Icons.book,
                                       title: 'My Services',
                                       function: () {
+                                        setState(() {
+                                          Provider.of<NavigationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .value = 0;
+                                        });
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -249,6 +253,12 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                       icon: Icons.add_circle,
                                       title: 'Add Services',
                                       function: () {
+                                        setState(() {
+                                          Provider.of<NavigationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .value = 0;
+                                        });
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -264,6 +274,11 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                 icon: Icons.settings,
                                 title: 'Settings',
                                 function: () {
+                                  setState(() {
+                                    Provider.of<NavigationProvider>(context,
+                                            listen: false)
+                                        .value = 0;
+                                  });
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -277,6 +292,11 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                 icon: Icons.notifications,
                                 title: 'Notifications',
                                 function: () async {
+                                  setState(() {
+                                    Provider.of<NavigationProvider>(context,
+                                            listen: false)
+                                        .value = 0;
+                                  });
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -297,6 +317,11 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                 icon: Icons.feedback,
                                 title: 'Feedback',
                                 function: () {
+                                  setState(() {
+                                    Provider.of<NavigationProvider>(context,
+                                            listen: false)
+                                        .value = 0;
+                                  });
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

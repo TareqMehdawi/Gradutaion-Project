@@ -3,12 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/pages/change_password.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
-import 'package:graduation_project/pages/test.dart';
 import 'package:graduation_project/widgets/edit_name.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/edit_phone.dart';
 import '../widgets/user_class.dart';
+import 'homepage.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -89,12 +90,18 @@ class _SettingsPageState extends State<SettingsPage> {
                     },
                   ),
                   settingsTilesNoSubtitle(
-                      function: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Tareq()),
-                        );
+                      function: () async {
+                        Provider.of<NavigationProvider>(context, listen: false)
+                            .value = 0;
+                        SharedPreferences preferences =
+                            await SharedPreferences.getInstance();
+                        await preferences.remove("EMAIL");
+                        await preferences.remove("PASSWORD");
+                        FirebaseAuth.instance.signOut();
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomePage()));
                       },
                       icon: Icons.logout,
                       title: 'Sign out'),

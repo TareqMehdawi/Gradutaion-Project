@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:graduation_project/main.dart';
 import 'package:graduation_project/widgets/user_class.dart';
 
 class FeedbackPage extends StatefulWidget {
@@ -54,15 +55,14 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               Text(
                                 'Hi there ',
                                 style: TextStyle(
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xff205375)
-                                ),
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xff205375)),
                               ),
                               Icon(
                                 Icons.emoji_emotions_outlined,
                                 size: 40,
-                                color:Color(0xff205375) ,
+                                color: Color(0xff205375),
                               ),
                             ],
                           ),
@@ -83,7 +83,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
                           'Let us know so we can forward this to our bug control.',
                       cTitle: bug,
                       email: user.email,
-
                     ),
                     const SizedBox(
                       height: 10,
@@ -117,14 +116,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 );
               } else {
                 /////////////////////////////
-                return GestureDetector(
-                  onTap: () {
-                    FirebaseAuth.instance.signOut();
-                  },
-                  child: const Center(
-                    child: Text('Loading....'),
-                  ),
-                );
+                return splashScreen();
               }
             }));
   }

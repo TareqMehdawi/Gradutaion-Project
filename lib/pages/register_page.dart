@@ -581,7 +581,7 @@ class _RegisterPageState extends State<RegisterPage> {
     required String id,
     required String email,
     required String type,
-    String office = 'Office no.',
+    String office = 'Office location',
     String workingHours = 'Nothing to show..',
   }) async {
     final docUser = FirebaseFirestore.instance.collection('users').doc(id);

@@ -96,8 +96,8 @@ class _DeleteSelectService extends State<DeleteSelectService> {
 
     return days;
   }
-  String? time2;
 
+  String? time2;
 
   @override
   Widget build(BuildContext context) {
@@ -206,7 +206,6 @@ class _DeleteSelectService extends State<DeleteSelectService> {
                           },
                         ),
                       ),
-
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15.0),
                         child: DropdownButtonHideUnderline(
@@ -313,7 +312,7 @@ class _DeleteSelectService extends State<DeleteSelectService> {
                               if (isValid) {
                                 try {
                                   updateServiceName(
-                                      servicename: serviceController.text);
+                                      serviceName: serviceController.text);
                                   //updateTime(time: time2!);
                                   updateDuration(duration: duration!);
                                   updateDays(
@@ -412,7 +411,6 @@ class _DeleteSelectService extends State<DeleteSelectService> {
     for (var day in user.keys) {
       for (int i = 0; i < days.length; i++) {
         if (day == days[i]) {
-          String y = day;
           newdays = {days[i]: user[day]};
         }
       }
@@ -431,7 +429,7 @@ class _DeleteSelectService extends State<DeleteSelectService> {
     }
   }
 
-  Future updateServiceName({required String servicename}) async {
+  Future updateServiceName({required String serviceName}) async {
     final docUser2 = await FirebaseFirestore.instance
         .collection('Service')
         .where('service', isEqualTo: widget.serviceName)
@@ -441,7 +439,7 @@ class _DeleteSelectService extends State<DeleteSelectService> {
       await FirebaseFirestore.instance
           .collection('Service')
           .doc(doc.id)
-          .update({'service': servicename});
+          .update({'service': serviceName});
     }
   }
 

@@ -32,7 +32,6 @@ class _ServicePageState extends State<ServicePage> {
 
   String? time2;
 
-
   String? selectedValue;
   List<String> items = [
     '5 minute',
@@ -104,7 +103,6 @@ class _ServicePageState extends State<ServicePage> {
                           image: AssetImage('assets/images/addservice.gif'),
                           height: 250,
                         ),
-
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 8, vertical: 16),
@@ -153,7 +151,6 @@ class _ServicePageState extends State<ServicePage> {
                             ),
                           ),
                         ),
-
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 16),
@@ -191,11 +188,9 @@ class _ServicePageState extends State<ServicePage> {
                                   }
                                 }
                               }
-                              print(days);
                             },
                           ),
                         ),
-
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15.0),
                           child: DropdownButtonHideUnderline(

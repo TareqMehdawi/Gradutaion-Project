@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project/main.dart';
 import 'package:graduation_project/widgets/user_class.dart';
 
+import 'navigation_drawer.dart';
+
 class UserNotifications extends StatefulWidget {
   const UserNotifications({Key? key}) : super(key: key);
 
@@ -21,6 +23,13 @@ class _UserNotificationsState extends State<UserNotifications> {
         title: Text('Notifications'),
         centerTitle: true,
         backgroundColor: const Color(0xff205375),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => NavigationDrawer()));
+          },
+        ),
       ),
       body: StreamBuilder<List<Notifications>>(
           stream: readNotification(),

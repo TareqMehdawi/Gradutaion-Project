@@ -247,6 +247,7 @@ class _LoginPageState extends State<LoginPage> {
                   email: emailController.text.trim(),
                   password: passwordController.text.trim());
               if (regEmailStu.hasMatch(emailController.text.trim())) {
+                saveData(emailController.text, passwordController.text);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -254,6 +255,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 );
               } else if (regEmailEmp.hasMatch(emailController.text.trim())) {
+                saveData(emailController.text, passwordController.text);
                 Navigator.push(
                   context,
                   MaterialPageRoute(

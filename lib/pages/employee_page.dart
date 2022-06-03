@@ -36,7 +36,6 @@ class _EmployeePageState extends State<EmployeePage> {
     try {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       var notification = preferences.getString("NOTIFICATION");
-      print(notification);
       if (notification == "true") {
         await _fcm.getToken().then((currentToken) {
           setState(() {
@@ -100,14 +99,12 @@ class _EmployeePageState extends State<EmployeePage> {
     FirebaseMessaging.instance.getInitialMessage();
 
     FirebaseMessaging.onMessage.listen((message) {
-      if (message.notification != null) {
-        print(message.notification!.body);
-        print(message.notification!.title);
-      }
+      if (message.notification != null) {}
       LocalNotificationService.display(message);
     });
 
     super.initState();
+    setToken(token: token);
   }
 
   @override
@@ -142,7 +139,6 @@ class _EmployeePageState extends State<EmployeePage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final users = snapshot.data!;
-            setToken(token: token);
             if (users.isEmpty) {
               return Center(
                 child: Image.asset('assets/images/Schedule-bro.png'),

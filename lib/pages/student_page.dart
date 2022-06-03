@@ -40,7 +40,7 @@ class _StudentPageState extends State<StudentPage> {
   final currentUser = FirebaseAuth.instance.currentUser!;
 
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
-  var token;
+  var token = 'dv';
   String? empToken;
 
   Future deleteCard() async {
@@ -87,19 +87,16 @@ class _StudentPageState extends State<StudentPage> {
       int secound = int.parse(hourMinute.toString().substring(3, 5));
       int reservationHour = int.parse(time.substring(0, 2));
       int hour = int.parse(hourMinute.toString().substring(0, 2));
-      print(reservationSecound - secound);
 
       if ((reservationSecound - secound == 15 ||
               reservationSecound - secound == -15) &&
           reservationHour == hour) {
-        print(time);
         sendPushMessage(token, 'Your Appointment will start in 15 minutes',
             'Appointment Ahead');
       } else if (reservationHour - hour == 1) {
         reservationSecound = reservationSecound + 60;
         if ((reservationSecound - secound == 15 ||
             reservationSecound - secound == -15)) {
-          print(time);
           sendPushMessage(token, 'Your Appointment will start in 15 minutes',
               'Appointment Ahead');
         }
@@ -137,19 +134,16 @@ class _StudentPageState extends State<StudentPage> {
 
   @override
   void initState() {
+    updateToken();
+
+    setToken(token: token);
     notifyBeforeTime();
     FirebaseMessaging.instance.getInitialMessage();
-
     FirebaseMessaging.onMessage.listen((message) {
-      if (message.notification != null) {
-        print(message.notification!.body);
-        print(message.notification!.title);
-      }
+      if (message.notification != null) {}
       LocalNotificationService.display(message);
     });
-
     super.initState();
-    updateToken();
   }
 
   Widget build(BuildContext context) {
@@ -179,7 +173,6 @@ class _StudentPageState extends State<StudentPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final users = snapshot.data!;
-            setToken(token: token);
             if (users.isEmpty) {
               return Stack(
                 children: [
@@ -532,16 +525,14 @@ class _StudentPageState extends State<StudentPage> {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       var notification = preferences.getString("NOTIFICATION");
       if (notification == "true") {
-        print(notification);
         await _fcm.getToken().then((currentToken) {
           setState(() {
-            token = currentToken;
+            token = currentToken!;
           });
         });
       } else {
-        print(notification);
         setState(() {
-          token = "null";
+          token = "no token";
         });
       }
     } catch (e) {
