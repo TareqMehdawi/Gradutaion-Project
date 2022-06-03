@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/widgets/backbutton_widget.dart';
 import 'package:graduation_project/widgets/user_class.dart';
 import 'package:time_range_picker/time_range_picker.dart';
-
+import 'package:intl/intl.dart';
 import '../styles/colors.dart';
 
 class EditOfficeHoursFormPage extends StatefulWidget {
@@ -23,8 +23,8 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final currentUser = FirebaseAuth.instance.currentUser!;
-  TimeOfDay? startTime;
-  TimeOfDay? endTime;
+  String? startTime;
+  String? endTime;
   String? time2;
   String officeHours = '';
   List<String> days = [];
@@ -155,79 +155,73 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                                         },
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 16),
-                                      child: Align(
-                                        alignment: Alignment.bottomCenter,
-                                        child: SizedBox(
-                                          width: double.infinity,
-                                          height: 50,
-                                          child: editOfficeTimeButton(
-                                              function: () async {
-                                                TimeRange result =
-                                                    await showTimeRangePicker(
-                                                        context: context,
-                                                        start: const TimeOfDay(
-                                                            hour: 9, minute: 0),
-                                                        end: const TimeOfDay(
-                                                            hour: 12,
-                                                            minute: 0),
-                                                        disabledTime: TimeRange(
-                                                            startTime:
-                                                                const TimeOfDay(
-                                                                    hour: 24,
-                                                                    minute: 0),
-                                                            endTime:
-                                                                const TimeOfDay(
-                                                                    hour: 0,
-                                                                    minute: 0)),
-                                                        disabledColor: Colors
-                                                            .red
-                                                            .withOpacity(0.5),
-                                                        strokeWidth: 4,
-                                                        ticks: 24,
-                                                        ticksOffset: -7,
-                                                        ticksLength: 15,
-                                                        ticksColor: Colors.grey,
-                                                        labels: [
-                                                          "12 am",
-                                                          "3 am",
-                                                          "6 am",
-                                                          "9 am",
-                                                          "12 pm",
-                                                          "3 pm",
-                                                          "6 pm",
-                                                          "9 pm"
-                                                        ]
-                                                            .asMap()
-                                                            .entries
-                                                            .map((e) {
-                                                          return ClockLabel
-                                                              .fromIndex(
-                                                                  idx: e.key,
-                                                                  length: 8,
-                                                                  text:
-                                                                      e.value);
-                                                        }).toList(),
-                                                        labelOffset: 35,
-                                                        rotateLabels: false,
-                                                        padding: 60);
-                                                setState(
-                                                  () {
-                                                    startTime =
-                                                        result.startTime;
-                                                    endTime = result.endTime;
-                                                    officeHours =
-                                                        '${startTime.toString().substring(10, 15)} - ${endTime.toString().substring(10, 15)}';
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 16),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: SizedBox(
+                                              child: editOfficeTimeButton(
+                                                  function: () async {
+                                                    TimeOfDay? pickedTime = await showTimePicker(
+                                                        initialTime: TimeOfDay.now(),
+                                                        context: context,);
+                                                    DateTime parsedTime = DateTime(0, 0, 0, pickedTime!.hour, pickedTime.minute);
+                                                    String starttime = DateFormat('HH:mm').format(parsedTime);
+
+
+
+                                                    setState(
+                                                      () {
+                                                        startTime =starttime;
+                                                        // endTime = result.endTime;
+                                                        // officeHours =
+                                                        //     '${startTime.toString().substring(10, 15)} - ${endTime.toString().substring(10, 15)}';
+                                                      },
+                                                    );
                                                   },
-                                                );
-                                              },
-                                              name: getTime()!,
-                                              buttonColor: Colors.grey.shade400,
-                                              textColor: Color(0xff205375)),
+                                                  name: getStartTime()!,
+                                                  buttonColor: Colors.grey.shade400,
+                                                  textColor: Color(0xff205375)),
+                                            ),
+                                          ),
                                         ),
-                                      ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 16),
+                                          child: Align(
+                                            alignment: Alignment.centerRight,
+                                            child: SizedBox(
+
+                                              child: editOfficeTimeButton(
+                                                  function: () async {
+                                                    TimeOfDay? pickedTime = await showTimePicker(
+                                                      initialTime: TimeOfDay.now(),
+                                                      context: context,);
+                                                    DateTime parsedTime = DateTime(0, 0, 0, pickedTime!.hour, pickedTime.minute);
+                                                    String endtime = DateFormat('HH:mm').format(parsedTime);
+
+
+
+                                                    setState(
+                                                          () {
+                                                        endTime =endtime;
+                                                        // endTime = result.endTime;
+                                                        // officeHours =
+                                                        //     '${startTime.toString().substring(10, 15)} - ${endTime.toString().substring(10, 15)}';
+                                                      },
+                                                    );
+                                                  },
+                                                  name: getEndTime()!,
+                                                  buttonColor: Colors.grey.shade400,
+                                                  textColor: Color(0xff205375)),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(top: 40),
@@ -238,6 +232,7 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                                             height: 50,
                                             child: editOfficeTimeButton(
                                                 function: () {
+                                                  officeHours="${startTime} - ${endTime}";
                                                   updateOfficeTimeField(
                                                       officeHours: ttt(),
                                                       day: days,
@@ -320,25 +315,30 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
             }));
   }
 
-  String? getTime() {
-    if (startTime == null && endTime == null) {
-      return "Select Time";
+  String? getStartTime() {
+    if (startTime == null) {
+      return "Select Start Time";
     } else {
-      time2 =
-          "${startTime.toString().substring(10, 15)} - ${endTime.toString().substring(10, 15)}";
-      return time2;
+      return startTime;
+    }
+  }
+  String? getEndTime() {
+    if (endTime == null) {
+      return "Select End Time";
+    } else {
+      return endTime;
     }
   }
 
   ttt() {
     Map map1 = {};
-    if (time2 == null) {
+    if (officeHours == null) {
       return 'error1';
     } else if (days.isEmpty) {
       return 'error2';
     } else {
       for (int i = 0; i < days.length; i++) {
-        map1.addAll({days[i]: time2});
+        map1.addAll({days[i]: officeHours});
       }
       return map1;
     }
@@ -560,7 +560,6 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
     return Container(
       padding: EdgeInsets.only(left: 20, top: 0, bottom: 0, right: 20),
       child: SizedBox(
-        width: double.infinity,
         height: 50,
         child: ElevatedButton(
           //focusNode: f3,
@@ -568,7 +567,7 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
             name,
             style: GoogleFonts.lato(
               color: textColor,
-              fontSize: 18.0,
+              fontSize: 16.0,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -585,6 +584,8 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
       ),
     );
   }
+
+
 
   Future deleteOfficeHours(String day) async {
     final docUser =

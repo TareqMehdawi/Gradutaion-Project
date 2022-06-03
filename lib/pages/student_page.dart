@@ -77,19 +77,31 @@ class _StudentPageState extends State<StudentPage> {
     final docUser2 = await FirebaseFirestore.instance
         .collection('reservation')
         .where('date', isEqualTo: day.toString())
-        .where('empId', isEqualTo: currentUser.uid)
+        .where('id', isEqualTo: currentUser.uid)
         .get();
+
     for (var doc in docUser2.docs) {
       String time = doc.data()['time'].toString().substring(0, 5);
       int reservationSecound = int.parse(time.substring(3, 5));
       int secound = int.parse(hourMinute.toString().substring(3, 5));
       int reservationHour = int.parse(time.substring(0, 2));
-
       int hour = int.parse(hourMinute.toString().substring(0, 2));
-      if (reservationSecound - secound == 15 &&
-          (reservationHour == hour || reservationHour - hour == 1)) {
+      print(reservationSecound - secound);
+
+      if ((reservationSecound - secound == 15 ||
+              reservationSecound - secound == -15) &&
+          reservationHour == hour) {
+        print(time);
         sendPushMessage(token, 'Your Appointment will start in 15 minutes',
             'Appointment Ahead');
+      } else if (reservationHour - hour == 1) {
+        reservationSecound = reservationSecound + 60;
+        if ((reservationSecound - secound == 15 ||
+            reservationSecound - secound == -15)) {
+          print(time);
+          sendPushMessage(token, 'Your Appointment will start in 15 minutes',
+              'Appointment Ahead');
+        }
       }
     }
     return null;
