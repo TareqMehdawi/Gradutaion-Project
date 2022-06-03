@@ -6,6 +6,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:graduation_project/widgets/user_class.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
@@ -21,6 +22,8 @@ class EditScreen extends StatefulWidget {
   final String day;
   final String token;
   final String stdName;
+  final String type;
+  final String empName;
 
   const EditScreen({
     Key? key,
@@ -33,6 +36,8 @@ class EditScreen extends StatefulWidget {
     required this.day,
     required this.token,
     required this.stdName,
+    required this.type,
+    required this.empName,
   }) : super(key: key);
 
   @override
@@ -699,6 +704,20 @@ class _EditScreenState extends State<EditScreen> {
                                     widget.token,
                                     'An Appointment has been rescheduled',
                                     'Appointment Updated');
+                                widget.type == 'student'
+                                    ? setNotification(
+                                        id: widget.emp_id,
+                                        body:
+                                            '${widget.stdName} reserved a new appointment',
+                                        title: 'Appointment Scheduled',
+                                        name: widget.stdName)
+                                    : setNotification(
+                                        id: widget.student_id,
+                                        body:
+                                            '${widget.empName} reserved a new appointment',
+                                        title: 'Appointment Scheduled',
+                                        name: widget.empName,
+                                      );
                                 AwesomeDialog(
                                   autoDismiss: false,
                                   context: context,
@@ -779,8 +798,14 @@ class _EditScreenState extends State<EditScreen> {
                                         //'cbSymk6TS4y28q_OjfU1Nn:APA91bHFQ30eB-KIYDzCIxl1Cw1U3HmiaezitixHSgdGwl_a81Xd3wWkBt-1N0uvRbJDF1UlbtIAdJ85WrczPRrs8sb2irdJnQG9IJd_2zp24soEAzBIHgE6twUelfCmg4fSqCBNoaah',
                                         widget.token,
                                         //'fuyTrGHBSh6BQt9XvHr7Ba:APA91bHyYkF8wIOf8-qrpW0saQx4ySqRWoSN0RLOYZ-gms8KhroIQDlCll52xcZLNnLL1aEr5JqU-N6zWvTAENj56Jkxssw8-Gj3fxibi0eTiVYPr0FWqJff0H9UwuFrSeCX0Kn3Fweu',
-                                        'An Appointment has been rescheduled',
-                                        'Appointment Updated');
+                                        'An Appointment has been deleted',
+                                        'Appointment Deleted');
+                                    setNotification(
+                                        id: widget.emp_id,
+                                        body:
+                                            '${widget.stdName} reserved a new appointment',
+                                        title: 'Appointment Scheduled',
+                                        name: widget.stdName);
                                     AwesomeDialog(
                                       autoDismiss: false,
                                       context: context,
@@ -839,6 +864,7 @@ class _EditScreenState extends State<EditScreen> {
       ),
     );
   }
+
   Future deleteService() async {
     final docUser2 = await FirebaseFirestore.instance
         .collection('reservation')
@@ -907,5 +933,25 @@ class _EditScreenState extends State<EditScreen> {
     } catch (e) {
       print("error push notification");
     }
+  }
+
+  Future setNotification({
+    required String body,
+    required String title,
+    required String name,
+    required String id,
+  }) async {
+    final docUser = FirebaseFirestore.instance.collection('notification').doc();
+    final date = DateTime.now();
+    String formattedDate = DateFormat('dd-MM').format(date);
+    final user = Notifications(
+      id: id,
+      name: name,
+      body: body,
+      title: title,
+      date: formattedDate,
+    );
+    final json = user.toJson();
+    await docUser.set(json);
   }
 }

@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:graduation_project/pages/homepage.dart';
 import 'package:graduation_project/pages/login_page.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
 import 'package:graduation_project/widgets/local_notification_service.dart';
@@ -61,7 +60,7 @@ class _SplashScreenWithDurationState extends State<SplashScreenWithDuration> {
     super.initState();
     Timer(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomePage()));
+          context, MaterialPageRoute(builder: (context) => LoginPage()));
     });
   }
 
@@ -81,7 +80,7 @@ class _SplashScreenWithDurationState extends State<SplashScreenWithDuration> {
               height: 20,
             ),
             const CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Color(0xff398AB9)),
+              valueColor: AlwaysStoppedAnimation<Color>(Color(0xff205375)),
             )
           ],
         ),

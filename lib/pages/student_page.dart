@@ -17,8 +17,13 @@ import 'navigation_drawer.dart';
 class StudentPage extends StatefulWidget {
   final String stdName;
   final String stdImage;
+  final type;
   const StudentPage(
-      {Key? key, void function, required this.stdName, required this.stdImage})
+      {Key? key,
+      void function,
+      required this.stdName,
+      required this.stdImage,
+      required this.type})
       : super(key: key);
 
   @override
@@ -321,6 +326,8 @@ class _StudentPageState extends State<StudentPage> {
                                       day: user.date,
                                       token: empToken!,
                                       stdName: user.student,
+                                      type: widget.type,
+                                      empName: user.empName,
                                     ),
                                   ),
                                 );
