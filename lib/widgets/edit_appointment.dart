@@ -800,12 +800,20 @@ class _EditScreenState extends State<EditScreen> {
                                         //'fuyTrGHBSh6BQt9XvHr7Ba:APA91bHyYkF8wIOf8-qrpW0saQx4ySqRWoSN0RLOYZ-gms8KhroIQDlCll52xcZLNnLL1aEr5JqU-N6zWvTAENj56Jkxssw8-Gj3fxibi0eTiVYPr0FWqJff0H9UwuFrSeCX0Kn3Fweu',
                                         'An Appointment has been deleted',
                                         'Appointment Deleted');
-                                    setNotification(
-                                        id: widget.emp_id,
-                                        body:
-                                            '${widget.stdName} reserved a new appointment',
-                                        title: 'Appointment Scheduled',
-                                        name: widget.stdName);
+                                    widget.type == 'student'
+                                        ? setNotification(
+                                            id: widget.emp_id,
+                                            body:
+                                                '${widget.stdName} deleted the appointment',
+                                            title: 'Appointment Deleted',
+                                            name: widget.stdName)
+                                        : setNotification(
+                                            id: widget.student_id,
+                                            body:
+                                                '${widget.empName}  deleted the appointment',
+                                            title: 'Appointment Deleted',
+                                            name: widget.empName,
+                                          );
                                     AwesomeDialog(
                                       autoDismiss: false,
                                       context: context,
