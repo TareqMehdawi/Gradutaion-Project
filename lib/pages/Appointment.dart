@@ -424,7 +424,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                       imageemp: imageemp!,
                                     );
                                     setNotification(
-                                        id: currentUser.uid,
+                                        id: widget.uid,
                                         body:
                                             '${widget.stdName} reserved a new appointment',
                                         title: 'Appointment Scheduled',
@@ -926,4 +926,3 @@ class _BookingScreenState extends State<BookingScreen> {
     }
   }
 }
-
