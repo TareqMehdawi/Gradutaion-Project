@@ -71,6 +71,8 @@ class _EditScreenState extends State<EditScreen> {
   String? t;
   String? t2;
   bool a = false;
+  String? empToken;
+  String? stdToken;
 
   List sendItem(List items2) {
     List items = [];
@@ -385,6 +387,8 @@ class _EditScreenState extends State<EditScreen> {
 
   @override
   Widget build(BuildContext context) {
+    getEmpToken();
+    getStdToken();
     return Scaffold(
       backgroundColor: Colors.white,
       key: _scaffoldKey,
@@ -707,11 +711,17 @@ class _EditScreenState extends State<EditScreen> {
                               // if (isValid) {
                               try {
                                 updateTime();
-                                sendPushMessage(
-                                    //'cbSymk6TS4y28q_OjfU1Nn:APA91bHFQ30eB-KIYDzCIxl1Cw1U3HmiaezitixHSgdGwl_a81Xd3wWkBt-1N0uvRbJDF1UlbtIAdJ85WrczPRrs8sb2irdJnQG9IJd_2zp24soEAzBIHgE6twUelfCmg4fSqCBNoaah',
-                                    widget.token,
-                                    'An Appointment has been updated',
-                                    'Appointment Updated');
+                                widget.type == 'student'
+                                    ? sendPushMessage(
+                                        //'cbSymk6TS4y28q_OjfU1Nn:APA91bHFQ30eB-KIYDzCIxl1Cw1U3HmiaezitixHSgdGwl_a81Xd3wWkBt-1N0uvRbJDF1UlbtIAdJ85WrczPRrs8sb2irdJnQG9IJd_2zp24soEAzBIHgE6twUelfCmg4fSqCBNoaah',
+                                        empToken!,
+                                        'An Appointment has been updated',
+                                        'Appointment Updated')
+                                    : sendPushMessage(
+                                        //'cbSymk6TS4y28q_OjfU1Nn:APA91bHFQ30eB-KIYDzCIxl1Cw1U3HmiaezitixHSgdGwl_a81Xd3wWkBt-1N0uvRbJDF1UlbtIAdJ85WrczPRrs8sb2irdJnQG9IJd_2zp24soEAzBIHgE6twUelfCmg4fSqCBNoaah',
+                                        stdToken!,
+                                        'An Appointment has been updated',
+                                        'Appointment Updated');
                                 widget.type == 'student'
                                     ? setNotification(
                                         id: widget.emp_id,
@@ -802,12 +812,17 @@ class _EditScreenState extends State<EditScreen> {
                                 btnOkOnPress: () async {
                                   try {
                                     deleteService();
-                                    sendPushMessage(
-                                        //'cbSymk6TS4y28q_OjfU1Nn:APA91bHFQ30eB-KIYDzCIxl1Cw1U3HmiaezitixHSgdGwl_a81Xd3wWkBt-1N0uvRbJDF1UlbtIAdJ85WrczPRrs8sb2irdJnQG9IJd_2zp24soEAzBIHgE6twUelfCmg4fSqCBNoaah',
-                                        widget.token,
-                                        //'fuyTrGHBSh6BQt9XvHr7Ba:APA91bHyYkF8wIOf8-qrpW0saQx4ySqRWoSN0RLOYZ-gms8KhroIQDlCll52xcZLNnLL1aEr5JqU-N6zWvTAENj56Jkxssw8-Gj3fxibi0eTiVYPr0FWqJff0H9UwuFrSeCX0Kn3Fweu',
-                                        'An Appointment has been deleted',
-                                        'Appointment Deleted');
+                                    widget.type == 'student'
+                                        ? sendPushMessage(
+                                            //'cbSymk6TS4y28q_OjfU1Nn:APA91bHFQ30eB-KIYDzCIxl1Cw1U3HmiaezitixHSgdGwl_a81Xd3wWkBt-1N0uvRbJDF1UlbtIAdJ85WrczPRrs8sb2irdJnQG9IJd_2zp24soEAzBIHgE6twUelfCmg4fSqCBNoaah',
+                                            empToken!,
+                                            'An Appointment has been deleted',
+                                            'Appointment Deleted')
+                                        : sendPushMessage(
+                                            //'cbSymk6TS4y28q_OjfU1Nn:APA91bHFQ30eB-KIYDzCIxl1Cw1U3HmiaezitixHSgdGwl_a81Xd3wWkBt-1N0uvRbJDF1UlbtIAdJ85WrczPRrs8sb2irdJnQG9IJd_2zp24soEAzBIHgE6twUelfCmg4fSqCBNoaah',
+                                            stdToken!,
+                                            'An Appointment has been deleted',
+                                            'Appointment Deleted');
                                     widget.type == 'student'
                                         ? setNotification(
                                             id: widget.emp_id,
@@ -922,6 +937,28 @@ class _EditScreenState extends State<EditScreen> {
       data.add(ele.data()['time']);
     }
     return data;
+  }
+
+  Future getEmpToken() async {
+    final docUser2 = await FirebaseFirestore.instance
+        .collection('users')
+        .where('id', isEqualTo: widget.emp_id)
+        .get();
+
+    for (var doc in docUser2.docs) {
+      empToken = doc.data()['token'];
+    }
+  }
+
+  Future getStdToken() async {
+    final docUser2 = await FirebaseFirestore.instance
+        .collection('users')
+        .where('id', isEqualTo: widget.student_id)
+        .get();
+
+    for (var doc in docUser2.docs) {
+      stdToken = doc.data()['token'];
+    }
   }
 
   void sendPushMessage(String token, String body, String title) async {
