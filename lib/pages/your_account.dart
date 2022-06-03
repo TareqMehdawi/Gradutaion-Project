@@ -149,11 +149,19 @@ class YourAccount2 extends State<StudentAccount> {
                                     size: kSpacingUnit * 2.5,
                                   ),
                                   SizedBox(width: kSpacingUnit * 1.5),
-                                  Text(
-                                    user.name,
-                                    style: TextStyle(
-                                      fontSize: 18,
+                                  Container(
+                                    child: FittedBox(
+                                      fit :BoxFit.scaleDown,
+                                      alignment : Alignment.center,
+                                      child: Text(
+                                        user.name,
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                        ),
+                                      ),
                                     ),
+                                    width: 130,
+
                                   ),
                                   Spacer(),
                                   Icon(

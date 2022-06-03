@@ -2,10 +2,12 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/pages/Select_service_edit.dart';
 
 import '../styles/colors.dart';
 import '../widgets/user_class.dart';
+import 'make_service.dart';
 
 class MyServices extends StatefulWidget {
   const MyServices({Key? key, void function}) : super(key: key);
@@ -31,6 +33,82 @@ class _MyServices extends State<MyServices> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final users = snapshot.data!;
+            if(users.isEmpty){
+              return Stack(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: MediaQuery.of(context).size.height * 0.1),
+                    child: Image.asset('assets/images/Schedule-bro.png'),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 40.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              "You didn't add any service!",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Color(0xff205375),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 15),
+                                  child: SizedBox(
+                                    width:
+                                    MediaQuery.of(context).size.width * 0.9,
+                                    height: 70,
+                                    child: Padding(
+                                      padding:
+                                      const EdgeInsets.only(bottom: 15.0),
+                                      child: ElevatedButton(
+                                        child: Text(
+                                          "Add Service",
+                                          style: GoogleFonts.lato(
+                                            color: Colors.white,
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ServicePage()));
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          elevation: 2,
+                                          primary: Color(0xff205375),
+                                          onPrimary: Color(0xff205375),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                            BorderRadius.circular(14.0),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              );
+            }
             return ListView(
               padding: const EdgeInsets.all(12.0),
               children: [...users.map(buildListTile).toList()],

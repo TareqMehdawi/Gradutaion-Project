@@ -131,7 +131,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         const SizedBox(
                           height: 12,
                         ),
-                        loginButton(),
+                        //loginButton(),
                         const SizedBox(
                           height: 12,
                         ),
@@ -516,41 +516,41 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Widget loginButton() {
-    return Container(
-      padding: EdgeInsets.only(left: 20, top: 0, bottom: 0, right: 20),
-      child: SizedBox(
-        width: double.infinity,
-        height: 50,
-        child: ElevatedButton(
-          child: Text(
-            "Log in",
-            style: GoogleFonts.lato(
-              color: Color(0xff205375),
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const LoginPage(),
-              ),
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            elevation: 2,
-            primary: Colors.grey.shade400,
-            onPrimary: Color(0xff205375),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(32.0),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget loginButton() {
+  //   return Container(
+  //     padding: EdgeInsets.only(left: 20, top: 0, bottom: 0, right: 20),
+  //     child: SizedBox(
+  //       width: double.infinity,
+  //       height: 50,
+  //       child: ElevatedButton(
+  //         child: Text(
+  //           "Log in",
+  //           style: GoogleFonts.lato(
+  //             color: Color(0xff205375),
+  //             fontSize: 18.0,
+  //             fontWeight: FontWeight.bold,
+  //           ),
+  //         ),
+  //         onPressed: () {
+  //           Navigator.push(
+  //             context,
+  //             MaterialPageRoute(
+  //               builder: (context) => const LoginPage(),
+  //             ),
+  //           );
+  //         },
+  //         style: ElevatedButton.styleFrom(
+  //           elevation: 2,
+  //           primary: Colors.grey.shade400,
+  //           onPrimary: Color(0xff205375),
+  //           shape: RoundedRectangleBorder(
+  //             borderRadius: BorderRadius.circular(32.0),
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Future createUser(
       {required String name,
