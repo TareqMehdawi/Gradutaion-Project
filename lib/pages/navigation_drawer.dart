@@ -244,7 +244,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          const SettingsPage(),
+                                          const  UserNotifications(),
                                     ),
                                   );
                                 },

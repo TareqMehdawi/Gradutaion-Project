@@ -256,3 +256,4 @@ class Notifications {
         time: json['time'],
       );
 }
+
