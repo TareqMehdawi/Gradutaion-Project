@@ -317,7 +317,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                   return const Text('Something went wrong');
                                 } else if (snapshot.hasData) {
                                   final List user2 = snapshot.data as List;
-                                  return Expanded(
+                                  return Flexible(
                                     child: ListView.builder(
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
