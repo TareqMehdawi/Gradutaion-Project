@@ -10,6 +10,7 @@ import 'package:graduation_project/widgets/local_notification_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../styles/colors.dart';
 import '../widgets/edit_appointment.dart';
@@ -136,8 +137,6 @@ class _StudentPageState extends State<StudentPage> {
 
   @override
   void initState() {
-    updateToken();
-
     notifyBeforeTime();
     FirebaseMessaging.instance.getInitialMessage();
 
@@ -150,6 +149,7 @@ class _StudentPageState extends State<StudentPage> {
     });
 
     super.initState();
+    updateToken();
   }
 
   Widget build(BuildContext context) {
@@ -529,11 +529,21 @@ class _StudentPageState extends State<StudentPage> {
 
   updateToken() async {
     try {
-      await _fcm.getToken().then((currentToken) {
-        setState(() {
-          token = currentToken;
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      var notification = preferences.getString("NOTIFICATION");
+      if (notification == "true") {
+        print(notification);
+        await _fcm.getToken().then((currentToken) {
+          setState(() {
+            token = currentToken;
+          });
         });
-      });
+      } else {
+        print(notification);
+        setState(() {
+          token = "null";
+        });
+      }
     } catch (e) {
       print(e);
     }

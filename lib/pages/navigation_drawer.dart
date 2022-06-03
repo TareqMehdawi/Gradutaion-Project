@@ -11,17 +11,18 @@ import 'package:graduation_project/main.dart';
 import 'package:graduation_project/pages/employee_account.dart';
 import 'package:graduation_project/pages/employee_page.dart';
 import 'package:graduation_project/pages/feedback_page.dart';
+import 'package:graduation_project/pages/homepage.dart';
 import 'package:graduation_project/pages/make_service.dart';
 import 'package:graduation_project/pages/settings_page.dart';
 import 'package:graduation_project/pages/student_page.dart';
 import 'package:graduation_project/pages/your_account.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/local_notification_service.dart';
 import '../widgets/search_delegate_employee.dart';
 import '../widgets/user_class.dart';
 import 'employee_services.dart';
-import 'login_page.dart';
 import 'notifications.dart';
 
 class NavigationProvider extends ChangeNotifier {
@@ -54,9 +55,12 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   String imgUrl = '';
   int? notificationCounter;
+  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  var token;
 
   @override
   void initState() {
+    updateToken();
     readUser();
     super.initState();
     FirebaseMessaging.instance.getInitialMessage();
@@ -274,13 +278,6 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                 icon: Icons.notifications,
                                 title: 'Notifications',
                                 function: () async {
-                                  final docUser = FirebaseFirestore.instance
-                                      .collection('users')
-                                      .doc(currentUser.uid);
-                                  final json = {
-                                    'notificationCounter': 0,
-                                  };
-                                  await docUser.update(json);
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -288,6 +285,13 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                           const UserNotifications(),
                                     ),
                                   );
+                                  final docUser = FirebaseFirestore.instance
+                                      .collection('users')
+                                      .doc(currentUser.uid);
+                                  final json = {
+                                    'notificationCounter': 0,
+                                  };
+                                  await docUser.update(json);
                                 },
                               ),
                               drawerTiles(
@@ -306,16 +310,20 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                               drawerTiles(
                                 icon: Icons.logout,
                                 title: 'Logout',
-                                function: () {
+                                function: () async {
                                   Provider.of<NavigationProvider>(context,
                                           listen: false)
                                       .value = 0;
+                                  SharedPreferences preferences =
+                                      await SharedPreferences.getInstance();
+                                  await preferences.remove("EMAIL");
+                                  await preferences.remove("PASSWORD");
                                   FirebaseAuth.instance.signOut();
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const LoginPage()));
+                                              const HomePage()));
                                 },
                               ),
                             ],
@@ -373,6 +381,27 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             }
           }),
     );
+  }
+
+  updateToken() async {
+    try {
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      var notification = preferences.getString("NOTIFICATION");
+      print(notification);
+      if (notification == "true") {
+        await _fcm.getToken().then((currentToken) {
+          setState(() {
+            token = currentToken;
+          });
+        });
+      } else {
+        setState(() {
+          token = "null";
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future buildBottomSheet({required String stdName, required stdImage}) {

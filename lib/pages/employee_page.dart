@@ -8,6 +8,7 @@ import 'package:graduation_project/pages/make_service.dart';
 import 'package:graduation_project/widgets/custom_appbar.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../styles/colors.dart';
 import '../widgets/edit_appointment.dart';
@@ -33,11 +34,20 @@ class _EmployeePageState extends State<EmployeePage> {
 
   updateToken() async {
     try {
-      await _fcm.getToken().then((currentToken) {
-        setState(() {
-          token = currentToken;
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      var notification = preferences.getString("NOTIFICATION");
+      print(notification);
+      if (notification == "true") {
+        await _fcm.getToken().then((currentToken) {
+          setState(() {
+            token = currentToken;
+          });
         });
-      });
+      } else {
+        setState(() {
+          token = "null";
+        });
+      }
     } catch (e) {
       print(e);
     }

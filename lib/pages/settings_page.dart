@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project/pages/change_password.dart';
 import 'package:graduation_project/pages/test.dart';
 import 'package:graduation_project/widgets/edit_name.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/edit_phone.dart';
 import '../widgets/user_class.dart';
@@ -19,12 +20,14 @@ class _SettingsPageState extends State<SettingsPage> {
   bool lockApp = true;
   bool fingerPrint = true;
   bool notifications = true;
+
   final currentUser = FirebaseAuth.instance.currentUser!;
   String userName = '';
   String userPhone = '';
 
   @override
   void initState() {
+    setData();
     readUser();
     super.initState();
   }
@@ -221,8 +224,11 @@ class _SettingsPageState extends State<SettingsPage> {
         trailing: Switch(
           value: notifications,
           activeColor: const Color(0xff205375),
-          onChanged: (bool value) {
+          onChanged: (bool value) async {
+            SharedPreferences preferences =
+                await SharedPreferences.getInstance();
             setState(() {
+              preferences.setString("NOTIFICATION", value.toString());
               notifications = value;
             });
           },
@@ -232,6 +238,12 @@ class _SettingsPageState extends State<SettingsPage> {
             notifications = !notifications;
           });
         });
+  }
+
+  setData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var notification = preferences.getString("NOTIFICATION");
+    notifications = notification == 'true';
   }
 
   Future<Users?> readUser() async {

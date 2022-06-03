@@ -8,6 +8,7 @@ import 'package:graduation_project/main.dart';
 import 'package:graduation_project/pages/login_page.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
 import 'package:graduation_project/widgets/user_class.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -443,6 +444,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     email: emailController.text.trim(),
                     password: passwordController.text.trim());
                 final user = FirebaseAuth.instance.currentUser!;
+                saveData(emailController.text, passwordController.text, 'true');
                 if (type == 'student') {
                   createUser(
                       name: username,
@@ -606,5 +608,12 @@ class _RegisterPageState extends State<RegisterPage> {
         .child('userImage')
         .child('default_image.png');
     imgUrl = await ref.getDownloadURL();
+  }
+
+  saveData(String email, String password, String notification) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString("EMAIL", email);
+    preferences.setString("PASSWORD", password);
+    preferences.setString("NOTIFICATION", notification);
   }
 }

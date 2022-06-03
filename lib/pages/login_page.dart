@@ -2,8 +2,9 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:graduation_project/pages/forgot_password.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
-import 'package:graduation_project/pages/register_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../main.dart';
 
@@ -48,6 +49,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text('Something went wrong'),
                   );
                 } else if (snapshot.hasData) {
+                  saveData(emailController.text, passwordController.text);
                   return const NavigationDrawer();
                 } else {
                   return Stack(
@@ -354,11 +356,17 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const RegisterPage(),
+              builder: (context) => const ForgotPassword(),
             ),
           );
         },
       ),
     );
+  }
+
+  saveData(String email, String password) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString("EMAIL", email);
+    preferences.setString("PASSWORD", password);
   }
 }
