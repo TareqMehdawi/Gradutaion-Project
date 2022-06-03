@@ -302,21 +302,6 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                                                 day: 'Saturday',
                                                 value: user
                                                     .officeHours['Saturday']),
-                                        // day.add(user.officeHours.keys.toList());
-                                        // hour.add(user.officeHours.values.toList());
-                                        //   Padding(
-                                        //     padding: const EdgeInsets.symmetric(horizontal: 50.0),
-                                        //     child: Row(
-                                        //       crossAxisAlignment: CrossAxisAlignment.center,
-                                        //       children: [
-                                        //         const Text('Sunday: ', style: TextStyle(fontSize: 18),),
-                                        //         const SizedBox(
-                                        //           width: 20,
-                                        //         ),
-                                        //         Text(user.officeHours['Thursday'], style: TextStyle(fontSize: 18),),
-                                        //       ],
-                                        //     ),
-                                        //   ),
                                       ],
                                     ),
                                   ],
@@ -333,27 +318,6 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                 );
               }
             }));
-    // FutureBuilder<UserWorkingHours?>(
-    //     future: readUser(),
-    //     builder: (context, snapshot) {
-    //       if(snapshot.hasData){
-    //         final user = snapshot.data!;
-    //         return Column(
-    //           children: [
-    //             Text(
-    //               user.workingHours,
-    //               style: GoogleFonts.lato(
-    //                 fontSize: 17,
-    //               ),
-    //             ),
-    //           ],
-    //         );
-    //       }
-    //       else{
-    //         return Center(child: Text('hello'),);
-    //       }
-    //     }
-    // ),
   }
 
   String? getTime() {
@@ -584,41 +548,6 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
           ),
         ),
       ),
-      // child: ListTile(
-      //   title: Text(day, style: const TextStyle(fontSize: 18),),
-      //   trailing: Text(value, style: const TextStyle(fontSize: 18),),
-      //   onLongPress: () {
-      //     AwesomeDialog(
-      //         autoDismiss: false,
-      //         context: context,
-      //         dialogType: DialogType.WARNING,
-      //         animType: AnimType.BOTTOMSLIDE,
-      //         title: 'Warning',
-      //         desc: 'Are you sure you want to delete this item!',
-      //         btnOkText: "Delete",
-      //         btnCancelText: 'Cancel',
-      //         btnOkOnPress: () async {
-      //           final docUser =
-      //           FirebaseFirestore.instance.collection('users').doc(
-      //               currentUser.uid);
-      //           await docUser.update({'officeHours.$day': FieldValue.delete()});
-      //           Navigator.pushReplacement(context, MaterialPageRoute(
-      //               builder: (context) => const EditOfficeHoursFormPage()));
-      //         },
-      //         btnCancelOnPress: () {
-      //           Navigator.pop(context);
-      //         },
-      //         onDissmissCallback: (d) {
-      //           Navigator.pop(context);
-      //           //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const EditOfficeHoursFormPage()));
-      //         }
-      //     ).show();
-      //     // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditOfficeHoursFormPage()));
-      //     // setState(() {
-      //     //   isSelected = !isSelected;
-      //     // });
-      //   },
-      // ),
     );
   }
 
@@ -656,30 +585,6 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
       ),
     );
   }
-
-  // Future updateOfficeTimeField({required Map officeHours, required List<
-  //     String>day, required String time}) async {
-  //   final docUser = FirebaseFirestore.instance.collection('officeHours').doc(
-  //       currentUser.uid);
-  //
-  //   // final json = {
-  //   //   'officeHours': officeHours,
-  //   //   'id': currentUser.uid,
-  //   // };
-  //   for (int i = 0; i < day.length; i++) {
-  //     String a = day[i];
-  //     await docUser.update({'officeHours.$a': time});
-  //   }
-  //   // docUser.update({
-  //   //   'officeHours.Sunday': 'thursday',
-  //   //   'officeHours.Monday': '',
-  //   //   'officeHours.Tuesday': '',
-  //   //   'officeHours.Wednesday': '',
-  //   //   'officeHours.Thursday': '',
-  //   //   'officeHours.Friday': '',
-  //   //   'officeHours.Saturday': '',
-  //   // });
-  // }
 
   Future deleteOfficeHours(String day) async {
     final docUser =

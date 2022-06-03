@@ -4,6 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../pages/employee_account.dart';
+import '../pages/your_account.dart';
+
 class EditNameFormPage extends StatefulWidget {
   const EditNameFormPage({Key? key}) : super(key: key);
 
@@ -117,6 +120,9 @@ class EditNameFormPageState extends State<EditNameFormPage> {
     try {
       final docUser =
           FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
+      final docUser2 =
+      await FirebaseFirestore.instance.collection('users').doc(currentUser.uid).get();
+      final type=docUser2.data()!['type'];
       final json = {
         'name': name,
       };
@@ -130,7 +136,22 @@ class EditNameFormPageState extends State<EditNameFormPage> {
           desc: 'Name changed successfully',
           btnOkText: "Ok",
           btnOkOnPress: () {
-            return Navigator.of(context).popUntil((route) => route.isFirst);
+            if(type.toString()=='student'){
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                      const StudentAccount()));
+            }else
+            {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                      const EmployeeAccount()));
+
+            }
+            
           },
           onDissmissCallback: (d) {
             return Navigator.of(context).popUntil((route) => route.isFirst);

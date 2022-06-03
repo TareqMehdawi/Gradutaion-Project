@@ -27,20 +27,11 @@ class _ServicePageState extends State<ServicePage> {
   String? duration;
   TimeOfDay time = TimeOfDay.now();
 
-  //List<Message> messages = [];
   Map days = {};
   final currentUser = FirebaseAuth.instance.currentUser!;
 
-  //String dropdownvalue = 'Item 1';
   String? time2;
 
-  // String? getStartTime() {
-  //   if (startTime == null) {
-  //     return "Select Time";
-  //   } else {
-  //     return startTime.toString().substring(10, 15);
-  //   }
-  // }
 
   String? selectedValue;
   List<String> items = [
@@ -160,24 +151,6 @@ class _ServicePageState extends State<ServicePage> {
                                 },
                               ),
                             ),
-                            // child: TextFormField(
-                            //   controller: serviceController,
-                            //   decoration: const InputDecoration(
-                            //     border: OutlineInputBorder(),
-                            //     hintText: 'Enter your new service',
-                            //     labelText: 'Service',
-                            //     suffixIcon: Icon(
-                            //       Icons.design_services_rounded,
-                            //     ),
-                            //   ),
-                            //   validator: (value) {
-                            //     if (serviceController.text.isEmpty) {
-                            //       return 'Please enter a service name.';
-                            //     } else {
-                            //       return null;
-                            //     }
-                            //   },
-                            // ),
                           ),
                         ),
 
@@ -346,38 +319,6 @@ class _ServicePageState extends State<ServicePage> {
                             ),
                           ),
                         ),
-
-                        // Padding(
-                        //   padding: const EdgeInsets.only(top: 150),
-                        //   child: Align(
-                        //     alignment: Alignment.bottomCenter,
-                        //     child: SizedBox(
-                        //       width: 320,
-                        //       height: 50,
-                        //       child: ElevatedButton(
-                        //         style: ButtonStyle(
-                        //           backgroundColor:
-                        //               MaterialStateProperty.all<Color>(Colors.black),
-                        //         ),
-                        //         child: const Text(
-                        //           'Add',
-                        //           style: TextStyle(fontSize: 15),
-                        //         ),
-                        //         onPressed: () {
-                        //           final isValid = formKey.currentState!.validate();
-                        //           if (isValid) {
-                        //             setService(
-                        //               Duration: duration!,
-                        //               Service: serviceController.text,
-                        //               Time: "$startTime - $endTime",
-                        //               days: days,
-                        //             );
-                        //           }
-                        //         },
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),

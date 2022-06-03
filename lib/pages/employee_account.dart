@@ -51,13 +51,6 @@ class _YourAccount2 extends State<EmployeeAccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: Color(0xff205375),
-      // appBar: AppBar(
-      //   title: const Text('Your Account'),
-      //   centerTitle: true,
-      //   elevation: 0,
-      //   backgroundColor: Colors.transparent,
-      // ),
       body: Container(
         decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -177,11 +170,19 @@ class _YourAccount2 extends State<EmployeeAccount> {
                                     size: kSpacingUnit * 2.5,
                                   ),
                                   SizedBox(width: kSpacingUnit * 1.5),
-                                  Text(
-                                    user.name,
-                                    style: TextStyle(
-                                      fontSize: 15,
+                                  Container(
+                                    child: FittedBox(
+                                      fit :BoxFit.scaleDown,
+                                      alignment : Alignment.center,
+                                      child: Text(
+                                        user.name,
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                        ),
+                                      ),
                                     ),
+                                    width: 130,
+
                                   ),
                                   Spacer(),
                                   Icon(
@@ -222,11 +223,19 @@ class _YourAccount2 extends State<EmployeeAccount> {
                                     size: kSpacingUnit * 2.5,
                                   ),
                                   SizedBox(width: kSpacingUnit * 1.5),
-                                  Text(
-                                    user.number,
-                                    style: TextStyle(
-                                      fontSize: 15,
+                                  Container(
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      alignment : Alignment.center,
+                                      child: Text(
+                                        user.number,
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                        ),
+                                      ),
                                     ),
+                                    width: 130,
+
                                   ),
                                   Spacer(),
                                   Icon(
@@ -237,52 +246,60 @@ class _YourAccount2 extends State<EmployeeAccount> {
                               ),
                             ),
                           ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              navigateSecondPage(
-                                  EditEmailFormPage(type: user.type));
-                            },
-                            child: Container(
-                              height: kSpacingUnit * 5.5,
-                              margin: EdgeInsets.symmetric(
-                                horizontal: kSpacingUnit * 4,
-                              ).copyWith(
-                                bottom: kSpacingUnit * 1,
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                horizontal: kSpacingUnit * 2,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.circular(kSpacingUnit * 3),
-                                color: Colors.white,
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.email,
-                                    color: Color(0xff205375),
-                                    size: kSpacingUnit * 2.5,
-                                  ),
-                                  SizedBox(width: kSpacingUnit * 1.5),
-                                  Text(
-                                    currentUser.email!,
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  Spacer(),
-                                  Icon(
-                                    Icons.keyboard_arrow_right,
-                                    size: kSpacingUnit * 2.5,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                          // const SizedBox(
+                          //   height: 10,
+                          // ),
+              //             GestureDetector(
+              //               onTap: () {
+              //                 navigateSecondPage(
+              //                     EditEmailFormPage(type: user.type));
+              //               },
+              //               child: Container(
+              //                 height: kSpacingUnit * 5.5,
+              //                 margin: EdgeInsets.symmetric(
+              //                   horizontal: kSpacingUnit * 4,
+              //                 ).copyWith(
+              //                   bottom: kSpacingUnit * 1,
+              //                 ),
+              //                 padding: EdgeInsets.symmetric(
+              //                   horizontal: kSpacingUnit * 2,
+              //                 ),
+              //                 decoration: BoxDecoration(
+              //                   borderRadius:
+              //                       BorderRadius.circular(kSpacingUnit * 3),
+              //                   color: Colors.white,
+              //                 ),
+              //                 child: Row(
+              //                   children: [
+              //                     Icon(
+              //                       Icons.email,
+              //                       color: Color(0xff205375),
+              //                       size: kSpacingUnit * 2.5,
+              //                     ),
+              //                     SizedBox(width: kSpacingUnit * 1.5),
+              //                     Container(
+              //                       child: FittedBox(
+              //                         fit: BoxFit.scaleDown,
+              // alignment : Alignment.center,
+              //                         child: Text(
+              //                           currentUser.email!,
+              //                           style: TextStyle(
+              //                             fontSize: 15,
+              //                           ),
+              //                         ),
+              //                       ),
+              //                       width: 130,
+              //
+              //                     ),
+              //                     Spacer(),
+              //                     Icon(
+              //                       Icons.keyboard_arrow_right,
+              //                       size: kSpacingUnit * 2.5,
+              //                     ),
+              //                   ],
+              //                 ),
+              //               ),
+              //             ),
                           const SizedBox(
                             height: 10,
                           ),
@@ -313,11 +330,19 @@ class _YourAccount2 extends State<EmployeeAccount> {
                                     size: kSpacingUnit * 2.5,
                                   ),
                                   SizedBox(width: kSpacingUnit * 1.5),
-                                  Text(
-                                    user.office,
-                                    style: TextStyle(
-                                      fontSize: 15,
+                                  Container(
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      alignment : Alignment.center,
+                                      child: Text(
+                                        user.office,
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                        ),
+                                      ),
                                     ),
+                                    width: 130,
+
                                   ),
                                   Spacer(),
                                   Icon(
@@ -463,36 +488,4 @@ class UserData {
     phone: '(208) 206-5039',
   );
 }
-// class InfoCard extends StatelessWidget {
-//   // the values we need
-//   final String text;
-//   final IconData icon;
-//   Function onPressed;
-//
-//   InfoCard(
-//       {@required this.text, @required this.icon, @required this.onPressed});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return GestureDetector(
-//       onTap: onPressed,
-//       child: Card(
-//         color: Colors.white,
-//         margin: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-//         child: ListTile(
-//           leading: Icon(
-//             icon,
-//             color: Colors.teal,
-//           ),
-//           title: Text(
-//             text,
-//             style: TextStyle(
-//                 color: Colors.teal,
-//                 fontSize: 20,
-//                 fontFamily: "Source Sans Pro"),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
+

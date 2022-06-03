@@ -220,23 +220,4 @@ class SendFeedback {
         email: json['email'],
       );
 }
-// class SetEmployeeProfile{
-//   String office;
-//   String workingHours;
-//
-//   SetEmployeeProfile({
-//     required this.office,
-//     required this.workingHours,
-//   });
-//
-//   Map<String, dynamic> toJson() => {
-//       'office': office,
-//       'workingHours': workingHours,
-//   };
-//
-//   static SetEmployeeProfile fromJson(Map<String, dynamic> json) =>
-//       SetEmployeeProfile(
-//         office: json['office'],
-//         workingHours: json['workingHours'],
-//       );
-// }
+

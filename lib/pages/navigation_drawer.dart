@@ -37,8 +37,6 @@ class NavigationProvider extends ChangeNotifier {
   }
 }
 
-// DateTime date = DateTime.now();
-// String dateFormat = DateFormat('EEEE').format(date);
 
 class NavigationDrawer extends StatefulWidget {
   const NavigationDrawer({

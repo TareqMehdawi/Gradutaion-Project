@@ -88,15 +88,6 @@ class _DeleteSelectService extends State<DeleteSelectService> {
 
   String? time2;
 
-  // String? getTime() {
-  //   if (startTime == null && endTime == null) {
-  //     return widget.time;
-  //   } else {
-  //     time2 =
-  //         "${startTime.toString().substring(10, 15)} - ${endTime.toString().substring(10, 15)}";
-  //     return time2;
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -176,24 +167,6 @@ class _DeleteSelectService extends State<DeleteSelectService> {
                               }
                             },
                           ),
-
-                          // child: TextFormField(
-                          //   controller: serviceController,
-                          //   decoration:  InputDecoration(
-                          //     border: const OutlineInputBorder(),
-                          //     labelText: 'Change service name',
-                          //     hintText: widget.serviceName,
-                          //     suffixIcon: const Icon(
-                          //       Icons.design_services_rounded,
-                          //     ),
-                          //   ),
-                          //   validator: (value){
-                          //     if(value.toString().isEmpty){
-                          //       return 'Please enter a new service name';
-                          //     }
-                          //     return null;
-                          //   },
-                          // ),
                         ),
                       ),
                       Padding(
@@ -223,85 +196,6 @@ class _DeleteSelectService extends State<DeleteSelectService> {
                           },
                         ),
                       ),
-
-                      // Padding(
-                      //   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-                      //   child: SelectWeekDays(
-                      //     fontSize: 14,
-                      //     fontWeight: FontWeight.w500,
-                      //     days: daysSelected(),
-                      //     border: false,
-                      //     boxDecoration: BoxDecoration(
-                      //       borderRadius: BorderRadius.circular(30.0),
-                      //       gradient: const LinearGradient(
-                      //         begin: Alignment.topLeft,
-                      //         colors: [Color(0xff141E27), Color(0xff141E27)],
-                      //         tileMode:
-                      //             TileMode.repeated, // repeats the gradient over the canvas
-                      //       ),
-                      //     ),
-                      //     onSelect: (values) {
-                      //       // <== Callback to handle the selected days
-                      //       newDays = [];
-                      //       newDays.addAll(values);
-                      //     },
-                      //   ),
-                      // ),
-                      // Padding(
-                      //     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                      //     child: Align(
-                      //         alignment: Alignment.bottomCenter,
-                      //         child: SizedBox(
-                      //           width: 320,
-                      //           height: 50,
-                      //           child: ElevatedButton(
-                      //             style: ElevatedButton.styleFrom(
-                      //                 maximumSize: const Size.fromHeight(40),
-                      //                 primary: Colors.black),
-                      //             child: FittedBox(
-                      //               child: Text(
-                      //                 getTime()!,
-                      //                 style: const TextStyle(
-                      //                     fontSize: 15, color: Colors.white),
-                      //               ),
-                      //             ),
-                      //             onPressed: () async {
-                      //               TimeRange result = await showTimeRangePicker(
-                      //                   context: context,
-                      //                   start: const TimeOfDay(hour: 9, minute: 0),
-                      //                   end: const TimeOfDay(hour: 12, minute: 0),
-                      //                   disabledTime: TimeRange(
-                      //                       startTime: const TimeOfDay(hour: 18, minute: 0),
-                      //                       endTime: const TimeOfDay(hour: 6, minute: 0)),
-                      //                   disabledColor: Colors.red.withOpacity(0.5),
-                      //                   strokeWidth: 4,
-                      //                   ticks: 24,
-                      //                   ticksOffset: -7,
-                      //                   ticksLength: 15,
-                      //                   ticksColor: Colors.grey,
-                      //                   labels: [
-                      //                     "12 am",
-                      //                     "3 am",
-                      //                     "6 am",
-                      //                     "9 am",
-                      //                     "12 pm",
-                      //                     "3 pm",
-                      //                     "6 pm",
-                      //                     "9 pm"
-                      //                   ].asMap().entries.map((e) {
-                      //                     return ClockLabel.fromIndex(
-                      //                         idx: e.key, length: 8, text: e.value);
-                      //                   }).toList(),
-                      //                   labelOffset: 35,
-                      //                   rotateLabels: false,
-                      //                   padding: 60);
-                      //               setState(() {
-                      //                 startTime = result.startTime;
-                      //                 endTime = result.endTime;
-                      //               });
-                      //             },
-                      //           ),
-                      //         ))),
 
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -386,93 +280,6 @@ class _DeleteSelectService extends State<DeleteSelectService> {
                           ),
                         ),
                       ),
-
-                      // Padding(
-                      //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                      //   child: Center(
-                      //     child: DropdownButtonHideUnderline(
-                      //       child: DropdownButton2(
-                      //         isExpanded: true,
-                      //         hint: Row(
-                      //           children: [
-                      //             const Icon(
-                      //               Icons.list,
-                      //               size: 16,
-                      //               color: Colors.yellow,
-                      //             ),
-                      //             const SizedBox(
-                      //               width: 4,
-                      //             ),
-                      //             Expanded(
-                      //               child: Text(
-                      //                 widget.duration,
-                      //                 style: const TextStyle(
-                      //                   fontSize: 14,
-                      //                   fontWeight: FontWeight.bold,
-                      //                   color: Colors.yellow,
-                      //                 ),
-                      //                 overflow: TextOverflow.ellipsis,
-                      //               ),
-                      //             ),
-                      //           ],
-                      //         ),
-                      //         items: items
-                      //             .map((item) => DropdownMenuItem<String>(
-                      //                   value: item,
-                      //                   child: Text(
-                      //                     item,
-                      //                     style: const TextStyle(
-                      //                       fontSize: 14,
-                      //                       fontWeight: FontWeight.bold,
-                      //                       color: Colors.white,
-                      //                     ),
-                      //                     overflow: TextOverflow.ellipsis,
-                      //                   ),
-                      //                 ))
-                      //             .toList(),
-                      //         value: selectedValue,
-                      //         onChanged: (value) {
-                      //           setState(() {
-                      //             selectedValue = value as String;
-                      //             duration = value;
-                      //           });
-                      //         },
-                      //         icon: const Icon(
-                      //           Icons.arrow_forward_ios_outlined,
-                      //         ),
-                      //         iconSize: 14,
-                      //         iconEnabledColor: Colors.yellow,
-                      //         iconDisabledColor: Colors.grey,
-                      //         buttonHeight: 50,
-                      //         buttonWidth: 160,
-                      //         buttonPadding: const EdgeInsets.only(left: 14, right: 14),
-                      //         buttonDecoration: BoxDecoration(
-                      //           borderRadius: BorderRadius.circular(14),
-                      //           border: Border.all(
-                      //             color: Colors.black26,
-                      //           ),
-                      //           color: Colors.redAccent,
-                      //         ),
-                      //         buttonElevation: 2,
-                      //         itemHeight: 40,
-                      //         itemPadding: const EdgeInsets.only(left: 14, right: 14),
-                      //         dropdownMaxHeight: 200,
-                      //         dropdownWidth: 200,
-                      //         dropdownPadding: null,
-                      //         dropdownDecoration: BoxDecoration(
-                      //           borderRadius: BorderRadius.circular(14),
-                      //           color: Colors.redAccent,
-                      //         ),
-                      //         dropdownElevation: 8,
-                      //         scrollbarRadius: const Radius.circular(40),
-                      //         scrollbarThickness: 6,
-                      //         scrollbarAlwaysShow: true,
-                      //         offset: const Offset(-20, 0),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-
                       SizedBox(
                         height: 20,
                       ),
@@ -568,91 +375,6 @@ class _DeleteSelectService extends State<DeleteSelectService> {
                           ),
                         ),
                       ),
-                      // Padding(
-                      //   padding: const EdgeInsets.only(top: 150, left: 25),
-                      //   child: Align(
-                      //     alignment: Alignment.bottomCenter,
-                      //     child: SizedBox(
-                      //       width: 250,
-                      //       height: 50,
-                      //       child: ElevatedButton(
-                      //         style: ButtonStyle(
-                      //           backgroundColor:
-                      //               MaterialStateProperty.all<Color>(Colors.black),
-                      //         ),
-                      //         child: const Text(
-                      //           'Update',
-                      //           style: TextStyle(fontSize: 15),
-                      //         ),
-                      //         onPressed: () {
-                      //           final isValid = formKey.currentState!.validate();
-                      //           if(isValid) {
-                      //             try {
-                      //             updateServiceName(
-                      //                 servicename: serviceController.text);
-                      //             updateTime(time: time2!);
-                      //             updateDuration(duration: duration!);
-                      //             updateDays(day: newDays);
-                      //             AwesomeDialog(
-                      //               autoDismiss: false,
-                      //               context: context,
-                      //               dialogType: DialogType.SUCCES,
-                      //               animType: AnimType.BOTTOMSLIDE,
-                      //               title: 'Success',
-                      //               desc: 'Service updated successfully',
-                      //               btnOkText: "Go back",
-                      //               btnCancelColor: Colors.black87,
-                      //               btnOkOnPress: () {
-                      //                 Navigator.pop(context);
-                      //                 Navigator.pushReplacement(
-                      //                     context,
-                      //                     MaterialPageRoute(
-                      //                         builder: (context) =>
-                      //                             const MyServices()));
-                      //               },
-                      //               onDissmissCallback: (d) {
-                      //                 Navigator.pop(context);
-                      //                 Navigator.pushReplacement(
-                      //                     context,
-                      //                     MaterialPageRoute(
-                      //                         builder: (context) =>
-                      //                             const MyServices()));
-                      //               },
-                      //             ).show();
-                      //           } on FirebaseAuthException catch (error) {
-                      //             AwesomeDialog(
-                      //               autoDismiss: false,
-                      //               context: context,
-                      //               dialogType: DialogType.ERROR,
-                      //               animType: AnimType.BOTTOMSLIDE,
-                      //               title: 'Error',
-                      //               desc: '${error.message}',
-                      //               btnCancelText: 'Go back',
-                      //               btnCancelColor: Colors.black87,
-                      //               onDissmissCallback: (d) {
-                      //                 Navigator.pop(context);
-                      //                 Navigator.pushReplacement(
-                      //                     context,
-                      //                     MaterialPageRoute(
-                      //                         builder: (context) =>
-                      //                             const MyServices()));
-                      //               },
-                      //               btnCancelOnPress: () {
-                      //                 Navigator.pop(context);
-                      //                 Navigator.pushReplacement(
-                      //                     context,
-                      //                     MaterialPageRoute(
-                      //                         builder: (context) =>
-                      //                             const MyServices()));
-                      //               },
-                      //             ).show();
-                      //           }
-                      //           }
-                      //         },
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                 ],
@@ -664,19 +386,6 @@ class _DeleteSelectService extends State<DeleteSelectService> {
     );
   }
 
-  // Future getOfficeHours({required Map days}) async {
-  //   final docUser2 = await FirebaseFirestore.instance
-  //       .collection('users')
-  //       .where('id', isEqualTo: currentUser.uid)
-  //       .get();
-  //   print(docUser2);
-  //   // for (var doc in docUser2.docs) {
-  //   //   await FirebaseFirestore.instance
-  //   //       .collection('Service')
-  //   //       .doc(doc.id)
-  //   //       .update({'service': servicename});
-  //   // }
-  // }
   Future<UserAccount?> readUser() async {
     final getUser =
         FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
@@ -725,20 +434,6 @@ class _DeleteSelectService extends State<DeleteSelectService> {
           .update({'service': servicename});
     }
   }
-
-  // Future updateTime({required String time}) async {
-  //   final docUser2 = await FirebaseFirestore.instance
-  //       .collection('Service')
-  //       .where('service', isEqualTo: widget.serviceName)
-  //       .where('id', isEqualTo: widget.uid)
-  //       .get();
-  //   for (var doc in docUser2.docs) {
-  //     await FirebaseFirestore.instance
-  //         .collection('Service')
-  //         .doc(doc.id)
-  //         .update({'Time': time});
-  //   }
-  // }
 
   Future updateDuration({required String duration}) async {
     final docUser2 = await FirebaseFirestore.instance

@@ -99,10 +99,7 @@ class _EmployeePageState extends State<EmployeePage> {
   @override
   Widget build(BuildContext context) {
     deleteCard();
-    // String selectedService =
-    //     Provider.of<ReservationInfo>(context).selectedService;
     return Scaffold(
-      //backgroundColor: Theme.of(context).backgroundColor,
       appBar: CustomAppBar(
           title: "Employee Page",
           filterFunction: () {
@@ -449,72 +446,3 @@ class _EmployeePageState extends State<EmployeePage> {
       );
 }
 
-// child: ListTile(
-//   leading:  Padding(
-//     padding: const EdgeInsets.only(top: 10.0),
-//     child: Text(user.date),
-//   ),
-//   title: Text(user.student),
-//   subtitle:  Text(
-//       'Service: ${user.service} \nExpected time: ${user.time}'),
-//   trailing: const Icon(Icons.arrow_forward_ios),
-//   contentPadding: const EdgeInsets.symmetric(
-//       vertical: 15, horizontal: 15),
-//   onTap: () {},
-//   shape: RoundedRectangleBorder(
-//     borderRadius: BorderRadius.circular(10.0),
-//   ),
-//   tileColor: Colors.grey.shade300,
-// ),
-// class ScheduleCard extends StatelessWidget {
-//   const ScheduleCard({
-//     Key? key,
-//   }) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     StudentsReservation user;
-//     return Container(
-//       decoration: BoxDecoration(
-//         color: Color(MyColors.bg01),
-//         borderRadius: BorderRadius.circular(10),
-//       ),
-//       width: double.infinity,
-//       padding: EdgeInsets.all(20),
-//       child: Row(
-//         crossAxisAlignment: CrossAxisAlignment.center,
-//         children:  [
-//           Icon(
-//             Icons.calendar_today,
-//             color: Colors.white,
-//             size: 15,
-//           ),
-//           SizedBox(
-//             width: 5,
-//           ),
-//           Text(
-//             user.date,
-//             style: TextStyle(color: Colors.white),
-//           ),
-//           SizedBox(
-//             width: 20,
-//           ),
-//           Icon(
-//             Icons.access_alarm,
-//             color: Colors.white,
-//             size: 17,
-//           ),
-//           SizedBox(
-//             width: 5,
-//           ),
-//           Flexible(
-//             child: Text(
-//               '11:00 ~ 12:10',
-//               style: TextStyle(color: Colors.white),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }

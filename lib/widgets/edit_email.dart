@@ -1,7 +1,11 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../pages/employee_account.dart';
+import '../pages/login_page.dart';
 
 class EditEmailFormPage extends StatefulWidget {
   final type;
@@ -202,7 +206,19 @@ class EditEmailFormPageState extends State<EditEmailFormPage> {
                     password: currentPasswordController.text.trim(),
                   ),
                 );
-                await result.user?.updateEmail(emailController.text);
+                final docUser =
+                FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
+                final json = {
+                  'email': emailController.text.trim(),
+                };
+                await result.user?.updateEmail(emailController.text.trim());
+                await docUser.update(json);
+                FirebaseAuth.instance.signOut();
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                        const LoginPage()));
                 AwesomeDialog(
                     autoDismiss: false,
                     context: context,
@@ -212,11 +228,18 @@ class EditEmailFormPageState extends State<EditEmailFormPage> {
                     desc: 'Email changed successfully',
                     btnOkText: "Ok",
                     btnOkOnPress: () {
-                      Navigator.of(context).popUntil((route) => route.isFirst);
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                              const LoginPage()));
                     },
                     onDissmissCallback: (d) {
-                      return Navigator.of(context)
-                          .popUntil((route) => route.isFirst);
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                              const LoginPage()));
                     }).show();
               } on FirebaseAuthException catch (error) {
                 AwesomeDialog(

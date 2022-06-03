@@ -86,9 +86,6 @@ class EmployeeSearchDelegate extends SearchDelegate {
                             ),
                           ),
                         );
-                        // Provider.of<ReservationInfo>(context,listen: false).selectedEmployeeId = id ;
-                        // query = name;
-                        // close(context, query);
                       },
                       leading: CircleAvatar(
                         backgroundImage: NetworkImage(image),
@@ -154,9 +151,6 @@ class EmployeeSearchDelegate extends SearchDelegate {
                           ),
                         );
                         print(token);
-                        // Provider.of<ReservationInfo>(context,listen: false).selectedEmployeeId = id ;
-                        // query = name;
-                        // close(context, query);
                       },
                       leading: CircleAvatar(
                         backgroundImage: NetworkImage(image),

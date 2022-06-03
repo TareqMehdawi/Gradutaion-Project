@@ -284,9 +284,6 @@ class _YourAccount2 extends State<YourAccount2> {
                                               token: widget.token,
                                             ),
 
-                                            // builder: (context) => BookingScreen(
-                                            //   doctor: document['name'],
-                                            // ),
                                           ),
                                         );
                                         print(widget.token);
@@ -304,47 +301,6 @@ class _YourAccount2 extends State<YourAccount2> {
                                   ),
                                 ),
                               ),
-                              // Container(
-                              //   padding: const EdgeInsets.symmetric(horizontal: 30),
-                              //   height: 50,
-                              //   width: MediaQuery.of(context).size.width,
-                              //   child: ElevatedButton(
-                              //     style: ElevatedButton.styleFrom(
-                              //       elevation: 2,
-                              //       primary: Colors.indigo.withOpacity(0.9),
-                              //       onPrimary: Colors.black,
-                              //       shape: RoundedRectangleBorder(
-                              //         borderRadius: BorderRadius.circular(32.0),
-                              //       ),
-                              //     ),
-                              //     onPressed: () {
-                              //       Navigator.push(
-                              //         context,
-                              //         MaterialPageRoute(
-                              //           builder: (context) => BookingScreen(
-                              //             uid: widget.uid,
-                              //             empName: user.name,
-                              //             stdName: widget.stdName,
-                              //             officeHours: user.officeHours,
-                              //             stdImage: widget.stdImage,
-                              //           ),
-                              //
-                              //           // builder: (context) => BookingScreen(
-                              //           //   doctor: document['name'],
-                              //           // ),
-                              //         ),
-                              //       );
-                              //     },
-                              //     child: Text(
-                              //       'Book an Appointment',
-                              //       style: GoogleFonts.lato(
-                              //         color: Colors.white,
-                              //         fontSize: 16,
-                              //         fontWeight: FontWeight.bold,
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
                               const SizedBox(
                                 height: 40,
                               ),

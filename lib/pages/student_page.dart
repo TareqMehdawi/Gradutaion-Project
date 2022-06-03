@@ -150,10 +150,6 @@ class _StudentPageState extends State<StudentPage> {
         child: const Icon(Icons.add),
         onPressed: () async {
           buildBottomSheet();
-          // await showSearch(
-          //     context: context,
-          //     delegate: EmployeeSearchDelegate(),
-          // );
         },
       ),
       body: StreamBuilder<List<StudentsReservation>>(
@@ -246,18 +242,6 @@ class _StudentPageState extends State<StudentPage> {
               width: 200.0,
               height: 100.0,
               child: CircularProgressIndicator(),
-              // Shimmer.fromColors(
-              //   baseColor: Colors.red,
-              //   highlightColor: Colors.yellow,
-              //   child: const Text(
-              //     'Shimmer',
-              //     textAlign: TextAlign.center,
-              //     style: TextStyle(
-              //       fontSize: 40.0,
-              //       fontWeight: FontWeight.bold,
-              //     ),
-              //   ),
-              // ),
             );
           } else {
             return const Center(
@@ -424,16 +408,6 @@ class _StudentPageState extends State<StudentPage> {
         ),
       );
 
-  // Stream<List<StudentsReservation>> readReservation() {
-  //   final currentUser = FirebaseAuth.instance.currentUser!;
-  //   return FirebaseFirestore.instance
-  //       .collection('reservation')
-  //       .where("id", isEqualTo: currentUser.uid)
-  //       .snapshots()
-  //       .map((snapshot) => snapshot.docs
-  //           .map((doc) => StudentsReservation.fromJson(doc.data()))
-  //           .toList());
-  // }
   Stream<List<StudentsReservation>> readReservation() {
     final currentUser = FirebaseAuth.instance.currentUser!;
     if (day == 'Every Day') {
@@ -674,10 +648,4 @@ class _StudentPageState extends State<StudentPage> {
           .delete();
     }
   }
-  // for (var doc in docUser2.docs) {
-  //   await FirebaseFirestore.instance
-  //       .collection('reservation')
-  //       .doc(doc.id)
-  //       .delete();
-  // }
 }
