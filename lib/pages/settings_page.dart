@@ -59,13 +59,6 @@ class _SettingsPageState extends State<SettingsPage> {
               final user = snapshot.data;
               return ListView(
                 children: [
-                  settingsTitle(title: 'Common'),
-                  settingsTiles(
-                    icon: Icons.language,
-                    title: 'Language',
-                    subtitle: 'English',
-                    function: () {},
-                  ),
                   settingsTitle(title: 'Account'),
                   settingsTiles(
                     icon: Icons.phone,
@@ -106,11 +99,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       icon: Icons.logout,
                       title: 'Sign out'),
                   settingsTitle(title: 'Security'),
-                  lockAppTile(
-                      icon: Icons.phonelink_lock_rounded,
-                      title: 'Lock app in background'),
-                  useFingerPrintsTile(
-                      icon: Icons.fingerprint, title: 'Use fingerprint'),
+
                   settingsTilesNoSubtitle(
                     icon: Icons.lock,
                     title: 'Change password',

@@ -282,6 +282,7 @@ class _YourAccount2 extends State<YourAccount2> {
                                               officeHours: user.officeHours,
                                               stdImage: widget.stdImage,
                                               token: widget.token,
+                                                imageEmp: user.image
                                             ),
                                           ),
                                         );

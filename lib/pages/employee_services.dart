@@ -39,7 +39,7 @@ class _MyServices extends State<MyServices> {
                   Padding(
                     padding: EdgeInsets.symmetric(
                         vertical: MediaQuery.of(context).size.height * 0.1),
-                    child: Image.asset('assets/images/Schedule-bro.png'),
+                    child: Image.asset('assets/images/Empty-bro.png'),
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.end,
