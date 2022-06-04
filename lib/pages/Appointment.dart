@@ -503,7 +503,7 @@ class _BookingScreenState extends State<BookingScreen> {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 150.0),
                             child: Center(
-                              child: Column(
+                              child: Wrap(
                                 children: [
                                   Text(
                                     "${widget.empName} didn't add any services!",

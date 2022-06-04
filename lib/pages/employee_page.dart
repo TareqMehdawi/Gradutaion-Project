@@ -29,7 +29,7 @@ class _EmployeePageState extends State<EmployeePage> {
   String day = 'Every Day';
   final currentUser = FirebaseAuth.instance.currentUser!;
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
-  var token;
+  var token='dv';
   String? stdToken;
 
   updateToken() async {
@@ -39,7 +39,7 @@ class _EmployeePageState extends State<EmployeePage> {
       if (notification == "true") {
         await _fcm.getToken().then((currentToken) {
           setState(() {
-            token = currentToken;
+            token = currentToken!;
           });
         });
       } else {
