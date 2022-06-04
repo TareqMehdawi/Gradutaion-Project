@@ -40,7 +40,7 @@ class _StudentPageState extends State<StudentPage> {
   final currentUser = FirebaseAuth.instance.currentUser!;
 
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
-  var token = 'dv';
+  var token;
   String? empToken;
 
   Future deleteCard() async {
@@ -135,8 +135,6 @@ class _StudentPageState extends State<StudentPage> {
   @override
   void initState() {
     updateToken();
-
-    setToken(token: token);
     notifyBeforeTime();
     FirebaseMessaging.instance.getInitialMessage();
     FirebaseMessaging.onMessage.listen((message) {
@@ -521,22 +519,20 @@ class _StudentPageState extends State<StudentPage> {
   }
 
   updateToken() async {
-    try {
-      SharedPreferences preferences = await SharedPreferences.getInstance();
-      var notification = preferences.getString("NOTIFICATION");
-      if (notification == "true") {
-        await _fcm.getToken().then((currentToken) {
-          setState(() {
-            token = currentToken!;
-          });
-        });
-      } else {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var notification = preferences.getString("NOTIFICATION");
+    if (notification == "true") {
+      await _fcm.getToken().then((currentToken) {
         setState(() {
-          token = "no token";
+          token = currentToken!;
         });
-      }
-    } catch (e) {
-      print(e);
+        setToken(token: token);
+      });
+    } else {
+      setState(() {
+        token = "no token";
+      });
+      setToken(token: token);
     }
   }
 
