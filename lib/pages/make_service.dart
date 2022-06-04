@@ -1,5 +1,3 @@
-
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:day_picker/day_picker.dart';
@@ -7,6 +5,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:graduation_project/main.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
 
 import '../widgets/edit_office_time.dart';
@@ -28,8 +27,8 @@ class _ServicePageState extends State<ServicePage> {
   String? endTime;
   String? duration;
   TimeOfDay time = TimeOfDay.now();
-  bool newDay=false;
-  bool selectTime=false;
+  bool newDay = false;
+  bool selectTime = false;
 
   Map days = {};
   final currentUser = FirebaseAuth.instance.currentUser!;
@@ -192,7 +191,7 @@ class _ServicePageState extends State<ServicePage> {
                                   }
                                 }
                               }
-                              newDay=true;
+                              newDay = true;
                             },
                           ),
                         ),
@@ -243,7 +242,7 @@ class _ServicePageState extends State<ServicePage> {
                                 setState(() {
                                   selectedValue = value as String;
                                   duration = value;
-                                  selectTime=true;
+                                  selectTime = true;
                                 });
                               },
                               icon: const Icon(
@@ -301,13 +300,15 @@ class _ServicePageState extends State<ServicePage> {
                               onPressed: () {
                                 final isValid =
                                     formKey.currentState!.validate();
-                                if (isValid && newDay==true && selectTime==true) {
+                                if (isValid &&
+                                    newDay == true &&
+                                    selectTime == true) {
                                   setService(
                                       duration: duration!,
                                       service: serviceController.text,
                                       days: days,
                                       image: user.image);
-                                }else{
+                                } else {
                                   AwesomeDialog(
                                     autoDismiss: false,
                                     context: context,
@@ -320,12 +321,8 @@ class _ServicePageState extends State<ServicePage> {
                                     btnOkOnPress: () {
                                       Navigator.pop(context);
                                     },
-                                    onDissmissCallback: (d) {
-
-                                    },
+                                    onDissmissCallback: (d) {},
                                   ).show();
-
-
                                 }
                               },
                               style: ElevatedButton.styleFrom(
@@ -414,14 +411,14 @@ class _ServicePageState extends State<ServicePage> {
                             ),
                           ],
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ],
               );
             }
           } else
-            return Text("data");
+            return splashScreen();
         },
       ),
     );
@@ -481,13 +478,6 @@ class _ServicePageState extends State<ServicePage> {
                   builder: (context) => const NavigationDrawer()));
         },
       ).show();
-
-
-
-
-
-
-
     } on FirebaseAuthException catch (error) {
       AwesomeDialog(
         autoDismiss: false,

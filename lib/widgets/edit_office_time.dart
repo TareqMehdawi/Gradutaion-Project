@@ -4,6 +4,7 @@ import 'package:day_picker/day_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:graduation_project/main.dart';
 import 'package:graduation_project/widgets/backbutton_widget.dart';
 import 'package:graduation_project/widgets/user_class.dart';
 import 'package:intl/intl.dart';
@@ -32,10 +33,9 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
   List day = [];
   List hour = [];
   bool isSelected = false;
-  bool setStartTime=false;
-  bool setEndTime=false;
-  bool setDays=false;
-
+  bool setStartTime = false;
+  bool setEndTime = false;
+  bool setDays = false;
 
   final List<DayInWeek> _days = [
     DayInWeek(
@@ -70,303 +70,293 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: FutureBuilder<UserAccount?>(
-            future: readUser(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              } else if (snapshot.hasData) {
-                final user = snapshot.data!;
-                return Form(
-                    key: _formKey,
-                    child: Stack(
+      body: FutureBuilder<UserAccount?>(
+        future: readUser(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text('${snapshot.error}');
+          } else if (snapshot.hasData) {
+            final user = snapshot.data!;
+            return Form(
+                key: _formKey,
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 25.0),
+                      child: customBackButton(color: Color(0xff205375)),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 25.0),
-                          child: customBackButton(color: Color(0xff205375)),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: Image.asset(
+                            "assets/images/top_right.png",
+                            width: MediaQuery.of(context).size.width * .3,
+                          ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Image.asset(
+                            "assets/images/bottom_left.png",
+                            width: MediaQuery.of(context).size.width * .3,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 70.0),
+                      child: SingleChildScrollView(
+                        child: Column(
                           children: [
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: Image.asset(
-                                "assets/images/top_right.png",
-                                width: MediaQuery.of(context).size.width * .3,
+                            const SizedBox(
+                              width: 320,
+                              child: Center(
+                                child: Text(
+                                  "What's your Office Hours?",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xff205375)),
+                                  textAlign: TextAlign.left,
+                                ),
                               ),
                             ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Align(
-                              alignment: Alignment.bottomLeft,
-                              child: Image.asset(
-                                "assets/images/bottom_left.png",
-                                width: MediaQuery.of(context).size.width * .3,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 70.0),
-                          child: SingleChildScrollView(
-                            child: Column(
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                const SizedBox(
-                                  width: 320,
-                                  child: Center(
-                                    child: Text(
-                                      "What's your Office Hours?",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xff205375)),
-                                      textAlign: TextAlign.left,
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 40, left: 20, right: 20),
+                                  child: SelectWeekDays(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    days: _days,
+                                    border: false,
+                                    boxDecoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                      gradient: const LinearGradient(
+                                        begin: Alignment.topLeft,
+                                        colors: [
+                                          Color(0xff205375),
+                                          Color(0xff92B4EC),
+                                        ],
+                                        tileMode: TileMode
+                                            .repeated, // repeats the gradient over the canvas
+                                      ),
                                     ),
+                                    onSelect: (values) {
+                                      // <== Callback to handle the selected days
+                                      days = [];
+                                      days.addAll(values);
+                                      setDays = true;
+                                    },
                                   ),
                                 ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 40, left: 20, right: 20),
-                                      child: SelectWeekDays(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                        days: _days,
-                                        border: false,
-                                        boxDecoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(30.0),
-                                          gradient: const LinearGradient(
-                                            begin: Alignment.topLeft,
-                                            colors: [
-                                              Color(0xff205375),
-                                              Color(0xff92B4EC),
-                                            ],
-                                            tileMode: TileMode
-                                                .repeated, // repeats the gradient over the canvas
-                                          ),
-                                        ),
-                                        onSelect: (values) {
-                                          // <== Callback to handle the selected days
-                                          days = [];
-                                          days.addAll(values);
-                                          setDays=true;
-                                        },
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 16,
                                       ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            vertical: 16,
-                                          ),
-                                          child: SizedBox(
-                                            // width: 195,
-                                            child: Center(
-                                              child: editOfficeTimeButton(
-                                                  function: () async {
-                                                    TimeOfDay? pickedTime =
-                                                        await showTimePicker(
-                                                      initialTime:
-                                                          TimeOfDay.now(),
-                                                      context: context,
-                                                    );
-                                                    DateTime parsedTime =
-                                                        DateTime(
-                                                            0,
-                                                            0,
-                                                            0,
-                                                            pickedTime!.hour,
-                                                            pickedTime.minute);
-                                                    String starttime =
-                                                        DateFormat('HH:mm')
-                                                            .format(parsedTime);
+                                      child: SizedBox(
+                                        // width: 195,
+                                        child: Center(
+                                          child: editOfficeTimeButton(
+                                              function: () async {
+                                                TimeOfDay? pickedTime =
+                                                    await showTimePicker(
+                                                  initialTime: TimeOfDay.now(),
+                                                  context: context,
+                                                );
+                                                DateTime parsedTime = DateTime(
+                                                    0,
+                                                    0,
+                                                    0,
+                                                    pickedTime!.hour,
+                                                    pickedTime.minute);
+                                                String starttime =
+                                                    DateFormat('HH:mm')
+                                                        .format(parsedTime);
 
-                                                    setState(
-                                                      () {
-                                                        startTime = starttime;
-                                                        setStartTime=true;
-                                                        // endTime = result.endTime;
-                                                        // officeHours =
-                                                        //     '${startTime.toString().substring(10, 15)} - ${endTime.toString().substring(10, 15)}';
-                                                      },
-                                                    );
+                                                setState(
+                                                  () {
+                                                    startTime = starttime;
+                                                    setStartTime = true;
+                                                    // endTime = result.endTime;
+                                                    // officeHours =
+                                                    //     '${startTime.toString().substring(10, 15)} - ${endTime.toString().substring(10, 15)}';
                                                   },
-                                                  size: 14,
-                                                  name: getStartTime()!,
-                                                  buttonColor:
-                                                      Colors.grey.shade400,
-                                                  textColor: Color(0xff205375)),
-                                            ),
-                                          ),
+                                                );
+                                              },
+                                              size: 12,
+                                              name: getStartTime()!,
+                                              buttonColor: Colors.grey.shade400,
+                                              textColor: Color(0xff205375)),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 16),
-                                          child: SizedBox(
-                                            // width: 195,
-                                            child: Center(
-                                              child: editOfficeTimeButton(
-                                                  function: () async {
-                                                    TimeOfDay? pickedTime =
-                                                        await showTimePicker(
-                                                      initialTime:
-                                                          TimeOfDay.now(),
-                                                      context: context,
-                                                    );
-                                                    DateTime parsedTime =
-                                                        DateTime(
-                                                            0,
-                                                            0,
-                                                            0,
-                                                            pickedTime!.hour,
-                                                            pickedTime.minute);
-                                                    String endtime =
-                                                        DateFormat('HH:mm')
-                                                            .format(parsedTime);
-
-                                                    setState(
-                                                      () {
-                                                        endTime = endtime;
-                                                        setEndTime=true;
-                                                        // endTime = result.endTime;
-                                                        // officeHours =
-                                                        //     '${startTime.toString().substring(10, 15)} - ${endTime.toString().substring(10, 15)}';
-                                                      },
-                                                    );
-                                                  },
-                                                  size: 14,
-                                                  name: getEndTime()!,
-                                                  buttonColor:
-                                                      Colors.grey.shade400,
-                                                  textColor: Color(0xff205375)),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                      ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(top: 40),
-                                      child: Align(
-                                        alignment: Alignment.bottomCenter,
-                                        child: SizedBox(
-                                            width: double.infinity,
-                                            height: 50,
-                                            child: editOfficeTimeButton(
-                                                function: () {
-                                                  if(setEndTime==true && setStartTime==true && setDays==true){
-                                                  officeHours =
-                                                      "${startTime} - ${endTime}";
-                                                  updateOfficeTimeField(
-                                                      officeHours: ttt(),
-                                                      day: days,
-                                                      time: officeHours,);}
-                                                  else{
-                                                    AwesomeDialog(
-                                                      autoDismiss: false,
-                                                      context: context,
-                                                      dialogType: DialogType.WARNING,
-                                                      animType: AnimType.BOTTOMSLIDE,
-                                                      title: 'Warning',
-                                                      desc: 'Please fill all fields',
-                                                      btnOkText: "Ok",
-                                                      btnCancelColor: Colors.black87,
-                                                      btnOkOnPress: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      onDissmissCallback: (d) {
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 16),
+                                      child: SizedBox(
+                                        // width: 195,
+                                        child: Center(
+                                          child: editOfficeTimeButton(
+                                              function: () async {
+                                                TimeOfDay? pickedTime =
+                                                    await showTimePicker(
+                                                  initialTime: TimeOfDay.now(),
+                                                  context: context,
+                                                );
+                                                DateTime parsedTime = DateTime(
+                                                    0,
+                                                    0,
+                                                    0,
+                                                    pickedTime!.hour,
+                                                    pickedTime.minute);
+                                                String endtime =
+                                                    DateFormat('HH:mm')
+                                                        .format(parsedTime);
 
-                                                      },
-                                                    ).show();
-
-
-                                                  }
-
-                                                },
-                                                size: 18,
-                                                name: 'Update',
-                                                buttonColor: Color(0xff205375),
-                                                textColor: Colors.white)),
+                                                setState(
+                                                  () {
+                                                    endTime = endtime;
+                                                    setEndTime = true;
+                                                    // endTime = result.endTime;
+                                                    // officeHours =
+                                                    //     '${startTime.toString().substring(10, 15)} - ${endTime.toString().substring(10, 15)}';
+                                                  },
+                                                );
+                                              },
+                                              size: 12,
+                                              name: getEndTime()!,
+                                              buttonColor: Colors.grey.shade400,
+                                              textColor: Color(0xff205375)),
+                                        ),
                                       ),
                                     ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Column(
-                                      children: [
-                                        for (var a
-                                            in user.officeHours.keys.toList())
-                                          if (a.toString() == 'Sunday')
-                                            buildDays(
-                                                day: 'Sunday',
-                                                value:
-                                                    user.officeHours['Sunday']),
-                                        for (var a
-                                            in user.officeHours.keys.toList())
-                                          if (a.toString() == 'Monday')
-                                            buildDays(
-                                                day: 'Monday',
-                                                value:
-                                                    user.officeHours['Monday']),
-                                        for (var a
-                                            in user.officeHours.keys.toList())
-                                          if (a.toString() == 'Tuesday')
-                                            buildDays(
-                                                day: 'Tuesday',
-                                                value: user
-                                                    .officeHours['Tuesday']),
-                                        for (var a
-                                            in user.officeHours.keys.toList())
-                                          if (a.toString() == 'Wednesday')
-                                            buildDays(
-                                                day: 'Wednesday',
-                                                value: user
-                                                    .officeHours['Wednesday']),
-                                        for (var a
-                                            in user.officeHours.keys.toList())
-                                          if (a.toString() == 'Thursday')
-                                            buildDays(
-                                                day: 'Thursday',
-                                                value: user
-                                                    .officeHours['Thursday']),
-                                        for (var a
-                                            in user.officeHours.keys.toList())
-                                          if (a.toString() == 'Friday')
-                                            buildDays(
-                                                day: 'Friday',
-                                                value:
-                                                    user.officeHours['Friday']),
-                                        for (var a
-                                            in user.officeHours.keys.toList())
-                                          if (a.toString() == 'Saturday')
-                                            buildDays(
-                                                day: 'Saturday',
-                                                value: user
-                                                    .officeHours['Saturday']),
-                                      ],
-                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 40),
+                                  child: Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: SizedBox(
+                                        width: double.infinity,
+                                        height: 50,
+                                        child: editOfficeTimeButton(
+                                            function: () {
+                                              if (setEndTime == true &&
+                                                  setStartTime == true &&
+                                                  setDays == true) {
+                                                officeHours =
+                                                    "${startTime} - ${endTime}";
+                                                updateOfficeTimeField(
+                                                  officeHours: ttt(),
+                                                  day: days,
+                                                  time: officeHours,
+                                                );
+                                              } else {
+                                                AwesomeDialog(
+                                                  autoDismiss: false,
+                                                  context: context,
+                                                  dialogType:
+                                                      DialogType.WARNING,
+                                                  animType:
+                                                      AnimType.BOTTOMSLIDE,
+                                                  title: 'Warning',
+                                                  desc:
+                                                      'Please fill all fields',
+                                                  btnOkText: "Ok",
+                                                  btnCancelColor:
+                                                      Colors.black87,
+                                                  btnOkOnPress: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  onDissmissCallback: (d) {},
+                                                ).show();
+                                              }
+                                            },
+                                            size: 18,
+                                            name: 'Update',
+                                            buttonColor: Color(0xff205375),
+                                            textColor: Colors.white)),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Column(
+                                  children: [
+                                    for (var a
+                                        in user.officeHours.keys.toList())
+                                      if (a.toString() == 'Sunday')
+                                        buildDays(
+                                            day: 'Sunday',
+                                            value: user.officeHours['Sunday']),
+                                    for (var a
+                                        in user.officeHours.keys.toList())
+                                      if (a.toString() == 'Monday')
+                                        buildDays(
+                                            day: 'Monday',
+                                            value: user.officeHours['Monday']),
+                                    for (var a
+                                        in user.officeHours.keys.toList())
+                                      if (a.toString() == 'Tuesday')
+                                        buildDays(
+                                            day: 'Tuesday',
+                                            value: user.officeHours['Tuesday']),
+                                    for (var a
+                                        in user.officeHours.keys.toList())
+                                      if (a.toString() == 'Wednesday')
+                                        buildDays(
+                                            day: 'Wednesday',
+                                            value:
+                                                user.officeHours['Wednesday']),
+                                    for (var a
+                                        in user.officeHours.keys.toList())
+                                      if (a.toString() == 'Thursday')
+                                        buildDays(
+                                            day: 'Thursday',
+                                            value:
+                                                user.officeHours['Thursday']),
+                                    for (var a
+                                        in user.officeHours.keys.toList())
+                                      if (a.toString() == 'Friday')
+                                        buildDays(
+                                            day: 'Friday',
+                                            value: user.officeHours['Friday']),
+                                    for (var a
+                                        in user.officeHours.keys.toList())
+                                      if (a.toString() == 'Saturday')
+                                        buildDays(
+                                            day: 'Saturday',
+                                            value:
+                                                user.officeHours['Saturday']),
                                   ],
                                 ),
                               ],
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ));
-              } else {
-                return const Center(
-                  child: Text('hi'),
-                );
-              }
-            }));
+                      ),
+                    ),
+                  ],
+                ));
+          } else {
+            return splashScreen();
+          }
+        },
+      ),
+    );
   }
 
   String? getStartTime() {

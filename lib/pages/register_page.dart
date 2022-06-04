@@ -582,7 +582,6 @@ class _RegisterPageState extends State<RegisterPage> {
     required String email,
     required String type,
     String office = 'Office location',
-    String workingHours = 'Nothing to show..',
   }) async {
     final docUser = FirebaseFirestore.instance.collection('users').doc(id);
     final user = UserAccount(
@@ -592,7 +591,7 @@ class _RegisterPageState extends State<RegisterPage> {
       email: email,
       image: imgUrl,
       type: type,
-      office: 'Office No.',
+      office: office,
       officeHours: {},
       notificationCounter: 0,
     );

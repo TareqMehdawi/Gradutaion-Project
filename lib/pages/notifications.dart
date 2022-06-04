@@ -94,29 +94,27 @@ class _UserNotificationsState extends State<UserNotifications> {
                           animType: AnimType.BOTTOMSLIDE,
                           title: 'Success',
                           desc: 'Notification deleted successfully',
-                          btnOkText: 'Go back',
+                          btnOkText: 'Ok',
                           btnCancelColor: Colors.black87,
                           onDissmissCallback: (d) {
                             Navigator.pop(context);
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const UserNotifications()));
                           },
                           btnOkOnPress: () {
                             Navigator.pop(context);
+
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const UserNotifications()));
                           },
                         ).show();
                       }).show();
-
-                  // time = user.time;
-                  // final delete = await FirebaseFirestore.instance
-                  //     .collection('notification')
-                  //     .where('id', isEqualTo: currentUser.uid)
-                  //     .where('time', isEqualTo: time)
-                  //     .get();
-                  //
-                  // var deleted = delete.docs.first;
-                  // await FirebaseFirestore.instance
-                  //     .collection('notification')
-                  //     .doc(deleted.id)
-                  //     .delete();
                 },
                 borderRadius: BorderRadius.circular(50),
                 child: const Icon(

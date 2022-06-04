@@ -30,11 +30,8 @@ class _EmployeePageState extends State<EmployeePage> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
-  var token='dv';
+  var token = 'dv';
   String? stdToken;
-
-
-
 
   updateToken() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -141,8 +138,30 @@ class _EmployeePageState extends State<EmployeePage> {
           if (snapshot.hasData) {
             final users = snapshot.data!;
             if (users.isEmpty) {
-              return Center(
-                child: Image.asset('assets/images/Schedule-bro.png'),
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('assets/images/Schedule-bro.png'),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 40.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              "You have no meetings for today",
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  color: Color(0xff205375),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ],
               );
             } else {
               return Stack(

@@ -136,7 +136,6 @@ class _StudentPageState extends State<StudentPage> {
   void initState() {
     updateToken();
 
-    setToken(token: token);
     notifyBeforeTime();
     deleteCard();
     FirebaseMessaging.instance.getInitialMessage();
@@ -528,11 +527,13 @@ class _StudentPageState extends State<StudentPage> {
           setState(() {
             token = currentToken!;
           });
+          setToken(token: token);
         });
       } else {
         setState(() {
           token = "no token";
         });
+        setToken(token: token);
       }
     } catch (e) {
       print(e);
