@@ -6,7 +6,6 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:graduation_project/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
@@ -486,46 +485,45 @@ class _BookingScreenState extends State<BookingScreen> {
                 ],
               );
             } else {
-                return Scaffold(
-                  appBar: AppBar( centerTitle: true,
+              return Scaffold(
+                appBar: AppBar(
+                  centerTitle: true,
                   title: Text("Appointment"),
-                  backgroundColor:  const Color(0xff205375),),
-                  body: ListView(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: MediaQuery.of(context).size.height * 0.1),
-                        child: Image.asset('assets/images/Schedule-bro.png'),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 150.0),
-                            child: Center(
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "${widget.empName} didn't add any services!",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color: Color(0xff205375),
-                                        fontWeight: FontWeight.bold),
-                                  ),
-
-
-                                ],
-                              ),
+                  backgroundColor: const Color(0xff205375),
+                ),
+                body: ListView(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: MediaQuery.of(context).size.height * 0.1),
+                      child: Image.asset('assets/images/Schedule-bro.png'),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 150.0),
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Text(
+                                  "${widget.empName} didn't add any services!",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Color(0xff205375),
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
                             ),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              };
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              );
             }
-          ),
+          }),
     );
   }
 
