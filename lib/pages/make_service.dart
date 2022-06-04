@@ -350,7 +350,7 @@ class _ServicePageState extends State<ServicePage> {
                   Padding(
                     padding: EdgeInsets.symmetric(
                         vertical: MediaQuery.of(context).size.height * 0.1),
-                    child: Image.asset('assets/images/Schedule-bro.png'),
+                    child: Image.asset('assets/images/Empty-pana.png'),
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.end,

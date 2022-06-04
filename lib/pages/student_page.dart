@@ -178,7 +178,7 @@ class _StudentPageState extends State<StudentPage> {
                   Padding(
                     padding: EdgeInsets.symmetric(
                         vertical: MediaQuery.of(context).size.height * 0.1),
-                    child: Image.asset('assets/images/Schedule-bro.png'),
+                    child: Image.asset('assets/images/Nerd-amico.png'),
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.end,

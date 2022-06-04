@@ -38,6 +38,41 @@ class _UserNotificationsState extends State<UserNotifications> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final users = snapshot.data!;
+              if(users.isEmpty){
+                return Stack(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: MediaQuery.of(context).size.height * 0.1),
+                      child: Image.asset('assets/images/Notify-amico.png'),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 40.0),
+                          child: Column(
+                            children: [
+                              Center(
+                                child: Text(
+                                  "You have no notification",
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      color: Color(0xff205375),
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                );
+
+
+              }
+
               return ListView(
                 padding: const EdgeInsets.all(12.0),
                 children: [...users.map(buildListTile).toList()],
