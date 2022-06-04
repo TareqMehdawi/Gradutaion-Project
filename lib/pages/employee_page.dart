@@ -106,12 +106,11 @@ class _EmployeePageState extends State<EmployeePage> {
     });
 
     super.initState();
-    setToken(token: token);
+    deleteCard();
   }
 
   @override
   Widget build(BuildContext context) {
-    deleteCard();
     return Scaffold(
       appBar: CustomAppBar(
           title: "Employee Page",

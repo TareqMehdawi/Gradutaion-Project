@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../pages/employee_account.dart';
 import '../pages/login_page.dart';
 
 class EditEmailFormPage extends StatefulWidget {
@@ -206,19 +205,17 @@ class EditEmailFormPageState extends State<EditEmailFormPage> {
                     password: currentPasswordController.text.trim(),
                   ),
                 );
-                final docUser =
-                FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
+                final docUser = FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(currentUser.uid);
                 final json = {
                   'email': emailController.text.trim(),
                 };
                 await result.user?.updateEmail(emailController.text.trim());
                 await docUser.update(json);
                 FirebaseAuth.instance.signOut();
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                        const LoginPage()));
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()));
                 AwesomeDialog(
                     autoDismiss: false,
                     context: context,
@@ -231,15 +228,13 @@ class EditEmailFormPageState extends State<EditEmailFormPage> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                              const LoginPage()));
+                              builder: (context) => const LoginPage()));
                     },
                     onDissmissCallback: (d) {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                              const LoginPage()));
+                              builder: (context) => const LoginPage()));
                     }).show();
               } on FirebaseAuthException catch (error) {
                 AwesomeDialog(

@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class UserNotifications extends StatefulWidget {
 class _UserNotificationsState extends State<UserNotifications> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   String? time;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,18 +65,58 @@ class _UserNotificationsState extends State<UserNotifications> {
             children: [
               InkWell(
                 onTap: () async {
-                  time = user.time;
-                  final delete = await FirebaseFirestore.instance
-                      .collection('notification')
-                      .where('id', isEqualTo: currentUser.uid)
-                      .where('time', isEqualTo: time)
-                      .get();
+                  AwesomeDialog(
+                      context: context,
+                      dialogType: DialogType.WARNING,
+                      animType: AnimType.BOTTOMSLIDE,
+                      title: 'Warning',
+                      desc: 'Are you sure you want to delete this service',
+                      btnOkText: "Delete",
+                      btnCancelText: 'Cancel',
+                      btnCancelOnPress: () {},
+                      btnOkOnPress: () async {
+                        time = user.time;
+                        final delete = await FirebaseFirestore.instance
+                            .collection('notification')
+                            .where('id', isEqualTo: currentUser.uid)
+                            .where('time', isEqualTo: time)
+                            .get();
 
-                  var deleted = delete.docs.first;
-                  await FirebaseFirestore.instance
-                      .collection('notification')
-                      .doc(deleted.id)
-                      .delete();
+                        var deleted = delete.docs.first;
+                        await FirebaseFirestore.instance
+                            .collection('notification')
+                            .doc(deleted.id)
+                            .delete();
+                        AwesomeDialog(
+                          autoDismiss: false,
+                          context: context,
+                          dialogType: DialogType.SUCCES,
+                          animType: AnimType.BOTTOMSLIDE,
+                          title: 'Success',
+                          desc: 'Notification deleted successfully',
+                          btnOkText: 'Go back',
+                          btnCancelColor: Colors.black87,
+                          onDissmissCallback: (d) {
+                            Navigator.pop(context);
+                          },
+                          btnOkOnPress: () {
+                            Navigator.pop(context);
+                          },
+                        ).show();
+                      }).show();
+
+                  // time = user.time;
+                  // final delete = await FirebaseFirestore.instance
+                  //     .collection('notification')
+                  //     .where('id', isEqualTo: currentUser.uid)
+                  //     .where('time', isEqualTo: time)
+                  //     .get();
+                  //
+                  // var deleted = delete.docs.first;
+                  // await FirebaseFirestore.instance
+                  //     .collection('notification')
+                  //     .doc(deleted.id)
+                  //     .delete();
                 },
                 borderRadius: BorderRadius.circular(50),
                 child: const Icon(
