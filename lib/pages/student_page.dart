@@ -136,6 +136,7 @@ class _StudentPageState extends State<StudentPage> {
   void initState() {
     updateToken();
     notifyBeforeTime();
+    deleteCard();
     FirebaseMessaging.instance.getInitialMessage();
     FirebaseMessaging.onMessage.listen((message) {
       if (message.notification != null) {}
@@ -145,8 +146,6 @@ class _StudentPageState extends State<StudentPage> {
   }
 
   Widget build(BuildContext context) {
-    notifyBeforeTime();
-    deleteCard();
     return Scaffold(
       appBar: CustomAppBar(
           title: 'Student Page',
