@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/pages/forgot_password.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
+import 'package:graduation_project/pages/register_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../main.dart';
@@ -112,6 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                             const SizedBox(
                               height: 12,
                             ),
+                            registerButton(),
                             buildForgetPassword(),
                           ],
                         ),
@@ -294,42 +296,41 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // Widget registerButton() {
-  //   return Container(
-  //     padding: EdgeInsets.only(left: 20, top: 0, bottom: 0, right: 20),
-  //     child: SizedBox(
-  //       width: double.infinity,
-  //       height: 50,
-  //       child: ElevatedButton(
-  //         focusNode: f3,
-  //         child: Text(
-  //           "Sign Up",
-  //           style: GoogleFonts.lato(
-  //             color: Color(0xff205375),
-  //             fontSize: 18.0,
-  //             fontWeight: FontWeight.bold,
-  //           ),
-  //         ),
-  //         onPressed: () async {
-  //           Navigator.push(
-  //               context,
-  //               MaterialPageRoute(
-  //                 builder: (context) => const RegisterPage(),
-  //               ));
-  //         },
-  //         style: ElevatedButton.styleFrom(
-  //           elevation: 2,
-  //           primary: Colors.grey.shade400,
-  //           onPrimary: Color(0xff205375),
-  //           shape: RoundedRectangleBorder(
-  //             borderRadius: BorderRadius.circular(32.0),
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  //
-  // }
+  Widget registerButton() {
+    return Container(
+      padding: EdgeInsets.only(left: 20, top: 0, bottom: 0, right: 20),
+      child: SizedBox(
+        width: double.infinity,
+        height: 50,
+        child: ElevatedButton(
+          focusNode: f3,
+          child: Text(
+            "Sign Up",
+            style: GoogleFonts.lato(
+              color: Color(0xff205375),
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          onPressed: () async {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const RegisterPage(),
+                ));
+          },
+          style: ElevatedButton.styleFrom(
+            elevation: 2,
+            primary: Colors.grey.shade400,
+            onPrimary: Color(0xff205375),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(32.0),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget buildForgetPassword() {
     return Padding(
