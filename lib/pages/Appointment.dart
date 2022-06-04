@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 
 import '../widgets/backbutton_widget.dart';
 import '../widgets/user_class.dart';
+import 'navigation_drawer.dart';
 
 class BookingScreen extends StatefulWidget {
   final String uid;
@@ -60,6 +61,9 @@ class _BookingScreenState extends State<BookingScreen> {
   String? t;
   String? t2;
   bool a = false;
+  bool setService=false;
+  bool setDay =false;
+  bool setTime =false;
 
   @override
   Widget build(BuildContext context) {
@@ -185,6 +189,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                   isSelected = false;
                                   selectedValue = value as String;
                                   serviceSelect = value;
+                                  setService=true;
                                 });
                               },
                               icon: const Icon(
@@ -272,6 +277,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                   isSelected = true;
                                   selectedValue2 = value as String;
                                   daySelect = value;
+                                  setDay=true;
                                 });
                               },
                               icon: const Icon(
@@ -340,6 +346,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                                     user2,
                                                     user[serviceIndex!]
                                                         ["duration"])[index];
+                                                setTime=true;
                                                 //onTimeSelect = !onTimeSelect;
                                               });
                                             },
@@ -415,6 +422,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                 ),
                                 onPressed: () async {
                                   try {
+                                    if(setService==true && setDay==true && setTime==true){
                                     await checkUser();
                                     await setReservation(
                                       empName: widget.empName,
@@ -440,13 +448,34 @@ class _BookingScreenState extends State<BookingScreen> {
                                             'Appointment Scheduled Successfully',
                                         btnOkText: "Ok",
                                         btnOkOnPress: () {
-                                          Navigator.of(context).popUntil(
-                                              (route) => route.isFirst);
+                                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const NavigationDrawer()));
                                         },
                                         onDissmissCallback: (d) {
-                                          return Navigator.of(context).popUntil(
-                                              (route) => route.isFirst);
-                                        }).show();
+                                          return Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const NavigationDrawer()));
+
+
+                                        }).show();}
+                                    else{
+                                      AwesomeDialog(
+                                        autoDismiss: false,
+                                        context: context,
+                                        dialogType: DialogType.WARNING,
+                                        animType: AnimType.BOTTOMSLIDE,
+                                        title: 'Warning',
+                                        desc: 'Please fill all fields',
+                                        btnOkText: "Ok",
+                                        btnCancelColor: Colors.black87,
+                                        btnOkOnPress: () {
+                                          Navigator.pop(context);
+                                        },
+                                        onDissmissCallback: (d) {
+
+                                        },
+                                      ).show();
+
+
+
+                                    }
                                   } catch (e) {
                                     AwesomeDialog(
                                         autoDismiss: false,
@@ -459,12 +488,12 @@ class _BookingScreenState extends State<BookingScreen> {
                                         btnOkText: "Go Back",
                                         btnOkColor: Colors.red,
                                         btnOkOnPress: () {
-                                          Navigator.of(context).popUntil(
-                                              (route) => route.isFirst);
+                                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const NavigationDrawer()));
+
                                         },
                                         onDissmissCallback: (d) {
-                                          return Navigator.of(context).popUntil(
-                                              (route) => route.isFirst);
+                                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const NavigationDrawer()));
+
                                         }).show();
                                   }
                                 },
@@ -823,22 +852,6 @@ class _BookingScreenState extends State<BookingScreen> {
     }
     return notAvailable;
   }
-  // Future<void> selectTime(BuildContext context) async {
-  //   TimeOfDay? selectedTime = await showTimePicker(
-  //     context: context,
-  //     initialTime: currentTime,
-  //   );
-  //
-  //   MaterialLocalizations localizations = MaterialLocalizations.of(context);
-  //   String formattedTime = localizations.formatTimeOfDay(selectedTime!,
-  //       alwaysUse24HourFormat: false);
-  //
-  //   setState(() {
-  //     timeText = formattedTime;
-  //     _timeController.text = timeText;
-  //   });
-  //   dateTime = selectedTime.toString().substring(10, 15);
-  // }
 
   Future readUser() async {
     List data = [];

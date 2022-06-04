@@ -32,6 +32,10 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
   List day = [];
   List hour = [];
   bool isSelected = false;
+  bool setStartTime=false;
+  bool setEndTime=false;
+  bool setDays=false;
+
 
   final List<DayInWeek> _days = [
     DayInWeek(
@@ -152,6 +156,7 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                                           // <== Callback to handle the selected days
                                           days = [];
                                           days.addAll(values);
+                                          setDays=true;
                                         },
                                       ),
                                     ),
@@ -164,7 +169,7 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                                             vertical: 16,
                                           ),
                                           child: SizedBox(
-                                            width: 195,
+                                            // width: 195,
                                             child: Center(
                                               child: editOfficeTimeButton(
                                                   function: () async {
@@ -188,12 +193,14 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                                                     setState(
                                                       () {
                                                         startTime = starttime;
+                                                        setStartTime=true;
                                                         // endTime = result.endTime;
                                                         // officeHours =
                                                         //     '${startTime.toString().substring(10, 15)} - ${endTime.toString().substring(10, 15)}';
                                                       },
                                                     );
                                                   },
+                                                  size: 14,
                                                   name: getStartTime()!,
                                                   buttonColor:
                                                       Colors.grey.shade400,
@@ -205,7 +212,7 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 16),
                                           child: SizedBox(
-                                            width: 195,
+                                            // width: 195,
                                             child: Center(
                                               child: editOfficeTimeButton(
                                                   function: () async {
@@ -229,12 +236,14 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                                                     setState(
                                                       () {
                                                         endTime = endtime;
+                                                        setEndTime=true;
                                                         // endTime = result.endTime;
                                                         // officeHours =
                                                         //     '${startTime.toString().substring(10, 15)} - ${endTime.toString().substring(10, 15)}';
                                                       },
                                                     );
                                                   },
+                                                  size: 14,
                                                   name: getEndTime()!,
                                                   buttonColor:
                                                       Colors.grey.shade400,
@@ -253,13 +262,36 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
                                             height: 50,
                                             child: editOfficeTimeButton(
                                                 function: () {
+                                                  if(setEndTime==true && setStartTime==true && setDays==true){
                                                   officeHours =
                                                       "${startTime} - ${endTime}";
                                                   updateOfficeTimeField(
                                                       officeHours: ttt(),
                                                       day: days,
-                                                      time: officeHours);
+                                                      time: officeHours,);}
+                                                  else{
+                                                    AwesomeDialog(
+                                                      autoDismiss: false,
+                                                      context: context,
+                                                      dialogType: DialogType.WARNING,
+                                                      animType: AnimType.BOTTOMSLIDE,
+                                                      title: 'Warning',
+                                                      desc: 'Please fill all fields',
+                                                      btnOkText: "Ok",
+                                                      btnCancelColor: Colors.black87,
+                                                      btnOkOnPress: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      onDissmissCallback: (d) {
+
+                                                      },
+                                                    ).show();
+
+
+                                                  }
+
                                                 },
+                                                size: 18,
                                                 name: 'Update',
                                                 buttonColor: Color(0xff205375),
                                                 textColor: Colors.white)),
@@ -579,6 +611,7 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
     required String name,
     required Color buttonColor,
     required Color textColor,
+    required double size,
   }) {
     return Container(
       padding: EdgeInsets.only(left: 20, top: 0, bottom: 0, right: 20),
@@ -590,7 +623,7 @@ class EditOfficeHoursFormPageState extends State<EditOfficeHoursFormPage> {
             name,
             style: GoogleFonts.lato(
               color: textColor,
-              fontSize: 16.0,
+              fontSize: size,
               fontWeight: FontWeight.bold,
             ),
           ),

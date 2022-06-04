@@ -215,6 +215,6 @@ class EditNameFormPageState extends State<EditNameFormPage> {
 }
 
 bool isAlpha(String str) {
-  RegExp alpha = RegExp(r'^[a-zA-Z]+$');
+  RegExp alpha = RegExp(r'^[a-zA-Z-\. ]+$');
   return alpha.hasMatch(str);
 }

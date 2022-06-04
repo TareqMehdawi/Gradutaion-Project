@@ -35,7 +35,8 @@ class _DeleteSelectService extends State<DeleteSelectService> {
   TimeOfDay? startTime;
   TimeOfDay? endTime;
   String? duration;
-
+  bool newDay=false;
+  bool newTime=false;
   //List<Message> messages = [];
   List newDays = [];
   final currentUser = FirebaseAuth.instance.currentUser!;
@@ -203,6 +204,7 @@ class _DeleteSelectService extends State<DeleteSelectService> {
                             // <== Callback to handle the selected days
                             newDays = [];
                             newDays.addAll(values);
+                            newDay=true;
                           },
                         ),
                       ),
@@ -253,6 +255,7 @@ class _DeleteSelectService extends State<DeleteSelectService> {
                               setState(() {
                                 selectedValue = value as String;
                                 duration = value;
+                                newTime=true;
                               });
                             },
                             icon: const Icon(
@@ -309,7 +312,7 @@ class _DeleteSelectService extends State<DeleteSelectService> {
                             ),
                             onPressed: () {
                               final isValid = formKey.currentState!.validate();
-                              if (isValid) {
+                              if (isValid && newDay==true && newTime==true) {
                                 try {
                                   updateServiceName(
                                       serviceName: serviceController.text);
@@ -371,7 +374,30 @@ class _DeleteSelectService extends State<DeleteSelectService> {
                                     },
                                   ).show();
                                 }
+                              }else{
+
+                              AwesomeDialog(
+                              autoDismiss: false,
+                              context: context,
+                              dialogType: DialogType.WARNING,
+                              animType: AnimType.BOTTOMSLIDE,
+                              title: 'Warning',
+                              desc: 'Please fill all fields',
+                              btnOkText: "Ok",
+                              btnCancelColor: Colors.black87,
+                              btnOkOnPress: () {
+                              Navigator.pop(context);
+                              },
+                              onDissmissCallback: (d) {
+
+                              },
+                              ).show();
+
+
                               }
+
+
+
                             },
                             style: ElevatedButton.styleFrom(
                               elevation: 2,

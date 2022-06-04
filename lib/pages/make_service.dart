@@ -1,3 +1,5 @@
+
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:day_picker/day_picker.dart';
@@ -26,6 +28,8 @@ class _ServicePageState extends State<ServicePage> {
   String? endTime;
   String? duration;
   TimeOfDay time = TimeOfDay.now();
+  bool newDay=false;
+  bool selectTime=false;
 
   Map days = {};
   final currentUser = FirebaseAuth.instance.currentUser!;
@@ -188,6 +192,7 @@ class _ServicePageState extends State<ServicePage> {
                                   }
                                 }
                               }
+                              newDay=true;
                             },
                           ),
                         ),
@@ -238,6 +243,7 @@ class _ServicePageState extends State<ServicePage> {
                                 setState(() {
                                   selectedValue = value as String;
                                   duration = value;
+                                  selectTime=true;
                                 });
                               },
                               icon: const Icon(
@@ -295,12 +301,31 @@ class _ServicePageState extends State<ServicePage> {
                               onPressed: () {
                                 final isValid =
                                     formKey.currentState!.validate();
-                                if (isValid) {
+                                if (isValid && newDay==true && selectTime==true) {
                                   setService(
                                       duration: duration!,
                                       service: serviceController.text,
                                       days: days,
                                       image: user.image);
+                                }else{
+                                  AwesomeDialog(
+                                    autoDismiss: false,
+                                    context: context,
+                                    dialogType: DialogType.WARNING,
+                                    animType: AnimType.BOTTOMSLIDE,
+                                    title: 'Warning',
+                                    desc: 'Please fill all fields',
+                                    btnOkText: "Ok",
+                                    btnCancelColor: Colors.black87,
+                                    btnOkOnPress: () {
+                                      Navigator.pop(context);
+                                    },
+                                    onDissmissCallback: (d) {
+
+                                    },
+                                  ).show();
+
+
                                 }
                               },
                               style: ElevatedButton.styleFrom(
@@ -456,6 +481,13 @@ class _ServicePageState extends State<ServicePage> {
                   builder: (context) => const NavigationDrawer()));
         },
       ).show();
+
+
+
+
+
+
+
     } on FirebaseAuthException catch (error) {
       AwesomeDialog(
         autoDismiss: false,

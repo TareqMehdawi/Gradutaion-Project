@@ -163,7 +163,7 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
           filled: true,
           fillColor: Colors.grey[350],
-          hintText: 'Username',
+          hintText: 'Your Name',
           hintStyle: GoogleFonts.lato(
             color: Colors.black26,
             fontSize: 18,
@@ -178,7 +178,7 @@ class _RegisterPageState extends State<RegisterPage> {
           FocusScope.of(context).requestFocus(f2);
         },
         validator: (value) {
-          final regUsername = RegExp(r'^[a-zA-Z ]{2,30}$');
+          final regUsername = RegExp(r'^[a-zA-Z-\. ]{2,30}$');
           if (value!.isEmpty) {
             return 'Enter an username';
           } else if (value.length < 3) {

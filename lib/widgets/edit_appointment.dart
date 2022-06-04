@@ -73,6 +73,7 @@ class _EditScreenState extends State<EditScreen> {
   bool a = false;
   String? empToken;
   String? stdToken;
+  bool timeUpdate=false;
 
   List sendItem(List items2) {
     List items = [];
@@ -635,6 +636,7 @@ class _EditScreenState extends State<EditScreen> {
                                               widget.duration,
                                               widget.officeHour,
                                             )[index];
+                                            timeUpdate=true;
                                             //onTimeSelect = !onTimeSelect;
                                           });
                                         },
@@ -699,7 +701,9 @@ class _EditScreenState extends State<EditScreen> {
                               //final isValid = formKey.currentState!
                               //     .validate();
                               // if (isValid) {
+
                               try {
+                                if(timeUpdate==true){
                                 updateTime();
                                 widget.type == 'student'
                                     ? sendPushMessage(
@@ -739,7 +743,29 @@ class _EditScreenState extends State<EditScreen> {
                                   onDissmissCallback: (d) {
                                     Navigator.pop(context);
                                   },
-                                ).show();
+                                ).show();}
+                                else{
+                                  AwesomeDialog(
+                                    autoDismiss: false,
+                                    context: context,
+                                    dialogType: DialogType.WARNING,
+                                    animType: AnimType.BOTTOMSLIDE,
+                                    title: 'Warning',
+                                    desc: 'Please select a new time',
+                                    btnOkText: "Ok",
+                                    btnCancelColor: Colors.black87,
+                                    btnOkOnPress: () {
+                                      Navigator.pop(context);
+                                    },
+                                    onDissmissCallback: (d) {
+
+                                    },
+                                  ).show();
+
+
+
+
+                                }
                               } on FirebaseAuthException catch (error) {
                                 AwesomeDialog(
                                   autoDismiss: false,

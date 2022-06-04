@@ -29,26 +29,28 @@ class _EmployeePageState extends State<EmployeePage> {
   String day = 'Every Day';
   final currentUser = FirebaseAuth.instance.currentUser!;
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+
   var token='dv';
   String? stdToken;
 
+
+
+
   updateToken() async {
-    try {
-      SharedPreferences preferences = await SharedPreferences.getInstance();
-      var notification = preferences.getString("NOTIFICATION");
-      if (notification == "true") {
-        await _fcm.getToken().then((currentToken) {
-          setState(() {
-            token = currentToken!;
-          });
-        });
-      } else {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var notification = preferences.getString("NOTIFICATION");
+    if (notification == "true") {
+      await _fcm.getToken().then((currentToken) {
         setState(() {
-          token = "null";
+          token = currentToken!;
         });
-      }
-    } catch (e) {
-      print(e);
+        setToken(token: token);
+      });
+    } else {
+      setState(() {
+        token = "null";
+      });
+      setToken(token: token);
     }
   }
 
