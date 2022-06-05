@@ -33,6 +33,17 @@ class _AdminPageState extends State<AdminPage> {
             },
           ),
           adminButton(
+            title: "Add Admin",
+            function: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AddEmployee(),
+                ),
+              );
+            },
+          ),
+          adminButton(
             title: "Feedbacks",
             function: () {
               Navigator.push(
@@ -43,6 +54,7 @@ class _AdminPageState extends State<AdminPage> {
               );
             },
           ),
+
         ],
       ),
     );
