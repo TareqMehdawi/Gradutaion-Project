@@ -29,6 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   final regEmailEmp = RegExp(
       r"^[a-zA-Z]+\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
   final regEmailStu = RegExp(r"^[a-zA-Z]{3}[0-9]{7}@ju\.edu\.jo");
+  final regEmailReg = RegExp(r"^((Admin)|(admin))\.@ju\.edu\.jo");
 
   @override
   void dispose() {
