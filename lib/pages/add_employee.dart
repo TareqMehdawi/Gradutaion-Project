@@ -1,5 +1,3 @@
-
-
 import 'dart:math';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -9,8 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uuid/uuid.dart';
 
 import '../widgets/user_class.dart';
 
@@ -49,6 +45,7 @@ class _AddEmployeeState extends State<AddEmployee> {
     getImageData();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,7 +103,8 @@ class _AddEmployeeState extends State<AddEmployee> {
                 ),
                 const SizedBox(
                   height: 12,
-                ),Padding(
+                ),
+                Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton2(
@@ -136,25 +134,23 @@ class _AddEmployeeState extends State<AddEmployee> {
                       ),
                       items: items
                           .map((item) => DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(
-                          item,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ))
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ))
                           .toList(),
                       value: selectedValue,
                       onChanged: (value) {
                         setState(() {
                           selectedValue = value as String;
-                          type=value;
-
-
+                          type = value;
                         });
                       },
                       icon: const Icon(
@@ -165,8 +161,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                       iconDisabledColor: Colors.white,
                       buttonHeight: 50,
                       buttonWidth: 500,
-                      buttonPadding:
-                      const EdgeInsets.only(left: 14, right: 14),
+                      buttonPadding: const EdgeInsets.only(left: 14, right: 14),
                       buttonDecoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
@@ -176,13 +171,12 @@ class _AddEmployeeState extends State<AddEmployee> {
                       ),
                       buttonElevation: 2,
                       itemHeight: 40,
-                      itemPadding:
-                      const EdgeInsets.only(left: 14, right: 14),
+                      itemPadding: const EdgeInsets.only(left: 14, right: 14),
                       dropdownMaxHeight: 200,
                       dropdownPadding: null,
                       dropdownDecoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(14),
-                        color:Color(0xff205375) ,
+                        color: Color(0xff205375),
                       ),
                       dropdownElevation: 8,
                       scrollbarRadius: const Radius.circular(40),
@@ -191,7 +185,6 @@ class _AddEmployeeState extends State<AddEmployee> {
                     ),
                   ),
                 ),
-
                 const SizedBox(
                   height: 12,
                 ),
@@ -391,6 +384,7 @@ class _AddEmployeeState extends State<AddEmployee> {
       ),
     );
   }
+
   Widget registerButton() {
     return Container(
       padding: EdgeInsets.only(left: 20, top: 0, bottom: 0, right: 20),
@@ -423,23 +417,22 @@ class _AddEmployeeState extends State<AddEmployee> {
               // });
               try {
                 await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                    email: emailController.text.trim(),
-                    password: passwordController.text.trim(),
-                    );
+                  email: emailController.text.trim(),
+                  password: passwordController.text.trim(),
+                );
                 final user2 = FirebaseAuth.instance.currentUser!.uid;
 
                 var rng = Random();
-                String ran =rng.nextInt(1000).toString();
-                String id= ran+user2;
-
+                String ran = rng.nextInt(1000).toString();
+                String id = ran + user2;
 
                 //saveData(emailController.text, passwordController.text, 'true');
-                  createEmployee(
-                      name: username,
-                      number: "phone number",
-                      email: emailController.text,
-                      type: type!,
-                  id: user2);
+                createEmployee(
+                    name: username,
+                    number: "phone number",
+                    email: emailController.text,
+                    type: type!,
+                    id: user2);
                 AwesomeDialog(
                     autoDismiss: false,
                     context: context,
@@ -453,7 +446,6 @@ class _AddEmployeeState extends State<AddEmployee> {
                     },
                     onDissmissCallback: (d) {
                       Navigator.pop(context);
-
                     }).show();
               } on FirebaseAuthException catch (error) {
                 // Utils.showSnackBar(error.message);
@@ -486,6 +478,7 @@ class _AddEmployeeState extends State<AddEmployee> {
       ),
     );
   }
+
   Future createEmployee({
     required String name,
     required String number,
@@ -494,10 +487,9 @@ class _AddEmployeeState extends State<AddEmployee> {
     required String id,
     String office = 'Office location',
   }) async {
-
     final docUser = FirebaseFirestore.instance.collection('users').doc(id);
     final user = UserAccount(
-      id:docUser.id,
+      id: docUser.id,
       name: name,
       number: number,
       email: email,
@@ -520,7 +512,4 @@ class _AddEmployeeState extends State<AddEmployee> {
         .child('default_image.png');
     imgUrl = await ref.getDownloadURL();
   }
-
-
-
 }

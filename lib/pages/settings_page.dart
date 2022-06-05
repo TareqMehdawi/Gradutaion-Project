@@ -20,7 +20,7 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   bool lockApp = true;
-  bool fingerPrint = true;
+  bool fingerPrint = false;
   bool notifications = true;
 
   final currentUser = FirebaseAuth.instance.currentUser!;
@@ -59,6 +59,13 @@ class _SettingsPageState extends State<SettingsPage> {
               final user = snapshot.data;
               return ListView(
                 children: [
+                  settingsTitle(title: 'General'),
+                  settingsTiles(
+                    icon: Icons.language,
+                    title: 'Language',
+                    subtitle: 'English',
+                    function: () {},
+                  ),
                   settingsTitle(title: 'Account'),
                   settingsTiles(
                     icon: Icons.phone,
@@ -99,7 +106,9 @@ class _SettingsPageState extends State<SettingsPage> {
                       icon: Icons.logout,
                       title: 'Sign out'),
                   settingsTitle(title: 'Security'),
-
+                  enableNotificationsTile(
+                      icon: Icons.notifications_active,
+                      title: 'Enable notifications'),
                   settingsTilesNoSubtitle(
                     icon: Icons.lock,
                     title: 'Change password',
@@ -110,9 +119,10 @@ class _SettingsPageState extends State<SettingsPage> {
                               builder: (context) => const ChangePassword()));
                     },
                   ),
-                  enableNotificationsTile(
-                      icon: Icons.notifications_active,
-                      title: 'Enable notifications'),
+                  useFingerPrintsTile(
+                    icon: Icons.fingerprint,
+                    title: 'Enable fingerprint',
+                  ),
                 ],
               );
             } else {

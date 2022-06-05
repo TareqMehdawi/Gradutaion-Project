@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:graduation_project/pages/admin_page.dart';
 import 'package:graduation_project/pages/forgot_password.dart';
 import 'package:graduation_project/pages/navigation_drawer.dart';
 import 'package:graduation_project/pages/register_page.dart';
@@ -29,7 +30,10 @@ class _LoginPageState extends State<LoginPage> {
   final regEmailEmp = RegExp(
       r"^[a-zA-Z]+\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
   final regEmailStu = RegExp(r"^[a-zA-Z]{3}[0-9]{7}@ju\.edu\.jo");
-  final regEmailReg = RegExp(r"^((Admin)|(admin))\.@ju\.edu\.jo");
+  final regEmailAdmin = RegExp(
+      r"^((Admin)|(admin))\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
+  final regEmailReg = RegExp(
+      r"^((Reg)|(reg))\.[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@ju\.edu\.jo");
 
   @override
   void dispose() {
@@ -249,7 +253,15 @@ class _LoginPageState extends State<LoginPage> {
               await FirebaseAuth.instance.signInWithEmailAndPassword(
                   email: emailController.text.trim(),
                   password: passwordController.text.trim());
-              if (regEmailStu.hasMatch(emailController.text.trim())) {
+              if (regEmailAdmin.hasMatch(emailController.text.trim())) {
+                saveData(emailController.text, passwordController.text);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AdminPage(),
+                  ),
+                );
+              } else if (regEmailStu.hasMatch(emailController.text.trim())) {
                 saveData(emailController.text, passwordController.text);
                 Navigator.push(
                   context,
