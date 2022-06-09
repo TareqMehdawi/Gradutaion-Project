@@ -8,7 +8,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/main.dart';
-import 'package:graduation_project/pages/admin_page.dart';
 import 'package:graduation_project/pages/employee_account.dart';
 import 'package:graduation_project/pages/employee_page.dart';
 import 'package:graduation_project/pages/feedback_page.dart';
@@ -332,23 +331,23 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                   );
                                 },
                               ),
-                              drawerTiles(
-                                icon: Icons.create,
-                                title: 'Admin',
-                                function: () {
-                                  setState(() {
-                                    Provider.of<NavigationProvider>(context,
-                                            listen: false)
-                                        .value = 0;
-                                  });
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const AdminPage(),
-                                    ),
-                                  );
-                                },
-                              ),
+                              // drawerTiles(
+                              //   icon: Icons.create,
+                              //   title: 'Admin',
+                              //   function: () {
+                              //     setState(() {
+                              //       Provider.of<NavigationProvider>(context,
+                              //               listen: false)
+                              //           .value = 0;
+                              //     });
+                              //     Navigator.push(
+                              //       context,
+                              //       MaterialPageRoute(
+                              //         builder: (context) => const AdminPage(),
+                              //       ),
+                              //     );
+                              //   },
+                              // ),
                               drawerTiles(
                                 icon: Icons.logout,
                                 title: 'Logout',

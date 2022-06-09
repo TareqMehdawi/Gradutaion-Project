@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/pages/add_employee.dart';
 import 'package:graduation_project/pages/admin_feedback_page.dart';
+import 'package:graduation_project/pages/login_page.dart';
 
 class AdminPage extends StatefulWidget {
   const AdminPage({Key? key}) : super(key: key);
@@ -18,6 +20,7 @@ class _AdminPageState extends State<AdminPage> {
         title: Text('Admin Panel'),
         centerTitle: true,
         backgroundColor: Color(0xff205375),
+        automaticallyImplyLeading: false,
       ),
       body: Column(
         children: [
@@ -32,17 +35,17 @@ class _AdminPageState extends State<AdminPage> {
               );
             },
           ),
-          adminButton(
-            title: "Add Admin",
-            function: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const AddEmployee(),
-                ),
-              );
-            },
-          ),
+          // adminButton(
+          //   title: "Add Admin",
+          //   function: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => const AddEmployee(),
+          //       ),
+          //     );
+          //   },
+          // ),
           adminButton(
             title: "Feedbacks",
             function: () {
@@ -54,7 +57,18 @@ class _AdminPageState extends State<AdminPage> {
               );
             },
           ),
-
+          adminButton(
+            title: "Log out",
+            function: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginPage(),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );
